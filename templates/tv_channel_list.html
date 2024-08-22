@@ -1,0 +1,31 @@
+
+<div id="tv_channel_list_header" class="tv_channel_list_header">
+	<h1>{{:lng.tv_channels}} <span>({{:quantity}} {{:lng.of}} {{:channels.length}})</span></h1>
+	<div class="channel_info">
+		<span class="channel_category">{{if category_string}}{{:category_string}}{{else}}{{:lng.anything_category}}{{/if}}</span>
+		<span class="channel_language">{{if language_string}}{{:language_string}}{{else}}{{:lng.anything_language}}{{/if}}</span>
+	</div>
+</div>
+<div class="content_wrapper">
+	<ul class="content">
+		{{for channels}}
+			<li
+				{{if id}}
+					data-id="{{:id}}"
+				{{/if}}
+				data-num="{{:#getIndex()}}"
+				data-name="{{:name}}"
+				class="not_tv_cur"
+			>
+				<div
+					{{if image}}image_url="{{:image}}"{{/if}}
+					class="tv_channel_img"
+					style="background: url('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=') no-repeat center center"
+				></div>
+				<div class="pseudoAfter"></div>
+				<div class="tv_channel_name">{{:name}}</div>
+				<div class="tv_channel_epg">{{:category_string}}</div>
+			</li>
+		{{/for}}
+	</ul>
+</div>

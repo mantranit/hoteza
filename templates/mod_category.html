@@ -1,0 +1,20 @@
+
+<div class="page" id="{{if id}}{{:id}}{{else}}MOD{{/if}}">
+	<div class="content_wrapper">
+		<div class="content">
+			<ul class="pagelist mod_category">
+
+				{{for categories}}
+					<li href="" onvclick="MOD.open('{{:id}}')" class="withimg">
+						<img src="" image_url="{{:image}}">
+						<span>
+							<i class="align">{{:title}}</i>
+						</span>
+					</li>
+				{{/for}}
+
+			</ul>
+		</div>
+	</div>
+	{{header #data /}}
+</div>

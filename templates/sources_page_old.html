@@ -1,0 +1,16 @@
+
+<div class="content_wrapper">
+	<div class="content">
+		<ul class="pagelist">
+			{{for items}}
+			<li href="#{{:id}}" class="tv_source_old" onvclick="{{:onvclick}}">
+				{{if icon}}
+					<i class="{{:icon}}"></i>
+				{{/if}}
+				<span>{{:title}}</span>
+			</li>
+			{{/for}}
+		</ul>
+	</div>
+</div>
+{{header #data /}}

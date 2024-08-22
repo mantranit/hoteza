@@ -1,0 +1,100 @@
+
+{{if firstInit}}<div id="information" class="page new" data-dont-save="1">{{/if}}
+	<div class="content_wrapper">
+		<div
+			class="content{{if content.approxTime}} approximate{{/if}}{{if type === 'ss' || type === 'sw' || type === 'sp'}} success{{else type === 'cp'}} confirmation{{/if}}"
+		>
+			<table>
+				<tbody>
+					<tr>
+						{{if type === 'pa'}}
+							<td>
+								<svg class="svg_button" xmlns="http://www.w3.org/2000/svg" width="100" height="88" viewBox="0 0 100 88">
+									<use xlink:href="i/click-and-collect.svg#icon"></use>
+								</svg>
+							</td>
+						{{else type === 'dt'}}
+							<td>
+								<svg class="svg_button" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+									<use xlink:href="i/time-span.svg#icon"></use>
+								</svg>
+							</td>
+						{{else type === 'sp' || type === 'ss' || type === 'sw'}}
+							<td>
+								<svg class="svg_button" xmlns="http://www.w3.org/2000/svg" width="65" height="59" viewBox="0 0 65 59">
+									<use xlink:href="i/arrow-filled.svg#btn_selected"></use>
+								</svg>
+							</td>
+						{{else type === 'cp'}}
+							<td>{{:content.text}}<br />{{:content.textTooltip}}</td>
+						{{/if}}
+					</tr>
+					<tr>
+						<td>
+							<p>
+								{{if type === 'cp'}}
+									{{:content.textConfirm}}
+								{{else}}
+									{{:content.text}}
+								{{/if}}
+							</p>
+							{{if type === 'cp'}}
+								<div
+									class="input"
+									ontvkey="true"
+									onvclick="$('#information .button').trigger(event_link);"
+									onvmove="blinkedCursor.on(this);"
+								>
+									<div id="custom_dialog_input" type="text"></div>
+									<div style="display:none;" on_num_1="" onvclick="custom_input_key(1)"></div>
+									<div style="display:none;" on_num_2="" onvclick="custom_input_key(2)"></div>
+									<div style="display:none;" on_num_3="" onvclick="custom_input_key(3)"></div>
+									<div style="display:none;" on_num_4="" onvclick="custom_input_key(4)"></div>
+									<div style="display:none;" on_num_5="" onvclick="custom_input_key(5)"></div>
+									<div style="display:none;" on_num_6="" onvclick="custom_input_key(6)"></div>
+									<div style="display:none;" on_num_7="" onvclick="custom_input_key(7)"></div>
+									<div style="display:none;" on_num_8="" onvclick="custom_input_key(8)"></div>
+									<div style="display:none;" on_num_9="" onvclick="custom_input_key(9)"></div>
+									<div style="display:none;" on_num_0="" onvclick="custom_input_key(0)"></div>
+									<div style="display:none;" on_left="" onvclick="custom_input_key(-1)"></div>
+									<div class="error-text">{{:content.textError}}</div>
+								</div>
+							{{/if}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			{{if content.approxTime}}
+				<div class="approximate">
+					<span>{{:approximate_text}}</span>
+					<span>{{:content.approxTime}}:00</span>
+				</div>
+			{{/if}}
+		</div>
+	</div>
+
+	<div class="button_wrap{{if content.buttons.length === 1}} contain{{/if}}">
+		{{for content.buttons}}
+			<div
+				{{if onvmove}}
+					onvmove="{{:onvmove}}"
+				{{/if}}
+				{{if ~root.type === 'dt' && #getIndex() !== 0}}
+					class="timepicker button"
+				{{else}}
+					class="button"
+				{{/if}}
+
+				{{if type == 'onvclick'}}
+					onvclick="{{:action}}"
+				{{else type == 'href'}}
+					href="{{:action}}"
+				{{/if}}
+			>
+				{{:translate}}
+			</div>
+		{{/for}}
+	</div>
+
+	{{header #data /}}
+{{if firstInit}}</div>{{/if}}

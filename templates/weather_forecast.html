@@ -1,0 +1,90 @@
+
+<div class="header">
+	<h1>{{:locations.name}}, {{:weather.current.description}}</h1>
+</div>
+<div class="header_info">
+	{{if weather.current.temperature}}
+		<div class="info">
+			{{if daysQnt === 3}}<div>{{/if}}
+				<span class="weather-icon-{{:weather.current.icon}}"></span>
+				<span>{{:weather.current.temperature.day}}&deg;{{:config.valueTemperature}}</span>
+			{{if daysQnt === 3}}</div>{{/if}}
+			<div class="main-description">
+				{{:language.now}}<br />
+				{{:weather.current.weatherIconTxt}}
+			</div>
+		</div>
+	{{/if}}
+
+	<div class="info">
+		{{if weather.current.pressure}}
+			<div>{{:language.pressure}}: {{:weather.current.pressure}} {{:language.pressure_dimension}}</div>
+		{{/if}}
+		{{if weather.current.forecast[0].clouds}}
+			<div>{{:language.cloudiness}}: {{:weather.current.forecast[0].clouds}}%</div>
+		{{/if}}
+	</div>
+
+	<div class="info">
+		{{if weather.current.windDirect != ''}}
+		<div>{{:language.wind}}: {{:weather.current.windDirectTranscript}}, {{:weather.current.windSpeed}} {{:language.metr_per_second}}</div>
+		{{/if}}
+
+		{{if weather.current.humidity}}
+			<div>{{:language.humidity}}: {{:weather.current.humidity}}%</div>
+		{{/if}}
+	</div>
+</div>
+<ul class="content">
+	{{for weather.current.forecast}}
+	{{if #getIndex() < ~root.daysQnt}}
+		<li>
+			<div class="header_item">
+				{{if #getIndex() == 0}}
+					{{:~root.language.today}}
+				{{else #getIndex() == 1}}
+					{{:~root.language.tomorrow}}
+				{{else}}
+					{{:date.day}}
+				{{/if}}<br>
+				{{:date.month}}, {{:date.dayOfMonth}}
+			</div>
+			<span class="weather-icon-{{:icon}}"></span>
+			{{if temperature}}
+				<div class="temperature">
+					<span>{{:temperature.day}}&deg; {{:~root.config.valueTemperature}}</span>
+					<div class="description">{{:description}}</div>
+					<span>
+						{{if #getIndex() === 0}}
+							{{:~root.language.night}}
+						{{/if}}
+						{{:temperature.night}}&deg; {{:~root.config.valueTemperature}}
+					</span>
+				</div>
+			{{else}}
+				<div class="description">{{:description}}</div>
+			{{/if}}
+			<div class="line"></div>
+			{{if windDirect}}
+				<div class="info">
+					<span><i>{{:windDirectTranscript}}</i> {{:windSpeed}} {{:~root.language.metr_per_second}}</span>
+				</div>
+			{{/if}}
+			{{if humidity}}
+				<div class="info">
+					<span>{{:humidity}}%</span>
+				</div>
+			{{/if}}
+			{{if pressure}}
+				<div class="info">
+					<span>{{:pressure}} {{:~root.language.pressure_dimension}}</span>
+				</div>
+			{{/if}}
+		</li>
+	{{/if}}
+	{{/for}}
+</ul>
+<div class="weather_btn">
+	<div id="btn_change_dimension" class="btn_legend btn_green">&deg;C/&deg;F</div>
+	<div id="btn_change_location" class="btn_legend btn_yellow">{{:language.change_location}}</div>
+</div>

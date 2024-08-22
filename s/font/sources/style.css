@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'sources';
+  src:
+    url('fonts/sources.ttf?o7k9h1') format('truetype'),
+    url('fonts/sources.woff?o7k9h1') format('woff'),
+    url('fonts/sources.svg?o7k9h1#sources') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="sources-icon-"], [class*=" sources-icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'sources' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.sources-icon-androidwindows:before {
+  content: "\e906";
+}
+.sources-icon-android:before {
+  content: "\e905";
+}
+.sources-icon-airplay:before {
+  content: "\e900";
+}
+.sources-icon-cast:before {
+  content: "\e901";
+}
+.sources-icon-settings_bluetooth:before {
+  content: "\e902";
+}
+.sources-icon-settings_input_hdmi:before {
+  content: "\e903";
+}
+.sources-icon-usb:before {
+  content: "\e904";
+}

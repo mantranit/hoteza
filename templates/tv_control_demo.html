@@ -1,0 +1,30 @@
+
+<div class="content_wrapper">
+    <div class="content">
+        <div style="margin:10px 6%;">
+            <div class="settings_button top bold" onvclick="$('#options_tv_on').toggleClass('selected');">
+                {{:lang.tvon}}
+                <div class="checkbox" id="options_tv_on">
+                    <div class="checkbox_circle"></div>
+                </div>
+            </div>
+            <div class="settings_button bottom" onvclick="$('#options_tv_mute').toggleClass('selected');">
+                {{:lang.mute}}
+                <div class="checkbox selected" id="options_tv_mute">
+                    <div class="checkbox_circle"></div>
+                </div>
+            </div>
+            <div class="settings_button top bottom pm_button">
+                <div class="m icons8-Minus" onvclick=""></div>
+                {{:lang.channel}}
+                <div class="p icons8-Plus" onvclick=""></div>
+            </div>
+            <div class="settings_button top bottom pm_button">
+                <div class="m icons8-Minus" onvclick=""></div>
+                Volume
+                <div class="p icons8-Plus" onvclick=""></div>
+            </div>
+        </div>
+    </div>
+</div>
+{{header #data /}}

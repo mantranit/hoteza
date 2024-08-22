@@ -1,0 +1,25 @@
+
+<div id="tv_welcome"
+	{{if type === 'image'}}
+		style="background-image: url('{{:data}}');"
+	{{else type === 'video'}}
+		data-video-src="{{:data}}"
+	{{/if}}>
+	<div class="container">
+		{{if image}}<img src='{{:image}}' onload="tv_welcome_resize();" onerror="tv_welcome_resize();">{{/if}}
+		<h1>{{:title}}</h1>
+		<div>
+			<p>{{:content}}</p>
+
+			<div class="button" onvclick="tv_welcome_hide()">{{:lang.kontinue}}</div>
+
+			{{if language}}
+				<ul>
+					{{for language}}
+						<li class="btn_lng not_tv_cur{{if current}} current_language{{/if}}" onvclick="change_language('{{:code}}')">{{:title}}</li>
+					{{/for}}
+				</ul>
+			{{/if}}
+		</div>
+	</div>
+</div>

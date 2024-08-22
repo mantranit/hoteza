@@ -1,0 +1,15 @@
+
+{{for audio}}
+
+	<li id="{{:id}}" href="" data-audio="{{:path}}">
+		<div class="listener"></div>
+		<div class="number">{{:#getIndex() + 1}}.</div>
+		<div class="title">
+			<span class="audio_img" style="background: url({{:image}}) no-repeat center center; background-size: cover;"></span>
+			<span>{{:title}}</span>
+		</div>
+		<div class="artist">{{:artist}}</div>
+		<div class="duration">{{:duration}}</div>
+	</li>
+
+{{/for}}

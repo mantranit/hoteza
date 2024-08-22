@@ -1,0 +1,55 @@
+
+<div
+	id="{{:id}}"
+	class="{{:klass}} page_list popup"
+	{{if onclose}} onclose="{{:onclose}}"{{/if}}
+	data-dont-save="1"
+>
+	<div id="substrate" class="substrate">
+		<h1>{{:lang.title}}<span class="current_data"></span></h1>
+		<div class="content_wrapper">
+			<ul class="content">
+				{{for data}}
+					<li
+						class="{{if status == 0}}inactive{{else status == 1}}active{{/if}}{{if selected}} selected{{/if}}"
+						onvclick="{{if onvclick}}{{:onvclick}}{{/if}}"
+                        data-item="{{:item}}"
+						{{if dataset}}
+							{{for dataset}}
+								data-{{:name}}="{{:value}}"
+							{{/for}}
+						{{/if}}
+					>
+						<div class="choose_item">
+							{{if item}}
+								{{:item}} {{if itemName && ~root.lang && ~root.lang.itemName}}{{:~root.lang.itemName}}{{/if}}
+							{{else name}}
+								{{:name}}
+							{{/if}}
+							{{if sector}}
+								<span class="description">{{:sector}}</span>
+								<span class="sub_description">{{:description}}</span>
+							{{/if}}
+						</div>
+						<div class="check_box"></div>
+					</li>
+				{{/for}}
+			</ul>
+		</div>
+	</div>
+	{{if backOnvclick}}
+		<div
+			style="display: none;"
+			class="back"
+			onvclick="{{:backOnvclick}}"
+			href_type="back"
+		></div>
+	{{else backBtn}}
+		<div
+				style="display: none;"
+				class="back"
+				href="{{:backBtn}}"
+				href_type="back"
+		></div>
+	{{/if}}
+</div>

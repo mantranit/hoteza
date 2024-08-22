@@ -1,0 +1,63 @@
+
+<div class="page mod_playlist" id="{{:id}}">
+	<div class="header_info">
+		<div id="preview_audio" class="preview_audio"></div>
+
+		<div class="control_panel">
+			<span id="audio_rwd" onvclick="MOD.rwd()" class="player-icon-rewind">
+				<svg class="svg_button" viewBox="0 0 40 28">
+					<use xlink:href="#btn_rewind"></use>
+				</svg>
+			</span>
+			<span id="audio_play" onvclick="MOD.resume()" class="player-icon-play">
+				<svg class="svg_button" viewBox="0 0 28 35">
+					<use xlink:href="#btn_play"></use>
+				</svg>
+			</span>
+			<span id="audio_pause" onvclick="MOD.pause()" class="player-icon-pause" style="display: none;">
+				<svg class="svg_button" viewBox="0 0 28 28">
+					<use xlink:href="#btn_pause"></use>
+				</svg>
+			</span>
+			<span id="audio_fwd" onvclick="MOD.fwd()" class="player-icon-fast-forward">
+				<svg class="svg_button" viewBox="0 0 40 28">
+					<use xlink:href="#btn_fast_forward"></use>
+				</svg>
+			</span>
+			<span id="audio_shuffle" onvclick="MOD.shuffle()" class="player-icon-shuffle">
+				<svg class="svg_button" viewBox="0 0 36 36">
+					<use xlink:href="#btn_shuffle"></use>
+				</svg>
+			</span>
+		</div>
+	</div>
+
+	<div class="titles">
+		<div class="number">{{:lang.number}}</div>
+		<div class="title">{{:lang.title_audio}}</div>
+		<div class="artist">{{:lang.artist}}</div>
+		<div class="duration">{{:lang.duration}}</div>
+	</div>
+
+	<div class="content_wrapper">
+		<div class="content">
+			<ul id="mod_audio_list" class="pagelist">
+				{{for audio}}
+
+					<li id="{{:id}}" href="" data-audio="{{:path}}">
+						<div class="listener"></div>
+						<div class="number">{{:#getIndex() + 1}}.</div>
+						<div class="title">
+							<span class="audio_img" style="background: url({{:image}}) no-repeat center center; background-size: cover;"></span>
+							<span>{{:title}}</span>
+						</div>
+						<div class="artist">{{:artist}}</div>
+						<div class="duration">{{:duration}}</div>
+					</li>
+
+				{{/for}}
+			</ul>
+		</div>
+	</div>
+	{{header #data /}}
+</div>

@@ -1,0 +1,77 @@
+
+<div class="content_wrapper">
+	<div class="content">
+		<form id="feedback_form" inquiryid="{{:id}}">
+
+			{{for items itemVar="~item"}}
+				{{if type == "stars"}}
+
+					<div class="feedback_star">
+						<span>{{:title}}</span>
+
+						<div id="fb_q_{{:~item.id}}" class="stars">
+							{{for ~root.stars}}
+								<div onvclick="fb_a({{:~item.id}}, {{:}})" class="icons8-star"></div>
+							{{/for}}
+						</div>
+
+					</div>
+
+				{{else type === "emoticons"}}
+
+					<div class="feedback_star">
+						<span>{{:title}}</span>
+
+						<div id="fb_q_{{:~item.id}}" class="emoticons">
+							{{for ~root.stars}}
+								<div onvclick="fb_a({{:~item.id}}, {{:}})">
+									<svg class="svg_button emoticon_def" viewBox="0 0 40 40">
+										<use xlink:href="#btn_emoticon_{{:}}_default"></use>
+									</svg>
+									<svg class="svg_button emoticon_fill" viewBox="0 0 40 40">
+										<use xlink:href="#btn_emoticon_{{:}}_fill"></use>
+									</svg>
+								</div>
+							{{/for}}
+						</div>
+
+					</div>
+
+				{{else type == "list"}}
+					<div id="fb_q_{{:id}}" class="feedback_list">
+						<div>{{:title}}</div>
+
+						{{for list}}
+							<div
+								id="fb_q_{{:#parent.parent.data.id}}_{{:#index}}"
+								class="feedback_checkbox settings_button"
+								onvclick="fb_a({{:#parent.parent.data.id}},{{:#index}})">
+								{{:#parent.data[#index]}}
+							</div>
+						{{/for}}
+					</div>
+				{{else type == "select"}}
+					<div id="fb_q_{{:id}}" class="feedback_list">
+						<div>{{:title}}</div>
+
+						{{for list}}
+							<div
+								id="fb_q_{{:#parent.parent.data.id}}_{{:#index}}"
+								class="feedback_select settings_button"
+								onvclick="fb_a({{:#parent.parent.data.id}},{{:#index}})">
+								{{:#parent.data[#index]}}
+							</div>
+						{{/for}}
+					</div>
+				{{/if}}
+			{{/for}}
+
+		</form>
+	</div>
+</div>
+
+<div class="button_wrap contain">
+	<div class="button" onvclick="feedback_send();">{{:lang.send}}</div>
+</div>
+
+{{header #data /}}

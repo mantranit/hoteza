@@ -1,0 +1,65 @@
+
+<div class="weather_menu_s2x2 animation_{{:animation}}">
+	<div class="block_top">
+		<span class="weather-icon-{{:weather[0].current.icon}}"></span>
+		<div class="temperature_top">{{:weather[0].current.temperature.day}}&deg;{{:config.valueTemperature}}</div>
+		<p class="weather_state">{{:weather[0].current.description}}</p>
+	</div>
+	<div class="line"></div>
+
+	<div class="block_bottom_4_cell transition_all">
+		<div class="left_column">
+			{{if weather[0].current.windDirect != ''}}
+			<div>
+				<span class="weather-icon-wind-{{:weather[0].current.windDirect}}"></span>
+				{{:weather[0].current.windDirectTranscript}}, {{:weather[0].current.windSpeed}}
+			</div>
+			{{/if}}
+			{{if weather[0].current.humidity}}
+			<div>
+				<span class="weather-icon-humidity"></span>
+				{{:weather[0].current.humidity}}%
+			</div>
+			{{/if}}
+		</div>
+		<div class="right_column">
+		{{if weather[0].current.pressure}}
+		<div>
+			<span class="weather-icon-pressure"></span>
+			{{:weather[0].current.pressure}} {{:language.pressure_dimension}}
+		</div>
+		{{/if}}
+		{{if weather[0].current.forecast[0].clouds}}
+		<div>
+			<span class="weather-icon-probability-rain"></span>
+			{{:weather[0].current.forecast[0].clouds}}%
+		</div>
+		{{/if}}
+	</div>
+	</div>
+	<div class="block_bottom_6_cell transition_all">
+		<div class="left_column">
+			<span>{{:language.today}}</span>
+			<div>
+				{{:weather[0].current.forecast[0].temperature.day}}&deg;{{:config.valueTemperature}}
+				<span class="weather-icon-{{:weather[0].current.forecast[0].icon}}"></span>
+			</div>
+			<div>
+				{{:weather[0].current.forecast[0].temperature.night}}&deg;{{:config.valueTemperature}}
+			</div>
+		</div>
+		<div class="right_column">
+			<span>{{:language.tomorrow}}</span>
+			<div>
+				{{:weather[0].current.forecast[1].temperature.day}}&deg;{{:config.valueTemperature}}
+				<span class="weather-icon-{{:weather[0].current.forecast[1].icon}}"></span>
+			</div>
+			<div>
+				{{:weather[0].current.forecast[0].temperature.night}}&deg;{{:config.valueTemperature}}
+			</div>
+		</div>
+	</div>
+</div>
+{{if ~isset('config.tv.cursor_animation')}}
+	<div class="cursor"></div>
+{{/if}}

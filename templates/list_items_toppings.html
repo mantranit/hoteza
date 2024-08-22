@@ -1,0 +1,144 @@
+
+{{if !withoutContainer}}<div
+	id="{{:id}}"
+	class="list_items_toppings page new"
+	{{if onclose}} onclose="{{:onclose}}"{{/if}}
+>
+{{/if}}
+	<div class="content_wrapper">
+		<div class="content">
+			{{for content.list}}
+				{{if items}}
+					<div class="divider">
+						{{if title}}
+							<span>{{:title}}</span>
+						{{/if}}
+						<hr />
+					</div>
+					<ul>
+						{{for items}}
+							<li>
+								<div class="name{{if required && type === 'select'}} is-required{{/if}}">
+									{{:title}}
+									{{if price && isSamePrice}}
+										<span>+{{:~formatMoney(price)}}</span>
+									{{/if}}
+								</div>
+								{{if type === 'counter'}}
+									<div
+										id="{{:id}}"
+										class="shop_plusminus hide_on_addtocart"
+										{{if price}}
+											data-price="{{:price}}"
+										{{else}}
+											data-price="0"
+										{{/if}}
+										{{if title}}
+											data-title="{{:title}}"
+										{{/if}}
+									>
+										<div class="shop_p" onvclick="shop_plus('#{{:id}}');">+</div>
+										<div class="shop_amount">
+											<span id="shop_amount">
+												{{if amount}}
+													{{:amount}}
+												{{else}}
+													0
+												{{/if}}
+											</span>
+										</div>
+										<div class="shop_m" onvclick="shop_minus('#{{:id}}');">â€“</div>
+									</div>
+								{{else type === 'radio'}}
+									<div
+										id="{{:id}}"
+										class="shop_radio hide_on_addtocart"
+										{{if price}}
+											data-price="{{:price}}"
+										{{else}}
+											data-price="0"
+										{{/if}}
+										{{if title}}
+											data-title="{{:title}}"
+										{{/if}}
+									>
+										<div class="shop_p" onvclick="shop_change_radio('#{{:id}}');">
+											<svg class="svg_button" viewBox="0 0 24 40">
+												<use xlink:href="#btn_arrow_right"></use>
+											</svg>
+										</div>
+										<div class="shop_amount">
+											<span id="shop_amount" data-value="{{:amount}}">{{:value}}</span>
+										</div>
+										<div class="shop_m" onvclick="shop_change_radio('#{{:id}}');">
+											<svg class="svg_button" viewBox="0 0 24 40">
+												<use xlink:href="#btn_arrow_left"></use>
+											</svg>
+										</div>
+									</div>
+								{{else type === 'select'}}
+									<div
+										id="{{:id}}"
+										onvclick="shop_select_open(this)"
+										class="shop_select hide_on_addtocart selectable"
+										data-values='{{:values}}'
+										data-title="{{:value}}"
+										data-selected-value="{{:selectedTopping}}"
+										data-is-same-price="{{if isSamePrice}}1{{else}}0{{/if}}"
+										data-is-required="{{if required}}1{{else}}0{{/if}}"
+										{{if price}}
+											data-price="{{:price}}"
+										{{else}}
+											data-price="0"
+										{{/if}}
+									>
+										<span>{{:value}}</span>
+										<svg class="svg_button" viewBox="0 0 26 14">
+											<use xlink:href="i/expand-arrow-filled.svg#expand-arrow-filled"></use>
+										</svg>
+									</div>
+								{{/if}}
+							</li>
+						{{/for}}
+					</ul>
+				{{else}}
+					<div class="divider"><hr /></div>
+					<ul>
+						<li>
+							<div class="name">{{:title}}</div>
+							<div id="{{:id}}" class="shop_plusminus hide_on_addtocart">
+								<div class="shop_p" onvclick="shop_plus('#{{:id}}');">+</div>
+								<div class="shop_amount">
+									<span id="shop_amount">0</span>
+								</div>
+								<div class="shop_m" onvclick="shop_minus('#{{:id}}');">â€“</div>
+							</div>
+						</li>
+					</ul>
+				{{/if}}
+			{{/for}}
+		</div>
+	</div>
+
+	<div class="button_wrap{{if content.buttons.length === 1}} contain{{/if}}">
+		{{for content.buttons}}
+			<div
+				class="button{{if className}} {{:className}}{{/if}}"
+				{{if type === 'onvclick'}}
+					onvclick="{{:action}}"
+				{{else type === 'href'}}
+					href="{{:action}}"
+				{{/if}}
+			>
+				{{:title}}
+			</div>
+		{{/for}}
+	</div>
+
+	{{header #data /}}
+	{{if ~isRequired && ~isRequired()}}
+		<div id="feature_required_field_legend" class="legend">{{:~getlang('required_field')}}</div>
+	{{/if}}
+{{if !withoutContainer}}
+</div>
+{{/if}}

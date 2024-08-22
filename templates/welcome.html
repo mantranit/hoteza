@@ -1,0 +1,15 @@
+
+<div class="content_wrapper">
+	<div class="content">
+		{{if image != null}}
+			<img image_url='{{:image}}' src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+		{{/if}}
+		<h1>{{:title}}</h1>
+		<div>
+			<p>{{:content}}</p>
+			{{if metro_menu}}
+				<div class="button" onvclick="navigate('#menu')">{{:lang.kontinue}}</div>
+			{{/if}}
+		</div>
+	</div>
+</div>

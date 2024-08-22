@@ -1,0 +1,40 @@
+
+<div class="content_wrapper">
+    <table class="content">
+        <thead>
+            <tr>
+                {{for content.head}}
+                    <td
+                        {{if ~root.itemWidth}}style="width: {{:~root.itemWidth}}"{{/if}}
+                        {{if ~getClass}}class="{{:~getClass(title)}}"{{/if}}
+                    >
+                        {{:~getlang(title)}}
+                    </td>
+                {{/for}}
+            </tr>
+        </thead>
+        <tbody>
+            {{for content.body itemVar='~itemBody'}}
+                <tr {{if ~getClass}} class="{{:~getClass(null, ~itemBody)}}"{{/if}}>
+                    {{for ~root.content.head itemVar='~itemHead'}}
+                        <td
+                            {{if id}}id="{{:id}}"{{/if}}
+                            class="{{if className}}{{:className}}{{/if}}{{if ~getClass}} {{:~getClass(~itemHead.title, ~itemBody)}}{{/if}}"
+                            {{if onvMove}}onvmove="{{:onvMove}}"{{/if}}
+                            {{if action}}onvclick="{{:action}}"{{/if}}
+                            {{if dataset}}
+                                {{for dataset}}
+                                    data-{{:name}}="{{:value}}"
+                                {{/for}}
+                            {{/if}}
+                        >
+                            {{:~getTitle(~itemHead.title, ~itemBody)}}
+                        </td>
+                    {{/for}}
+                </tr>
+            {{/for}}
+        </tbody>
+    </table>
+</div>
+
+{{header #data /}}

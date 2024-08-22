@@ -1,0 +1,17 @@
+
+<div class="header">
+    {{if backBtn && onvclick}}
+        <div class="back" onvclick="{{:onvclick}}" href_type="back">
+            {{if lang}}{{:lang.back}}{{else}}{{:~getlang('mobileAppContent-default-label-back')}}{{/if}}
+        </div>
+    {{else backBtn}}
+        <div class="back" href="#{{:parentId}}" href_type="back">
+            {{if lang}}{{:lang.back}}{{else}}{{:~getlang('mobileAppContent-default-label-back')}}{{/if}}
+        </div>
+    {{else metro_menu}}
+        <div class="back" onvclick="navigate('#menu')" href_type="back">
+            {{if lang}}{{:lang.back}}{{else}}{{:~getlang('mobileAppContent-default-label-back')}}{{/if}}
+        </div>
+    {{/if}}
+    <h1>{{:title}}</h1>
+</div>

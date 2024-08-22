@@ -1,0 +1,57 @@
+
+<div
+	id="{{:id}}"
+	class="list_items page new{{if className}} {{:className}}{{/if}}"
+	{{if onclose}} onclose="{{:onclose}}"{{/if}}
+>
+	<div class="content_wrapper">
+		<div class="content">
+			{{for content.list}}
+				<div
+					{{if id}}id="{{:id}}"{{/if}}
+					class="selectable{{if className}} {{:className}}{{/if}}"
+					{{if onvMove}}onvmove="{{:onvMove}}"{{/if}}
+					onvclick="{{:action}}"
+					{{if dataset}}
+						{{for dataset}}
+							data-{{:name}}="{{:value}}"
+						{{/for}}
+					{{/if}}
+				>
+					{{:title}}
+					<svg class="svg_button" viewBox="0 0 65 59" style="display: none;">
+						<use xlink:href="i/arrow-filled.svg#btn_selected"></use>
+					</svg>
+				</div>
+			{{/for}}
+		</div>
+	</div>
+
+	<div class="button_wrap{{if content.buttons.length === 1}} contain{{/if}}">
+		{{for content.buttons}}
+			<div
+				class="button{{if className}} {{:className}}{{/if}}"
+
+				{{if type === 'onvclick'}}
+					onvclick="{{:action}}"
+				{{else type === 'href'}}
+					href="{{:action}}"
+				{{/if}}
+
+				{{if onvMove}}
+					onvmove={{:onvMove}}
+				{{/if}}
+
+				{{if dataset}}
+					{{for dataset}}
+						data-{{:name}}="{{:value}}"
+					{{/for}}
+				{{/if}}
+			>
+				{{:title}}
+			</div>
+		{{/for}}
+	</div>
+
+	{{header #data /}}
+</div>

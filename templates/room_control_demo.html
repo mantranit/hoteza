@@ -1,0 +1,67 @@
+
+<div class="content_wrapper">
+    <div class="content">
+        <div style="margin:10px 6%;">
+            <div>{{:lang.controlserviceinfo}}</div>
+            <div class="settings_button top bold" onvclick="$('#options_dnd').toggleClass('selected');">
+                {{:lang.controlservicesDND}}
+                <div class="checkbox selected red" id="options_dnd">
+                    <div class="checkbox_circle"></div>
+                </div>
+            </div>
+            <div class="settings_button bottom bold" onvclick="$('#options_cleanroom').toggleClass('selected');">
+                {{:lang.controlservicescleanroom}}
+                <div class="checkbox" id="options_cleanroom">
+                    <div class="checkbox_circle"></div>
+                </div>
+            </div>
+            <div>{{:lang.temperaturecontrol}}</div>
+            <table class="room_controls">
+                <tbody>
+                <tr>
+                    <td class="m icons8-Minus" onvclick="temp_minus();"></td>
+                    <td id="room_temp">20</td>
+                    <td class="p icons8-Plus" onvclick="temp_plus();"></td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="room_controls">
+                <tbody>
+                <tr>
+                    <td class="m icons8-Minus"></td>
+                    <td id="room_fan"></td>
+                    <td class="p icons8-Plus"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div>{{:lang.curtainscontrol}}</div>
+            <div class="settings_button top bottom" onvclick="$('#options_room_curtains').toggleClass('selected');">
+                {{:lang.curtainsopen}}
+                <div class="checkbox selected" id="options_room_curtains">
+                    <div class="checkbox_circle"></div>
+                </div>
+            </div>
+            <div>{{:lang.lightcontrol}}</div>
+            <div class="settings_button top bold" onvclick="$('#options_room_mainlight').toggleClass('selected');">
+                {{:lang.mainlight}}
+                <div class="checkbox selected" id="options_room_mainlight">
+                    <div class="checkbox_circle"></div>
+                </div>
+            </div>
+            <div class="settings_button" onvclick="$('#options_room_halllight').toggleClass('selected');">
+                {{:lang.halllight}}
+                <div class="checkbox" id="options_room_halllight">
+                    <div class="checkbox_circle"></div>
+                </div>
+            </div>
+            <div class="settings_button bottom" onvclick="$('#options_room_bedlight').toggleClass('selected');">
+                {{:lang.bedlight}}
+                <div class="checkbox selected" id="options_room_bedlight">
+                    <div class="checkbox_circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{header #data /}}

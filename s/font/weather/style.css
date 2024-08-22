@@ -1,0 +1,86 @@
+@font-face {
+  font-family: 'weather';
+  src:  url('fonts/weather.ttf?x0ycle') format('truetype'),
+    url('fonts/weather.svg?x0ycle#weather') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="weather-icon-"], [class*=" weather-icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'weather' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.weather-icon-wind:before {
+  content: "\e914";
+}
+.weather-icon-probability-rain:before {
+  content: "\e913";
+}
+.weather-icon-wind-w:before {
+  content: "\e909";
+}
+.weather-icon-wind-n:before {
+  content: "\e90a";
+}
+.weather-icon-wind-e:before {
+  content: "\e90b";
+}
+.weather-icon-wind-s:before {
+  content: "\e90c";
+}
+.weather-icon-wind-sw:before, .weather-icon-wind-wsw:before, .weather-icon-wind-ssw:before {
+  content: "\e90d";
+}
+.weather-icon-wind-nw:before, .weather-icon-wind-nnw:before, .weather-icon-wind-wnw:before {
+  content: "\e90e";
+}
+.weather-icon-wind-ne:before, .weather-icon-wind-nne:before, .weather-icon-wind-ene:before {
+  content: "\e90f";
+}
+.weather-icon-wind-se:before, .weather-icon-wind-ese:before, .weather-icon-wind-sse:before {
+  content: "\e910";
+}
+.weather-icon-humidity:before {
+  content: "\e911";
+}
+.weather-icon-pressure:before {
+  content: "\e912";
+}
+.weather-icon-clear-sky:before {
+  content: "\e900";
+}
+.weather-icon-broken-clouds:before {
+  content: "\e901";
+}
+.weather-icon-few-clouds:before {
+  content: "\e902";
+}
+.weather-icon-mist:before {
+  content: "\e903";
+}
+.weather-icon-rain:before {
+  content: "\e904";
+}
+.weather-icon-scattered-clouds:before {
+  content: "\e905";
+}
+.weather-icon-shower-rain:before {
+  content: "\e906";
+}
+.weather-icon-snow:before {
+  content: "\e907";
+}
+.weather-icon-thunderstorm:before {
+  content: "\e908";
+}

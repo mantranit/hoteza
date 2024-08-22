@@ -1,0 +1,92 @@
+#tv_fullscreen_logo, #menu_logo{
+background-image:url('../custom/logo.svg') !important;
+background-size: initial !important;
+}
+
+
+.landscape_layout.tv.metro_menu .pagelist LI.withimg SPAN {
+    background: none !important;
+}
+
+div[icon]{
+color:White !important;
+}
+#ftv_log{
+display:none !important;
+}
+
+.landscape_layout.metro_menu #menu .img .menulabel {
+background: none !important;
+}
+
+#tv_mosaic{
+background:url('container_bg_blur.jpg') no-repeat;
+}
+
+/*
+.rcu.on .bl, .rcu.off .br, .rcu.pause .bc {
+background: #7a7a7a !important;
+}
+.rcu .title{
+        background-size:110px !important;
+}
+*/
+#menu_wrapper .substrate {
+background-color:transparent  !important;
+display: block !important;
+}
+#radio{
+background:url('container_bg_blur.jpg') no-repeat ;
+}
+
+
+.landscape_layout #splashscreen {
+background-image: url('../custom/container_bg_splash.jpg') !important;
+}
+.button {
+background-color: transparent;
+    border: 1px solid White;
+}
+
+#messages_groups LI > SPAN {
+color: #fff;
+}
+.servicebigicon {
+    color: #fff;
+}
+.page SPAN.price {
+    color: #fff;
+}
+page SPAN.price {
+    color: #AD8F4E;
+}
+.shop_amount, .amount {
+background-color: #fff;
+color: #000;
+}
+.shop_p, .shop_m {
+background-color: #fff;    
+background-position-x: -36px;
+}
+.landscape_layout #shop_total {
+    border-top: 1px solid #fff;
+}
+#shop_total_sum {
+    color: #fff;
+}
+#service_fee {
+color: #8c8c8c;
+}
+#shop_cart_indicator, #messages_indicator, .messages_group_indicator {
+    background-color: #8c8c8c; 
+}
+.page SPAN.price {
+color: #fff;
+}
+.feedback_star .stars DIV {
+    color: #fffC;
+}
+.feedback_star .stars DIV, .feedback_star .emoticons DIV {
+color: #fff;
+}
+

@@ -1,0 +1,18 @@
+.page.table .content_wrapper {
+	width: 1124px !important;
+	margin-left: 63px;
+}
+.page.table thead td {
+	font-size: 20px;
+	font-weight: 500;
+	text-transform: uppercase;
+	color: #7a7a7a;
+}
+.page.table tbody td {
+	font-size: 24px;
+	font-weight: 500;
+	padding: 15px 0;
+}
+.page.table tr.shadow {
+	color: #7a7a7a;
+}

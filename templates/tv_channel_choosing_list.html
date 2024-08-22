@@ -1,0 +1,39 @@
+
+<div class="choosing_header">
+	{{if list_type == "language"}}
+		<div class="channel_language">{{:lng.language_channel}}</div>
+	{{else}}
+		<div class="category_language">{{:lng.category_channel}}</div>
+	{{/if}}
+</div>
+<div class="content_wrapper">
+	<ul class="content">
+		<li data-filter-type="{{:list_type}}">
+			<div class="check_box"></div>
+			<div class="choose_item">
+				{{if list_type == "language"}}
+					{{:lng.anything_male}}
+				{{else}}
+					{{:lng.anything_female}}
+				{{/if}}
+			</div>
+			<div class="choose_count">
+				{{:count}}
+			</div>
+		</li>
+		{{for list}}
+			<li class="{{if selected}}selected{{/if}}" data-filter-type="{{:~root.list_type}}" data-code="{{if lang_code}}{{:lang_code}}{{else}}{{:name}}{{/if}}">
+				<div class="check_box"></div>
+				{{if image}}
+					<img image_url="{{:image}}" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="">
+				{{/if}}
+				<div class="choose_item">
+					{{:name}}
+				</div>
+				<div class="choose_count">
+					{{:count}}
+				</div>
+			</li>
+		{{/for}}
+	</ul>
+</div>

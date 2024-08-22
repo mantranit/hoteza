@@ -1,0 +1,21 @@
+
+<div class="content_wrapper">
+	<div class="content">
+		<ul class="pagelist">
+			{{for items}}
+			<li href="#{{:id}}" class="tv_source" onvclick="Sources.open_source('{{:type}}'{{if param}},'{{:param}}'{{/if}});">
+				{{if icon}}
+					<i class="{{:icon}}"></i>
+				{{/if}}
+				<div>
+					<div class="title">{{:title}}</div>
+					{{if description}}
+						<div class="description">{{:description}}</div>
+					{{/if}}
+				</div>
+			</li>
+			{{/for}}
+		</ul>
+	</div>
+</div>
+{{header #data /}}

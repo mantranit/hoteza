@@ -1,0 +1,25 @@
+
+<div class="choosing_header">
+	<div class="genre">{{:lng.genres}}</div>
+</div>
+<div class="content_wrapper">
+	<ul class="content">
+		<li>
+			<div class="check_box"></div>
+			<div class="choose_item">
+				{{:lng.anything_male}}
+			</div>
+		</li>
+		{{for genre}}
+			<li class="{{if selected}}selected{{/if}}" data-code="{{:id}}">
+				<div class="check_box"></div>
+				<div class="choose_item">
+					{{:name}}
+				</div>
+				<div class="choose_count">
+					{{:count}}
+				</div>
+			</li>
+		{{/for}}
+	</ul>
+</div>

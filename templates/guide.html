@@ -1,0 +1,18 @@
+
+<div class="content_wrapper">
+    <div class="content">
+        <div id="guide_map" prevent-scroll="true">
+            <div style="text-align:center;padding-top:20px;">Loading Google Maps</div>
+        </div>
+    </div>
+</div>
+
+{{header #data /}}
+
+<div class="footer">
+	<div class="guide_icons">
+		{{for categoriesArr}}
+			<div class="guide_icon guide-icon-{{:icon}}" id="guide_group_{{:id}}" onvclick="map_show_group('{{:id}}');"></div>
+		{{/for}}
+	</div>
+</div>

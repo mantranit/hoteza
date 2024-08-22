@@ -1,0 +1,31 @@
+
+<div id="wakeup" class="page new" data-video-src="{{:content.video}}">
+	<div class="wakeup_substrate"></div>
+
+	<div class="content_wrapper">
+		<div class="content">
+			{{if content.weather.temperature}}
+				<div class="wakeup_content">
+					{{:content.weather.icon}}
+					<div class="temperature">
+						{{:content.weather.temperature}}
+					</div>
+				</div>
+				<div class="description">
+					{{:content.weather.desc}}
+				</div>
+			{{/if}}
+		</div>
+	</div>
+
+	<div class="button_wrap{{if content.buttons.length === 1}} contain{{/if}}">
+		{{for content.buttons}}
+			<div
+				class="button{{if className}} {{:className}}{{/if}}"
+				onvclick="{{:action}}"
+			>{{:title}}</div>
+		{{/for}}
+	</div>
+
+	{{header #data /}}
+</div>

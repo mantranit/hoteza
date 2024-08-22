@@ -1,0 +1,15 @@
+
+<div class="content_wrapper">
+	<div class="content">
+		{{for languageArr}}
+			<div class="settings_button selectable {{:code}}{{if ~root.language == code}} selected{{/if}}" onvclick="change_language('{{:code}}');">
+				<span>{{:title}}</span>
+				<svg class="svg_button" viewBox="0 0 65 59" style="display: none;">
+					<use xlink:href="i/arrow-filled.svg#btn_selected"></use>
+				</svg>
+			</div>
+		{{/for}}
+	</div>
+</div>
+
+{{header #data /}}

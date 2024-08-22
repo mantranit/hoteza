@@ -1,0 +1,26 @@
+
+<div {{if groups}} groups="[{{:groups}}]" {{/if}}
+    {{if klass != 'none'}}
+        class="{{if id != 'menu_wrapper'}}page{{else}}menu_color{{/if}}{{if klass}} {{:klass}}{{/if}}"
+    {{/if}}
+    id="{{:id}}"
+
+    {{if id == 'guide'}}
+        onopen="if(!guide_map){map_initialize();}"
+    {{/if}}
+
+    {{if tplType == 'rcu'}}
+        onopen="rcu_check_states_start('{{:id}}')" onclose="rcu_check_states_stop()"
+    {{/if}}
+
+    {{if onopen}}
+        onopen="{{:onopen}}"
+    {{/if}}
+
+    {{if onclose}}
+        onclose="{{:onclose}}"
+    {{/if}}
+>
+
+    {{:content}}
+</div>

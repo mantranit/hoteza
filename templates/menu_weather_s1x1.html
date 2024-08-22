@@ -1,0 +1,9 @@
+
+<div class="weather_menu_s1x1 animation_{{:animation}}">
+	<h4>{{:language.today}}</h4>
+	<span class="weather-icon-{{:weather[0].current.icon}}"></span>
+	<p class="weather_state">{{:weather[0].current.forecast[0].temperature.day}}&deg;{{:config.valueTemperature}} <i>/ {{:weather[0].current.forecast[0].temperature.night}}&deg;{{:config.valueTemperature}}</i></p>
+</div>
+{{if ~isset('config.tv.cursor_animation')}}
+	<div class="cursor"></div>
+{{/if}}

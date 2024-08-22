@@ -1,0 +1,16 @@
+
+<h1>{{:language.change_location}}</h1>
+<div id="substrate" class="substrate">
+	<div class="content_wrapper">
+		<ul class="content">
+			{{for locations}}
+				<li {{if ~root.location == id}}class="selected"{{/if}} onvclick="widgetObserver.eval({{:~root.id}}, 'setLocation', {{:id}})">
+					<div class="check_box"></div>
+					<div class="choose_item">{{:name}}</div>
+				</li>
+			{{/for}}
+		</ul>
+	</div>
+</div>
+<div class="change_location">{{:language.select_btn}}</div>
+<div class="back" style="display:none;"></div>

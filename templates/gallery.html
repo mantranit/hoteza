@@ -1,0 +1,28 @@
+
+<div class="content_wrapper">
+	<div class="content">
+		<div
+		    data-full-screen="{{if fullScreen}}1{{else}}0{{/if}}"
+		    class="gallery_container"
+		    style="width:{{:width * imageListArrayObject.length}}px;height:{{:height}}px;"
+        >
+			{{for imageListArrayObject}}
+				<div style="float:left;width:{{:~root.width}}px;max-height:{{:~root.height}}px">
+					<img style="max-width:{{:~root.width}}px;height:{{:~root.height}}px;margin:auto;display:block;" image_url="{{:src}}" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+				</div>
+			{{/for}}
+		</div>
+	</div>
+</div>
+
+<div class="gallery_indicator">
+	{{for imageListArrayObject}}
+		{{if count == 0}}
+			<div class="current"></div>
+		{{else}}
+			<div></div>
+		{{/if}}
+	{{/for}}
+</div>
+
+{{header #data /}}

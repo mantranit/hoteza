@@ -1,0 +1,47 @@
+
+<span class="wrap_img"></span>
+<div class="content_wrapper">
+	<div class="content">
+		<div>
+			<div class="shop_descr"></div>
+		</div>
+	</div>
+</div>
+
+<div class="info"></div>
+
+<div class="button_wrap">
+	<div>
+		<div class="shop_price"></div>
+		{{if !lock_ordering}}
+			<div class="shop_plusminus hide_on_addtocart">
+				<div class="shop_p" onvclick="shop_plus();">
+					<svg class="svg_button" viewBox="0 0 32 32">
+						<use xlink:href="#plus"></use>
+					</svg>
+				</div>
+				<div class="shop_amount">
+					<span id="shop_amount">1</span>
+				</div>
+				<div class="shop_m" onvclick="shop_minus();">
+					<svg class="svg_button" viewBox="0 0 32 2">
+						<use xlink:href="#minus"></use>
+					</svg>
+				</div>
+			</div>
+		{{/if}}
+	</div>
+	{{if !lock_ordering}}
+		<div class="button hide_on_addtocart" onvclick="shop_next_order_step(this);">
+			{{:lang.addToCart}}
+		</div>
+	{{/if}}
+</div>
+
+{{header #data /}}
+
+<div class="feature_shopitem_legend legend">
+	<div>P-</div>
+	<div>P+</div>
+	<div>{{:lang.change_quantity}}</div>
+</div>

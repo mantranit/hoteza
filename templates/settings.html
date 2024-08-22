@@ -1,0 +1,27 @@
+
+<div class="content_wrapper">
+	<div class="content">
+
+		<div>
+			<div>{{:lang.language}}</div>
+			<div class="settings_button top bottom" href="#language_select">{{:lang.chooselang}}
+				<svg viewBox="0 0 65 59"><use xlink:href="#btn_arrow_right"></use></svg>
+			</div>
+
+			{{if parental_lock}}
+			<div class="settings_button top bottom" href="#parental_lock_page" onvclick="parental_lock_page();">{{:lang.parental_lock}}
+				<svg viewBox="0 0 65 59"><use xlink:href="#btn_arrow_right"></use></svg>
+			</div>
+			{{/if}}
+
+			{{if sleep_timer}}
+			<div class="settings_button top bottom" href="" onvclick="sleep_timer.open();">{{:lang.sleep_timer}}
+				<svg viewBox="0 0 65 59"><use xlink:href="#btn_arrow_right"></use></svg>
+			</div>
+			{{/if}}
+		</div>
+
+	</div>
+</div>
+
+{{header #data /}}
