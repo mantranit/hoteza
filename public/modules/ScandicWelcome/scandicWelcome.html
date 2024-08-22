@@ -1,0 +1,24 @@
+
+<div
+	id="tv_welcome" class="welcome_scandic"
+	{{if type === 'image'}}
+		style="background-image: url('{{:data}}');"
+	{{else type === 'video'}}
+		data-video-src="{{:data}}"
+	{{/if}}
+>
+	<div class="substrate"></div>
+	<div class="content">
+		<h1>
+			{{:title}}
+		</h1>
+		<p>
+			{{if content}}
+				{{:content}}
+			{{/if}}
+		</p>
+		<div class="button_wrap">
+			<div class="button" onvclick="tv_welcome_hide()">{{:lang.kontinue}}</div>
+		</div>
+	</div>
+</div>

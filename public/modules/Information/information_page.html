@@ -1,0 +1,30 @@
+
+{{header #data /}}
+{{if ~isset('config.tv.use_imagewide') && imageWide}}
+<div style="position:absolute;left:0px;top:0px;width:100%;height:100%;display:block;background-size:contain;background-image: url('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');" {{if new_preload}}new_image_url="{{:imageWide}}"{{else}}image_url="{{:imageWide}}"{{/if}}></div>
+{{/if}}
+{{if video && !scandic_menu}}
+<section class="video" data-video-src="{{:video}}">
+	{{if image}}
+		<img
+			{{if new_preload}}new_image_url="{{:image}}"{{else}}image_url="{{:image}}"{{/if}}
+			src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+			class="poster"
+		>
+	{{/if}}
+</section>
+{{/if}}
+
+{{if image != null}}
+	<span
+		{{if new_preload}}new_image_url="{{:image}}"{{else}}image_url="{{:image}}"{{/if}}
+		style="background-image: url('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');"
+		class="wrap_img"
+	></span>
+{{/if}}
+
+<div class="content_wrapper">
+	<div class="content{{if !image && (!video || scandic_menu)}} all_width{{/if}}">
+		{{:content}}
+	</div>
+</div>

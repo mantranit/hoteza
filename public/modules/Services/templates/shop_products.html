@@ -1,0 +1,56 @@
+
+{{if ~isset('config.tv.use_imagewide') && imageWide}}
+<div style="position:absolute;left:0px;top:0px;width:100%;height:100%;display:block;background-size:contain;background-image: url('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');" {{if new_preload}}new_image_url="{{:imageWide}}"{{else}}image_url="{{:imageWide}}"{{/if}}></div>
+{{/if}}
+<div class="content_wrapper">
+	<div class="content">
+		<ul class="pagelist{{if childrenArr[0].type == 'shopProduct'}} shop{{/if}}">
+			{{for childrenArr}}
+				{{if type == 'shopCategory'}}
+					<li
+						href="#{{:id}}"
+						class="{{if image}}withimg{{else iconVal}}withicon{{/if}}"
+						{{if groups}} groups="[{{:groups}}]"{{/if}}
+					>
+						{{if image}}<img {{if ~root.new_preload}}new_image_url="{{:image}}"{{else}}image_url="{{:image}}"{{/if}} src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+						{{else iconVal}}{{:iconVal}}
+						{{/if}}
+						{{if title || workingHours}}
+						<span class="title">
+							<i>{{:title}}</i>
+							{{if workingHours}}<i>{{:workingHours}}</i>{{/if}}
+						</span>
+						{{/if}}
+					</li>
+				{{else}}
+					<li
+						onvclick="shop_view_item(this);"
+						shopitemid="{{:id}}"
+						{{if groups}} groups="[{{:groups}}]"{{/if}}
+					>
+						{{if image}}
+							<div class="shop_image">
+								<div>
+									<img {{if ~root.new_preload}}new_image_url="{{:image}}"{{else}}image_url="{{:image}}"{{/if}} src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+								</div>
+							</div>
+						{{else iconVal}}<div class="shop_image">{{:iconVal}}</div>
+						{{else}}<div class="shop_image"><div><img></div></div>
+						{{/if}}
+						<span class="shopitemname">{{:title}}</span>
+						{{if tagFilter && tagFilter.length}}
+							<ul class="tags{{if tagFilter.length > 2}} more-then-two{{/if}}">
+								{{for tagFilter}}
+									<li class="tag-item">{{:}}</li>
+								{{/for}}
+							</ul>
+						{{/if}}
+						<span class="price">{{:cost}} {{:~root.symbol}}</span>
+					</li>
+				{{/if}}
+			{{/for}}
+		</ul>
+	</div>
+</div>
+
+{{header #data /}}

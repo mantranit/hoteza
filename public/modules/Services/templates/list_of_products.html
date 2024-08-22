@@ -1,0 +1,136 @@
+
+<div class="content_wrapper">
+    <div class="content">
+        {{if content.isEmpty}}
+            <table class="empty">
+                <tbody>
+                <tr>
+                    <td>
+                        <svg class="svg_button" xmlns="http://www.w3.org/2000/svg" width="100" height="88" viewBox="0 0 100 88">
+                            <use xlink:href="i/click-and-collect.svg#icon"></use>
+                        </svg>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>{{:~getlang('mobileAppContent-mainContent-label-cartIsEmpty')}}</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        {{else}}
+            {{for content.list}}
+                {{if items}}
+                    <div class="divider">
+                        {{if title}}
+                            <span>{{:title}}</span>
+                        {{/if}}
+                        <hr />
+                    </div>
+                    <ul>
+                        {{for items}}
+                            <li
+                                {{if type === 'onvclick}}
+                                    onvclick="{{:action}}"
+                                {{/if}}
+                                {{if uniqueId}}
+                                    data-product-id="{{:uniqueId}}"
+                                {{/if}}
+                                {{if ~checkProductAvailability(id)}}class="unavailable"{{/if}}
+                            >
+                                <div class="name">
+                                    {{if title}}
+                                        {{:title}}
+                                    {{else}}
+                                        Product is unavailable now
+                                    {{/if}}
+                                </div>
+                                <div class="price">{{if price}}{{:price}}{{/if}}</div>
+                                <div class="cart_amount">
+                                    {{if pieces !== 'none'}}
+                                        {{:amount}} {{if pieces}}{{:pieces}}{{/if}}
+                                    {{/if}}
+                                </div>
+                                {{if toppings}}
+                                    <ul class="toppings">
+                                        {{for toppings}}
+                                            <li>
+                                                <div class="name">
+                                                    {{if title}}
+                                                        {{if amount !== 1}}{{:amount}}{{/if}} {{:title}}
+                                                    {{else}}
+                                                        Topping is unavailable now
+                                                    {{/if}}
+                                                </div>
+                                                {{if price}}
+                                                    <div class="price">{{:price}}</div>
+                                                {{/if}}
+                                            </li>
+                                        {{/for}}
+                                    </ul>
+                                {{/if}}
+                            </li>
+                        {{/for}}
+                    </ul>
+                {{/if}}
+            {{/for}}
+            {{if content.cutlery}}
+                <div class="divider">
+                    <span>{{:content.cutlery.title}}</span>
+                    <hr />
+                </div>
+                <ul class="qnt_of_persons">
+                    <li>
+                        <div class="name">{{:content.cutlery.text}}</div>
+                        <div id="" class="shop_plusminus hide_on_addtocart">
+                            <div class="shop_p">+</div>
+                            <div class="shop_amount">
+                                <span id="shop_amount">{{:content.cutlery.numOfPerson}}</span>
+                            </div>
+                            <div class="shop_m">â€“</div>
+                        </div>
+                    </li>
+                </ul>
+            {{/if}}
+            {{if content.totalPrice}}
+                <div class="divider"><hr /></div>
+                {{if content.totalPrice.service_fee}}
+                    <div class="service_fee">
+                        <div>{{:content.totalPrice.service_fee.text}}</div>
+                        <div>{{:content.totalPrice.service_fee.value}}</div>
+                    </div>
+                {{/if}}
+                <div class="total">
+                    <div>{{:content.totalPrice.translation}}</div>
+                    <div>{{:content.totalPrice.value}}</div>
+                </div>
+            {{/if}}
+        {{/if}}
+    </div>
+</div>
+
+<div class="button_wrap{{if content.buttons.length === 1}} contain{{/if}}">
+    {{if content.isEmpty}}
+        <div
+            class="button{{if className}} {{:className}}{{/if}}"
+            onvclick="navigate('#menu');"
+        >
+            {{:~getlang('mobileAppContent-mainContent-button-continueshopping')}}
+        </div>
+    {{else}}
+        {{for content.buttons}}
+            <div
+                class="button{{if className}} {{:className}}{{/if}}"
+                {{if type === 'onvclick'}}
+                    onvclick="{{:action}}"
+                {{else type === 'href'}}
+                    href="{{:action}}"
+                {{/if}}
+            >
+                {{:title}}
+            </div>
+        {{/for}}
+    {{/if}}
+</div>
+
+{{header #data /}}

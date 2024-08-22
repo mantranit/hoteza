@@ -1,0 +1,134 @@
+.landscape_layout.tv.metro_menu #menu LI.s2x1 DIV[icon], .landscape_layout.tv.metro_menu #menu LI.s1x1 DIV[icon]{
+	height: 84px;
+}
+.s1x1 .svg_icon SVG, .s2x1 .svg_icon SVG {
+	width: 144px;
+	height: 84px;
+}
+.landscape_layout.tv.metro_menu #menu LI.s2x2 DIV[icon]{
+	height: 190px;
+}
+.s2x2 .svg_icon SVG {
+	width: 100%;
+	height: 190px;
+}
+.landscape_layout.tv.metro_menu #menu LI DIV[icon] {
+	top: 23px;
+}
+.landscape_layout.tv.metro_menu #menu LI.s2x2 DIV[icon] {
+	top: 54px;
+}
+
+/* .s2x2 .svg_icon.icon-messages, .s2x2 .svg_icon.icon-dining {
+	height: 96px;
+} */
+
+#menu_wrapper .btn-arrow:before {
+	content: none !important;
+}
+
+.nav span:before {
+	content: none !important;
+}
+.nav .player-icon-stop:before {
+	content: "\f102" !important;
+}
+.shop_plusminus .shop_p:before,
+.shop_plusminus .shop_m:before {
+	content: '' !important;
+}
+
+/* <MOD> */
+.mod_playlist .player-icon-rewind:before,
+.mod_playlist .player-icon-fast-forward:before,
+.mod_playlist .player-icon-pause:before,
+.mod_playlist .player-icon-shuffle:before,
+.mod_playlist .player-icon-play:before{
+	content: '';
+}
+.mod_playlist .player-icon-rewind svg,
+.mod_playlist .player-icon-fast-forward svg,
+.mod_playlist .player-icon-play svg {
+	display: block;
+	width: 40px;
+}
+.mod_playlist .player-icon-play svg {
+	width: 28px;
+	display: block;
+	margin: 0 auto;
+	position: relative;
+}
+.mod_playlist .player-icon-pause svg {
+	display: block;
+	width: 28px;
+	margin: 0 auto;
+}
+.mod_playlist .player-icon-shuffle svg {
+	width: 36px;
+	top: -8px;
+	position: relative;
+}
+.mod_playlist .control_panel .substrate:after {
+	bottom: -10px;
+}
+.mod_playlist .control_panel span {
+	width: auto;
+	height: 28px;
+}
+/* </MOD> */
+
+/* <Classic_menu> */
+
+.tv.classic_menu div[icon] {
+	margin-top: 14px;
+}
+.classic_menu #menu svg {
+	width: 40px;
+	height: 40px;
+}
+
+/* </Classic_menu> */
+
+/* <Scandic_menu> */
+
+.scandic_menu #menu li svg {
+	position: relative;
+	width: 130px;
+	height: 130px;
+}
+.landscape_layout.tv.metro_menu.scandic_menu #menu li [icon^="icons8"],
+.landscape_layout.tv.metro_menu.scandic_menu #menu LI DIV[icon] {
+	top: 33px;
+}
+
+/* </Scandic_menu> */
+
+/* FEED_BACK */
+
+.feedback_star .emoticon_def {
+	display: block;
+}
+
+.feedback_star .stars,
+.feedback_star .emoticons {
+	width: 250px;
+	height: 40px;
+}
+.feedback_star .stars DIV,
+.feedback_star .emoticons div {
+	width: 40px;
+	height: 40px;
+	margin-right: 10px;
+}
+.feedback_star .star-choose .emoticon_def {
+	display: none;
+}
+.feedback_star .star-choose .emoticon_fill {
+	display: block;
+}
+.feedback_star .star-non-choose .emoticon_def {
+	opacity: .6;
+}
+
+/* / FEED_BACK */
+

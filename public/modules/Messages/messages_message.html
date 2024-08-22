@@ -1,0 +1,25 @@
+{{for messages}} {{if direction == 'in'}}
+<div class="message{{if wasRead == false}} notread{{/if}}">
+  <div class="in main-btn-bg-color">
+    <div class="msg_text" id="message_{{:id}}">{{:message}}</div>
+    <div class="time">{{:time}}</div>
+  </div>
+</div>
+{{else direction == 'out'}}
+<div class="message{{if wasRead == false}} notread{{/if}}">
+  <div class="out">
+    <div class="msg_text" id="message_{{:id}}">{{:message}}</div>
+    {{if false && isTranslated}}
+    <div id="original_message_{{:id}}" style="display: none">{{:original}}</div>
+    <div class="translated" onvclick="messages_show_original('{{:id}}');">
+      {{:~getlang('isTranslated')}}
+    </div>
+    {{/if}}
+    <div class="time">{{:time}}</div>
+  </div>
+</div>
+{{else direction == 'date'}}
+<div class="message{{if wasRead == false}} notread{{/if}}">
+  <div class="date">{{:date}}</div>
+</div>
+{{else}} unk {{/if}} {{/for}}

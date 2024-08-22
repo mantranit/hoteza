@@ -1,0 +1,36 @@
+<div class="content_wrapper">
+  <div class="content">
+    <div>
+      <ul class="pagelist" id="messages_groups">
+        {{for messages}}
+        <li href="#messages_page_{{:id}}">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="svg_button"
+            viewBox="0 0 24 40"
+          >
+            <use xlink:href="#btn_arrow_right"></use>
+          </svg>
+          <div class="photo">
+            {{if image != null}}
+            <img
+              image_url="{{:image}}"
+              src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+            />
+            {{/if}}
+          </div>
+          <div class="title">
+            {{:title}}
+            <span
+              id="messages_group_indicator_{{:id}}"
+              class="messages_group_indicator"
+              >0</span
+            >
+          </div>
+        </li>
+        {{/for}}
+      </ul>
+    </div>
+  </div>
+</div>
+{{header #data /}}

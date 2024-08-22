@@ -1,0 +1,170 @@
+.page[id^="messages_page"] .page_scroll {
+	right: 280px;
+}
+.classic_menu .page[id^="messages_page"] .page_scroll {
+	right: 124px;
+}
+
+.landscape_layout.metro_menu .messages.content {
+	width: 660px;
+	margin: 0px 100px;
+}
+
+#messages_groups LI {
+	position: relative;
+	border: none;
+}
+#messages_groups li svg {
+	position: absolute;
+	width: 18px;
+	height: 102px;
+	right: 9px;
+	top: 8px;
+}
+#messages_groups .title {
+	font-size: 20px;
+	line-height: 100px;
+	height: 100px;
+	padding: 0px;
+	border-top: 1px solid rgba(255,255,255,0.1);
+	border-bottom: 1px solid rgba(255,255,255,0.1);
+	margin:8px;
+}
+#messages_groups .photo + .title {
+	margin-left: 120px;
+}
+
+#messages_groups .photo {
+	border-radius: 50px;
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+	float: left;
+	margin: 8px;
+}
+
+#messages_groups .photo IMG {
+	width: 100px;
+	height: 100px;
+}
+
+.messages .message {
+	width: 630px;
+	overflow: hidden;
+	padding: 5px 15px;
+}
+.messages .message.notread {
+	/*background-color: rgba(255,255,255,0.2);*/
+}
+
+.messages .in, .messages .out {
+	border-radius: 20px;
+	position: relative;
+	text-overflow: ellipsis;
+	clear: both;
+	max-width: 450px;
+	margin: 0px 0px 20px 0px;
+}
+
+.messages .in {
+	color: #FFFFFF;
+	float: right;
+	border-bottom-right-radius: 3px;
+}
+
+.messages .out {
+	background-color: #E3E3E3;
+	color: #33393D;
+	float: left;
+	border-bottom-left-radius: 3px;
+}
+
+.messages .msg_text {
+	padding: 15px 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 18px;
+	line-height: 19px;
+}
+
+.messages .date {
+	width: 100%;
+	text-align: center;
+	color: White;
+	opacity: 0.5;
+	font-size: 12px;
+	padding: 5px 0px 1px 0px;
+}
+
+.messages .time {
+	position: absolute;
+	font-size: 13px;
+	color: White;
+	opacity: 0.5;
+	bottom: -20px;
+}
+
+.messages .in .time {
+	right: 0;
+}
+
+.messages .out .time {
+	left: 0;
+}
+
+
+/*унифицировать*/
+.landscape_layout.metro_menu #menu #messages_indicator {
+	position: absolute;
+	top: 0;
+	left: 80px;
+	font-size: 18px;
+	width: 30px;
+	height: 30px;
+	padding: 0px;
+	margin: auto;
+	border-radius: 15px;
+	border: none;
+	text-align:center;
+}
+
+.landscape_layout.metro_menu #menu .s1x1 #messages_indicator {
+	top: 22px;
+	left: 90px;
+}
+
+.landscape_layout.metro_menu #menu .s2x1 #messages_indicator {
+	top: 22px;
+	left: 170px;
+}
+
+.landscape_layout.metro_menu #menu .s2x2 #messages_indicator {
+	top: 72px;
+	left: 198px;
+}
+#messages_indicator,
+.messages_group_indicator {
+	background-color: #999999;
+	margin: 0px 15px;
+	display: none;
+	width: 38px;
+	height: 32px;
+	line-height: 32px;
+	padding: 5px 12px;
+	border-radius: 5px;
+	color: White;
+}
+/*уинфицировать*/
+
+
+.classic_menu #messages .content > div {
+	margin: 10px 0 0;
+}
+
+.messages_no_messages {
+	position: absolute;
+	top: 0px;
+	text-align: center;
+	width: 100%;
+	font-size: 22px;
+}

@@ -1,0 +1,121 @@
+#notification_container.page.popup {
+	background-color: rgba(0,0,0,0.75) !important;
+}
+#notification_message svg {
+	position: absolute;
+	top: 5px;
+	width: 26px;
+	height: 21px;
+}
+#notification_container {
+	position: absolute;
+	width: 100%;
+	height: 720px;
+	top: 0;
+	left: 0;
+	text-align: center;
+	z-index: 1000;
+}
+#notification_container.popup {
+	padding: 0;
+	opacity: 1;
+}
+#notification_message {
+	position: relative;
+	display: inline-block;
+
+	top: -500px;
+	max-width: 760px;
+	min-width: 500px;
+	max-height: 217px;
+	min-height: 164px;
+
+	background-color: #0d6be5;
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding: 24px 30px 30px;
+
+	text-align: left;
+	z-index: 100;
+}
+#notification_message.big {
+	width: 760px;
+}
+#notification_message .content {
+	position: relative;
+	top: 0;
+	max-width: 700px;
+	min-width: 440px;
+	max-height: 157px;
+	min-height: 104px;
+	float: left;
+}
+#notification_message .image {
+	width: 157px;
+	height: 157px;
+	margin-right: 20px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	float: left;
+}
+#notification_message .image + .content {
+	max-width: 523px;
+	height: 157px;
+}
+#notification_message .title {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 8px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+#notification_message .title .title_text {
+	padding-left: 36px;
+}
+#notification_message .text {
+	font-size: 22px;
+	font-weight: 500;
+	max-height: 56px;
+	overflow: hidden;
+	margin-bottom: 16px;
+	line-height: 1.27;
+}
+
+#notification_message .text_new {
+	-webkit-line-clamp: 2;
+	display: -webkit-box;
+	text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
+}
+#notification_message .button_wrap {
+	position: relative;
+	width: 100%;
+	margin: auto;
+	bottom: 0;
+}
+#notification_message.big .button_wrap {
+	position: absolute;
+}
+#notification_message .button_wrap .button {
+	width: 210px;
+	text-transform: capitalize;
+}
+#notification_message .button_wrap .button:first-of-type {
+	margin-right: 20px;
+	background-color: #fff;
+	color: #0d6be5;
+	border-color: #fff;
+}
+#notification_message .messages_group_indicator {
+	background-color: rgba(255,255,255,0.2) !important;
+	display: inline-block;
+	box-sizing: border-box;
+	width: auto !important;
+	height: auto !important;
+	padding: 5px 9px;
+	text-align: center;
+	line-height: 1;
+	margin: 0 10px;
+}

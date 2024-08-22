@@ -1,0 +1,44 @@
+
+{{header #data /}}
+{{if ~isset('config.tv.use_imagewide') && imageWide}}
+<div style="position:absolute;left:0px;top:0px;width:100%;height:100%;display:block;background-size:contain;background-image: url('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');" {{if new_preload}}new_image_url="{{:imageWide}}"{{else}}image_url="{{:imageWide}}"{{/if}}></div>
+{{/if}}
+<div class="content_wrapper">
+	<div class="content">
+		<ul class="pagelist">
+			{{for listItemsArray}}
+				<li
+						{{if link}}href="#{{:link}}"{{else}}href="#{{:id}}"{{/if}}
+						{{if type === 'radio'}}
+							onvclick="RADIO.open(undefined, '#{{:~root.id}}')"
+						{{else type === 'mod'}}
+							onvclick="MOD.open('MOD', '#{{:~root.id}}')"
+						{{else type === 'vod'}}
+							onvclick="VOD.open('#{{:~root.id}}')"
+						{{else onvclick}}
+							onvclick="{{:onvclick}}"
+						{{else type === 'smartapp'}}
+							onvclick="Apps.open('{{:link}}')"
+						{{else type === 'source'}}
+							onvclick="Sources.open_source('input','{{:link}}');"
+						{{/if}}
+						class="{{if image}}withimg{{else iconVal}}withicon{{/if}}"
+						{{if video}} data-video-src="{{:video}}"{{/if}}
+						{{if groups}} groups="[{{:groups}}]"{{/if}}
+				>
+					{{if image}}<img {{if ~root.new_preload}}new_image_url="{{:image}}"{{else}}image_url="{{:image}}"{{/if}} src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+					{{else iconVal}}{{:iconVal}}
+					{{/if}}
+					{{if title || ~getPageFromStruct(id).workingHours}}
+					<span class="title">
+						<i>{{:title}}</i>
+						{{if ~getPageFromStruct(id).workingHours}}<i>{{:~getPageFromStruct(id).workingHours}}</i>{{/if}}
+					</span>
+					{{/if}}
+
+				</li>
+			{{/for}}
+		</ul>
+	</div>
+</div>
+

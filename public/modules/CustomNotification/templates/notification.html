@@ -1,0 +1,32 @@
+<div id="notification_message" class="{{if image}}big{{/if}}">
+  {{if image}}
+  <div
+    class="image"
+    image_url="{{:image}}"
+    style="
+      background-image: url('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
+    "
+  ></div>
+  {{/if}}
+  <div class="content">
+    {{if title}}
+    <div class="title">{{:title}}</div>
+    {{/if}}
+    <div class="text">{{:text}}</div>
+    <div class="button_wrap">
+      <div
+        class="button"
+        onvclick="CustomNotification.hide({target: '{{:id}}', goal: 1});{{if onvclick}}{{:onvclick}}{{else}}navigate('{{:link}}'){{/if}}"
+      >
+        {{:~getlang('details')}}
+      </div>
+
+      <div
+        class="button"
+        onvclick="CustomNotification.hide({target: '{{:id}}', close: 1});"
+      >
+        {{:~getlang('mobileAppContent-mainContent-button-close')}}
+      </div>
+    </div>
+  </div>
+</div>

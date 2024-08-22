@@ -1,0 +1,61 @@
+
+<div class="substrate"></div>
+<div id="menu">
+	<ul class="transition-menu">
+		{{for menuArr}}
+			{{if type != 'delimiter'}}
+				<li
+					data-id="{{:id}}"
+					href_type="now"
+					{{if groups}} groups="[{{:groups}}]"{{/if}}
+					{{if video}}data-video-src='{{:video}}'{{/if}}
+					href="{{if link === '#vod'}}#VODcategories{{else}}{{:link}}{{/if}}"
+					{{if onvclick != ''}}
+						onvclick="{{:onvclick}}"
+					{{else type === 'smartapp'}}
+						onvclick="Apps.open('{{:link}}')"
+					{{else type === 'source'}}
+						onvclick="Sources.open_source('input','{{:link}}');"
+					{{/if}}
+				>
+					{{if type != 'widget'}}
+						{{if svg_icon}}
+							<div icon="icon" class="svg_icon">{{:iconVal}}
+						{{else}}
+							<div icon="icon" class="{{:icon}}">
+						{{/if}}
+							{{if link == '#orders'}}
+								<span id="shop_cart_indicator"></span>
+							{{/if}}
+
+							{{if link == '#messages'}}
+								<span id="messages_indicator"></span>
+							{{/if}}
+
+							{{if link == '#feedback'}}
+								<div id="feedback_indicator">1</div>
+							{{/if}}
+						</div>
+
+						{{if title}}
+						<div class="menulabel">
+							<i class="align">{{:title}}</i>
+						</div>
+						{{/if}}
+					{{/if}}
+				</li>
+			{{/if}}
+		{{/for}}
+	</ul>
+
+</div>
+<div class="btn-arrow left{{if menuArr.length <= 5}} displaynone{{/if}}">
+	<svg class="svg_button" viewBox="0 0 24 40">
+		<use xlink:href="#btn_arrow_left"></use>
+	</svg>
+</div>
+<div class="btn-arrow right{{if menuArr.length <= 5}} displaynone{{/if}}">
+	<svg class="svg_button" viewBox="0 0 24 40">
+		<use xlink:href="#btn_arrow_right"></use>
+	</svg>
+</div>

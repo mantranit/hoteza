@@ -1,0 +1,35 @@
+{{if WITH_CONTAINER}}
+<div
+  id="programmes_content"
+  class="programmes_content"
+  style="width: {{:PROGRAMMES_WIDTH}}px;"
+>
+  {{/if}} {{for data.channels}} {{if state === 'show'
+  ~programmes=~getProgrammes(epg)}}
+
+  <ul
+    class="programme_content{{if ~programmes && ~programmes[0].noInformation}} no_programme{{/if}}"
+    data-channel-id="{{:id}}"
+    data-epg-name="{{:epg}}"
+  >
+    {{if ~root.data.fromIndex < #getIndex() && ~root.data.untilIndex >
+    #getIndex()}} {{if ~programmes[0].noInformation}}
+    <li data-programme-id="{{:~programmes[0].id}}" class="programme not_tv_cur">
+      No Information
+    </li>
+    {{else}} {{for ~programmes itemVar='~programme'}} {{if ~root.BUILD_FROM_TIME
+    < ~programme.stopTimestamp && ~root.BUILD_UNTIL_TIME >
+    ~programme.startTimestamp }}
+    <li
+      style="width: {{:~programme.width}}px; left: {{:~programme.left}}px;"
+      data-programme-id="{{:~programme.id}}"
+      class="programme not_tv_cur"
+    >
+      <span class="programme_wrap">{{:~programme.title}}</span>
+    </li>
+    {{/if}} {{/for}} {{/if}} {{/if}}
+  </ul>
+
+  {{/if}} {{/for}} {{if WITH_CONTAINER}}
+</div>
+{{/if}}

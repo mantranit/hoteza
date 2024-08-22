@@ -1,0 +1,15 @@
+
+<li
+	{{if id}}
+		data-id="{{:id}}"
+	{{/if}}
+	data-num="{{:index}}"
+	data-name="{{:name}}"
+	class="not_tv_cur"
+	style="position: absolute; top: {{:top}}px; left: {{:left}}px"
+>
+	<div class="tv_channel_img" style="background: url({{:image}}) center center no-repeat;"></div>
+	<div class="pseudoAfter"></div>
+	<div class="tv_channel_name">{{:name}}</div>
+	<div class="tv_channel_epg"></div>
+</li>

@@ -1,0 +1,6 @@
+.shop_amount:after, .amount:after{
+	content: " pcs";
+}
+#room_temp:after{
+	content: "°C"
+}

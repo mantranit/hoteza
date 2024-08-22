@@ -1,0 +1,19 @@
+<h1 id="preview_day">{{:~getlang('today')}}</h1>
+<div class="time_scale_wrapper">
+  <ul
+    id="time_scale"
+    class="time_scale"
+    style="width: {{:PROGRAMMES_WIDTH + LENGTH_ITEM_IN_PX}}px;"
+  >
+    {{for counts ~lengthItem=LENGTH_ITEM_IN_PX}}
+
+    <li
+      style="width: {{:~lengthItem}}px;"
+      data-timestamp="{{:~getTime(#getIndex(), 'timestamp')}}"
+    >
+      {{:~getTime(#getIndex(), 'string')}}
+    </li>
+
+    {{/for}}
+  </ul>
+</div>

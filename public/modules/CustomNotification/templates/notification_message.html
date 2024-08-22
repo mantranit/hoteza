@@ -1,0 +1,18 @@
+
+<div id="notification_message" class="{{if image}}big{{/if}}">
+    <div class="content">
+        <div class="title" style="margin-bottom: 22px;text-align: center; line-height: 33px;">
+            <svg class="svg_icon" viewBox="0 0 26 21">
+                <use xlink:href="#icon-new-messages"></use>
+            </svg>
+            <span class="title_text">{{:text}}</span>
+        </div>
+        <div class="button_wrap">
+            <div
+                class="button"
+                {{if link}}onvclick="CustomNotification.hide('{{:id}}');navigate('{{:link}}')"{{/if}}
+            >{{:~getlang('read')}}</div>
+            <div class="button" onvclick="CustomNotification.hide();">{{:~getlang('mobileAppContent-mainContent-button-close')}}</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+
+<div class="content_wrapper">
+    <div class="content">
+        {{if !content.list.length}}
+            <table class="empty">
+                <tbody>
+                <tr>
+                    <td>
+                        <svg class="svg_button" xmlns="http://www.w3.org/2000/svg" width="100" height="88" viewBox="0 0 100 88">
+                            <use xlink:href="i/click-and-collect.svg#icon"></use>
+                        </svg>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>{{:~getlang('mobileAppContent-mainContent-label-cartIsEmpty')}}</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        {{else}}
+            {{for content.list}}
+                {{if items && items.length}}
+                    <div class="divider">
+                        {{if title}}
+                            <span>{{:title}}</span>
+                        {{/if}}
+                        <hr />
+                    </div>
+                    <ul class="{{if className}}{{:className}}{{/if}}">
+                        {{for items}}
+                            <li>
+                                <div class="orders__name">
+                                    {{if title}}
+                                        {{:title}}
+                                    {{else}}
+                                        Shop is unavailable now
+                                    {{/if}}
+                                </div>
+                                <div class="orders__time">{{if orderTime}}{{:orderTime}}{{/if}}</div>
+                                <div class="button"
+                                    {{if button.type === 'onvclick'}}
+                                        onvclick="{{:button.value}}"
+                                    {{/if}}
+                                >
+                                    {{:button.text}}
+                                </div>
+                            </li>
+                        {{/for}}
+                    </ul>
+                {{/if}}
+            {{/for}}
+        {{/if}}
+    </div>
+</div>
+
+{{header #data /}}

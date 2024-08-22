@@ -1,0 +1,203 @@
+#playerPanel{
+position:absolute;
+bottom:0px;
+left:0px;
+background:rgba(0,0,0,0.6);
+width:100%;
+height:190px;
+font-size:22px;
+}
+#playerStatus{
+	display: none;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	color:White;
+	padding:5px 10px;
+}
+#playerTime{
+	position: absolute;
+	top: 10px;
+	right: 29px;
+	color: White;
+	line-height: 80px;
+	font-size: 22px;
+	font-weight: 500;
+}
+#playerTimeline{
+	position:absolute;
+	bottom:83px;
+	left:29px;
+	width:1222px;
+	height:6px;
+	background:rgba(255,255,255,.15);
+	border-radius:5px;
+}
+#playerElapsed{
+position:absolute;
+left:0px;
+top:0px;
+height:6px;
+background:#21A7F0;
+border-radius:5px;
+}
+#playerBullet{
+width:20px;
+height:20px;
+background:White;
+position:absolute;
+top:-7px;
+left:-10px;
+border-radius:10px;
+}
+#playerTitle{
+	position: absolute;
+	top: 10px;
+	left: 29px;
+	line-height: 80px;
+	font-size: 30px;
+}
+#playerControls{
+position:absolute;
+top:10px;
+left:0px;
+width:100%;
+height:80px;
+background:none;
+}
+#playerPlay{
+position:absolute;
+left:630px;
+top:0px;
+font-size: 70px;
+}
+#playerPause{
+position:absolute;
+left:630px;
+top:0px;
+font-size: 70px;
+}
+#playerStop{
+display:none;
+font-size: 40px;
+}
+#playerFfw{
+position:absolute;
+left:710px;
+top:15px;
+font-size: 40px;
+}
+#playerRwd{
+position:absolute;
+left:580px;
+top:15px;
+font-size: 40px;
+}
+#playerControls .tv_cur{
+color:#21A7F0;
+}
+#playerNavigation {
+	text-transform: capitalize;
+	width: 1222px;
+	position: absolute;
+	bottom: 31px;
+	left: 29px;
+	font-size: 24px;
+}
+#playerNavigation .nav {
+	float: left;
+	width: 20%;
+}
+#playerNavigation .nav:nth-of-type(1) span {
+	padding-left: 39px;
+}
+.tv_icon_back svg {
+	width: 24px;
+	height: 19px;
+	left: 0px;
+	position: absolute;
+}
+.tv_icon_volume svg {
+	position: absolute;
+	width: 53px;
+	height: 24px;
+	left: -68px;
+	top: -2px;
+}
+#playerNavigation .nav {
+	text-align: center;
+}
+#playerNavigation .nav:first-of-type {
+	text-align: left;
+}
+#playerNavigation .nav:last-of-type {
+	text-align: right;
+}
+#playerNavigation .nav span {
+	position: relative;
+}
+#playerNavigation .tv_icon_volume:before {
+	content: url('../i/btn_volume.svg');
+	position: absolute;
+	left: -68px;
+	top: -2px;
+}
+#playerNavigation .tv_icon_back:before {
+	content: url('../i/tv_back_lg.png');
+	position: absolute;
+	left: -7px;
+	top: -8px;
+}
+#playerNavigation .tv_icon_yellow:before,
+#playerNavigation .tv_icon_blue:before,
+#playerNavigation .tv_icon_green:before {
+	content: '';
+	width: 28px;
+	height: 24px;
+	position: absolute;
+	border-radius: 5px;
+	top: -2px;
+	left: -43px;
+}
+#playerNavigation .tv_icon_yellow:before {
+	background: #e7bf11;
+}
+#playerNavigation .tv_icon_blue:before {
+	background: #143f7b;
+}
+#playerNavigation .tv_icon_green:before {
+	background: #2e7a1d;
+}
+.playerListWrap {
+	position: absolute;
+	top: 21px;
+	left: 834px;
+	width: 417px;
+	height: 58px;
+	overflow: hidden;
+	line-height: 80px;
+}
+#playerListMenu {
+	list-style: none;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	font-size: 22px;
+	white-space: nowrap;
+}
+#playerListMenu li {
+	display: inline-block;
+	padding: 18px 17px;
+	line-height: 1;
+	vertical-align: super;
+}
+#playerSubtitles {
+	position: absolute;
+	display: none;
+	width: 100%;
+	height: 120px;
+	bottom: 0;
+	font-size: 30px;
+	text-align: center;
+	vertical-align: middle;
+}

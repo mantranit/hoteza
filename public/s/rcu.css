@@ -1,0 +1,268 @@
+.rcu {
+	float: left;
+	position: relative;
+	color: #FFFFFF;
+	width: 258px;
+	height: 203px;
+	margin: 0px 25px 30px 0px;
+	border: 1px solid white;
+	border-radius: 5px;
+}
+
+/* forbidden by group портит этот замечательный код. после решения поменять отступ rcu снизу на сверху
+.rcu:nth-child(-n+3) {
+	margin-top: 0;
+}
+.rcu:nth-of-type(3n) {
+	margin-right: 0;
+}
+*/
+
+.rcu .title {
+	text-align: center;
+	font-size: 20px;
+	padding-top: 17px;
+	height: 133px;
+	border-bottom:1px solid;
+	border-color: inherit;
+	background-size: 110px;
+	background-repeat: no-repeat;
+	background-position: center 40px;
+}
+.rcu .title SVG{
+	fill: currentColor;
+	position: absolute;
+	top: 50px;
+	left: 0px;
+	height: 90px;
+	width: 100%;
+}
+.rcu.category .title SVG{
+	top: 70px;
+}
+
+.rcu.category .title {
+	height: 190px;
+	background-position: center 60px;
+	border-bottom: none;
+}
+
+.rcu[type=dnd].on{
+	color: #eb574f;
+	border-color: #eb574f;
+}
+.rcu[type=mur].on{
+	color: #93ea75;
+	border-color: #93ea75;
+}
+
+.rcu[type=dnd] .on, .rcu[type=dnd] .off{
+	position: absolute;
+	top: 120px;
+	text-align: center;
+	width: 100%;
+	font-size: 16px;
+	font-weight: bold;
+}
+.rcu[type=dnd] .on, .rcu[type=dnd].on .off{
+	display: none;
+}
+.rcu[type=dnd].on .on{
+	display: block;
+}
+
+.rcu .bb {
+	width: 128px;
+	height: 52px;
+	line-height: 52px;
+	position: absolute;
+	bottom: 0px;
+	text-align: center;
+	font-size: 24px;
+}
+
+.rcu[type=curtainPause] .bb, .rcu[type=light3btn] .bb{
+	width: 86px;
+}
+
+.rcu .bc {
+	left: 86px;
+	border-right:1px solid;
+	border-color: inherit;
+}
+
+.rcu .bl {
+	left: 0px;
+	border-right:1px solid;
+	border-color: inherit;
+}
+
+.rcu .br {
+	right: 0px;
+}
+
+.rcu.plusminus .bb, .rcu[type=curtain] .bb, .rcu[type=curtainPause] .bb {
+	font-size: 50px;
+}
+.rcu[type=light3btn] .bb{
+	font-size: 80px;
+}
+
+.rcu.on .bb, .rcu.off .bb, .rcu.pause .bb, .rcu[type=curtainPause].pause .bc{
+	color: rgba(255,255,255,0.2);
+}
+.rcu.off .bl, .rcu.on .br, .rcu.pause .bc, .rcu[type=curtainPause].on .bc, .rcu[type=curtainPause].off .bc, .rcu[type=curtainPause].pause .bl, .rcu[type=curtainPause].pause .br {
+	color: inherit;
+}
+
+.rcu_fan {
+	width: 94px;
+	height: 90px;
+	margin: 30px auto;
+	background: url('../i/rcu_ac_fan.png') top center no-repeat;
+	background-size: cover;
+}
+
+.rcu_fan0 {
+	background-position: 0px 0px;
+}
+
+.rcu_fan1 {
+	background-position: 0px -90px;
+}
+
+.rcu_fan2 {
+	background-position: 0px -180px;
+}
+
+.rcu_fan3 {
+	background-position: 0px -270px;
+}
+
+.rcu_fan3level, .rcu_fan5level {
+	position: relative;
+	font-size: 74px;
+	margin: 20px auto;
+	width: 96px;
+	height: 74px;
+}
+
+.rcu_fan3level > DIV, .rcu_fan5level > DIV {
+	position: absolute;
+	top: 0px;
+	overflow: hidden;
+}
+
+.rcu_fan3level.l1 .fl1 {
+	margin-left: 30px;
+	width: 64px;
+}
+
+.rcu_fan3level.l1 .fl1:before {
+	margin-left: -30px;
+}
+
+.rcu_fan3level.l1 .fl2 {
+	width: 30px;
+}
+
+.rcu_fan3level.l2 .fl1 {
+	margin-left: 60px;
+	width: 34px;
+}
+
+.rcu_fan3level.l2 .fl1:before {
+	margin-left: -60px;
+}
+
+.rcu_fan3level.l2 .fl2 {
+	width: 60px;
+}
+
+.rcu_fan3level.l3 .fl1 {
+	margin-left: 94px;
+	width: 0px;
+}
+
+.rcu_fan3level.l3 .fl1:before {
+	margin-left: -94px;
+}
+
+.rcu_fan3level.l3 .fl2 {
+	width: 94px;
+}
+
+
+.rcu_fan5level.l1 .fl2 {
+	width: 18px;
+}
+.rcu_fan5level.l1 .fl1 {
+	margin-left: 18px;
+	width: 76px;
+}
+.rcu_fan5level.l1 .fl1:before {
+	margin-left: -18px;
+}
+
+.rcu_fan5level.l2 .fl2 {
+	width: 36px;
+}
+.rcu_fan5level.l2 .fl1 {
+	margin-left: 36px;
+	width: 58px;
+}
+.rcu_fan5level.l2 .fl1:before {
+	margin-left: -36px;
+}
+
+.rcu_fan5level.l3 .fl2 {
+	width: 54px;
+}
+.rcu_fan5level.l3 .fl1 {
+	margin-left: 54px;
+	width: 40px;
+}
+.rcu_fan5level.l3 .fl1:before {
+	margin-left: -54px;
+}
+
+.rcu_fan5level.l4 .fl2 {
+	width: 72px;
+}
+.rcu_fan5level.l4 .fl1 {
+	margin-left: 72px;
+	width: 22px;
+}
+.rcu_fan5level.l4 .fl1:before {
+	margin-left: -72px;
+}
+
+.rcu_fan5level.l5 .fl2 {
+	width: 94px;
+}
+.rcu_fan5level.l5 .fl1 {
+	margin-left: 94px;
+	width: 0px;
+}
+.rcu_fan5level.l5 .fl1:before {
+	margin-left: -94px;
+}
+
+.rcu_fan5level.lauto .fl2 {
+	width: 94px;
+}
+
+.fl1 {
+	width: 94px;
+
+}
+.fl2 {
+	width: 0px;
+}
+
+/*7132 AC control*/
+.rcu[type=fcu] TABLE{
+font-size:35px;
+margin-top:30px;
+}
+

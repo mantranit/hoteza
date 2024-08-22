@@ -1,0 +1,11 @@
+<div class="title">{{:title}}</div>
+<div class="description">{{:description}}</div>
+{{if alreadyPlayed}}
+<div id="programme_timeline" class="programme_timeline">
+  <div class="programme_start">{{:alreadyPlayed.startWarTime}}</div>
+  <div class="timeline_wrap">
+    <div class="timeline" style="width: {{:alreadyPlayed.duration}}px;"></div>
+  </div>
+  <div class="programme_end">{{:alreadyPlayed.stopWarTime}}</div>
+</div>
+{{/if}}

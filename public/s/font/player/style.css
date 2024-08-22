@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'player';
+  src:  url('fonts/player.eot?7p37y7');
+  src:  url('fonts/player.eot?7p37y7#iefix') format('embedded-opentype'),
+    url('fonts/player.ttf?7p37y7') format('truetype'),
+    url('fonts/player.woff?7p37y7') format('woff'),
+    url('fonts/player.svg?7p37y7#player') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="player-icon-"], [class*=" player-icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'player' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.player-icon-shuffle:before {
+  content: "\e900";
+}
+.player-icon-listener:before {
+  content: "\e901";
+}
+.player-icon-play:before {
+  content: "\f100";
+}
+.player-icon-pause:before {
+  content: "\f101";
+}
+.player-icon-end:before {
+  content: "\f105";
+}
+.player-icon-fast-forward:before {
+  content: "\f103";
+}
+.player-icon-skip-to-start:before {
+  content: "\f106";
+}
+.player-icon-stop:before {
+  content: "\f102";
+}
+.player-icon-rewind:before {
+  content: "\f104";
+}

@@ -1,0 +1,96 @@
+
+{{if ~isset('config.tv.use_imagewide') && imageWide}}
+<div style="position:absolute;left:0px;top:0px;width:100%;height:100%;display:block;background-size:contain;background-image: url('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');" {{if new_preload}}new_image_url="{{:imageWide}}"{{else}}image_url="{{:imageWide}}"{{/if}}></div>
+{{/if}}
+{{if video && !scandic_menu}}
+<section class="video" data-video-src="{{:video}}">
+	{{if image}}
+		<img
+			{{if new_preload}}new_image_url="{{:image}}"{{else}}image_url="{{:image}}"{{/if}}
+			src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+			class="poster"
+		>
+	{{/if}}
+</section>
+{{/if}}
+
+{{if image != null}}
+	<span
+		{{if new_preload}}new_image_url="{{:image}}"{{else}}image_url="{{:image}}"{{/if}}
+		style="background-image: url('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');"
+		class="wrap_img"
+	></span>
+{{/if}}
+
+<div class="content_wrapper">
+	<div class="content{{if !image && (!video || scandic_menu)}} all_width{{/if}}">
+		{{:content}}
+	</div>
+</div>
+{{if serviceId && (workingHours || customField)}}
+	<div class="info">
+		{{if customField}}
+			<div class="custom-field">{{:customField}}</div>
+		{{/if}}
+		{{if workingHours}}
+			<div class="working-hours">
+				<span>
+					<svg class="svg_button" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+						<use xlink:href="i/working-hours-icon.svg#icon"></use>
+					</svg>
+				</span>
+				<span>{{:workingHours}}</span>
+			</div>
+		{{/if}}
+	</div>
+{{/if}}
+
+{{if serviceId}}
+	<div class="button_wrap">
+		{{if pieces !== 'none' || cost}}
+			<div>
+				{{if cost}}
+					<div class="shop_price price">{{:~formatMoney(cost)}}</div>
+				{{/if}}
+				{{if !lock_ordering}}
+					{{if pieces !== 'none'}}
+						<div class="shop_plusminus hide_on_addtocart{{if !cost}} contain{{/if}}">
+							<div class="shop_p" onvclick="shop_plus();">
+								<svg class="svg_button" viewBox="0 0 32 32">
+									<use xlink:href="#plus"></use>
+								</svg>
+							</div>
+							<div class="shop_amount">
+								<span id="shop_amount">1</span>
+								<span class="shop_pieces">
+									{{if pieces && !cost}}
+										{{:~getlang('pieces_' + pieces)}}
+									{{/if}}
+								</span>
+							</div>
+							<div class="shop_m" onvclick="shop_minus();">
+								<svg class="svg_button" viewBox="0 0 32 2">
+									<use xlink:href="#minus"></use>
+								</svg>
+							</div>
+						</div>
+					{{/if}}
+				{{/if}}
+			</div>
+		{{/if}}
+
+		{{if !lock_ordering}}
+			<div class="button" onvclick="shop_next_order_step(this);">
+				{{if toppings && toppings.length}}
+					{{:~getlang('choose_options')}}
+				{{else buttonName}}
+					{{:buttonName}}
+				{{else}}
+					{{:lang.selectTime}}
+				{{/if}}
+			</div>
+		{{/if}}
+	</div>
+{{/if}}
+
+{{header #data /}}

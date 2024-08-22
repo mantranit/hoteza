@@ -1,0 +1,18 @@
+<fieldset class="up-sale" data-product-id="{{:id}}">
+  <legend>{{:content.title}}</legend>
+
+  <table>
+    <tr>
+      <td class="image">
+        <div style="background-image: url('{{:image}}')"></div>
+      </td>
+      <td class="title">{{:text}}</td>
+      <td class="cost">+{{:price}}</td>
+      <td class="button_wrap">
+        <div class="button" onvclick="shop_add_upsale(this)">
+          {{:content.button_text}}
+        </div>
+      </td>
+    </tr>
+  </table>
+</fieldset>
