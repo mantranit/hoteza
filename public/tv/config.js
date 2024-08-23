@@ -65,10 +65,11 @@ var tv_channels_languages_def = [
   { ja: { transcription: "日本の", image: "i/flag/Japan.png" } },
   { fa: { transcription: "فارسی", image: "i/flag/_Arabic.png" } },
   { ko: { transcription: "한국의", image: "i/flag/South-Korea.png" } },
+  { vi: { transcription: "Tiếng Việt", image: "i/flag/Vietnam.png" } },
 ];
 
 config["hotelId"] = 277;
-config["timezone"] = "MSK";
+config["timezone"] = "HCMC";
 config["defaults"] = {
   language: "en",
 };

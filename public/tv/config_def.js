@@ -7,11 +7,11 @@ var tv_key_source = "off";
 var tv_key_menu = "off";
 
 var config = {
-  region: "eu", //['eu'(default), 'ru', 'cn', 'bn', 'local'] Вместо admin_url и т.д.
+  region: "local", //['eu'(default), 'ru', 'cn', 'bn', 'local'] Вместо admin_url и т.д.
   use_ssl: true, //[true, false] потом 'auto'
 
   hotelId: 2,
-  timezone: "Europe/Moscow",
+  timezone: "Asia/Ho_Chi_Minh",
   defaults: { language: "en" },
 
   rcu_url: "http://10.88.0.1:8112/",
