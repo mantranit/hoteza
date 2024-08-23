@@ -610,7 +610,7 @@
       "id": "93850",
       "type": "page",
       "title": "Directions &amp; Contacts",
-      "content": "<b>Address:</b><br />1801-03, 18/F, East Town Building<br />41 Lockchart Road, Wan Chai<br />Hong Kong<br /><b><br />Contact:</b><br />Tel: +358 93 157 99 50<br />E-mail: sales@hoteza.com<br />",
+      "content": "<b>Address:</b><br />5/F, 3 Bees Building<br />281 Nguyen Van Troi, Phu Nhuan<br />Ho Chi Minh City<br /><b><br />Contact:</b><br />Tel: +84 908 036 105<br />",
       "serviceId": null,
       "slotId": null,
       "image": "c/i/18440b5fedfc32cb66378102a6687e41.jpg",
@@ -1896,18 +1896,6 @@
           "groups": [],
           "text": "<p>\nBreguet 1160 \"Marie-Antoinette\". Reproduction of the watch no 160 called \"Marie-Antoinette\" based only on pictures and descriptions. Today this watch is still considered as the 5th most complicated in the world.\n\n<br /></p>",
           "cost": "12500.00",
-          "toppings": []
-        },
-        "id_93696": {
-          "id": "93696",
-          "type": "shopProduct",
-          "title": "Hoteza Cufflinks",
-          "icon": "",
-          "image": "c/i/53d8f3435b92e75aa6d0c75d73afe299.jpg",
-          "imageWide": null,
-          "groups": [],
-          "text": "<p>\nExclusive present for Hoteza application lovers.\n\n<br /></p>",
-          "cost": "800.00",
           "toppings": []
         },
         "id_93697": {
