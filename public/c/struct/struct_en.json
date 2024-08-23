@@ -429,20 +429,15 @@
     { "type": "language", "title": "English", "code": "en" },
     {
       "type": "language",
-      "title": "Arabic (\u0627\u0644\u0639\u0631\u0628\u064a\u0629)",
-      "code": "ar"
+      "title": "Vietnamese (\u0054\u0069\u1ebf\u006e\u0067\u0020\u0056\u0069\u1ec7\u0074)",
+      "code": "vi"
     },
     {
       "type": "language",
       "title": "Chinese Simplified (\u7b80\u4f53\u4e2d\u6587)",
       "code": "zh"
     },
-    { "type": "language", "title": "French (Fran\u00e7ais)", "code": "fr" },
-    {
-      "type": "language",
-      "title": "Russian (\u0420\u0443\u0441\u0441\u043a\u0438\u0439)",
-      "code": "ru"
-    }
+    { "type": "language", "title": "French (Fran\u00e7ais)", "code": "fr" }
   ],
   "housekeeping": {
     "roomStatus": {

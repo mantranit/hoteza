@@ -55,17 +55,16 @@ var tv_channels_languages_def = [
   { en: { transcription: "English", image: "i/flag/United-Kingdom.png" } },
   { ru: { transcription: "Русский", image: "i/flag/Russia.png" } },
   { zh: { transcription: "汉语", image: "i/flag/China.png" } },
-  { ar: { transcription: "العربية", image: "i/flag/arabic-flag.png" } },
+  { ar: { transcription: "العربية", image: "i/flag/_Arabic.png" } },
   { de: { transcription: "Deutsch", image: "i/flag/Germany.png" } },
   { es: { transcription: "Español", image: "i/flag/Spain.png" } },
   { fr: { transcription: "Français", image: "i/flag/France.png" } },
   { tr: { transcription: "Türkçe", image: "i/flag/Turkey.png" } },
-  { it: { transcription: "Italiano", image: "i/flag/italian.png" } },
-  { pt: { transcription: "Português", image: "i/flag/portugal.png" } },
-  { ja: { transcription: "日本の", image: "i/flag/japan.png" } },
-  { nl: { transcription: "Nederlands", image: "i/flag/nederlands.png" } },
-  { fa: { transcription: "فارسی", image: "i/flag/arabic-flag.png" } },
-  { ko: { transcription: "한국의", image: "i/flag/korean.png" } },
+  { it: { transcription: "Italiano", image: "i/flag/Italy.png" } },
+  { pt: { transcription: "Português", image: "i/flag/Portugal.png" } },
+  { ja: { transcription: "日本の", image: "i/flag/Japan.png" } },
+  { fa: { transcription: "فارسی", image: "i/flag/_Arabic.png" } },
+  { ko: { transcription: "한국의", image: "i/flag/South-Korea.png" } },
 ];
 
 config["hotelId"] = 277;
