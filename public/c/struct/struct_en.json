@@ -133,7 +133,7 @@
       "id": "93599",
       "type": "menuItem",
       "image": "c/i/d88efa75b91a47ea601ed0ef72fc271b.png",
-      "video": "http://localhost:8080/video/HITEC_Scandic_Video_No_Sound.mp4",
+      "video": "https://d5b4-113-161-32-204.ngrok-free.app/video/HITEC_Scandic_Video_No_Sound.mp4",
       "sound": false,
       "title": "Hotel Information",
       "groups": [],

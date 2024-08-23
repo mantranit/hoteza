@@ -17,7 +17,7 @@ function tv_size_init() {
   } else {
     hh = 154;
   }
-  document.title = "Salinda Resort (" + ww + "x" + wh + ")";
+  document.title = "Salinda Resort Phu Quoc Island (" + ww + "x" + wh + ")";
 }
 
 var defaults = {};

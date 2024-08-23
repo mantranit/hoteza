@@ -1,52 +1,52 @@
 #tv_welcome.welcome_scandic {
-	width: 100%;
-	height: 720px;
+  width: 100%;
+  height: 720px;
 }
 .welcome_scandic .content {
-	width: 1220px;
-	top: auto;
-	bottom: 50px;
-	left: 29px;
+  width: 1220px;
+  top: auto;
+  bottom: 50px;
+  left: 29px;
 }
 .welcome_scandic .button_wrap {
-	width: 450px;
-	bottom: 0;
-	left: 0;
-	margin: 0;
+  width: 450px;
+  bottom: 0;
+  left: 0;
+  margin: 0;
 }
 .welcome_scandic .button {
-	width: 450px;
+  width: 450px;
 }
 #tv_welcome.welcome_scandic .content h1 {
-	font-size: 60px;
-	margin-bottom: 20px;
-	line-height: 64px;
-	text-transform: uppercase;
-	letter-spacing: -1px;
+  font-size: 60px;
+  margin-bottom: 20px;
+  line-height: 64px;
+  text-transform: uppercase;
+  letter-spacing: -1px;
 }
 #tv_welcome.welcome_scandic .content h1 .tv_welcome_greeting_placeholder {
-	font-weight: 600;
+  font-weight: 600;
 }
 #tv_welcome.welcome_scandic .content p {
-	width: 650px;
-	margin-bottom: 95px;
-	line-height: 36px;
-	font-size: 22px;
+  width: 650px;
+  margin-bottom: 95px;
+  line-height: 36px;
+  font-size: 22px;
 }
 
 .welcome_scandic + #tv_fullscreen_overlay #tv_fullscreen_btns {
-	bottom: 65px;
+  bottom: 65px;
 }
 .welcome_scandic + #tv_fullscreen_overlay #tv_fullscreen_welcome {
-	display: none !important;
+  display: none !important;
 }
 .welcome_scandic .substrate {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: rgba(0, 0, 0, 0.25);
 }
