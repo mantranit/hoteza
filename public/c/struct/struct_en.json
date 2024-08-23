@@ -1,1 +1,3187 @@
-{"config":{"messages":1,"cart":1,"viewbill":1,"defaults":{"language":"en"},"currency":{"precision":2,"decimal":".","thousand":" ","format":"%v %s","symbol":"$"},"demo":0,"metro_layout":[],"icon_library":0,"success_wakeup":{"title":"Wake-up time set","text":"We will wake you up at set time. You may cancel your wake-up service in 'My Orders' section."},"success_shop":{"title":"Your order is on the way to you","text":"Thank you for your order! You can track the status of your order or cancel it in My Orders section."},"delivery_time":{"title":"Delivery Time","text":"You may ask for immediate delivery of your order into your room or select delivery time at your convinience."},"product_added":{"title":"Items have been added","text":"You can add other products or go to your cart and finish order."},"confirmation_page":{"title":"Final Confirmation","text":"Please confirm the order by entering the requested data below.","text_error":"The data is incorrect. Please try again or ask at reception for assistance.","text_tooltip":"Please note that the order amount will be charged to your bill"},"success_service":{"title":"Your request is sent successfully","text":"Thank you for your order! You can track the status of your order or cancel it in My Orders section."},"payQR":{"status":0}},"welcome":{"type":"welcome","title":"Welcome {username}!","content":"","image":"c\/i\/a3bab9a1ad52584d385f3e6a44733638.png","mediaType":"","data":null},"menu":{"id_93728":{"id":"93728","type":"menuItem","image":null,"video":"","title":"Television","groups":[],"devices":["tv"],"icon":"tv","link":"#tv","onvclick":"tv_mode();","class":""},"id_93746":{"id":"93746","type":"menuItem","image":"c\/i\/b197b5a730f5423fa48faecbda987400.png","video":"","title":"Entertainment","groups":[],"devices":["tv"],"icon":"icons8-sources","link":"#sources_page","onvclick":"tv_sources_page();","class":"icons8-sources"},"id_93867":{"id":"93867","type":"menuItem","image":null,"video":"","title":"Radio","groups":[],"devices":["tv"],"icon":"radio","link":"#radio","onvclick":"RADIO.open();","class":""},"id_93612":{"id":"93612","type":"menuItem","image":null,"video":"","title":"In-room Dining","groups":[],"devices":[],"icon":"roomservice","link":"#93612","onvclick":"","class":""},"id_93681":{"id":"93681","type":"menuItem","image":"c\/i\/976e55d3b8b21c01629c248b1d11af98.png","video":"","title":"Shopping","groups":[],"devices":[],"icon":"shop","link":"#93681","onvclick":"","class":""},"id_93588":{"id":"93588","type":"menuItem","image":null,"video":"","title":"My Orders","groups":[],"devices":[],"icon":"cart","link":"#orders","onvclick":"","class":""},"id_93599":{"id":"93599","type":"menuItem","image":"c\/i\/d88efa75b91a47ea601ed0ef72fc271b.png","video":"http:\/\/demo.hoteza.com\/video\/HITEC_Scandic_Video_No_Sound.mp4","title":"Hotel Information","groups":[],"devices":[],"icon":"about","link":"#93600","onvclick":"","class":""},"id_93603":{"id":"93603","type":"menuItem","image":"c\/i\/9344f0d12c8d0ef7e6ca51b3387d97cc.png","video":"","title":"Restaurants &amp; Bars","groups":[],"devices":[],"icon":"food","link":"#93604","onvclick":"","class":""},"id_93837":{"id":"93837","type":"menuItem","image":"c\/i\/ff7feffc11f4f09aabd02ea284e973cd.png","video":"","title":"Spa &amp; Fitness","groups":[],"devices":[],"icon":"spa2","link":"#93838","onvclick":"","class":""},"id_93744":{"id":"93744","type":"delimiter","title":"","groups":[],"devices":[]},"id_93605":{"id":"93605","type":"menuItem","image":"c\/i\/cd2d60cedbb35ed10a5e2a34242c5437.png","video":"","title":"Room Service","groups":[],"devices":[],"icon":"service","link":"#93606","onvclick":"","class":""},"id_93807":{"id":"93807","type":"menuItem","image":null,"video":"","title":"Wake-up Call","groups":[],"devices":[],"icon":"wakeup","link":"#services_wakeup","onvclick":"","class":""},"id_93745":{"id":"93745","type":"delimiter","title":"","groups":[],"devices":[]},"id_93592":{"id":"93592","type":"menuItem","image":null,"video":"","title":"Messages","groups":[],"devices":[],"icon":"message","link":"#messages","onvclick":"","class":""},"id_93593":{"id":"93593","type":"menuItem","image":null,"video":"","title":"Feedback","groups":[],"devices":[],"icon":"questionnaire","link":"#feedback","onvclick":"","class":""},"id_93591":{"id":"93591","type":"menuItem","image":null,"video":"","title":"View Bill","groups":[],"devices":[],"icon":"bill","link":"#viewbill","onvclick":"viewbill();","class":"icons8-Bill"},"id_93732":{"id":"93732","type":"menuItem","image":"c\/i\/8df607a4f00ee4770146f00337513154.png","video":"","title":"Movies","groups":[],"devices":["tv"],"icon":"","link":"#vod","onvclick":"VOD.open();","class":"icons8-tv-show"},"id_93733":{"id":"93733","type":"menuItem","image":null,"video":"","title":"Use Mobile App","groups":[],"devices":["tv","tablet"],"icon":"home","link":"#93734","onvclick":"","class":""},"id_181239":{"id":"181239","type":"widget","image":null,"video":"","title":"Flight info","groups":[],"devices":["tv","tablet"],"icon":"flights","link":"#181239","onvclick":"widgetObserver.open(181239);","class":"","widget":{"type":"airportSchedule","data":[{"code":"LCA","city":"Larnaca","name":"Larnaca International Airport"},{"code":"LED","city":"Saint-Petersburg","name":"Pulkovo Airport"},{"code":"LHR","city":"London","name":"London Heathrow Airport"},{"code":"DXB","city":"Dubai","name":"Dubai International Airport"}]}},"id_93590":{"id":"93590","type":"menuItem","image":null,"video":"","title":"Settings","groups":[],"devices":[],"icon":"settings","link":"#settings","onvclick":"","class":""},"id_93869":{"id":"93869","type":"menuItem","image":null,"video":"","title":"TV Control","groups":[],"devices":["tablet"],"icon":"tv","link":"#93869","onvclick":"","class":""}},"wakeupcall":{"type":"wakeupcall","title":"Wake-Up Call","text":"<br \/><br \/>\n\nAre you afraid to oversleep? Should\nyou need  wake-up call please indicate\ntime and we will take care of you to wake up on time and bring fresh cup of tea\nor coffee with our compliments. Just choose drink at your choice.\n<br \/><br \/><br \/>","icon":"","groups":[],"serviceId":"93597","image":"c\/i\/68b94027e72688969f4a477c0de98885.png"},"guide":[],"rcu":{"id_93869":{"id":"93869","type":"rcu","title":"TV Control","icon":"tv","items":{"id_93870":{"id":"93870","type":"rcuItem","parentId":"93869","title":"TV Control","content":"","icon":"","icon_additional":"","image":null,"itemType":"hotezaremote","blockingItem":null,"params":{"addr":"","tempAddr":"","modeAddr":"","speedAddr":"","pauseAddr":"","offAddr":""},"groups":[],"devices":["tablet"]}},"image":null,"parentId":"","backBtn":0,"groups":[],"devices":["tablet"]}},"messages":{"id_93748":{"id":"93748","type":"recipient","title":"Reception","groups":[],"image":"c\/i\/624ed5611fc9de5c036fe4e614ce2d6e.jpg"}},"cart":{"title":"My Orders","text":"Service fee","fee":"5","feeType":"fix","parentId":"","backBtn":0},"feedback":{"id":"93594","parentId":"","backBtn":0,"type":"feedback","items":[{"id":"100517","title":"Atmosphere","type":"stars"},{"id":"100518","title":"Cleanness","type":"stars"},{"id":"100519","title":"Food quality","type":"stars"},{"id":"100520","title":"Customer service","type":"stars"},{"id":"100527","title":"Why did you choose us?","type":"list","list":["Location","Price","Recommendations"]}],"groups":[],"title":"Inquiry form","text":""},"mobilekey":[],"language":[{"type":"language","title":"English","code":"en"},{"type":"language","title":"Arabic (\u0627\u0644\u0639\u0631\u0628\u064a\u0629)","code":"ar"},{"type":"language","title":"Chinese Simplified (\u7b80\u4f53\u4e2d\u6587)","code":"zh"},{"type":"language","title":"French (Fran\u00e7ais)","code":"fr"},{"type":"language","title":"Russian (\u0420\u0443\u0441\u0441\u043a\u0438\u0439)","code":"ru"}],"housekeeping":{"roomStatus":{"1":{"checkin":false,"title":"Dirty\/Vacant"},"2":{"checkin":true,"title":"Dirty\/Occupied"},"3":{"checkin":false,"title":"Clean\/Vacant"},"4":{"checkin":true,"title":"Clean\/Occupied"},"5":{"checkin":false,"title":"Inspected\/Vacant"},"6":{"checkin":true,"title":"Inspected\/Occupied"}},"minibar":{"id_93931":{"id":"93931","parentId":"93929","type":"category","title":"drinks","items":{"id_93933":{"id":"93933","parentId":"93931","type":"item","title":"pepsi"},"id_93934":{"id":"93934","parentId":"93931","type":"item","title":"coca-cola"}}},"id_93932":{"id":"93932","parentId":"93929","type":"category","title":"food","items":{"id_93935":{"id":"93935","parentId":"93932","type":"item","title":"chips"}}}}},"pages":{"id_93734":{"id":"93734","type":"page","title":"Use Our Mobile App","content":"<p>Enhance your travel experience with your own all-in-one virtual pocket concierge and discover an array of resort facilities and services even before your visit. On top of that with the app you can control television, lights, temperature in your room, and even open your room door!<\/p>\n\n<p>You may download our app by searching 'Hoteza Demo' in App Store \/ Google Play or by scanning QR code shown on the left. <\/p>","serviceId":null,"slotId":null,"image":"c\/i\/b6944a234e99152c82cd8888711d2738.png","imageWide":null,"video":"","parentId":"93733","backBtn":0,"groups":[],"devices":["tv"]},"id_93843":{"id":"93843","type":"page","title":"Luggage service","content":"Inform us about the desired time and let us lighten your load with our convenient luggage service. The bellboy will collect your luggage and bring it downstairs to the lobby.<br \/>","serviceId":"93866","slotId":null,"image":"c\/i\/e20dd2e2a927d10287678fd7eee2c3d2.jpg","imageWide":null,"video":"","parentId":"93606","backBtn":1,"groups":[],"devices":["mobile","tv","tablet"]},"id_93844":{"id":"93844","type":"page","title":"About Hotel","content":"Hotel is located right in the centre of the capital city, in a modern district of business, commerce and entertainment. <br \/><br \/>The hotel stands next to the river, near the Old Town with its major sites of attraction: the Cathedral, Palace, Castle, as well as streets so popular among the city guests and local inhabitants.<br \/><br \/>","serviceId":null,"slotId":null,"image":"c\/i\/b16c6a2ea1acfc2e5effbcb28f9c9f84.jpg","imageWide":null,"video":"","parentId":"93600","backBtn":1,"groups":[],"devices":[]},"id_93845":{"id":"93845","type":"page","title":"Standard Room","content":"The hotel's standard rooms include standard bed, small seating area and bathroom.<br \/><br \/>Room size: 30 sq. m<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/6db6b6e66ac130e40c97ee3c437ce2ae.jpg","imageWide":null,"video":"","parentId":"93601","backBtn":1,"groups":[],"devices":[]},"id_93846":{"id":"93846","type":"page","title":"Double Bed Room","content":"The hotel's double bed rooms include double bed, big seating area and bathroom.<br \/><br \/>Room size: 35 sq. m<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/eb0a0856e2b1fee8d89eb57df50597b8.jpg","imageWide":null,"video":"","parentId":"93601","backBtn":1,"groups":[],"devices":[]},"id_93847":{"id":"93847","type":"page","title":"Superior Suite","content":"Superior suites are larger than standard rooms. Coffee\/tea making facilities, complimentary newspaper, trouser press, direct-dial telephone, hairdryer, wake-up service and television. All rooms have dressing table with chair, lounge chair and en-suite with bath and shower.<br \/><br \/>Room size: 80 sq. m<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/510105ecfc89f5779f59fa0d43bbb2f6.jpg","imageWide":null,"video":"","parentId":"93601","backBtn":1,"groups":[],"devices":[]},"id_93848":{"id":"93848","type":"page","title":"Deluxe Suite","content":"Deluxe suites offer luxurious king beds, 47-inch flat-panel HDTV with media player Bose Sound Wave System with iPod and iPhone docking station, large closets, master bath, and a guest bath. For your comfort and convenience.<br \/><br \/>Room size: 100 sq. m<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/e0d3a6087017fb7afb9887b1a8d3093d.jpg","imageWide":null,"video":"","parentId":"93601","backBtn":1,"groups":[],"devices":[]},"id_93849":{"id":"93849","type":"page","title":"Presidential Suite","content":"The most luxurious and impressive type of our suites is located on the 20th floor and offers breathtaking views on the city and unsurpassed luxury during your stay. Our presidential suite consists of a spacious living room, one large master bedroom with private sauna, a second bedroom, a private study, a dining room, a bar as well as a kitchen. Each bedroom has its en-suite bathroom with jacuzzi.<br \/><br \/>Room size: 330 sq. m.<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/985fa180e626ec9d12015f70cc3a84ad.jpg","imageWide":null,"video":"","parentId":"93601","backBtn":1,"groups":[],"devices":[]},"id_93850":{"id":"93850","type":"page","title":"Directions &amp; Contacts","content":"<b>Address:<\/b><br \/>1801-03, 18\/F, East Town Building<br \/>41 Lockchart Road, Wan Chai<br \/>Hong Kong<br \/><b><br \/>Contact:<\/b><br \/>Tel: +358 93 157 99 50<br \/>E-mail: sales@hoteza.com<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/18440b5fedfc32cb66378102a6687e41.jpg","imageWide":null,"video":"","parentId":"93600","backBtn":1,"groups":[],"devices":[]},"id_93851":{"id":"93851","type":"page","title":"Lounge Bar","content":"In the extremely comfortable Lounge Bar you can relax and unwind, enjoying a choice of delicious coffees and teas, fruit juices and various drinks and snacks.<br \/><b><br \/>Open:<\/b><br \/>Daily 10am - 2pm<br \/><br \/>","serviceId":null,"slotId":null,"image":"c\/i\/a1535cfbe5395ce31e9e260ba13c1907.jpg","imageWide":null,"video":"","parentId":"93604","backBtn":1,"groups":[],"devices":[]},"id_93852":{"id":"93852","type":"page","title":"The Italian Cafe","content":"We welcome you to visit The Italian cafe. The Italian Cafe is a place to meet, to sit inside or out, somewhat to see and be seen.<br \/><br \/><b>Open:<\/b><br \/>Daily 9am - 11pm<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/7492c477593e1b5ee066d823061e8064.jpg","imageWide":null,"video":"","parentId":"93604","backBtn":1,"groups":[],"devices":[]},"id_93853":{"id":"93853","type":"page","title":"Lobby Bar","content":"The Lobby Bar offers cocktails, delectable bar food and rich selections of whiskeys.<br \/><br \/><b>Open:<\/b><br \/>24 hours a day<br \/><br \/>","serviceId":null,"slotId":null,"image":"c\/i\/fc9300d0a82647d748e065be48d79c96.jpg","imageWide":null,"video":"","parentId":"93604","backBtn":1,"groups":[],"devices":[]},"id_93854":{"id":"93854","type":"page","title":"Asian Restaurant","content":"The restaurant was voted Best Asian restaurant and 37th best in the world. Celebrity guests include Steve Jobs and Elon Musk visited the restaurant.<br \/>","serviceId":"93872","slotId":null,"image":"c\/i\/18fdc82dc1406b225d0101770a7aea8f.jpg","imageWide":null,"video":"","parentId":"93604","backBtn":1,"groups":[],"devices":[]},"id_93855":{"id":"93855","type":"page","title":"Phone Services","content":"We are glad to provide you high quality telephone service. To use the phone, please follow instructions below.<br \/>For in-hotel calls, please, dial room number: <b>123<\/b> for example <br \/>For local calls, please, dial <b>9<\/b> then city telephone number: <b>XXXXXXX<\/b><br \/>For country calls, please, press <b>9<\/b> then area code <b>XXX <\/b>and phone number <b>XXXXXXX<\/b><br \/>For International calls, please, dial <b>90<\/b> then country code and phone number.<br \/><br \/>","serviceId":null,"slotId":null,"image":"c\/i\/5a52947dc2daad13fc6adcc723dce79a.jpg","imageWide":null,"video":"","parentId":"93602","backBtn":1,"groups":[],"devices":[]},"id_93856":{"id":"93856","type":"page","title":"Internet Services ","content":"We are glad to to provide you HSIA (High Speed Internet Access) via Wi-FI in the whole hotel building for free. The name of network is Hotel Wi-Fi. <br \/><br \/>Default Internet connection speed is 2 mbps. If you want use a higher connection speed 10 mbps, you have to subscribe for service. We will charge you \u20ac20.00 per day.<br \/><br \/>","serviceId":null,"slotId":null,"image":"c\/i\/4b71322c1f9edf2c5cfc651ceef7ec1a.jpg","imageWide":null,"video":"","parentId":"93602","backBtn":1,"groups":[],"devices":[]},"id_93857":{"id":"93857","type":"page","title":"Interactive Television","content":"In your room there is installed Interactive TV system. Please switch on TV set and follow instructions.<br \/><br \/>Enjoy watching!<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/db053ed550925d2276f75dd16b2c369b.jpg","imageWide":null,"video":"","parentId":"93602","backBtn":1,"groups":[],"devices":[]},"id_93858":{"id":"93858","type":"page","title":"Business Centre","content":"We glad to inform you that on the first floor you can find Business Center.<br \/><b><br \/>Business Center Services:<\/b><br \/><ul><li>Document printing<br \/><\/li><li>Document scanning<\/li><li>Fax<\/li><li>Business Meetings<\/li><li>Conferences<\/li><\/ul>","serviceId":null,"slotId":null,"image":"c\/i\/d4b6ce129617c69bae84feefc46122e1.jpg","imageWide":null,"video":"","parentId":"93602","backBtn":1,"groups":[],"devices":[]},"id_93859":{"id":"93859","type":"page","title":"Check-in\/out Information","content":"<b>Check-in time is 2 pm.<\/b> <br \/>If rooms are requested prior to check-in time, early arrivals will be accommodated, as rooms become available.<br \/><br \/><b>Check-out time is 11 am. <br \/><\/b>Our staff can store luggage on a complimentary basis for those guests who have checked out but are not yet departing the hotel.<br \/><br \/><br \/>","serviceId":null,"slotId":null,"image":"c\/i\/b9f5b7a41939e62339be3109970493f9.jpg","imageWide":null,"video":"","parentId":"93602","backBtn":1,"groups":[],"devices":[]},"id_93860":{"id":"93860","type":"page","title":"Kids Club","content":"We are glad to inform you that our new, secure, indoor playground is a great place for the kids to let off some steam. Please be informed that parental supervision is not required for 1 hour.<br \/><br \/>Phone: 010<br \/><br \/>","serviceId":null,"slotId":null,"image":"c\/i\/196e9d633d4ba947359f3d89e80398f4.jpg","imageWide":null,"video":"","parentId":"93602","backBtn":1,"groups":[],"devices":[]},"id_93861":{"id":"93861","type":"page","title":"Make-up Room","content":"Let us know the date and time you desire us to tidy up your room. We will take care of the details so you can relax and enjoy your stay.<br \/>","serviceId":"93607","slotId":null,"image":"c\/i\/6455754c30a5e3b251313b64f219e484.jpg","imageWide":null,"video":"","parentId":"93606","backBtn":1,"groups":[],"devices":[]},"id_93862":{"id":"93862","type":"page","title":"Laundry &amp; Dry Cleaning","content":"We provide quick laundry and dry cleaning services at an extra charge.<br \/><br \/>Contact us and we will handle all of your laundry and dry cleaning needs with precision and care.<br \/>","serviceId":"93608","slotId":null,"image":"c\/i\/391b69fe399d46802944feb57f0ab92c.jpg","imageWide":null,"video":"","parentId":"93606","backBtn":1,"groups":[],"devices":[]},"id_93863":{"id":"93863","type":"page","title":"Technical Support","content":"Our engineer staff can help you to solve any issues you have.<br \/>","serviceId":"93609","slotId":null,"image":"c\/i\/224517ce6867f67cae7c4c4f51313099.jpg","imageWide":null,"video":"","parentId":"93606","backBtn":1,"groups":[],"devices":[]},"id_93864":{"id":"93864","type":"page","title":"Minibar Refill","content":"Enjoy the convenience and luxury of a fully-stocked minibar with our Minibar Refill service. Please contact us and we shall react immediately. <br \/><br \/>Cheers to a great stay!<br \/>","serviceId":"93610","slotId":null,"image":"c\/i\/91d18cb71b917c626b41bd1e310b5d58.jpg","imageWide":null,"video":"","parentId":"93606","backBtn":1,"groups":[],"devices":[]},"id_93865":{"id":"93865","type":"page","title":"Extra Pillows","content":"Your comfort is our priority. Ensure a good night's sleep by choosing from our pillows selection and we will deliver it to your room in several minutes.<br \/>","serviceId":"93611","slotId":null,"image":"c\/i\/e702c1ca5e03d871f11c87ab7b739ba2.jpg","imageWide":null,"video":"","parentId":"93606","backBtn":1,"groups":[],"devices":[]},"id_104577":{"id":"104577","type":"page","title":"Sauna","content":"Our charming compact SPA offers you a well-equipped sauna. Look better and sleep better.<br \/>","serviceId":null,"slotId":null,"image":"c\/i\/fb2f7598f9b5000b7c5ab18af26a2de9.jpg","imageWide":null,"video":"","parentId":"93838","backBtn":1,"groups":[],"devices":[]},"id_104579":{"id":"104579","type":"page","title":"De-stress Massage","content":"A luxurious Swedish massage with an emphasis on back and neck regions followed by a refreshing facial massage with specially made preparations. This massage will relax you even after the most stressful day.<br \/>","serviceId":"104607","slotId":null,"image":"c\/i\/71afed7f7751318bae6727290ef60942.jpg","imageWide":null,"video":"","parentId":"104580","backBtn":1,"groups":[],"devices":[]},"id_104582":{"id":"104582","type":"page","title":"Sports Massage","content":"Sports massage is combination of deep massage and Shiatsu approach. It encourages and facilitates stretching, reduces fatigue, enhances stamina, helps to prevent injuries and brings you into shape, whether you are a professional or an amateur athlete. Surrender yourself into the hands of our experts and take their advice on exercising and diminishing possible ailments.<br \/>","serviceId":"104608","slotId":null,"image":"c\/i\/db370c0ef7a9fdbfbf9288aeff488154.jpg","imageWide":null,"video":"","parentId":"104580","backBtn":1,"groups":[],"devices":[]},"id_104583":{"id":"104583","type":"page","title":"Face Cleansing","content":"Deep cleansing facial is an exfoliating treatment that helps your skin go free from dead skin cells and other impurities.<br \/>","serviceId":"104611","slotId":null,"image":"c\/i\/e11ce5c13ec921519b3b8a36fa6bfb15.jpg","imageWide":null,"video":"","parentId":"104581","backBtn":1,"groups":[],"devices":[]},"id_104584":{"id":"104584","type":"page","title":"Facial Massage","content":"Feeling tired? Need fast relaxation? Relax with a face, neck and chest massage and try the healing power of apricot and immortelle oil.<br \/>","serviceId":"104612","slotId":null,"image":"c\/i\/52ac85e4fe827ba48a778f92239fc945.jpg","imageWide":null,"video":"","parentId":"104581","backBtn":1,"groups":[],"devices":[]},"id_104585":{"id":"104585","type":"page","title":"Sunny Side Of Life","content":"For pure pleasure and total relaxation plunge into the aromatic sparkling 'blue gold' bath care - rich fragrant Provencal lavender, enriched with sugar cane and fine rosemary extract. This completely natural combination of essential oils will turn your skin smooth, soft and supple, while fresh fruit and freshly made orange juice will awake your senses and restore the energy you need.<br \/><br \/><i>Please book your bath care session in advance by a minimum of two hours.<\/i><br \/>","serviceId":"104613","slotId":null,"image":"c\/i\/dbc8297ffe8c4e05cca0e4dbbde0d13b.jpg","imageWide":null,"video":"","parentId":"104576","backBtn":1,"groups":[],"devices":[]},"id_104586":{"id":"104586","type":"page","title":"Skybath","content":"Truly indulge in the relaxing atmosphere of your bathroom in an authentic spa experience with a revitalizing bath that will give your body a new wave of energy. The irresistible compound extracts of verbena and herbal bubble base derived from coconut and sugarcane provides an immediate feeling of refreshment, which deeply hydrates and envelops the skin\u2019s silky softness. With natural green tea full of antioxidants and healthy nuts, this cosy bath brings your body and mind in harmony and sets you up for soothing sweet dreams.<br \/><br \/><i>Please book your bath care session in advance by a minimum of two hours.<\/i><br \/>","serviceId":"104614","slotId":null,"image":"c\/i\/cd17e379af6fea814492ee4bfee201dc.jpg","imageWide":null,"video":"","parentId":"104576","backBtn":1,"groups":[],"devices":[]},"id_104587":{"id":"104587","type":"page","title":"Mediterranean Gateway","content":"The perfect combination of selected essential oils with a refined fragrance for unforgettable moments of relaxation. The luxurious bath wraps the skin\u2019s velvety softness and fragrant combination of essential oils of mandarin, geranium and sweet orange beneficial to the body, perfectly accompanied with delightful Dalmatian red wine and aromatic cheeses.<br \/><br \/><i>Please book your bath care session in advance by a minimum of two hours.<\/i><br \/>","serviceId":"104615","slotId":null,"image":"c\/i\/9390ab87583bd929566e74d1194f1e99.jpg","imageWide":null,"video":"","parentId":"104576","backBtn":1,"groups":[],"devices":[]},"id_104588":{"id":"104588","type":"page","title":"Bubbles &amp; Romance ","content":"<b>A romantic and sensual bath for two<\/b><br \/><br \/>Soak up the atmosphere in a romantic setting of unforgettable moments and total relaxation with sensual drops of essential oils in a bath sprinkled with delicate rose petals. Relax and pamper your senses with sparkling wine, fine handmade chocolate pralines and irresistible seasonal fruits in a climate of L'Occitane scented candles from the N\u00e9roli &amp; Orchid\u00e9e collection, which provides a unique atmosphere inspired by fragrant playful white and orange flowers and white orchids<br \/><br \/><i>Please book your bath care session in advance by a minimum of two hours.<\/i><br \/>","serviceId":"104616","slotId":null,"image":"c\/i\/ac459123cd54ea2b87ca5fc32aa9bc29.jpg","imageWide":null,"video":"","parentId":"104576","backBtn":1,"groups":[],"devices":[]},"id_104589":{"id":"104589","type":"page","title":"Gym Program","content":"<p>Our charming compact SPA offers you a well-equipped fitness room with state-of-the-art cardiovascular equipment. The machines available include treadmills and bikes, and our fitness area offers you the Power Plate\u00ae. This high-quality exercising machine operates on the principle of vibration and is suitable for people of all ages.<\/p><p>If you\u2019d like to be more active and reduce health issues such as back pain, cardiovascular problems and stress, we\u2019d suggest you to try individual exercise with our professional personal trainer. Consistent training that suit your needs will make you feel better, look better and sleep better.<\/p><br \/>","serviceId":null,"slotId":null,"image":"c\/i\/c25691cad9db4a90c1cb46ffdfed907c.jpg","imageWide":null,"video":"","parentId":"104578","backBtn":1,"groups":[],"devices":[]},"id_104590":{"id":"104590","type":"page","title":"Power Plate Program","content":"<p>Our charming compact SPA offers you a well-equipped fitness room with state-of-the-art cardiovascular equipment.The machines available include treadmills and bikes, and our fitness area offers you the Power Plate\u00ae. This high-quality exercising machine operates on the principle of vibration and is suitable for people of all ages.<\/p><p>If you\u2019d like to be more active and reduce health issues such as back pain, cardiovascular problems and stress, we\u2019d suggest you to try individual exercise with our professional personal trainer. Consistent training that suit your needs will make you feel better, look better and sleep better.<\/p><p><b><i>Duration: 30 min<\/i><\/b><\/p>","serviceId":"104617","slotId":null,"image":"c\/i\/a804d2f02089e945033952db0af153e8.jpg","imageWide":null,"video":"","parentId":"104578","backBtn":1,"groups":[],"devices":[]},"id_93600":{"id":"93600","type":"list","title":"Hotel Information","listItems":{"id_93844":{"id":"93844","type":"listItem","title":"About Hotel","image":"c\/i\/d8a3cd1fef0322ddc6e516d1dc199b8c.jpg","link":"","onvclick":""},"id_93601":{"id":"93601","type":"listItem","title":"Hotel Rooms","image":"c\/i\/a6d65a074d021ec85238c57ae3438d94.jpg","link":"","onvclick":""},"id_93850":{"id":"93850","type":"listItem","title":"Directions &amp; Contacts","image":"c\/i\/949da7bdc936e7a05fc51c71722fb72f.jpg","link":"","onvclick":""},"id_93602":{"id":"93602","type":"listItem","title":"Hotel Services","image":"c\/i\/7fef70f367e794b9dbb048c0c245575f.jpg","link":"","onvclick":""}},"parentId":"93599","imageWide":null,"backBtn":0,"groups":[],"devices":[]},"id_93604":{"id":"93604","type":"list","title":"Restaurants & Bars","listItems":{"id_93851":{"id":"93851","type":"listItem","title":"Lounge Bar","image":"c\/i\/7690d6811e7f0e7cf961b22ec87cde7a.jpg","link":"","onvclick":""},"id_93852":{"id":"93852","type":"listItem","title":"The Italian Cafe","image":"c\/i\/9469b9b11d36afb58c4e7dfaf0f1c1e8.jpg","link":"","onvclick":""},"id_93853":{"id":"93853","type":"listItem","title":"Lobby Bar","image":"c\/i\/608d3b24744588e5bb5776b7b7cb7001.jpg","link":"","onvclick":""},"id_93854":{"id":"93854","type":"listItem","title":"Asian Restaurant","image":"c\/i\/5bc36cb2bf8cfe6610faaa7a54ae9915.jpg","link":"","onvclick":""}},"parentId":"93603","imageWide":null,"backBtn":0,"groups":[],"devices":[]},"id_93606":{"id":"93606","type":"list","title":"Room Service","listItems":{"id_93861":{"id":"93861","type":"listItem","title":"Make-up Room","image":"c\/i\/bed62002c1ff98813dd66b548f93d992.jpg","link":"","onvclick":""},"id_93862":{"id":"93862","type":"listItem","title":"Laundry &amp; Dry Cleaning","image":"c\/i\/f9d96c7c6da4e1deae564279e636f189.jpg","link":"","onvclick":""},"id_93863":{"id":"93863","type":"listItem","title":"Technical Support","image":"c\/i\/7a6ac2103fb1bd55d8275ff64c51d886.jpg","link":"","onvclick":""},"id_93864":{"id":"93864","type":"listItem","title":"Minibar Refill","image":"c\/i\/0e82edd1a20c009e05f5c3eac7cf5769.jpg","link":"","onvclick":""},"id_93865":{"id":"93865","type":"listItem","title":"Extra Pillows","image":"c\/i\/ad7037b36d7dd22eefbac500996e2562.jpg","link":"","onvclick":""},"id_93843":{"id":"93843","type":"listItem","title":"Luggage service","image":"c\/i\/f886c1b7fab999b14ff232b4925e3365.jpg","link":"","onvclick":"","devices":["mobile","tv","tablet"]}},"parentId":"93605","imageWide":null,"backBtn":0,"groups":[],"devices":[]},"id_93838":{"id":"93838","type":"list","title":"Spa &amp; Fitness","listItems":{"id_104575":{"id":"104575","type":"listItem","title":"Massage &amp; Beauty Treatments ","image":"c\/i\/464a25d463f09d0ead022c16e1cb9bfd.jpg","link":"","onvclick":""},"id_104576":{"id":"104576","type":"listItem","title":"SPA Ritual by L&#039;Occitane","image":"c\/i\/efa367d874c6a3004562dcded76faccc.jpg","link":"","onvclick":""},"id_104577":{"id":"104577","type":"listItem","title":"Sauna","image":"c\/i\/89d87f0bc1cb502b053fe3531736cb20.jpg","link":"","onvclick":""},"id_104578":{"id":"104578","type":"listItem","title":"Gym ","image":"c\/i\/543566c5fafb6d0bd38f9cefc687133d.jpg","link":"","onvclick":""}},"parentId":"93837","imageWide":null,"backBtn":0,"groups":[],"devices":["mobile","tv","tablet"]},"id_104575":{"id":"104575","type":"list","title":"Massage &amp; Beauty Treatments ","listItems":{"id_104580":{"id":"104580","type":"listItem","title":"Basic Massages","image":"c\/i\/97be210286533dcb711a2fed902a7539.jpg","link":"","onvclick":""},"id_104581":{"id":"104581","type":"listItem","title":"Face Care","image":"c\/i\/a1554bd2710d16a05ff7963aa896e724.jpg","link":"","onvclick":""}},"parentId":"93838","imageWide":null,"backBtn":1,"groups":[],"devices":[]},"id_104576":{"id":"104576","type":"list","title":"SPA Ritual by L&#039;Occitane","listItems":{"id_104585":{"id":"104585","type":"listItem","title":"Sunny Side Of Life","image":"c\/i\/ad59eb0739c5a054b94e5022c53266d6.jpg","link":"","onvclick":""},"id_104586":{"id":"104586","type":"listItem","title":"Skybath","image":"c\/i\/3dc8166e773dc32842b4dca0e5214736.jpg","link":"","onvclick":""},"id_104587":{"id":"104587","type":"listItem","title":"Mediterranean Gateway","image":"c\/i\/e5fe8af3d201ac3f86807030e173b7e2.jpg","link":"","onvclick":""},"id_104588":{"id":"104588","type":"listItem","title":"Bubbles &amp; Romance ","image":"c\/i\/8dc0048b5554cc5c6c5faa8c44f0797c.jpg","link":"","onvclick":""}},"parentId":"93838","imageWide":null,"backBtn":1,"groups":[],"devices":[]},"id_104578":{"id":"104578","type":"list","title":"Gym ","listItems":{"id_104589":{"id":"104589","type":"listItem","title":"Gym Program","image":"c\/i\/6e990611198e8e6685a6a3f126c4b75c.jpg","link":"","onvclick":""},"id_104590":{"id":"104590","type":"listItem","title":"Power Plate Program","image":"c\/i\/673cfcba9c5e29284acbb9e598adcdb0.jpg","link":"","onvclick":""}},"parentId":"93838","imageWide":null,"backBtn":1,"groups":[],"devices":[]},"id_104580":{"id":"104580","type":"list","title":"Basic Massages","listItems":{"id_104579":{"id":"104579","type":"listItem","title":"De-stress Massage","image":"c\/i\/7f9c565f4807429d4a6a9c996a5e50b5.jpg","link":"","onvclick":""},"id_104582":{"id":"104582","type":"listItem","title":"Sports Massage","image":"c\/i\/1d3583e3b6c25c8cb1bed641720c68f8.jpg","link":"","onvclick":""}},"parentId":"104575","imageWide":null,"backBtn":1,"groups":[],"devices":[]},"id_93601":{"id":"93601","type":"list","title":"Hotel Rooms","listItems":{"id_93845":{"id":"93845","type":"listItem","title":"Standard Room","image":"c\/i\/edacbdb71182b5a2e837cea1351c62f3.jpg","link":"","onvclick":""},"id_93846":{"id":"93846","type":"listItem","title":"Double Bed Room","image":"c\/i\/dcf8da9e145e95dc3c22d3dc678555e2.jpg","link":"","onvclick":""},"id_93847":{"id":"93847","type":"listItem","title":"Superior Suite","image":"c\/i\/6b376fae7c1821bab2dfedea0619834b.jpg","link":"","onvclick":""},"id_93848":{"id":"93848","type":"listItem","title":"Deluxe Suite","image":"c\/i\/15ae9289b6d0d2bbdaa9a8fa7b21da7c.jpg","link":"","onvclick":""},"id_93849":{"id":"93849","type":"listItem","title":"Presidential Suite","image":"c\/i\/c68b7040278e899a06cf01ce545ffc1b.jpg","link":"","onvclick":""}},"parentId":"93600","imageWide":null,"backBtn":1,"groups":[],"devices":[]},"id_104581":{"id":"104581","type":"list","title":"Face Care","listItems":{"id_104583":{"id":"104583","type":"listItem","title":"Face Cleansing","image":"c\/i\/1012c7d9209ebd35020f97e8c5a7760e.jpg","link":"","onvclick":""},"id_104584":{"id":"104584","type":"listItem","title":"Facial Massage","image":"c\/i\/0965555426595a407e8f4fb275c153a5.jpg","link":"","onvclick":""}},"parentId":"104575","imageWide":null,"backBtn":1,"groups":[],"devices":[]},"id_93602":{"id":"93602","type":"list","title":"Hotel Services","listItems":{"id_93855":{"id":"93855","type":"listItem","title":"Phone Services","image":"c\/i\/067375cffc000607ba228262a89a26e6.jpg","link":"","onvclick":""},"id_93856":{"id":"93856","type":"listItem","title":"Internet Services ","image":"c\/i\/f96056aff578cb04cb5c25d3b9fca558.jpg","link":"","onvclick":""},"id_93857":{"id":"93857","type":"listItem","title":"Interactive Television","image":"c\/i\/163898fe8c871ec010be5bb7e8ec258c.jpg","link":"","onvclick":""},"id_93858":{"id":"93858","type":"listItem","title":"Business Centre","image":"c\/i\/3f8407d5604558f98e4f200573eceeca.jpg","link":"","onvclick":""},"id_93859":{"id":"93859","type":"listItem","title":"Check-in\/out Information","image":"c\/i\/83c00bf3fb9b73a83606216bcbe727aa.jpg","link":"","onvclick":""},"id_93860":{"id":"93860","type":"listItem","title":"Kids Club","image":"c\/i\/975fe8e75f6caaa391d3eaf5b84730e2.jpg","link":"","onvclick":""}},"parentId":"93600","imageWide":null,"backBtn":1,"groups":[],"devices":[]},"id_93612":{"id":"93612","type":"shop","title":"In-room Dining","image":null,"imageWide":null,"parentId":"","backBtn":0,"groups":[],"devices":[],"children":{"id_93613":{"id":"93613","type":"shopCategory","title":"Breakfasts","icon":"","image":"c\/i\/65779f4293008bc9191a6a6b27a4d1f1.jpg","imageWide":null,"groups":[]},"id_93618":{"id":"93618","type":"shopCategory","title":"Starters","icon":"","image":"c\/i\/e4810e983e79f0481a27a6d0355ca16d.jpg","imageWide":null,"groups":[]},"id_93623":{"id":"93623","type":"shopCategory","title":"Salads","icon":"","image":"c\/i\/e91ab8d57beecff16499268c3ee5f7cd.jpg","imageWide":null,"groups":[]},"id_93629":{"id":"93629","type":"shopCategory","title":"Soups","icon":"","image":"c\/i\/42ce7e8e9f153fbb4c9c333c0194af65.jpg","imageWide":null,"groups":[]},"id_93634":{"id":"93634","type":"shopCategory","title":"Mains","icon":"","image":"c\/i\/009808affb6c6322dee201c0dc5739d5.jpg","imageWide":null,"groups":[]},"id_93640":{"id":"93640","type":"shopCategory","title":"Desserts","icon":"","image":"c\/i\/e2ae3e583ed772713686864079fb6281.jpg","imageWide":null,"groups":[]},"id_93645":{"id":"93645","type":"shopCategory","title":"Drinks","icon":"","image":"c\/i\/e6d40d613e7995c63af20a358ae58ffe.jpg","imageWide":null,"groups":[]},"id_93653":{"id":"93653","type":"shopCategory","title":"Hot Drinks","icon":"","image":"c\/i\/1a54f71a6a81c8a836b50f6b80b8470d.jpg","imageWide":null,"groups":[]},"id_93659":{"id":"93659","type":"shopCategory","title":"Alcohol","icon":"","image":"c\/i\/e03c22b7d4f2e6df5821c7d3d1fd2c29.jpg","imageWide":null,"groups":[]}},"hasChoiceOfTime":true},"id_93613":{"id":"93613","type":"shopCategory","title":"Breakfasts","icon":"","image":"c\/i\/65779f4293008bc9191a6a6b27a4d1f1.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93614":{"id":"93614","type":"shopProduct","title":"Oatmeal Breakfast","icon":"","image":"c\/i\/044dd29d8fee0db299ddf034471e1ea6.jpg","imageWide":null,"groups":[],"text":"<p>\nOur Oatmeal is served warm with your choice of Fried Apples, Pecans, Raisins, Fresh Sliced Bananas or 100% Pure Natural Syrup. <br \/><br \/><\/p>","cost":"16.00","toppings":[{"id":"104634","name":"Choose Your Topping","values":[{"id":"104635","name":"Fried Apples"},{"id":"104636","name":"Sliced Banana"},{"id":"104637","name":"100% Pure Natural Syrup"},{"id":"104638","name":"Pecan"}]}]},"id_93615":{"id":"93615","type":"shopProduct","title":"Pecan Pancakes","icon":"","image":"c\/i\/e6f9d2c47cfcd623d2000a3ac2ec61d7.jpg","imageWide":null,"groups":[],"text":"<p>\nThree Buttermilk Pancakes loaded with pecans and served with real Butter and a warm bottle of 100% Pure Natural Syrup.<br \/><br \/><\/p>","cost":"8.00","toppings":[]},"id_93616":{"id":"93616","type":"shopProduct","title":"French Toast","icon":"","image":"c\/i\/5ffd16b6c4b133657005fd2ba16ffdc3.jpg","imageWide":null,"groups":[],"text":"<p>\nFour slices of our own Sourdough Bread (regular or whole-wheat) dipped in egg then grilled to perfection. Served with any Fruit Topping or 100% Pure Natural Syrup.<br \/><br \/><\/p>","cost":"11.00","toppings":[]},"id_93617":{"id":"93617","type":"shopProduct","title":"Biscuits n&#039; Gravy with Bacon","icon":"","image":"c\/i\/5f7a6301720858d14164d7a09f0ce417.jpg","imageWide":null,"groups":[],"text":"<p>\nThree buttermilk biscuits with sawmill gravy and thick-sliced bacon.<br \/><br \/><\/p>","cost":"16.00","toppings":[]}}},"id_93614":{"id":"93614","type":"shopProduct","title":"Oatmeal Breakfast","text":"<p>\nOur Oatmeal is served warm with your choice of Fried Apples, Pecans, Raisins, Fresh Sliced Bananas or 100% Pure Natural Syrup. <br \/><br \/><\/p>","cost":"16.00","icon":"","image":"c\/i\/044dd29d8fee0db299ddf034471e1ea6.jpg","imageWide":null,"parentId":"93613","backBtn":1,"groups":[],"devices":[]},"id_93615":{"id":"93615","type":"shopProduct","title":"Pecan Pancakes","text":"<p>\nThree Buttermilk Pancakes loaded with pecans and served with real Butter and a warm bottle of 100% Pure Natural Syrup.<br \/><br \/><\/p>","cost":"8.00","icon":"","image":"c\/i\/e6f9d2c47cfcd623d2000a3ac2ec61d7.jpg","imageWide":null,"parentId":"93613","backBtn":1,"groups":[],"devices":[]},"id_93640":{"id":"93640","type":"shopCategory","title":"Desserts","icon":"","image":"c\/i\/e2ae3e583ed772713686864079fb6281.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93641":{"id":"93641","type":"shopProduct","title":"Tiramisu","icon":"","image":"c\/i\/80d7399c69c10dd7736e6e70d4767b00.jpg","imageWide":null,"groups":[],"text":"<p>\nAn Italian dessert made of ladyfingers dipped in coffee, layered with a whipped mixture of egg yolks and mascarpone cheese, flavored with cocoa.<br \/><br \/><\/p>","cost":"15.00","toppings":[]},"id_93642":{"id":"93642","type":"shopProduct","title":"New York Cheesecake","icon":"","image":"c\/i\/f4dbd728b26a97769689532f9c85b15a.jpg","imageWide":null,"groups":[],"text":"<p>\nClassical New York Cheesecake may be flavored or topped with fruit, whipped cream, nuts, fruit sauce or chocolate at your choice.\n\n<br \/><\/p>","cost":"16.00","toppings":[]},"id_93643":{"id":"93643","type":"shopProduct","title":"Apple Pie","icon":"","image":"c\/i\/7d638af6dffcbdb8e60699fdf8b5ffdd.jpg","imageWide":null,"groups":[],"text":"<p>\nOld fashioned apple pie cooked in 19th century oven.\n\n<br \/><\/p>","cost":"14.00","toppings":[]},"id_93644":{"id":"93644","type":"shopProduct","title":"Chocolate Muffin","icon":"","image":"c\/i\/b5664718ceb4cf36cafff231ac380b2a.jpg","imageWide":null,"groups":[],"text":"<p>\nThe key of these chocolate muffins is that we sprinkle additional chocolate chips on top before baking.<br \/><br \/><\/p>","cost":"12.00","toppings":[]}}},"id_93645":{"id":"93645","type":"shopCategory","title":"Drinks","icon":"","image":"c\/i\/e6d40d613e7995c63af20a358ae58ffe.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93650":{"id":"93650","type":"shopProduct","title":"San Pellegrino Mineral Water","icon":"","image":"c\/i\/82f474f0d597591b1d6c04e8a52ea5f0.jpg","imageWide":null,"groups":[],"text":"<p>\nSan Pellegrino mineral water. 70cl plastic bottle.\n\n<br \/><\/p>","cost":"4.00","toppings":[]},"id_93649":{"id":"93649","type":"shopProduct","title":"Perrier Mineral Water","icon":"","image":"c\/i\/669ec37f2042e7c65e9cc7c08c632ca7.jpg","imageWide":null,"groups":[],"text":"<p>\nPerrier mineral water. 33cl glass bottle.\n\n<br \/><\/p>","cost":"4.00","toppings":[]},"id_93648":{"id":"93648","type":"shopProduct","title":"Fresh Orange Juice","icon":"","image":"c\/i\/ae59870386da5fe51d08c025ab6df930.jpg","imageWide":null,"groups":[],"text":"<p>\nOne glass of of our fresh orange juice will provide you with recommended daily dosage of Vitamin C.\n\n<br \/><\/p>","cost":"7.00","toppings":[]},"id_93646":{"id":"93646","type":"shopProduct","title":"Fresh Apple Juice","icon":"","image":"c\/i\/6a7ec123d25bc0e1ffef98eeed74e69e.jpg","imageWide":null,"groups":[],"text":"<p>\nOur freash apple juice is made just for you so you could enjoy great health and a tasty treat.\n\n<br \/><\/p>","cost":"6.00","toppings":[]},"id_93651":{"id":"93651","type":"shopProduct","title":"Coca-Cola (33\u0441l)","icon":"","image":"c\/i\/dd3985a9cde0c336b2ac22bee8181fc0.jpg","imageWide":null,"groups":[],"text":"<p>\nCoca-Cola. 33cl can.<br \/><br \/><br \/><br \/><\/p>","cost":"3.00","toppings":[]},"id_93652":{"id":"93652","type":"shopProduct","title":"Coca-Cola (50cl), plastic bottle","icon":"","image":"c\/i\/655a9459f5545501e1c02b3698fb6e1d.jpg","imageWide":null,"groups":[],"text":"<p>\nCoca-Cola. 50cl plastic bottle.\n\n<br \/><\/p>","cost":"4.00","toppings":[]}}},"id_93681":{"id":"93681","type":"shop","title":"Shopping","image":"c\/i\/976e55d3b8b21c01629c248b1d11af98.png","imageWide":null,"parentId":"","backBtn":0,"groups":[],"devices":[],"children":{"id_93682":{"id":"93682","type":"shopCategory","title":"Traveler Essentials","icon":"","image":"c\/i\/9c55f2627296334ef7f59195132a8a2d.jpg","imageWide":null,"groups":[]},"id_93688":{"id":"93688","type":"shopCategory","title":"Electronics &amp; Accessories","icon":"","image":"c\/i\/4b2d95d04d3e51861f4156c7d4d9c2dc.jpg","imageWide":null,"groups":[]},"id_93693":{"id":"93693","type":"shopCategory","title":"Souvenir Shop","icon":"","image":"c\/i\/a8f39afe69a1453623356a31a347a0a5.jpg","imageWide":null,"groups":[]},"id_93698":{"id":"93698","type":"shopCategory","title":"Gift Ideas","icon":"","image":"c\/i\/bd806b1bb9c462868338853dbba5a89a.jpg","imageWide":null,"groups":[]}},"hasChoiceOfTime":true},"id_93693":{"id":"93693","type":"shopCategory","title":"Souvenir Shop","icon":"","image":"c\/i\/a8f39afe69a1453623356a31a347a0a5.jpg","parentId":"93681","backBtn":1,"groups":[],"devices":[],"children":{"id_93694":{"id":"93694","type":"shopProduct","title":"Montblanc Pen","icon":"","image":"c\/i\/09df5fc21e82e475608788de41174f10.jpg","imageWide":null,"groups":[],"text":"<p>\nCartridge fountain pen, retractable 18 K gold nib, barrel and cap made of gold-plated brass with pinstripe finish, inlaid with Montblanc emblem, gold-plated rings and clip set with a synthetic ruby-coloured gemstone.<br \/><br \/><\/p>","cost":"1370.00","toppings":[]},"id_93695":{"id":"93695","type":"shopProduct","title":"Breguet Watch","icon":"","image":"c\/i\/2fb56acac38ac22489c81f6905ba7a8e.jpg","imageWide":null,"groups":[],"text":"<p>\nBreguet 1160 \"Marie-Antoinette\". Reproduction of the watch no 160 called \"Marie-Antoinette\" based only on pictures and descriptions. Today this watch is still considered as the 5th most complicated in the world.\n\n<br \/><\/p>","cost":"12500.00","toppings":[]},"id_93696":{"id":"93696","type":"shopProduct","title":"Hoteza Cufflinks","icon":"","image":"c\/i\/53d8f3435b92e75aa6d0c75d73afe299.jpg","imageWide":null,"groups":[],"text":"<p>\nExclusive present for Hoteza application lovers.\n\n<br \/><\/p>","cost":"800.00","toppings":[]},"id_93697":{"id":"93697","type":"shopProduct","title":"Turtleneck by Issey Miyake","icon":"","image":"c\/i\/a8726ac9537225175265959fe4e0d3db.jpg","imageWide":null,"groups":[],"text":"<p>\nThis turleneck was designed specifically for Steve Jobs by Japanese designer Issey Miyake.<br \/><br \/><\/p>","cost":"205.00","toppings":[]}}},"id_93618":{"id":"93618","type":"shopCategory","title":"Starters","icon":"","image":"c\/i\/e4810e983e79f0481a27a6d0355ca16d.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93619":{"id":"93619","type":"shopProduct","title":"Bruschetta with Tomato &amp; Basil","icon":"","image":"c\/i\/5004a57daf5837eec5d693a4a60f3cc1.jpg","imageWide":null,"groups":[],"text":"<p>\nBruschetta with tomato and basil served with creamy sauce.<br \/><br \/><\/p>","cost":"7.00","toppings":[]},"id_93620":{"id":"93620","type":"shopProduct","title":"Seafood Cocktail","icon":"","image":"c\/i\/36e5c3b16ad18c40f466015f47255fe9.jpg","imageWide":null,"groups":[],"text":"<p>\nSeafood cocktail contains fresh shrimps, squid and shellfishes from Mediterranean Sea. Served with fresh herbs.\n\n<br \/><\/p>","cost":"18.00","toppings":[]},"id_93621":{"id":"93621","type":"shopProduct","title":"Marinated Olives","icon":"","image":"c\/i\/6c08f6f6c84d224ab007da8cc36ca7b5.jpg","imageWide":null,"groups":[],"text":"<p>\nClassical marinated Mediterranean olives. Served with fresh bread.<br \/><br \/><\/p>","cost":"6.00","toppings":[]},"id_93622":{"id":"93622","type":"shopProduct","title":"Fried Mozzarella","icon":"","image":"c\/i\/cfe16cd56edb929f6c75c6c414593892.jpg","imageWide":null,"groups":[],"text":"<p>\nA perfect blend of mozzarella and provolone cheeses crusted with parmesan crumbs. Served with marinara sauce.<br \/><br \/><\/p>","cost":"12.00","toppings":[]}}},"id_93623":{"id":"93623","type":"shopCategory","title":"Salads","icon":"","image":"c\/i\/e91ab8d57beecff16499268c3ee5f7cd.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93624":{"id":"93624","type":"shopProduct","title":"Russian Salad","icon":"","image":"c\/i\/c80f87aa09ca99f99bdc2750e9567f81.jpg","imageWide":null,"groups":[],"text":"<p>\nFamous Russian salad or Olivier is also popular in many European countries, Iran, Pakistan, Israel and also in South American countries like Argentina and Uruguay.<br \/><br \/><\/p>","cost":"6.00","toppings":[]},"id_93625":{"id":"93625","type":"shopProduct","title":"Greek Salad","icon":"","image":"c\/i\/c01a73cddcbc9965dc3918af8a800f86.jpg","imageWide":null,"groups":[],"text":"<p>\nGreek salad is made with pieces of tomatoes, sliced cucumbers, onion, feta cheese, and olives, typically seasoned with salt and oregano, and dressed with olive oil.<br \/><br \/><\/p>","cost":"11.00","toppings":[]},"id_93626":{"id":"93626","type":"shopProduct","title":"Caesar Salad Supreme","icon":"","image":"c\/i\/c2cf6386f29d18f33b83d465c46a26e3.jpg","imageWide":null,"groups":[],"text":"<p>\nCaesar salad is a salad of romaine lettuce and croutons dressed with parmesan cheese, lemon juice, olive oil, egg, Worcestershire sauce, garlic, and black pepper.<br \/><br \/><\/p>","cost":"8.00","toppings":[]},"id_93627":{"id":"93627","type":"shopProduct","title":"Avocado Salad","icon":"","image":"c\/i\/00d6112ed1292bf20105093c240b04d9.jpg","imageWide":null,"groups":[],"text":"<p>\nSuperhealthy salad served with crisp za'atar bread for a Middle Eastern feast.<br \/><br \/><\/p>","cost":"9.00","toppings":[]},"id_93628":{"id":"93628","type":"shopProduct","title":"Tuna Salad","icon":"","image":"c\/i\/a14f8c334e260b46e546dcd072dca234.jpg","imageWide":null,"groups":[],"text":"<p>\nTuna salad served on top of lettuce, tomato and avocado.<br \/><br \/><\/p>","cost":"13.00","toppings":[]}}},"id_93624":{"id":"93624","type":"shopProduct","title":"Russian Salad","text":"<p>\nFamous Russian salad or Olivier is also popular in many European countries, Iran, Pakistan, Israel and also in South American countries like Argentina and Uruguay.<br \/><br \/><\/p>","cost":"6.00","icon":"","image":"c\/i\/c80f87aa09ca99f99bdc2750e9567f81.jpg","imageWide":null,"parentId":"93623","backBtn":1,"groups":[],"devices":[]},"id_93626":{"id":"93626","type":"shopProduct","title":"Caesar Salad Supreme","text":"<p>\nCaesar salad is a salad of romaine lettuce and croutons dressed with parmesan cheese, lemon juice, olive oil, egg, Worcestershire sauce, garlic, and black pepper.<br \/><br \/><\/p>","cost":"8.00","icon":"","image":"c\/i\/c2cf6386f29d18f33b83d465c46a26e3.jpg","imageWide":null,"parentId":"93623","backBtn":1,"groups":[],"devices":[]},"id_93629":{"id":"93629","type":"shopCategory","title":"Soups","icon":"","image":"c\/i\/42ce7e8e9f153fbb4c9c333c0194af65.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93630":{"id":"93630","type":"shopProduct","title":"Miso Soup","icon":"","image":"c\/i\/7fb0779a732b1bfed2236879a57016b9.jpg","imageWide":null,"groups":[],"text":"<p>\nTraditional Japanese soup served with bowl of steam rice.<br \/><br \/><\/p>","cost":"6.00","toppings":[]},"id_93631":{"id":"93631","type":"shopProduct","title":"Creamy Mushroom Soup","icon":"","image":"c\/i\/4bfd7233ba29695bf247fc6b384be7e8.jpg","imageWide":null,"groups":[],"text":"<p>\nCreamy soup with white mushrooms and herbs. Served with self-made Italian bread. <br \/><br \/><\/p>","cost":"8.00","toppings":[]},"id_93632":{"id":"93632","type":"shopProduct","title":"Borsch","icon":"","image":"c\/i\/fbb4cc0f0ebeba0a7dc352daa2711245.jpg","imageWide":null,"groups":[],"text":"<p>\nTraditional Russian Moscow-style borsch. Served with sour cream and self-made rye bread. \n\n<br \/><\/p>","cost":"7.00","toppings":[]},"id_93633":{"id":"93633","type":"shopProduct","title":"Minestrone","icon":"","image":"c\/i\/12707cee6b1b8b8e6957cbab6c3e4b68.jpg","imageWide":null,"groups":[],"text":"<p>\nSoup of Italian origin with beans, onions, celery, carrots, stock and tomatoes. Served with Italian bread.\n\n<br \/><\/p>","cost":"12.00","toppings":[]}}},"id_93627":{"id":"93627","type":"shopProduct","title":"Avocado Salad","text":"<p>\nSuperhealthy salad served with crisp za'atar bread for a Middle Eastern feast.<br \/><br \/><\/p>","cost":"9.00","icon":"","image":"c\/i\/00d6112ed1292bf20105093c240b04d9.jpg","imageWide":null,"parentId":"93623","backBtn":1,"groups":[],"devices":[]},"id_93634":{"id":"93634","type":"shopCategory","title":"Mains","icon":"","image":"c\/i\/009808affb6c6322dee201c0dc5739d5.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93635":{"id":"93635","type":"shopProduct","title":"Rib Eye Steak","icon":"","image":"c\/i\/f44eb88ab7458e950d0e7667afa782c5.jpg","imageWide":null,"groups":[],"text":"<p>\nRib eye steak from fresh New Zealand beef. Our Chef recommendations.<br \/><br \/><br \/><br \/><\/p>","cost":"26.00","toppings":[{"id":"93777","name":"Degree of Doneness","values":[{"id":"93778","name":"Rare"},{"id":"93779","name":"Medium Rare"},{"id":"93780","name":"Medium"},{"id":"93781","name":"Medium Well"},{"id":"93782","name":"Well Done"}]}]},"id_93636":{"id":"93636","type":"shopProduct","title":"Pasta Bolognese","icon":"","image":"c\/i\/e93d5a370970b362b3fcba9eccc9ece7.jpg","imageWide":null,"groups":[],"text":"<p>\nTraditional combination of ground beef, pork, veal and tomato enriched by smoky pancetta.<br \/><br \/><\/p>","cost":"16.00","toppings":[]},"id_93637":{"id":"93637","type":"shopProduct","title":"BBQ Chicken","icon":"","image":"c\/i\/f05bf56adda25ddf9f4f7d1e4b9c3044.jpg","imageWide":null,"groups":[],"text":"<p>\nSlow barbecued chicken on the grill, slathered with delicious barbecue sauce.<br \/><br \/><\/p>","cost":"19.00","toppings":[]},"id_93638":{"id":"93638","type":"shopProduct","title":"Grilled Salmon","icon":"","image":"c\/i\/9c7c51985d3a7e94582b13251ecc6076.jpg","imageWide":null,"groups":[],"text":"<p>\nGrilled salmon with soy sauce and brown sugar marinade, with hints of lemon and garlic. Served with herbs.\n\n<br \/><\/p>","cost":"14.00","toppings":[]},"id_93639":{"id":"93639","type":"shopProduct","title":"Paella","icon":"","image":"c\/i\/8af0374ac514813aeb43c883ee3a41ed.jpg","imageWide":null,"groups":[],"text":"<p>\nTraditional valencian paella with chicken, rabbit and garlic.<br \/><br \/><\/p>","cost":"21.00","toppings":[]}}},"id_93635":{"id":"93635","type":"shopProduct","title":"Rib Eye Steak","text":"<p>\nRib eye steak from fresh New Zealand beef. Our Chef recommendations.<br \/><br \/><br \/><br \/><\/p>","cost":"26.00","icon":"","image":"c\/i\/f44eb88ab7458e950d0e7667afa782c5.jpg","imageWide":null,"parentId":"93634","backBtn":1,"groups":[],"devices":[]},"id_93682":{"id":"93682","type":"shopCategory","title":"Traveler Essentials","icon":"","image":"c\/i\/9c55f2627296334ef7f59195132a8a2d.jpg","parentId":"93681","backBtn":1,"groups":[],"devices":[],"children":{"id_93683":{"id":"93683","type":"shopProduct","title":"Toothpaste Theodent","icon":"","image":"c\/i\/c0d6900c0be396a15ad237c3aa10c4de.jpg","imageWide":null,"groups":[],"text":"<p>\nTheodent has recently hit the market, and it promises to strengthen the enamel of teeth by using a natural extract from the cocoa bean. Theodent, which comes in mint flavor for adults and chocolate for children.<br \/><br \/><\/p>","cost":"12.00","toppings":[]},"id_93684":{"id":"93684","type":"shopProduct","title":"Doltz Pocket Sonic Toothbrush","icon":"","image":"c\/i\/8508bd4e24f99c11313e43ba050cb7e5.jpg","imageWide":null,"groups":[],"text":"<p>\nWith Panasonic's Doltz Pocket Sonic Toothbrush, you'll have the power of ultrasonic teeth cleaning wherever you go.<br \/><br \/><\/p>","cost":"32.00","toppings":[]},"id_93685":{"id":"93685","type":"shopProduct","title":"Teleadapt World Power Adapter","icon":"","image":"c\/i\/b6737aee2856ce17641931135eefaa87.jpg","imageWide":null,"groups":[],"text":"<p>\nWorld Wide Plug Adapter Kit by Teledapt includes plugs for use in all countries like USA, Canada, Mexico, Australia, NZ, Japan, USA, UK, Ireland, African countries, Asian countries, South American countries.\n\n<br \/><\/p>","cost":"42.00","toppings":[]},"id_93686":{"id":"93686","type":"shopProduct","title":"iDAPT i4 Multicharger","icon":"","image":"c\/i\/2845116f7de68839789e8d7f61b1ea32.jpg","imageWide":null,"groups":[],"text":"<p>\niDAPT i4 is an innovative charging solution that can charge up to 4 mobile devices simultaneously and is compatible with over 4,500 mobile electronic devices including the iPhone, iPad, Blackberry, Nintendo DS, PSP, GPS systems, digital cameras, and Bluetooth products.<br \/><br \/><\/p>","cost":"135.00","toppings":[]},"id_93687":{"id":"93687","type":"shopProduct","title":"Apple 8-Pin to 30-Pin Charger Adapter","icon":"","image":"c\/i\/bbb2f4e5ecd20a625e3aa79122b98a00.jpg","imageWide":null,"groups":[],"text":"<p>\nForgot your charger for iPhone 5 or cannot connet to iHome docking station installed in your room? Take ot easy, order original Apple adapter right now.\n\n<br \/><\/p>","cost":"12.00","toppings":[]}}},"id_93688":{"id":"93688","type":"shopCategory","title":"Electronics &amp; Accessories","icon":"","image":"c\/i\/4b2d95d04d3e51861f4156c7d4d9c2dc.jpg","parentId":"93681","backBtn":1,"groups":[],"devices":[],"children":{"id_93689":{"id":"93689","type":"shopProduct","title":"iPhone X 256Gb Black","icon":"","image":"c\/i\/a547cd7b3ba64848aecc44c030145cb0.jpg","imageWide":null,"groups":[],"text":"<p>The iPhone X is clearly the best iPhone ever made. It\u2019s thin, it\u2019s powerful, it has ambitious ideas about what cameras on phones can be used for, and it pushes the design language of phones into a strange new place.&nbsp;<\/p><p>It is a huge step forward in terms of phone hardware, and it has the notch to show for it.<br><\/p>","cost":"715.00","toppings":[]},"id_93690":{"id":"93690","type":"shopProduct","title":"Apple Watch Series 3","icon":"","image":"c\/i\/0423eb10d1e57b81ec8cc56825ee2e7a.jpg","imageWide":null,"groups":[],"text":"<p>\r\nThe new Apple Watch Series 3. Model with cellular.<br><\/p>","cost":"760.00","toppings":[]},"id_93691":{"id":"93691","type":"shopProduct","title":"Monster Beats Headphones","icon":"","image":"c\/i\/6c74306f91d91c737f76a4cc2e797f83.jpg","imageWide":null,"groups":[],"text":"<p>\r\nIconic Beats by Dr Dre. Headphones that sound great and do good. Join the fight!\r\n\r\n<br><\/p>","cost":"260.00","toppings":[]},"id_93692":{"id":"93692","type":"shopProduct","title":"Amazon Kindle","icon":"","image":"c\/i\/b4c85730efa31b72134e6100840149bf.jpg","imageWide":null,"groups":[],"text":"<p>\r\nThe new Amazon Kindle e-reader Wi-Fi, 6\" E Ink Display\r\n\r\n<br><\/p>","cost":"310.00","toppings":[]}}},"id_93698":{"id":"93698","type":"shopCategory","title":"Gift Ideas","icon":"","image":"c\/i\/bd806b1bb9c462868338853dbba5a89a.jpg","parentId":"93681","backBtn":1,"groups":[],"devices":[],"children":{"id_93699":{"id":"93699","type":"shopProduct","title":"Luxury Chocolate","icon":"","image":"c\/i\/847d5808a6dae861e49df3f83cac3cf2.jpg","imageWide":null,"groups":[],"text":"<p>\nThe glamorous beauty box is certainly dressed to impress, but inside you\u2019ll find it\u2019s full of chocolate specialities that are simply to die for. And when they\u2019re gone it really comes into its own - with a mirror, compartments and ribbon-dressed drawers to keep your pampering essentials safe for a long time to come.\n\n<br \/><\/p>","cost":"23.00","toppings":[]},"id_93700":{"id":"93700","type":"shopProduct","title":"Bouquet of Roses","icon":"","image":"c\/i\/d4861c066b0a1c178883f8677507903a.jpg","imageWide":null,"groups":[],"text":"<p>\nThere is no better way to convey the emotions of the heart than to send a bouquet of beautiful roses. This bouquet can be made in different sizes and in your choise of colour.<br \/><br \/><\/p>","cost":"95.00","toppings":[]},"id_93701":{"id":"93701","type":"shopProduct","title":"Exclusive Spa Gift","icon":"","image":"c\/i\/526a4866b062131aa029d3d3fa59c1d4.jpg","imageWide":null,"groups":[],"text":"<p>\nWelcome to a discreet inner sanctuary. Where time is put on hold, so you can drift through the sauna, steam, experience showers, ice fountain and relaxation room.\n\n<br \/><\/p>","cost":"120.00","toppings":[]},"id_93702":{"id":"93702","type":"shopProduct","title":"Romantic Dinner","icon":"","image":"c\/i\/ff6545fcbad04e528c8bc114b45835d0.jpg","imageWide":null,"groups":[],"text":"<p>\n\nYou are invited to enjoy an elegant three-course dinner menu paired with a complimentary glass of sparkling wine. Choose from tempting selection of four dishes for each course.\n<br \/><\/p>","cost":"280.00","toppings":[]}}},"id_93653":{"id":"93653","type":"shopCategory","title":"Hot Drinks","icon":"","image":"c\/i\/1a54f71a6a81c8a836b50f6b80b8470d.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93654":{"id":"93654","type":"shopProduct","title":"Black Tea","icon":"","image":"c\/i\/9092b21cc8116fe8f05aa679b3c18f84.jpg","imageWide":null,"groups":[],"text":"<p>\nTwinings black tea.\n\n<br \/><\/p>","cost":"4.00","toppings":[]},"id_93655":{"id":"93655","type":"shopProduct","title":"Green Tea","icon":"","image":"c\/i\/25e3fc88d237109f4fab1a5bb6bf1f12.jpg","imageWide":null,"groups":[],"text":"<p>\nTwinings green tea.<br \/><br \/><\/p>","cost":"4.00","toppings":[]},"id_93656":{"id":"93656","type":"shopProduct","title":"Black Coffee","icon":"","image":"c\/i\/4b77b19fa971f273e3235b6c71b00a8f.jpg","imageWide":null,"groups":[],"text":"<p>\nBlack Coffe Lavaza Cream Aroma.<br \/><br \/><\/p>","cost":"5.00","toppings":[]},"id_93657":{"id":"93657","type":"shopProduct","title":"Cappuccino","icon":"","image":"c\/i\/978581fbdbe136db008db3d28b20b3c4.jpg","imageWide":null,"groups":[],"text":"<p>\nWe are making cappuccino using only best varieties of coffee and fresh milk.<br \/><br \/><br \/><\/p>","cost":"6.00","toppings":[]},"id_93658":{"id":"93658","type":"shopProduct","title":"Hot Chocolate","icon":"","image":"c\/i\/7fa60b94f86f811b6055c4001cb89aca.jpg","imageWide":null,"groups":[],"text":"<p>\nA tasty cup of hot chocolate with whipped cream and cocoa powder.\n\n<br \/><\/p>","cost":"6.00","toppings":[]}}},"id_93659":{"id":"93659","type":"shopCategory","title":"Alcohol","icon":"","image":"c\/i\/e03c22b7d4f2e6df5821c7d3d1fd2c29.jpg","parentId":"93612","backBtn":1,"groups":[],"devices":[],"children":{"id_93660":{"id":"93660","type":"shopCategory","title":"Cocktails","icon":"","image":"c\/i\/4fd3f963c02c807ac0ef047000b1fb4b.jpg","imageWide":null,"groups":[]},"id_93665":{"id":"93665","type":"shopCategory","title":"Beer","icon":"","image":"c\/i\/b60db0fe80104ede07c4d04ab0e83f0c.jpg","imageWide":null,"groups":[]},"id_93670":{"id":"93670","type":"shopCategory","title":"Wine","icon":"","image":"c\/i\/ac29c66f2d81d644571fb40944f31e35.jpg","imageWide":null,"groups":[]},"id_93675":{"id":"93675","type":"shopCategory","title":"Whiskey","icon":"","image":"c\/i\/183569bb20b8f5c4e00b071baefadeb8.jpg","imageWide":null,"groups":[]}}},"id_93660":{"id":"93660","type":"shopCategory","title":"Cocktails","icon":"","image":"c\/i\/4fd3f963c02c807ac0ef047000b1fb4b.jpg","parentId":"93659","backBtn":1,"groups":[],"devices":[],"children":{"id_93661":{"id":"93661","type":"shopProduct","title":"Old Fashioned","icon":"","image":"c\/i\/3983ffff27207d4c2b79194267a7948d.jpg","imageWide":null,"groups":[],"text":"<p>\nThe Old Fashioned is made by muddling sugar with bitters then adding whiskey and a twist of citrus rind.<br \/>The first use of the name \"Old Fashioned\" for a Bourbon whiskey cocktail was said to have been, anachronistically, at the Pendennis Club, a gentlemen's club founded in 1881 in Louisville, Kentucky. The recipe was said to have been invented by a bartender at that club in honor of Colonel James E. Pepper, a prominent bourbon distiller, who brought it to the Waldorf-Astoria Hotel bar in New York City.<br \/><br \/><\/p>","cost":"8.00","toppings":[]},"id_93662":{"id":"93662","type":"shopProduct","title":"Margarita","icon":"","image":"c\/i\/248b29564b464784e8fc4d9add5154d6.jpg","imageWide":null,"groups":[],"text":"<p>\nThe margarita is a Mexican cocktail consisting of tequila mixed with Cointreau and lime, served with salt on the glass rim.<br \/><br \/>Margarita was invented in October 1941, at Hussong's Cantina in Ensenada, Mexico, by bartender Don Carlos Orozco. One slow afternoon, Don Carlos was experimenting with mixing new drinks when a prestigious visitor arrived: Margarita Henkel, the daughter of a German ambassador. Don Carlos offered the drink to Margarita, and named it after her for being the first person to taste it.<br \/><br \/><\/p>","cost":"8.00","toppings":[]},"id_93663":{"id":"93663","type":"shopProduct","title":"Daiquiri","icon":"","image":"c\/i\/cc77a4943c7a99fc9081c4bb7768126d.jpg","imageWide":null,"groups":[],"text":"<p>\nDaiquiri<b> <\/b>is a family of cocktails whose main ingredients are rum, lime juice and sugar.<br \/><br \/>The Daiquir\u00ed was supposedly invented by an American mining engineer, named Jennings Cox, who was in Cuba at the time of the Spanish-American War. It is also possible that William Astor Chanler, a US congressman who purchased the Santiago Iron Mines in 1902, introduced the Daiquir\u00ed to clubs in New York in that year.<br \/><br \/><\/p>","cost":"10.00","toppings":[]},"id_93664":{"id":"93664","type":"shopProduct","title":"Pi\u00f1a Colada","icon":"","image":"c\/i\/9a31f965b5e504737885da3b5d96ed00.jpg","imageWide":null,"groups":[],"text":"<p>\nThe Pi\u00f1a Colada is a sweet, rum-based cocktail made with rum, cream of coconut, and pineapple juice, served either blended or shaken with ice.<br \/>The name 'Pi\u00f1a Colada' literally means 'strained pineapple', a reference to the freshly pressed and strained pineapple juice used in the drink's preparation. Three Puerto Rican bartenders contest the ownership of their country's national drink. Ram\u00f3n 'Monchito' Marrero P\u00e9rez claims to have first made it at the Caribe Hilton Hotel's Beachcomber Bar in San Juan on 15th August 1952, using the then newly available Coco L\u00f3pez cream of coconut. Ricardo Garcia, who also worked at the Caribe, says that it was he who invented the drink.\n\n<br \/><\/p>","cost":"10.00","toppings":[]}}},"id_93665":{"id":"93665","type":"shopCategory","title":"Beer","icon":"","image":"c\/i\/b60db0fe80104ede07c4d04ab0e83f0c.jpg","parentId":"93659","backBtn":1,"groups":[],"devices":[],"children":{"id_93666":{"id":"93666","type":"shopProduct","title":"Heiniken (33\u0441l), 5% alc","icon":"","image":"c\/i\/9492bdb88e1ff7e939de8b829da90e80.jpg","imageWide":null,"groups":[],"text":"<p>\nHeineken is a pale lager beer with 5% alcohol by volume.<b><br \/><\/b>\n\n<br \/><\/p>","cost":"4.00","toppings":[]},"id_93667":{"id":"93667","type":"shopProduct","title":"Heineken (50\u0441l), 5% alc","icon":"","image":"c\/i\/ca79038d4dc06397fcb5a52f3adfc2cb.jpg","imageWide":null,"groups":[],"text":"<p>\nHeineken<b> <\/b>is a pale lager beer with 5% alcohol by volume.<br \/><br \/><br \/><br \/><\/p>","cost":"5.00","toppings":[]},"id_93668":{"id":"93668","type":"shopProduct","title":"Guinness Draught (1pt), 4.3% alc","icon":"","image":"c\/i\/3b71df67c29d1403e69d5612f93d4fdb.jpg","imageWide":null,"groups":[],"text":"<p>\nGuinness is a popular Irish dry stout that originated in the brewery of Arthur Guinness.<b><br \/><br \/><br \/><\/b><b><br \/><\/b>\n\n<br \/><\/p>","cost":"7.00","toppings":[]},"id_93669":{"id":"93669","type":"shopProduct","title":"Lindemans Kriek Cuvee Rene Grand Cru (0.75l), 4% alc","icon":"","image":"c\/i\/bc6a84995e90164cfd13c39649011ea0.jpg","imageWide":null,"groups":[],"text":"<p>\nThe Kriek Cuv\u00e9e Ren\u00e9 by brewery Lindemans is an excellent sour kriek beer. It is brewed with wild yeast from the surrounding air in Vlezenbeek, water, malted barley, wheat, aged hop flowers and selected wild cherries.<br \/><br \/><br \/><br \/><br \/><br \/><br \/><br \/><br \/><br \/><br \/><br \/><br \/><br \/><\/p>","cost":"8.00","toppings":[]}}},"id_93670":{"id":"93670","type":"shopCategory","title":"Wine","icon":"","image":"c\/i\/ac29c66f2d81d644571fb40944f31e35.jpg","parentId":"93659","backBtn":1,"groups":[],"devices":[],"children":{"id_93671":{"id":"93671","type":"shopProduct","title":"Aia Vecchia, Morellino di Scansano DOC, 2009","icon":"","image":"c\/i\/69178138b509a44a6d5ece0e18507516.jpg","imageWide":null,"groups":[],"text":"<p>\nAia Vecchia, Morellino di Scansano DOC, 2009, 13% alc, 75cl,  red wine, Sangiovese.<br \/><br \/>Lagone has a warm deep red color close to purple. Delicate aromas of Mediterranean wood and vanilla emphasize the structured and elegant taste with intense notes of wild berries, ripe juicy sour cherries and hints of sweet spices that leave the palate satisfied and pleasantly sweet and dry.<b><br \/><\/b><br \/><br \/><\/p>","cost":"32.00","toppings":[]},"id_93672":{"id":"93672","type":"shopProduct","title":"Albizzia, Toscana IGT Chardonnay, 2011","icon":"","image":"c\/i\/f14be3d2946e9ad3b98e77cd3cdfaa5a.jpg","imageWide":null,"groups":[],"text":"<p>\n<b>Albizzia, Toscana IGT Chardonnay, 2011, 13.5% alc, 75cl<br \/><br \/><\/b>There are myriad descriptors for the aromas and flavors of Chardonnay. Common aromas range from butter and toast through to tropical notes of banana, pineapple and guava.<b><br \/><br \/><br \/><br \/><br \/><\/b>\n\n<br \/><\/p>","cost":"21.00","toppings":[]},"id_93673":{"id":"93673","type":"shopProduct","title":"Domenico Clerico Ciabot Mentin Ginestra, 2005 ","icon":"","image":"c\/i\/92f246115de4c21031b54275831e2e44.jpg","imageWide":null,"groups":[],"text":"<p>\n2005 Domenico Clerico Ciabot Mentin Ginestra, Barolo DOCG, Italy, 75cl, red wine.<b><br \/><br \/><\/b>The 2005 Barolo Ciabot Mentin Ginestra emerges from the glass with endless layers of sweet spices, menthol, violets and dark fruit on a powerful, authoritative frame. This is a beautifully defined, sculpted wine of the very highest level. Tar, smoke and licorice linger on the finish. The tannins are massive at this stage, and the wine needs time, but the 2005 is undoubtedly one of the stars of the vintage. <b><br \/><\/b>\n\n<br \/><\/p>","cost":"86.00","toppings":[]},"id_93674":{"id":"93674","type":"shopProduct","title":"Martinborough Vineyard Pinot Noir, 2006","icon":"","image":"c\/i\/a547ce720bcafc8ff10df22e70cf8b28.jpg","imageWide":null,"groups":[],"text":"<p>\nMartinborough Vineyard Pinot Noir, Martinborough, New Zealand, 2006, 75cl, red wine.<br \/><b><br \/><\/b>The 2006 Pinot Noir is endowed with a fabulous, mineral-rich nose, superbly defined with touches of strawberry and boysenberry, the palate very concentrated yet very well-defined with vibrant acidity, ebullient red-berried fruits and a svelte, silky, sophisticated finish. Its quality shines through this lovely wine that should drink over 3\u20135 years.<b><br \/><\/b>\n\n<br \/><\/p>","cost":"73.00","toppings":[]}}},"id_93675":{"id":"93675","type":"shopCategory","title":"Whiskey","icon":"","image":"c\/i\/183569bb20b8f5c4e00b071baefadeb8.jpg","parentId":"93659","backBtn":1,"groups":[],"devices":[],"children":{"id_93676":{"id":"93676","type":"shopProduct","title":"Glenfiddich 15 years old (70cl), 40% alc","icon":"","image":"c\/i\/5ea08cc026e61da9ac495e7769834d34.jpg","imageWide":null,"groups":[],"text":"<p>\nA single malt Scotch whisky aged in European, American and New American oak \u2013 for a careful release of virgin cask flavours. Mellowed in our first of a kind Solera Vat, and finally married in Portuguese oak tuns. Tradition and innovation gives this whisky great depth and consistency. An expression layered with intriguing aromas and bursting with flavours. The first 15 Year Old to enter the top ten best selling single malts in the world.<br \/><br \/><\/p>","cost":"54.00","toppings":[]},"id_93677":{"id":"93677","type":"shopProduct","title":"Glenfiddich 21 years old (70cl), 40% alc","icon":"","image":"c\/i\/d739d1f749def14637a1c7a972d7d302.jpg","imageWide":null,"groups":[],"text":"<p>\nCasks that once contained premium Caribbean rum are used to finish this expression, aged for 21 years. Four months in Gran Reserva barrels selected by our Malt Master, wrap this single malt whisky in distinct aromas and flavours. An intense and vanilla sweet aroma, floral with hints of banana. And a soft, lively taste with lime, ginger and spice are followed by a complex and very long ending. Our rum finish releases layers of intensity and sets this 21 Year Old apart from other whiskies.<br \/><br \/><\/p>","cost":"92.00","toppings":[]},"id_93678":{"id":"93678","type":"shopProduct","title":"Jack Daniels Old No.7 (75cl), 40% alc","icon":"","image":"c\/i\/af129b206c3107fe4225b3a190ebd5a7.jpg","imageWide":null,"groups":[],"text":"<p>\nMade in the Tennessee Sour Mash style, it is very similar to bourbon with the additional step of dripping the fresh make spirit through a vat of sugar maple charcoal to \"mellow\" the whiskey before going into barrel. The result is a smooth, versatile whiskey that is true to its country roots.<b> <\/b>\n\n<br \/><\/p>","cost":"64.00","toppings":[]},"id_93679":{"id":"93679","type":"shopProduct","title":"Bushmills Original (70cl), 40% alc","icon":"","image":"c\/i\/13f67b44a7293d6b392ff6272a4be29c.jpg","imageWide":null,"groups":[],"text":"<p>\nBushmills\u201a the golden member of the family. It\u2019s a blend of triple distilled single malt whiskey with a lighter irish grain whiskey.<br \/><br \/><\/p>","cost":"47.00","toppings":[]},"id_93680":{"id":"93680","type":"shopProduct","title":"The Glenlivet 18 years old (70cl), 43% alc","icon":"","image":"c\/i\/01b749e0f0e87dc4bce8c19bbe898cc9.jpg","imageWide":null,"groups":[],"text":"<p>\nThis excellent 18 year old single malt from Glenlivet is a classic Speyside dram, it also won two golds at the International Wine and Spirits Competition. <br \/><br \/><\/p>","cost":"34.00","toppings":[]}}},"id_93607":{"id":"93607","type":"service","title":"Make-up Room","customField":"","cost":"","workingHours":"24 hours","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_93608":{"id":"93608","type":"service","title":"Laundry and Dry Cleaning","customField":"","cost":"25","workingHours":"10:00-18:00","pieces":"none","toppings":[{"id":"104592","name":"Socks","type":"select","price":"4","required":false,"values":[]},{"id":"104593","name":"Shirt Short Sleeve","type":"counter","price":"7","required":false,"values":[]},{"id":"104594","name":"Shirt Long Sleeve","type":"counter","price":"9","required":false,"values":[]},{"id":"104595","name":"Trousers","type":"counter","price":"10","required":false,"values":[]}],"buttonName":"Select time","hasChoiceOfTime":true},"id_93609":{"id":"93609","type":"service","title":"Technical Support","customField":"","cost":"","workingHours":"24 hours","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_93610":{"id":"93610","type":"service","title":"Minibar Refill","customField":"","cost":"","workingHours":"24 hours","pieces":"none","toppings":[{"id":"104596","name":"San Pellegrino Mineral Water","type":"counter","price":"4","required":false,"values":[]},{"id":"104597","name":"Perrier Mineral Water","type":"select","price":"4","required":false,"values":[{"name":"Perrier Mineral Water","price":"","id":"104599"}]},{"id":"104600","name":"Coca-Cola (33\u0441l)","type":"counter","price":"","required":false,"values":[]}],"buttonName":"Select time","hasChoiceOfTime":true},"id_93611":{"id":"93611","type":"service","title":"Extra Pillows","customField":"","cost":"","workingHours":"24 hours","pieces":"none","toppings":[{"id":"104601","name":"Select one of these luxury pillows","type":"select","price":"","required":false,"values":[{"name":"Goose Down Pillow 60x80 cm","price":"","id":"104602"},{"name":"Kapok Pillow 60x80 cm","price":"","id":"104603"},{"name":"Buck Wheat 60x60 cm","price":"","id":"104604"},{"name":"Igusa Pillow 60x60 cm","price":"","id":"104605"},{"name":"Memory Foam Pillow 45x70 cm","price":"","id":"104606"}]}],"buttonName":"Select time","hasChoiceOfTime":true},"id_93774":{"id":"93774","type":"service","title":"Mercedes-Benz","customField":"","cost":"","workingHours":"","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_93866":{"id":"93866","type":"service","title":"Luggage services","customField":"","cost":"","workingHours":"24 hours","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_93872":{"id":"93872","type":"service","title":"Restaurant Booking","customField":"","cost":"","workingHours":"10:00-23:30","pieces":"pers","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_93873":{"id":"93873","type":"service","title":"Spa Booking","customField":"","cost":"","workingHours":"","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_93928":{"id":"93928","type":"service","title":"Some service","customField":"","cost":"","workingHours":"","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_104607":{"id":"104607","type":"service","title":"De-stress Massage","customField":"DURATION: 50 MIN","cost":"55","workingHours":"08:00-20:00","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_104608":{"id":"104608","type":"service","title":"Sports Massage","customField":"DURATION: 50-90 MIN","cost":"","workingHours":"08:00-20:00","pieces":"none","toppings":[{"id":"104609","name":"50 min","type":"radio","price":"60","required":false,"values":[]},{"id":"104610","name":"90 min","type":"radio","price":"91","required":false,"values":[]}],"buttonName":"Select time","hasChoiceOfTime":true},"id_104611":{"id":"104611","type":"service","title":"Face Cleansing","customField":"DURATION: 50-80 MIN","cost":"75","workingHours":"08:00-20:00","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_104612":{"id":"104612","type":"service","title":"Facial Massage","customField":"DURATION: 20 MIN","cost":"20","workingHours":"08:00-20:00","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_104613":{"id":"104613","type":"service","title":"Sunny Side Of Life","customField":"DURATION: 60 MIN","cost":"45","workingHours":"08:00-22:00","pieces":"pers","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_104614":{"id":"104614","type":"service","title":"Skybath","customField":"DURATION: 70 MIN","cost":"55","workingHours":"08:00-22:00","pieces":"pers","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_104615":{"id":"104615","type":"service","title":"Mediterranean Gateway","customField":"DURATION: 60 MIN","cost":"60","workingHours":"08:00-22:00","pieces":"pers","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_104616":{"id":"104616","type":"service","title":"Bubbles &amp; Romance ","customField":"DURATION: 90 MIN","cost":"85","workingHours":"08:00-22:00","pieces":"none","toppings":[],"buttonName":"Select time","hasChoiceOfTime":true},"id_104617":{"id":"104617","type":"service","title":"Power plate ","customField":"","cost":"","workingHours":"08:00-20:00","pieces":"none","toppings":[{"id":"104618","name":"Power plate 30min","type":"radio","price":"35","required":false,"values":[]},{"id":"104619","name":"Power plate 60min","type":"radio","price":"60","required":false,"values":[]}],"buttonName":"Select time","hasChoiceOfTime":true}}}
+{
+  "config": {
+    "messages": 1,
+    "cart": 1,
+    "viewbill": 1,
+    "defaults": { "language": "en" },
+    "currency": {
+      "precision": 2,
+      "decimal": ".",
+      "thousand": " ",
+      "format": "%v %s",
+      "symbol": "$"
+    },
+    "demo": 0,
+    "metro_layout": [],
+    "icon_library": 0,
+    "success_wakeup": {
+      "title": "Wake-up time set",
+      "text": "We will wake you up at set time. You may cancel your wake-up service in 'My Orders' section."
+    },
+    "success_shop": {
+      "title": "Your order is on the way to you",
+      "text": "Thank you for your order! You can track the status of your order or cancel it in My Orders section."
+    },
+    "delivery_time": {
+      "title": "Delivery Time",
+      "text": "You may ask for immediate delivery of your order into your room or select delivery time at your convinience."
+    },
+    "product_added": {
+      "title": "Items have been added",
+      "text": "You can add other products or go to your cart and finish order."
+    },
+    "confirmation_page": {
+      "title": "Final Confirmation",
+      "text": "Please confirm the order by entering the requested data below.",
+      "text_error": "The data is incorrect. Please try again or ask at reception for assistance.",
+      "text_tooltip": "Please note that the order amount will be charged to your bill"
+    },
+    "success_service": {
+      "title": "Your request is sent successfully",
+      "text": "Thank you for your order! You can track the status of your order or cancel it in My Orders section."
+    },
+    "payQR": { "status": 0 }
+  },
+  "welcome": {
+    "type": "welcome",
+    "title": "Welcome {username}!",
+    "content": "",
+    "image": "c/i/a3bab9a1ad52584d385f3e6a44733638.png",
+    "mediaType": "",
+    "data": null
+  },
+  "menu": {
+    "id_93728": {
+      "id": "93728",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Television",
+      "groups": [],
+      "devices": ["tv"],
+      "icon": "tv",
+      "link": "#tv",
+      "onvclick": "tv_mode();",
+      "class": ""
+    },
+    "id_93746": {
+      "id": "93746",
+      "type": "menuItem",
+      "image": "c/i/b197b5a730f5423fa48faecbda987400.png",
+      "video": "",
+      "title": "Entertainment",
+      "groups": [],
+      "devices": ["tv"],
+      "icon": "icons8-sources",
+      "link": "#sources_page",
+      "onvclick": "tv_sources_page();",
+      "class": "icons8-sources"
+    },
+    "id_93867": {
+      "id": "93867",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Radio",
+      "groups": [],
+      "devices": ["tv"],
+      "icon": "radio",
+      "link": "#radio",
+      "onvclick": "RADIO.open();",
+      "class": ""
+    },
+    "id_93612": {
+      "id": "93612",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "In-room Dining",
+      "groups": [],
+      "devices": [],
+      "icon": "roomservice",
+      "link": "#93612",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93681": {
+      "id": "93681",
+      "type": "menuItem",
+      "image": "c/i/976e55d3b8b21c01629c248b1d11af98.png",
+      "video": "",
+      "title": "Shopping",
+      "groups": [],
+      "devices": [],
+      "icon": "shop",
+      "link": "#93681",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93588": {
+      "id": "93588",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "My Orders",
+      "groups": [],
+      "devices": [],
+      "icon": "cart",
+      "link": "#orders",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93599": {
+      "id": "93599",
+      "type": "menuItem",
+      "image": "c/i/d88efa75b91a47ea601ed0ef72fc271b.png",
+      "video": "http://localhost:8080/video/HITEC_Scandic_Video_No_Sound.mp4",
+      "sound": false,
+      "title": "Hotel Information",
+      "groups": [],
+      "devices": [],
+      "icon": "about",
+      "link": "#93600",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93603": {
+      "id": "93603",
+      "type": "menuItem",
+      "image": "c/i/9344f0d12c8d0ef7e6ca51b3387d97cc.png",
+      "video": "",
+      "title": "Restaurants &amp; Bars",
+      "groups": [],
+      "devices": [],
+      "icon": "food",
+      "link": "#93604",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93837": {
+      "id": "93837",
+      "type": "menuItem",
+      "image": "c/i/ff7feffc11f4f09aabd02ea284e973cd.png",
+      "video": "",
+      "title": "Spa &amp; Fitness",
+      "groups": [],
+      "devices": [],
+      "icon": "spa2",
+      "link": "#93838",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93744": {
+      "id": "93744",
+      "type": "delimiter",
+      "title": "",
+      "groups": [],
+      "devices": []
+    },
+    "id_93605": {
+      "id": "93605",
+      "type": "menuItem",
+      "image": "c/i/cd2d60cedbb35ed10a5e2a34242c5437.png",
+      "video": "",
+      "title": "Room Service",
+      "groups": [],
+      "devices": [],
+      "icon": "service",
+      "link": "#93606",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93807": {
+      "id": "93807",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Wake-up Call",
+      "groups": [],
+      "devices": [],
+      "icon": "wakeup",
+      "link": "#services_wakeup",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93745": {
+      "id": "93745",
+      "type": "delimiter",
+      "title": "",
+      "groups": [],
+      "devices": []
+    },
+    "id_93592": {
+      "id": "93592",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Messages",
+      "groups": [],
+      "devices": [],
+      "icon": "message",
+      "link": "#messages",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93593": {
+      "id": "93593",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Feedback",
+      "groups": [],
+      "devices": [],
+      "icon": "questionnaire",
+      "link": "#feedback",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93591": {
+      "id": "93591",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "View Bill",
+      "groups": [],
+      "devices": [],
+      "icon": "bill",
+      "link": "#viewbill",
+      "onvclick": "viewbill();",
+      "class": "icons8-Bill"
+    },
+    "id_93732": {
+      "id": "93732",
+      "type": "menuItem",
+      "image": "c/i/8df607a4f00ee4770146f00337513154.png",
+      "video": "",
+      "title": "Movies",
+      "groups": [],
+      "devices": ["tv"],
+      "icon": "",
+      "link": "#vod",
+      "onvclick": "VOD.open();",
+      "class": "icons8-tv-show"
+    },
+    "id_93733": {
+      "id": "93733",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Use Mobile App",
+      "groups": [],
+      "devices": ["tv", "tablet"],
+      "icon": "home",
+      "link": "#93734",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_181239": {
+      "id": "181239",
+      "type": "widget",
+      "image": null,
+      "video": "",
+      "title": "Flight info",
+      "groups": [],
+      "devices": ["tv", "tablet"],
+      "icon": "flights",
+      "link": "#181239",
+      "onvclick": "widgetObserver.open(181239);",
+      "class": "",
+      "widget": {
+        "type": "airportSchedule",
+        "data": [
+          {
+            "code": "LCA",
+            "city": "Larnaca",
+            "name": "Larnaca International Airport"
+          },
+          {
+            "code": "LED",
+            "city": "Saint-Petersburg",
+            "name": "Pulkovo Airport"
+          },
+          {
+            "code": "LHR",
+            "city": "London",
+            "name": "London Heathrow Airport"
+          },
+          {
+            "code": "DXB",
+            "city": "Dubai",
+            "name": "Dubai International Airport"
+          }
+        ]
+      }
+    },
+    "id_93590": {
+      "id": "93590",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Settings",
+      "groups": [],
+      "devices": [],
+      "icon": "settings",
+      "link": "#settings",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93869": {
+      "id": "93869",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "TV Control",
+      "groups": [],
+      "devices": ["tablet"],
+      "icon": "tv",
+      "link": "#93869",
+      "onvclick": "",
+      "class": ""
+    }
+  },
+  "wakeupcall": {
+    "type": "wakeupcall",
+    "title": "Wake-Up Call",
+    "text": "<br /><br />\n\nAre you afraid to oversleep? Should\nyou need  wake-up call please indicate\ntime and we will take care of you to wake up on time and bring fresh cup of tea\nor coffee with our compliments. Just choose drink at your choice.\n<br /><br /><br />",
+    "icon": "",
+    "groups": [],
+    "serviceId": "93597",
+    "image": "c/i/68b94027e72688969f4a477c0de98885.png"
+  },
+  "guide": [],
+  "rcu": {
+    "id_93869": {
+      "id": "93869",
+      "type": "rcu",
+      "title": "TV Control",
+      "icon": "tv",
+      "items": {
+        "id_93870": {
+          "id": "93870",
+          "type": "rcuItem",
+          "parentId": "93869",
+          "title": "TV Control",
+          "content": "",
+          "icon": "",
+          "icon_additional": "",
+          "image": null,
+          "itemType": "hotezaremote",
+          "blockingItem": null,
+          "params": {
+            "addr": "",
+            "tempAddr": "",
+            "modeAddr": "",
+            "speedAddr": "",
+            "pauseAddr": "",
+            "offAddr": ""
+          },
+          "groups": [],
+          "devices": ["tablet"]
+        }
+      },
+      "image": null,
+      "parentId": "",
+      "backBtn": 0,
+      "groups": [],
+      "devices": ["tablet"]
+    }
+  },
+  "messages": {
+    "id_93748": {
+      "id": "93748",
+      "type": "recipient",
+      "title": "Reception",
+      "groups": [],
+      "image": "c/i/624ed5611fc9de5c036fe4e614ce2d6e.jpg"
+    }
+  },
+  "cart": {
+    "title": "My Orders",
+    "text": "Service fee",
+    "fee": "5",
+    "feeType": "fix",
+    "parentId": "",
+    "backBtn": 0
+  },
+  "feedback": {
+    "id": "93594",
+    "parentId": "",
+    "backBtn": 0,
+    "type": "feedback",
+    "items": [
+      { "id": "100517", "title": "Atmosphere", "type": "stars" },
+      { "id": "100518", "title": "Cleanness", "type": "stars" },
+      { "id": "100519", "title": "Food quality", "type": "stars" },
+      { "id": "100520", "title": "Customer service", "type": "stars" },
+      {
+        "id": "100527",
+        "title": "Why did you choose us?",
+        "type": "list",
+        "list": ["Location", "Price", "Recommendations"]
+      }
+    ],
+    "groups": [],
+    "title": "Inquiry form",
+    "text": ""
+  },
+  "mobilekey": [],
+  "language": [
+    { "type": "language", "title": "English", "code": "en" },
+    {
+      "type": "language",
+      "title": "Arabic (\u0627\u0644\u0639\u0631\u0628\u064a\u0629)",
+      "code": "ar"
+    },
+    {
+      "type": "language",
+      "title": "Chinese Simplified (\u7b80\u4f53\u4e2d\u6587)",
+      "code": "zh"
+    },
+    { "type": "language", "title": "French (Fran\u00e7ais)", "code": "fr" },
+    {
+      "type": "language",
+      "title": "Russian (\u0420\u0443\u0441\u0441\u043a\u0438\u0439)",
+      "code": "ru"
+    }
+  ],
+  "housekeeping": {
+    "roomStatus": {
+      "1": { "checkin": false, "title": "Dirty/Vacant" },
+      "2": { "checkin": true, "title": "Dirty/Occupied" },
+      "3": { "checkin": false, "title": "Clean/Vacant" },
+      "4": { "checkin": true, "title": "Clean/Occupied" },
+      "5": { "checkin": false, "title": "Inspected/Vacant" },
+      "6": { "checkin": true, "title": "Inspected/Occupied" }
+    },
+    "minibar": {
+      "id_93931": {
+        "id": "93931",
+        "parentId": "93929",
+        "type": "category",
+        "title": "drinks",
+        "items": {
+          "id_93933": {
+            "id": "93933",
+            "parentId": "93931",
+            "type": "item",
+            "title": "pepsi"
+          },
+          "id_93934": {
+            "id": "93934",
+            "parentId": "93931",
+            "type": "item",
+            "title": "coca-cola"
+          }
+        }
+      },
+      "id_93932": {
+        "id": "93932",
+        "parentId": "93929",
+        "type": "category",
+        "title": "food",
+        "items": {
+          "id_93935": {
+            "id": "93935",
+            "parentId": "93932",
+            "type": "item",
+            "title": "chips"
+          }
+        }
+      }
+    }
+  },
+  "pages": {
+    "id_93734": {
+      "id": "93734",
+      "type": "page",
+      "title": "Use Our Mobile App",
+      "content": "<p>Enhance your travel experience with your own all-in-one virtual pocket concierge and discover an array of resort facilities and services even before your visit. On top of that with the app you can control television, lights, temperature in your room, and even open your room door!</p>\n\n<p>You may download our app by searching 'Hoteza Demo' in App Store / Google Play or by scanning QR code shown on the left. </p>",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/b6944a234e99152c82cd8888711d2738.png",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93733",
+      "backBtn": 0,
+      "groups": [],
+      "devices": ["tv"]
+    },
+    "id_93843": {
+      "id": "93843",
+      "type": "page",
+      "title": "Luggage service",
+      "content": "Inform us about the desired time and let us lighten your load with our convenient luggage service. The bellboy will collect your luggage and bring it downstairs to the lobby.<br />",
+      "serviceId": "93866",
+      "slotId": null,
+      "image": "c/i/e20dd2e2a927d10287678fd7eee2c3d2.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93606",
+      "backBtn": 1,
+      "groups": [],
+      "devices": ["mobile", "tv", "tablet"]
+    },
+    "id_93844": {
+      "id": "93844",
+      "type": "page",
+      "title": "About Hotel",
+      "content": "Hotel is located right in the centre of the capital city, in a modern district of business, commerce and entertainment. <br /><br />The hotel stands next to the river, near the Old Town with its major sites of attraction: the Cathedral, Palace, Castle, as well as streets so popular among the city guests and local inhabitants.<br /><br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/b16c6a2ea1acfc2e5effbcb28f9c9f84.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93600",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93845": {
+      "id": "93845",
+      "type": "page",
+      "title": "Standard Room",
+      "content": "The hotel's standard rooms include standard bed, small seating area and bathroom.<br /><br />Room size: 30 sq. m<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/6db6b6e66ac130e40c97ee3c437ce2ae.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93601",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93846": {
+      "id": "93846",
+      "type": "page",
+      "title": "Double Bed Room",
+      "content": "The hotel's double bed rooms include double bed, big seating area and bathroom.<br /><br />Room size: 35 sq. m<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/eb0a0856e2b1fee8d89eb57df50597b8.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93601",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93847": {
+      "id": "93847",
+      "type": "page",
+      "title": "Superior Suite",
+      "content": "Superior suites are larger than standard rooms. Coffee/tea making facilities, complimentary newspaper, trouser press, direct-dial telephone, hairdryer, wake-up service and television. All rooms have dressing table with chair, lounge chair and en-suite with bath and shower.<br /><br />Room size: 80 sq. m<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/510105ecfc89f5779f59fa0d43bbb2f6.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93601",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93848": {
+      "id": "93848",
+      "type": "page",
+      "title": "Deluxe Suite",
+      "content": "Deluxe suites offer luxurious king beds, 47-inch flat-panel HDTV with media player Bose Sound Wave System with iPod and iPhone docking station, large closets, master bath, and a guest bath. For your comfort and convenience.<br /><br />Room size: 100 sq. m<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/e0d3a6087017fb7afb9887b1a8d3093d.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93601",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93849": {
+      "id": "93849",
+      "type": "page",
+      "title": "Presidential Suite",
+      "content": "The most luxurious and impressive type of our suites is located on the 20th floor and offers breathtaking views on the city and unsurpassed luxury during your stay. Our presidential suite consists of a spacious living room, one large master bedroom with private sauna, a second bedroom, a private study, a dining room, a bar as well as a kitchen. Each bedroom has its en-suite bathroom with jacuzzi.<br /><br />Room size: 330 sq. m.<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/985fa180e626ec9d12015f70cc3a84ad.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93601",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93850": {
+      "id": "93850",
+      "type": "page",
+      "title": "Directions &amp; Contacts",
+      "content": "<b>Address:</b><br />1801-03, 18/F, East Town Building<br />41 Lockchart Road, Wan Chai<br />Hong Kong<br /><b><br />Contact:</b><br />Tel: +358 93 157 99 50<br />E-mail: sales@hoteza.com<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/18440b5fedfc32cb66378102a6687e41.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93600",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93851": {
+      "id": "93851",
+      "type": "page",
+      "title": "Lounge Bar",
+      "content": "In the extremely comfortable Lounge Bar you can relax and unwind, enjoying a choice of delicious coffees and teas, fruit juices and various drinks and snacks.<br /><b><br />Open:</b><br />Daily 10am - 2pm<br /><br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/a1535cfbe5395ce31e9e260ba13c1907.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93604",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93852": {
+      "id": "93852",
+      "type": "page",
+      "title": "The Italian Cafe",
+      "content": "We welcome you to visit The Italian cafe. The Italian Cafe is a place to meet, to sit inside or out, somewhat to see and be seen.<br /><br /><b>Open:</b><br />Daily 9am - 11pm<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/7492c477593e1b5ee066d823061e8064.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93604",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93853": {
+      "id": "93853",
+      "type": "page",
+      "title": "Lobby Bar",
+      "content": "The Lobby Bar offers cocktails, delectable bar food and rich selections of whiskeys.<br /><br /><b>Open:</b><br />24 hours a day<br /><br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/fc9300d0a82647d748e065be48d79c96.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93604",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93854": {
+      "id": "93854",
+      "type": "page",
+      "title": "Asian Restaurant",
+      "content": "The restaurant was voted Best Asian restaurant and 37th best in the world. Celebrity guests include Steve Jobs and Elon Musk visited the restaurant.<br />",
+      "serviceId": "93872",
+      "slotId": null,
+      "image": "c/i/18fdc82dc1406b225d0101770a7aea8f.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93604",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93855": {
+      "id": "93855",
+      "type": "page",
+      "title": "Phone Services",
+      "content": "We are glad to provide you high quality telephone service. To use the phone, please follow instructions below.<br />For in-hotel calls, please, dial room number: <b>123</b> for example <br />For local calls, please, dial <b>9</b> then city telephone number: <b>XXXXXXX</b><br />For country calls, please, press <b>9</b> then area code <b>XXX </b>and phone number <b>XXXXXXX</b><br />For International calls, please, dial <b>90</b> then country code and phone number.<br /><br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/5a52947dc2daad13fc6adcc723dce79a.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93602",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93856": {
+      "id": "93856",
+      "type": "page",
+      "title": "Internet Services ",
+      "content": "We are glad to to provide you HSIA (High Speed Internet Access) via Wi-FI in the whole hotel building for free. The name of network is Hotel Wi-Fi. <br /><br />Default Internet connection speed is 2 mbps. If you want use a higher connection speed 10 mbps, you have to subscribe for service. We will charge you \u20ac20.00 per day.<br /><br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/4b71322c1f9edf2c5cfc651ceef7ec1a.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93602",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93857": {
+      "id": "93857",
+      "type": "page",
+      "title": "Interactive Television",
+      "content": "In your room there is installed Interactive TV system. Please switch on TV set and follow instructions.<br /><br />Enjoy watching!<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/db053ed550925d2276f75dd16b2c369b.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93602",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93858": {
+      "id": "93858",
+      "type": "page",
+      "title": "Business Centre",
+      "content": "We glad to inform you that on the first floor you can find Business Center.<br /><b><br />Business Center Services:</b><br /><ul><li>Document printing<br /></li><li>Document scanning</li><li>Fax</li><li>Business Meetings</li><li>Conferences</li></ul>",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/d4b6ce129617c69bae84feefc46122e1.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93602",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93859": {
+      "id": "93859",
+      "type": "page",
+      "title": "Check-in/out Information",
+      "content": "<b>Check-in time is 2 pm.</b> <br />If rooms are requested prior to check-in time, early arrivals will be accommodated, as rooms become available.<br /><br /><b>Check-out time is 11 am. <br /></b>Our staff can store luggage on a complimentary basis for those guests who have checked out but are not yet departing the hotel.<br /><br /><br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/b9f5b7a41939e62339be3109970493f9.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93602",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93860": {
+      "id": "93860",
+      "type": "page",
+      "title": "Kids Club",
+      "content": "We are glad to inform you that our new, secure, indoor playground is a great place for the kids to let off some steam. Please be informed that parental supervision is not required for 1 hour.<br /><br />Phone: 010<br /><br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/196e9d633d4ba947359f3d89e80398f4.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93602",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93861": {
+      "id": "93861",
+      "type": "page",
+      "title": "Make-up Room",
+      "content": "Let us know the date and time you desire us to tidy up your room. We will take care of the details so you can relax and enjoy your stay.<br />",
+      "serviceId": "93607",
+      "slotId": null,
+      "image": "c/i/6455754c30a5e3b251313b64f219e484.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93606",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93862": {
+      "id": "93862",
+      "type": "page",
+      "title": "Laundry &amp; Dry Cleaning",
+      "content": "We provide quick laundry and dry cleaning services at an extra charge.<br /><br />Contact us and we will handle all of your laundry and dry cleaning needs with precision and care.<br />",
+      "serviceId": "93608",
+      "slotId": null,
+      "image": "c/i/391b69fe399d46802944feb57f0ab92c.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93606",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93863": {
+      "id": "93863",
+      "type": "page",
+      "title": "Technical Support",
+      "content": "Our engineer staff can help you to solve any issues you have.<br />",
+      "serviceId": "93609",
+      "slotId": null,
+      "image": "c/i/224517ce6867f67cae7c4c4f51313099.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93606",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93864": {
+      "id": "93864",
+      "type": "page",
+      "title": "Minibar Refill",
+      "content": "Enjoy the convenience and luxury of a fully-stocked minibar with our Minibar Refill service. Please contact us and we shall react immediately. <br /><br />Cheers to a great stay!<br />",
+      "serviceId": "93610",
+      "slotId": null,
+      "image": "c/i/91d18cb71b917c626b41bd1e310b5d58.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93606",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93865": {
+      "id": "93865",
+      "type": "page",
+      "title": "Extra Pillows",
+      "content": "Your comfort is our priority. Ensure a good night's sleep by choosing from our pillows selection and we will deliver it to your room in several minutes.<br />",
+      "serviceId": "93611",
+      "slotId": null,
+      "image": "c/i/e702c1ca5e03d871f11c87ab7b739ba2.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93606",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104577": {
+      "id": "104577",
+      "type": "page",
+      "title": "Sauna",
+      "content": "Our charming compact SPA offers you a well-equipped sauna. Look better and sleep better.<br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/fb2f7598f9b5000b7c5ab18af26a2de9.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "93838",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104579": {
+      "id": "104579",
+      "type": "page",
+      "title": "De-stress Massage",
+      "content": "A luxurious Swedish massage with an emphasis on back and neck regions followed by a refreshing facial massage with specially made preparations. This massage will relax you even after the most stressful day.<br />",
+      "serviceId": "104607",
+      "slotId": null,
+      "image": "c/i/71afed7f7751318bae6727290ef60942.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104580",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104582": {
+      "id": "104582",
+      "type": "page",
+      "title": "Sports Massage",
+      "content": "Sports massage is combination of deep massage and Shiatsu approach. It encourages and facilitates stretching, reduces fatigue, enhances stamina, helps to prevent injuries and brings you into shape, whether you are a professional or an amateur athlete. Surrender yourself into the hands of our experts and take their advice on exercising and diminishing possible ailments.<br />",
+      "serviceId": "104608",
+      "slotId": null,
+      "image": "c/i/db370c0ef7a9fdbfbf9288aeff488154.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104580",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104583": {
+      "id": "104583",
+      "type": "page",
+      "title": "Face Cleansing",
+      "content": "Deep cleansing facial is an exfoliating treatment that helps your skin go free from dead skin cells and other impurities.<br />",
+      "serviceId": "104611",
+      "slotId": null,
+      "image": "c/i/e11ce5c13ec921519b3b8a36fa6bfb15.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104581",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104584": {
+      "id": "104584",
+      "type": "page",
+      "title": "Facial Massage",
+      "content": "Feeling tired? Need fast relaxation? Relax with a face, neck and chest massage and try the healing power of apricot and immortelle oil.<br />",
+      "serviceId": "104612",
+      "slotId": null,
+      "image": "c/i/52ac85e4fe827ba48a778f92239fc945.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104581",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104585": {
+      "id": "104585",
+      "type": "page",
+      "title": "Sunny Side Of Life",
+      "content": "For pure pleasure and total relaxation plunge into the aromatic sparkling 'blue gold' bath care - rich fragrant Provencal lavender, enriched with sugar cane and fine rosemary extract. This completely natural combination of essential oils will turn your skin smooth, soft and supple, while fresh fruit and freshly made orange juice will awake your senses and restore the energy you need.<br /><br /><i>Please book your bath care session in advance by a minimum of two hours.</i><br />",
+      "serviceId": "104613",
+      "slotId": null,
+      "image": "c/i/dbc8297ffe8c4e05cca0e4dbbde0d13b.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104576",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104586": {
+      "id": "104586",
+      "type": "page",
+      "title": "Skybath",
+      "content": "Truly indulge in the relaxing atmosphere of your bathroom in an authentic spa experience with a revitalizing bath that will give your body a new wave of energy. The irresistible compound extracts of verbena and herbal bubble base derived from coconut and sugarcane provides an immediate feeling of refreshment, which deeply hydrates and envelops the skin\u2019s silky softness. With natural green tea full of antioxidants and healthy nuts, this cosy bath brings your body and mind in harmony and sets you up for soothing sweet dreams.<br /><br /><i>Please book your bath care session in advance by a minimum of two hours.</i><br />",
+      "serviceId": "104614",
+      "slotId": null,
+      "image": "c/i/cd17e379af6fea814492ee4bfee201dc.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104576",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104587": {
+      "id": "104587",
+      "type": "page",
+      "title": "Mediterranean Gateway",
+      "content": "The perfect combination of selected essential oils with a refined fragrance for unforgettable moments of relaxation. The luxurious bath wraps the skin\u2019s velvety softness and fragrant combination of essential oils of mandarin, geranium and sweet orange beneficial to the body, perfectly accompanied with delightful Dalmatian red wine and aromatic cheeses.<br /><br /><i>Please book your bath care session in advance by a minimum of two hours.</i><br />",
+      "serviceId": "104615",
+      "slotId": null,
+      "image": "c/i/9390ab87583bd929566e74d1194f1e99.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104576",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104588": {
+      "id": "104588",
+      "type": "page",
+      "title": "Bubbles &amp; Romance ",
+      "content": "<b>A romantic and sensual bath for two</b><br /><br />Soak up the atmosphere in a romantic setting of unforgettable moments and total relaxation with sensual drops of essential oils in a bath sprinkled with delicate rose petals. Relax and pamper your senses with sparkling wine, fine handmade chocolate pralines and irresistible seasonal fruits in a climate of L'Occitane scented candles from the N\u00e9roli &amp; Orchid\u00e9e collection, which provides a unique atmosphere inspired by fragrant playful white and orange flowers and white orchids<br /><br /><i>Please book your bath care session in advance by a minimum of two hours.</i><br />",
+      "serviceId": "104616",
+      "slotId": null,
+      "image": "c/i/ac459123cd54ea2b87ca5fc32aa9bc29.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104576",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104589": {
+      "id": "104589",
+      "type": "page",
+      "title": "Gym Program",
+      "content": "<p>Our charming compact SPA offers you a well-equipped fitness room with state-of-the-art cardiovascular equipment. The machines available include treadmills and bikes, and our fitness area offers you the Power Plate\u00ae. This high-quality exercising machine operates on the principle of vibration and is suitable for people of all ages.</p><p>If you\u2019d like to be more active and reduce health issues such as back pain, cardiovascular problems and stress, we\u2019d suggest you to try individual exercise with our professional personal trainer. Consistent training that suit your needs will make you feel better, look better and sleep better.</p><br />",
+      "serviceId": null,
+      "slotId": null,
+      "image": "c/i/c25691cad9db4a90c1cb46ffdfed907c.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104578",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104590": {
+      "id": "104590",
+      "type": "page",
+      "title": "Power Plate Program",
+      "content": "<p>Our charming compact SPA offers you a well-equipped fitness room with state-of-the-art cardiovascular equipment.The machines available include treadmills and bikes, and our fitness area offers you the Power Plate\u00ae. This high-quality exercising machine operates on the principle of vibration and is suitable for people of all ages.</p><p>If you\u2019d like to be more active and reduce health issues such as back pain, cardiovascular problems and stress, we\u2019d suggest you to try individual exercise with our professional personal trainer. Consistent training that suit your needs will make you feel better, look better and sleep better.</p><p><b><i>Duration: 30 min</i></b></p>",
+      "serviceId": "104617",
+      "slotId": null,
+      "image": "c/i/a804d2f02089e945033952db0af153e8.jpg",
+      "imageWide": null,
+      "video": "",
+      "parentId": "104578",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93600": {
+      "id": "93600",
+      "type": "list",
+      "title": "Hotel Information",
+      "listItems": {
+        "id_93844": {
+          "id": "93844",
+          "type": "listItem",
+          "title": "About Hotel",
+          "image": "c/i/d8a3cd1fef0322ddc6e516d1dc199b8c.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93601": {
+          "id": "93601",
+          "type": "listItem",
+          "title": "Hotel Rooms",
+          "image": "c/i/a6d65a074d021ec85238c57ae3438d94.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93850": {
+          "id": "93850",
+          "type": "listItem",
+          "title": "Directions &amp; Contacts",
+          "image": "c/i/949da7bdc936e7a05fc51c71722fb72f.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93602": {
+          "id": "93602",
+          "type": "listItem",
+          "title": "Hotel Services",
+          "image": "c/i/7fef70f367e794b9dbb048c0c245575f.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "93599",
+      "imageWide": null,
+      "backBtn": 0,
+      "groups": [],
+      "devices": []
+    },
+    "id_93604": {
+      "id": "93604",
+      "type": "list",
+      "title": "Restaurants & Bars",
+      "listItems": {
+        "id_93851": {
+          "id": "93851",
+          "type": "listItem",
+          "title": "Lounge Bar",
+          "image": "c/i/7690d6811e7f0e7cf961b22ec87cde7a.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93852": {
+          "id": "93852",
+          "type": "listItem",
+          "title": "The Italian Cafe",
+          "image": "c/i/9469b9b11d36afb58c4e7dfaf0f1c1e8.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93853": {
+          "id": "93853",
+          "type": "listItem",
+          "title": "Lobby Bar",
+          "image": "c/i/608d3b24744588e5bb5776b7b7cb7001.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93854": {
+          "id": "93854",
+          "type": "listItem",
+          "title": "Asian Restaurant",
+          "image": "c/i/5bc36cb2bf8cfe6610faaa7a54ae9915.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "93603",
+      "imageWide": null,
+      "backBtn": 0,
+      "groups": [],
+      "devices": []
+    },
+    "id_93606": {
+      "id": "93606",
+      "type": "list",
+      "title": "Room Service",
+      "listItems": {
+        "id_93861": {
+          "id": "93861",
+          "type": "listItem",
+          "title": "Make-up Room",
+          "image": "c/i/bed62002c1ff98813dd66b548f93d992.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93862": {
+          "id": "93862",
+          "type": "listItem",
+          "title": "Laundry &amp; Dry Cleaning",
+          "image": "c/i/f9d96c7c6da4e1deae564279e636f189.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93863": {
+          "id": "93863",
+          "type": "listItem",
+          "title": "Technical Support",
+          "image": "c/i/7a6ac2103fb1bd55d8275ff64c51d886.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93864": {
+          "id": "93864",
+          "type": "listItem",
+          "title": "Minibar Refill",
+          "image": "c/i/0e82edd1a20c009e05f5c3eac7cf5769.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93865": {
+          "id": "93865",
+          "type": "listItem",
+          "title": "Extra Pillows",
+          "image": "c/i/ad7037b36d7dd22eefbac500996e2562.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93843": {
+          "id": "93843",
+          "type": "listItem",
+          "title": "Luggage service",
+          "image": "c/i/f886c1b7fab999b14ff232b4925e3365.jpg",
+          "link": "",
+          "onvclick": "",
+          "devices": ["mobile", "tv", "tablet"]
+        }
+      },
+      "parentId": "93605",
+      "imageWide": null,
+      "backBtn": 0,
+      "groups": [],
+      "devices": []
+    },
+    "id_93838": {
+      "id": "93838",
+      "type": "list",
+      "title": "Spa &amp; Fitness",
+      "listItems": {
+        "id_104575": {
+          "id": "104575",
+          "type": "listItem",
+          "title": "Massage &amp; Beauty Treatments ",
+          "image": "c/i/464a25d463f09d0ead022c16e1cb9bfd.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104576": {
+          "id": "104576",
+          "type": "listItem",
+          "title": "SPA Ritual by L&#039;Occitane",
+          "image": "c/i/efa367d874c6a3004562dcded76faccc.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104577": {
+          "id": "104577",
+          "type": "listItem",
+          "title": "Sauna",
+          "image": "c/i/89d87f0bc1cb502b053fe3531736cb20.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104578": {
+          "id": "104578",
+          "type": "listItem",
+          "title": "Gym ",
+          "image": "c/i/543566c5fafb6d0bd38f9cefc687133d.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "93837",
+      "imageWide": null,
+      "backBtn": 0,
+      "groups": [],
+      "devices": ["mobile", "tv", "tablet"]
+    },
+    "id_104575": {
+      "id": "104575",
+      "type": "list",
+      "title": "Massage &amp; Beauty Treatments ",
+      "listItems": {
+        "id_104580": {
+          "id": "104580",
+          "type": "listItem",
+          "title": "Basic Massages",
+          "image": "c/i/97be210286533dcb711a2fed902a7539.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104581": {
+          "id": "104581",
+          "type": "listItem",
+          "title": "Face Care",
+          "image": "c/i/a1554bd2710d16a05ff7963aa896e724.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "93838",
+      "imageWide": null,
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104576": {
+      "id": "104576",
+      "type": "list",
+      "title": "SPA Ritual by L&#039;Occitane",
+      "listItems": {
+        "id_104585": {
+          "id": "104585",
+          "type": "listItem",
+          "title": "Sunny Side Of Life",
+          "image": "c/i/ad59eb0739c5a054b94e5022c53266d6.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104586": {
+          "id": "104586",
+          "type": "listItem",
+          "title": "Skybath",
+          "image": "c/i/3dc8166e773dc32842b4dca0e5214736.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104587": {
+          "id": "104587",
+          "type": "listItem",
+          "title": "Mediterranean Gateway",
+          "image": "c/i/e5fe8af3d201ac3f86807030e173b7e2.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104588": {
+          "id": "104588",
+          "type": "listItem",
+          "title": "Bubbles &amp; Romance ",
+          "image": "c/i/8dc0048b5554cc5c6c5faa8c44f0797c.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "93838",
+      "imageWide": null,
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104578": {
+      "id": "104578",
+      "type": "list",
+      "title": "Gym ",
+      "listItems": {
+        "id_104589": {
+          "id": "104589",
+          "type": "listItem",
+          "title": "Gym Program",
+          "image": "c/i/6e990611198e8e6685a6a3f126c4b75c.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104590": {
+          "id": "104590",
+          "type": "listItem",
+          "title": "Power Plate Program",
+          "image": "c/i/673cfcba9c5e29284acbb9e598adcdb0.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "93838",
+      "imageWide": null,
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104580": {
+      "id": "104580",
+      "type": "list",
+      "title": "Basic Massages",
+      "listItems": {
+        "id_104579": {
+          "id": "104579",
+          "type": "listItem",
+          "title": "De-stress Massage",
+          "image": "c/i/7f9c565f4807429d4a6a9c996a5e50b5.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104582": {
+          "id": "104582",
+          "type": "listItem",
+          "title": "Sports Massage",
+          "image": "c/i/1d3583e3b6c25c8cb1bed641720c68f8.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "104575",
+      "imageWide": null,
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93601": {
+      "id": "93601",
+      "type": "list",
+      "title": "Hotel Rooms",
+      "listItems": {
+        "id_93845": {
+          "id": "93845",
+          "type": "listItem",
+          "title": "Standard Room",
+          "image": "c/i/edacbdb71182b5a2e837cea1351c62f3.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93846": {
+          "id": "93846",
+          "type": "listItem",
+          "title": "Double Bed Room",
+          "image": "c/i/dcf8da9e145e95dc3c22d3dc678555e2.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93847": {
+          "id": "93847",
+          "type": "listItem",
+          "title": "Superior Suite",
+          "image": "c/i/6b376fae7c1821bab2dfedea0619834b.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93848": {
+          "id": "93848",
+          "type": "listItem",
+          "title": "Deluxe Suite",
+          "image": "c/i/15ae9289b6d0d2bbdaa9a8fa7b21da7c.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93849": {
+          "id": "93849",
+          "type": "listItem",
+          "title": "Presidential Suite",
+          "image": "c/i/c68b7040278e899a06cf01ce545ffc1b.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "93600",
+      "imageWide": null,
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_104581": {
+      "id": "104581",
+      "type": "list",
+      "title": "Face Care",
+      "listItems": {
+        "id_104583": {
+          "id": "104583",
+          "type": "listItem",
+          "title": "Face Cleansing",
+          "image": "c/i/1012c7d9209ebd35020f97e8c5a7760e.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_104584": {
+          "id": "104584",
+          "type": "listItem",
+          "title": "Facial Massage",
+          "image": "c/i/0965555426595a407e8f4fb275c153a5.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "104575",
+      "imageWide": null,
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93602": {
+      "id": "93602",
+      "type": "list",
+      "title": "Hotel Services",
+      "listItems": {
+        "id_93855": {
+          "id": "93855",
+          "type": "listItem",
+          "title": "Phone Services",
+          "image": "c/i/067375cffc000607ba228262a89a26e6.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93856": {
+          "id": "93856",
+          "type": "listItem",
+          "title": "Internet Services ",
+          "image": "c/i/f96056aff578cb04cb5c25d3b9fca558.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93857": {
+          "id": "93857",
+          "type": "listItem",
+          "title": "Interactive Television",
+          "image": "c/i/163898fe8c871ec010be5bb7e8ec258c.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93858": {
+          "id": "93858",
+          "type": "listItem",
+          "title": "Business Centre",
+          "image": "c/i/3f8407d5604558f98e4f200573eceeca.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93859": {
+          "id": "93859",
+          "type": "listItem",
+          "title": "Check-in/out Information",
+          "image": "c/i/83c00bf3fb9b73a83606216bcbe727aa.jpg",
+          "link": "",
+          "onvclick": ""
+        },
+        "id_93860": {
+          "id": "93860",
+          "type": "listItem",
+          "title": "Kids Club",
+          "image": "c/i/975fe8e75f6caaa391d3eaf5b84730e2.jpg",
+          "link": "",
+          "onvclick": ""
+        }
+      },
+      "parentId": "93600",
+      "imageWide": null,
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93612": {
+      "id": "93612",
+      "type": "shop",
+      "title": "In-room Dining",
+      "image": null,
+      "imageWide": null,
+      "parentId": "",
+      "backBtn": 0,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93613": {
+          "id": "93613",
+          "type": "shopCategory",
+          "title": "Breakfasts",
+          "icon": "",
+          "image": "c/i/65779f4293008bc9191a6a6b27a4d1f1.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93618": {
+          "id": "93618",
+          "type": "shopCategory",
+          "title": "Starters",
+          "icon": "",
+          "image": "c/i/e4810e983e79f0481a27a6d0355ca16d.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93623": {
+          "id": "93623",
+          "type": "shopCategory",
+          "title": "Salads",
+          "icon": "",
+          "image": "c/i/e91ab8d57beecff16499268c3ee5f7cd.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93629": {
+          "id": "93629",
+          "type": "shopCategory",
+          "title": "Soups",
+          "icon": "",
+          "image": "c/i/42ce7e8e9f153fbb4c9c333c0194af65.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93634": {
+          "id": "93634",
+          "type": "shopCategory",
+          "title": "Mains",
+          "icon": "",
+          "image": "c/i/009808affb6c6322dee201c0dc5739d5.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93640": {
+          "id": "93640",
+          "type": "shopCategory",
+          "title": "Desserts",
+          "icon": "",
+          "image": "c/i/e2ae3e583ed772713686864079fb6281.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93645": {
+          "id": "93645",
+          "type": "shopCategory",
+          "title": "Drinks",
+          "icon": "",
+          "image": "c/i/e6d40d613e7995c63af20a358ae58ffe.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93653": {
+          "id": "93653",
+          "type": "shopCategory",
+          "title": "Hot Drinks",
+          "icon": "",
+          "image": "c/i/1a54f71a6a81c8a836b50f6b80b8470d.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93659": {
+          "id": "93659",
+          "type": "shopCategory",
+          "title": "Alcohol",
+          "icon": "",
+          "image": "c/i/e03c22b7d4f2e6df5821c7d3d1fd2c29.jpg",
+          "imageWide": null,
+          "groups": []
+        }
+      },
+      "hasChoiceOfTime": true
+    },
+    "id_93613": {
+      "id": "93613",
+      "type": "shopCategory",
+      "title": "Breakfasts",
+      "icon": "",
+      "image": "c/i/65779f4293008bc9191a6a6b27a4d1f1.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93614": {
+          "id": "93614",
+          "type": "shopProduct",
+          "title": "Oatmeal Breakfast",
+          "icon": "",
+          "image": "c/i/044dd29d8fee0db299ddf034471e1ea6.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nOur Oatmeal is served warm with your choice of Fried Apples, Pecans, Raisins, Fresh Sliced Bananas or 100% Pure Natural Syrup. <br /><br /></p>",
+          "cost": "16.00",
+          "toppings": [
+            {
+              "id": "104634",
+              "name": "Choose Your Topping",
+              "values": [
+                { "id": "104635", "name": "Fried Apples" },
+                { "id": "104636", "name": "Sliced Banana" },
+                { "id": "104637", "name": "100% Pure Natural Syrup" },
+                { "id": "104638", "name": "Pecan" }
+              ]
+            }
+          ]
+        },
+        "id_93615": {
+          "id": "93615",
+          "type": "shopProduct",
+          "title": "Pecan Pancakes",
+          "icon": "",
+          "image": "c/i/e6f9d2c47cfcd623d2000a3ac2ec61d7.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThree Buttermilk Pancakes loaded with pecans and served with real Butter and a warm bottle of 100% Pure Natural Syrup.<br /><br /></p>",
+          "cost": "8.00",
+          "toppings": []
+        },
+        "id_93616": {
+          "id": "93616",
+          "type": "shopProduct",
+          "title": "French Toast",
+          "icon": "",
+          "image": "c/i/5ffd16b6c4b133657005fd2ba16ffdc3.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nFour slices of our own Sourdough Bread (regular or whole-wheat) dipped in egg then grilled to perfection. Served with any Fruit Topping or 100% Pure Natural Syrup.<br /><br /></p>",
+          "cost": "11.00",
+          "toppings": []
+        },
+        "id_93617": {
+          "id": "93617",
+          "type": "shopProduct",
+          "title": "Biscuits n&#039; Gravy with Bacon",
+          "icon": "",
+          "image": "c/i/5f7a6301720858d14164d7a09f0ce417.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThree buttermilk biscuits with sawmill gravy and thick-sliced bacon.<br /><br /></p>",
+          "cost": "16.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93614": {
+      "id": "93614",
+      "type": "shopProduct",
+      "title": "Oatmeal Breakfast",
+      "text": "<p>\nOur Oatmeal is served warm with your choice of Fried Apples, Pecans, Raisins, Fresh Sliced Bananas or 100% Pure Natural Syrup. <br /><br /></p>",
+      "cost": "16.00",
+      "icon": "",
+      "image": "c/i/044dd29d8fee0db299ddf034471e1ea6.jpg",
+      "imageWide": null,
+      "parentId": "93613",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93615": {
+      "id": "93615",
+      "type": "shopProduct",
+      "title": "Pecan Pancakes",
+      "text": "<p>\nThree Buttermilk Pancakes loaded with pecans and served with real Butter and a warm bottle of 100% Pure Natural Syrup.<br /><br /></p>",
+      "cost": "8.00",
+      "icon": "",
+      "image": "c/i/e6f9d2c47cfcd623d2000a3ac2ec61d7.jpg",
+      "imageWide": null,
+      "parentId": "93613",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93640": {
+      "id": "93640",
+      "type": "shopCategory",
+      "title": "Desserts",
+      "icon": "",
+      "image": "c/i/e2ae3e583ed772713686864079fb6281.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93641": {
+          "id": "93641",
+          "type": "shopProduct",
+          "title": "Tiramisu",
+          "icon": "",
+          "image": "c/i/80d7399c69c10dd7736e6e70d4767b00.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nAn Italian dessert made of ladyfingers dipped in coffee, layered with a whipped mixture of egg yolks and mascarpone cheese, flavored with cocoa.<br /><br /></p>",
+          "cost": "15.00",
+          "toppings": []
+        },
+        "id_93642": {
+          "id": "93642",
+          "type": "shopProduct",
+          "title": "New York Cheesecake",
+          "icon": "",
+          "image": "c/i/f4dbd728b26a97769689532f9c85b15a.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nClassical New York Cheesecake may be flavored or topped with fruit, whipped cream, nuts, fruit sauce or chocolate at your choice.\n\n<br /></p>",
+          "cost": "16.00",
+          "toppings": []
+        },
+        "id_93643": {
+          "id": "93643",
+          "type": "shopProduct",
+          "title": "Apple Pie",
+          "icon": "",
+          "image": "c/i/7d638af6dffcbdb8e60699fdf8b5ffdd.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nOld fashioned apple pie cooked in 19th century oven.\n\n<br /></p>",
+          "cost": "14.00",
+          "toppings": []
+        },
+        "id_93644": {
+          "id": "93644",
+          "type": "shopProduct",
+          "title": "Chocolate Muffin",
+          "icon": "",
+          "image": "c/i/b5664718ceb4cf36cafff231ac380b2a.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThe key of these chocolate muffins is that we sprinkle additional chocolate chips on top before baking.<br /><br /></p>",
+          "cost": "12.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93645": {
+      "id": "93645",
+      "type": "shopCategory",
+      "title": "Drinks",
+      "icon": "",
+      "image": "c/i/e6d40d613e7995c63af20a358ae58ffe.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93650": {
+          "id": "93650",
+          "type": "shopProduct",
+          "title": "San Pellegrino Mineral Water",
+          "icon": "",
+          "image": "c/i/82f474f0d597591b1d6c04e8a52ea5f0.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nSan Pellegrino mineral water. 70cl plastic bottle.\n\n<br /></p>",
+          "cost": "4.00",
+          "toppings": []
+        },
+        "id_93649": {
+          "id": "93649",
+          "type": "shopProduct",
+          "title": "Perrier Mineral Water",
+          "icon": "",
+          "image": "c/i/669ec37f2042e7c65e9cc7c08c632ca7.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nPerrier mineral water. 33cl glass bottle.\n\n<br /></p>",
+          "cost": "4.00",
+          "toppings": []
+        },
+        "id_93648": {
+          "id": "93648",
+          "type": "shopProduct",
+          "title": "Fresh Orange Juice",
+          "icon": "",
+          "image": "c/i/ae59870386da5fe51d08c025ab6df930.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nOne glass of of our fresh orange juice will provide you with recommended daily dosage of Vitamin C.\n\n<br /></p>",
+          "cost": "7.00",
+          "toppings": []
+        },
+        "id_93646": {
+          "id": "93646",
+          "type": "shopProduct",
+          "title": "Fresh Apple Juice",
+          "icon": "",
+          "image": "c/i/6a7ec123d25bc0e1ffef98eeed74e69e.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nOur freash apple juice is made just for you so you could enjoy great health and a tasty treat.\n\n<br /></p>",
+          "cost": "6.00",
+          "toppings": []
+        },
+        "id_93651": {
+          "id": "93651",
+          "type": "shopProduct",
+          "title": "Coca-Cola (33\u0441l)",
+          "icon": "",
+          "image": "c/i/dd3985a9cde0c336b2ac22bee8181fc0.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nCoca-Cola. 33cl can.<br /><br /><br /><br /></p>",
+          "cost": "3.00",
+          "toppings": []
+        },
+        "id_93652": {
+          "id": "93652",
+          "type": "shopProduct",
+          "title": "Coca-Cola (50cl), plastic bottle",
+          "icon": "",
+          "image": "c/i/655a9459f5545501e1c02b3698fb6e1d.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nCoca-Cola. 50cl plastic bottle.\n\n<br /></p>",
+          "cost": "4.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93681": {
+      "id": "93681",
+      "type": "shop",
+      "title": "Shopping",
+      "image": "c/i/976e55d3b8b21c01629c248b1d11af98.png",
+      "imageWide": null,
+      "parentId": "",
+      "backBtn": 0,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93682": {
+          "id": "93682",
+          "type": "shopCategory",
+          "title": "Traveler Essentials",
+          "icon": "",
+          "image": "c/i/9c55f2627296334ef7f59195132a8a2d.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93688": {
+          "id": "93688",
+          "type": "shopCategory",
+          "title": "Electronics &amp; Accessories",
+          "icon": "",
+          "image": "c/i/4b2d95d04d3e51861f4156c7d4d9c2dc.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93693": {
+          "id": "93693",
+          "type": "shopCategory",
+          "title": "Souvenir Shop",
+          "icon": "",
+          "image": "c/i/a8f39afe69a1453623356a31a347a0a5.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93698": {
+          "id": "93698",
+          "type": "shopCategory",
+          "title": "Gift Ideas",
+          "icon": "",
+          "image": "c/i/bd806b1bb9c462868338853dbba5a89a.jpg",
+          "imageWide": null,
+          "groups": []
+        }
+      },
+      "hasChoiceOfTime": true
+    },
+    "id_93693": {
+      "id": "93693",
+      "type": "shopCategory",
+      "title": "Souvenir Shop",
+      "icon": "",
+      "image": "c/i/a8f39afe69a1453623356a31a347a0a5.jpg",
+      "parentId": "93681",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93694": {
+          "id": "93694",
+          "type": "shopProduct",
+          "title": "Montblanc Pen",
+          "icon": "",
+          "image": "c/i/09df5fc21e82e475608788de41174f10.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nCartridge fountain pen, retractable 18 K gold nib, barrel and cap made of gold-plated brass with pinstripe finish, inlaid with Montblanc emblem, gold-plated rings and clip set with a synthetic ruby-coloured gemstone.<br /><br /></p>",
+          "cost": "1370.00",
+          "toppings": []
+        },
+        "id_93695": {
+          "id": "93695",
+          "type": "shopProduct",
+          "title": "Breguet Watch",
+          "icon": "",
+          "image": "c/i/2fb56acac38ac22489c81f6905ba7a8e.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nBreguet 1160 \"Marie-Antoinette\". Reproduction of the watch no 160 called \"Marie-Antoinette\" based only on pictures and descriptions. Today this watch is still considered as the 5th most complicated in the world.\n\n<br /></p>",
+          "cost": "12500.00",
+          "toppings": []
+        },
+        "id_93696": {
+          "id": "93696",
+          "type": "shopProduct",
+          "title": "Hoteza Cufflinks",
+          "icon": "",
+          "image": "c/i/53d8f3435b92e75aa6d0c75d73afe299.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nExclusive present for Hoteza application lovers.\n\n<br /></p>",
+          "cost": "800.00",
+          "toppings": []
+        },
+        "id_93697": {
+          "id": "93697",
+          "type": "shopProduct",
+          "title": "Turtleneck by Issey Miyake",
+          "icon": "",
+          "image": "c/i/a8726ac9537225175265959fe4e0d3db.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThis turleneck was designed specifically for Steve Jobs by Japanese designer Issey Miyake.<br /><br /></p>",
+          "cost": "205.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93618": {
+      "id": "93618",
+      "type": "shopCategory",
+      "title": "Starters",
+      "icon": "",
+      "image": "c/i/e4810e983e79f0481a27a6d0355ca16d.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93619": {
+          "id": "93619",
+          "type": "shopProduct",
+          "title": "Bruschetta with Tomato &amp; Basil",
+          "icon": "",
+          "image": "c/i/5004a57daf5837eec5d693a4a60f3cc1.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nBruschetta with tomato and basil served with creamy sauce.<br /><br /></p>",
+          "cost": "7.00",
+          "toppings": []
+        },
+        "id_93620": {
+          "id": "93620",
+          "type": "shopProduct",
+          "title": "Seafood Cocktail",
+          "icon": "",
+          "image": "c/i/36e5c3b16ad18c40f466015f47255fe9.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nSeafood cocktail contains fresh shrimps, squid and shellfishes from Mediterranean Sea. Served with fresh herbs.\n\n<br /></p>",
+          "cost": "18.00",
+          "toppings": []
+        },
+        "id_93621": {
+          "id": "93621",
+          "type": "shopProduct",
+          "title": "Marinated Olives",
+          "icon": "",
+          "image": "c/i/6c08f6f6c84d224ab007da8cc36ca7b5.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nClassical marinated Mediterranean olives. Served with fresh bread.<br /><br /></p>",
+          "cost": "6.00",
+          "toppings": []
+        },
+        "id_93622": {
+          "id": "93622",
+          "type": "shopProduct",
+          "title": "Fried Mozzarella",
+          "icon": "",
+          "image": "c/i/cfe16cd56edb929f6c75c6c414593892.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nA perfect blend of mozzarella and provolone cheeses crusted with parmesan crumbs. Served with marinara sauce.<br /><br /></p>",
+          "cost": "12.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93623": {
+      "id": "93623",
+      "type": "shopCategory",
+      "title": "Salads",
+      "icon": "",
+      "image": "c/i/e91ab8d57beecff16499268c3ee5f7cd.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93624": {
+          "id": "93624",
+          "type": "shopProduct",
+          "title": "Russian Salad",
+          "icon": "",
+          "image": "c/i/c80f87aa09ca99f99bdc2750e9567f81.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nFamous Russian salad or Olivier is also popular in many European countries, Iran, Pakistan, Israel and also in South American countries like Argentina and Uruguay.<br /><br /></p>",
+          "cost": "6.00",
+          "toppings": []
+        },
+        "id_93625": {
+          "id": "93625",
+          "type": "shopProduct",
+          "title": "Greek Salad",
+          "icon": "",
+          "image": "c/i/c01a73cddcbc9965dc3918af8a800f86.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nGreek salad is made with pieces of tomatoes, sliced cucumbers, onion, feta cheese, and olives, typically seasoned with salt and oregano, and dressed with olive oil.<br /><br /></p>",
+          "cost": "11.00",
+          "toppings": []
+        },
+        "id_93626": {
+          "id": "93626",
+          "type": "shopProduct",
+          "title": "Caesar Salad Supreme",
+          "icon": "",
+          "image": "c/i/c2cf6386f29d18f33b83d465c46a26e3.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nCaesar salad is a salad of romaine lettuce and croutons dressed with parmesan cheese, lemon juice, olive oil, egg, Worcestershire sauce, garlic, and black pepper.<br /><br /></p>",
+          "cost": "8.00",
+          "toppings": []
+        },
+        "id_93627": {
+          "id": "93627",
+          "type": "shopProduct",
+          "title": "Avocado Salad",
+          "icon": "",
+          "image": "c/i/00d6112ed1292bf20105093c240b04d9.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nSuperhealthy salad served with crisp za'atar bread for a Middle Eastern feast.<br /><br /></p>",
+          "cost": "9.00",
+          "toppings": []
+        },
+        "id_93628": {
+          "id": "93628",
+          "type": "shopProduct",
+          "title": "Tuna Salad",
+          "icon": "",
+          "image": "c/i/a14f8c334e260b46e546dcd072dca234.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nTuna salad served on top of lettuce, tomato and avocado.<br /><br /></p>",
+          "cost": "13.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93624": {
+      "id": "93624",
+      "type": "shopProduct",
+      "title": "Russian Salad",
+      "text": "<p>\nFamous Russian salad or Olivier is also popular in many European countries, Iran, Pakistan, Israel and also in South American countries like Argentina and Uruguay.<br /><br /></p>",
+      "cost": "6.00",
+      "icon": "",
+      "image": "c/i/c80f87aa09ca99f99bdc2750e9567f81.jpg",
+      "imageWide": null,
+      "parentId": "93623",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93626": {
+      "id": "93626",
+      "type": "shopProduct",
+      "title": "Caesar Salad Supreme",
+      "text": "<p>\nCaesar salad is a salad of romaine lettuce and croutons dressed with parmesan cheese, lemon juice, olive oil, egg, Worcestershire sauce, garlic, and black pepper.<br /><br /></p>",
+      "cost": "8.00",
+      "icon": "",
+      "image": "c/i/c2cf6386f29d18f33b83d465c46a26e3.jpg",
+      "imageWide": null,
+      "parentId": "93623",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93629": {
+      "id": "93629",
+      "type": "shopCategory",
+      "title": "Soups",
+      "icon": "",
+      "image": "c/i/42ce7e8e9f153fbb4c9c333c0194af65.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93630": {
+          "id": "93630",
+          "type": "shopProduct",
+          "title": "Miso Soup",
+          "icon": "",
+          "image": "c/i/7fb0779a732b1bfed2236879a57016b9.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nTraditional Japanese soup served with bowl of steam rice.<br /><br /></p>",
+          "cost": "6.00",
+          "toppings": []
+        },
+        "id_93631": {
+          "id": "93631",
+          "type": "shopProduct",
+          "title": "Creamy Mushroom Soup",
+          "icon": "",
+          "image": "c/i/4bfd7233ba29695bf247fc6b384be7e8.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nCreamy soup with white mushrooms and herbs. Served with self-made Italian bread. <br /><br /></p>",
+          "cost": "8.00",
+          "toppings": []
+        },
+        "id_93632": {
+          "id": "93632",
+          "type": "shopProduct",
+          "title": "Borsch",
+          "icon": "",
+          "image": "c/i/fbb4cc0f0ebeba0a7dc352daa2711245.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nTraditional Russian Moscow-style borsch. Served with sour cream and self-made rye bread. \n\n<br /></p>",
+          "cost": "7.00",
+          "toppings": []
+        },
+        "id_93633": {
+          "id": "93633",
+          "type": "shopProduct",
+          "title": "Minestrone",
+          "icon": "",
+          "image": "c/i/12707cee6b1b8b8e6957cbab6c3e4b68.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nSoup of Italian origin with beans, onions, celery, carrots, stock and tomatoes. Served with Italian bread.\n\n<br /></p>",
+          "cost": "12.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93627": {
+      "id": "93627",
+      "type": "shopProduct",
+      "title": "Avocado Salad",
+      "text": "<p>\nSuperhealthy salad served with crisp za'atar bread for a Middle Eastern feast.<br /><br /></p>",
+      "cost": "9.00",
+      "icon": "",
+      "image": "c/i/00d6112ed1292bf20105093c240b04d9.jpg",
+      "imageWide": null,
+      "parentId": "93623",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93634": {
+      "id": "93634",
+      "type": "shopCategory",
+      "title": "Mains",
+      "icon": "",
+      "image": "c/i/009808affb6c6322dee201c0dc5739d5.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93635": {
+          "id": "93635",
+          "type": "shopProduct",
+          "title": "Rib Eye Steak",
+          "icon": "",
+          "image": "c/i/f44eb88ab7458e950d0e7667afa782c5.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nRib eye steak from fresh New Zealand beef. Our Chef recommendations.<br /><br /><br /><br /></p>",
+          "cost": "26.00",
+          "toppings": [
+            {
+              "id": "93777",
+              "name": "Degree of Doneness",
+              "values": [
+                { "id": "93778", "name": "Rare" },
+                { "id": "93779", "name": "Medium Rare" },
+                { "id": "93780", "name": "Medium" },
+                { "id": "93781", "name": "Medium Well" },
+                { "id": "93782", "name": "Well Done" }
+              ]
+            }
+          ]
+        },
+        "id_93636": {
+          "id": "93636",
+          "type": "shopProduct",
+          "title": "Pasta Bolognese",
+          "icon": "",
+          "image": "c/i/e93d5a370970b362b3fcba9eccc9ece7.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nTraditional combination of ground beef, pork, veal and tomato enriched by smoky pancetta.<br /><br /></p>",
+          "cost": "16.00",
+          "toppings": []
+        },
+        "id_93637": {
+          "id": "93637",
+          "type": "shopProduct",
+          "title": "BBQ Chicken",
+          "icon": "",
+          "image": "c/i/f05bf56adda25ddf9f4f7d1e4b9c3044.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nSlow barbecued chicken on the grill, slathered with delicious barbecue sauce.<br /><br /></p>",
+          "cost": "19.00",
+          "toppings": []
+        },
+        "id_93638": {
+          "id": "93638",
+          "type": "shopProduct",
+          "title": "Grilled Salmon",
+          "icon": "",
+          "image": "c/i/9c7c51985d3a7e94582b13251ecc6076.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nGrilled salmon with soy sauce and brown sugar marinade, with hints of lemon and garlic. Served with herbs.\n\n<br /></p>",
+          "cost": "14.00",
+          "toppings": []
+        },
+        "id_93639": {
+          "id": "93639",
+          "type": "shopProduct",
+          "title": "Paella",
+          "icon": "",
+          "image": "c/i/8af0374ac514813aeb43c883ee3a41ed.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nTraditional valencian paella with chicken, rabbit and garlic.<br /><br /></p>",
+          "cost": "21.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93635": {
+      "id": "93635",
+      "type": "shopProduct",
+      "title": "Rib Eye Steak",
+      "text": "<p>\nRib eye steak from fresh New Zealand beef. Our Chef recommendations.<br /><br /><br /><br /></p>",
+      "cost": "26.00",
+      "icon": "",
+      "image": "c/i/f44eb88ab7458e950d0e7667afa782c5.jpg",
+      "imageWide": null,
+      "parentId": "93634",
+      "backBtn": 1,
+      "groups": [],
+      "devices": []
+    },
+    "id_93682": {
+      "id": "93682",
+      "type": "shopCategory",
+      "title": "Traveler Essentials",
+      "icon": "",
+      "image": "c/i/9c55f2627296334ef7f59195132a8a2d.jpg",
+      "parentId": "93681",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93683": {
+          "id": "93683",
+          "type": "shopProduct",
+          "title": "Toothpaste Theodent",
+          "icon": "",
+          "image": "c/i/c0d6900c0be396a15ad237c3aa10c4de.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nTheodent has recently hit the market, and it promises to strengthen the enamel of teeth by using a natural extract from the cocoa bean. Theodent, which comes in mint flavor for adults and chocolate for children.<br /><br /></p>",
+          "cost": "12.00",
+          "toppings": []
+        },
+        "id_93684": {
+          "id": "93684",
+          "type": "shopProduct",
+          "title": "Doltz Pocket Sonic Toothbrush",
+          "icon": "",
+          "image": "c/i/8508bd4e24f99c11313e43ba050cb7e5.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nWith Panasonic's Doltz Pocket Sonic Toothbrush, you'll have the power of ultrasonic teeth cleaning wherever you go.<br /><br /></p>",
+          "cost": "32.00",
+          "toppings": []
+        },
+        "id_93685": {
+          "id": "93685",
+          "type": "shopProduct",
+          "title": "Teleadapt World Power Adapter",
+          "icon": "",
+          "image": "c/i/b6737aee2856ce17641931135eefaa87.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nWorld Wide Plug Adapter Kit by Teledapt includes plugs for use in all countries like USA, Canada, Mexico, Australia, NZ, Japan, USA, UK, Ireland, African countries, Asian countries, South American countries.\n\n<br /></p>",
+          "cost": "42.00",
+          "toppings": []
+        },
+        "id_93686": {
+          "id": "93686",
+          "type": "shopProduct",
+          "title": "iDAPT i4 Multicharger",
+          "icon": "",
+          "image": "c/i/2845116f7de68839789e8d7f61b1ea32.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\niDAPT i4 is an innovative charging solution that can charge up to 4 mobile devices simultaneously and is compatible with over 4,500 mobile electronic devices including the iPhone, iPad, Blackberry, Nintendo DS, PSP, GPS systems, digital cameras, and Bluetooth products.<br /><br /></p>",
+          "cost": "135.00",
+          "toppings": []
+        },
+        "id_93687": {
+          "id": "93687",
+          "type": "shopProduct",
+          "title": "Apple 8-Pin to 30-Pin Charger Adapter",
+          "icon": "",
+          "image": "c/i/bbb2f4e5ecd20a625e3aa79122b98a00.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nForgot your charger for iPhone 5 or cannot connet to iHome docking station installed in your room? Take ot easy, order original Apple adapter right now.\n\n<br /></p>",
+          "cost": "12.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93688": {
+      "id": "93688",
+      "type": "shopCategory",
+      "title": "Electronics &amp; Accessories",
+      "icon": "",
+      "image": "c/i/4b2d95d04d3e51861f4156c7d4d9c2dc.jpg",
+      "parentId": "93681",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93689": {
+          "id": "93689",
+          "type": "shopProduct",
+          "title": "iPhone X 256Gb Black",
+          "icon": "",
+          "image": "c/i/a547cd7b3ba64848aecc44c030145cb0.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>The iPhone X is clearly the best iPhone ever made. It\u2019s thin, it\u2019s powerful, it has ambitious ideas about what cameras on phones can be used for, and it pushes the design language of phones into a strange new place.&nbsp;</p><p>It is a huge step forward in terms of phone hardware, and it has the notch to show for it.<br></p>",
+          "cost": "715.00",
+          "toppings": []
+        },
+        "id_93690": {
+          "id": "93690",
+          "type": "shopProduct",
+          "title": "Apple Watch Series 3",
+          "icon": "",
+          "image": "c/i/0423eb10d1e57b81ec8cc56825ee2e7a.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\r\nThe new Apple Watch Series 3. Model with cellular.<br></p>",
+          "cost": "760.00",
+          "toppings": []
+        },
+        "id_93691": {
+          "id": "93691",
+          "type": "shopProduct",
+          "title": "Monster Beats Headphones",
+          "icon": "",
+          "image": "c/i/6c74306f91d91c737f76a4cc2e797f83.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\r\nIconic Beats by Dr Dre. Headphones that sound great and do good. Join the fight!\r\n\r\n<br></p>",
+          "cost": "260.00",
+          "toppings": []
+        },
+        "id_93692": {
+          "id": "93692",
+          "type": "shopProduct",
+          "title": "Amazon Kindle",
+          "icon": "",
+          "image": "c/i/b4c85730efa31b72134e6100840149bf.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\r\nThe new Amazon Kindle e-reader Wi-Fi, 6\" E Ink Display\r\n\r\n<br></p>",
+          "cost": "310.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93698": {
+      "id": "93698",
+      "type": "shopCategory",
+      "title": "Gift Ideas",
+      "icon": "",
+      "image": "c/i/bd806b1bb9c462868338853dbba5a89a.jpg",
+      "parentId": "93681",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93699": {
+          "id": "93699",
+          "type": "shopProduct",
+          "title": "Luxury Chocolate",
+          "icon": "",
+          "image": "c/i/847d5808a6dae861e49df3f83cac3cf2.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThe glamorous beauty box is certainly dressed to impress, but inside you\u2019ll find it\u2019s full of chocolate specialities that are simply to die for. And when they\u2019re gone it really comes into its own - with a mirror, compartments and ribbon-dressed drawers to keep your pampering essentials safe for a long time to come.\n\n<br /></p>",
+          "cost": "23.00",
+          "toppings": []
+        },
+        "id_93700": {
+          "id": "93700",
+          "type": "shopProduct",
+          "title": "Bouquet of Roses",
+          "icon": "",
+          "image": "c/i/d4861c066b0a1c178883f8677507903a.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThere is no better way to convey the emotions of the heart than to send a bouquet of beautiful roses. This bouquet can be made in different sizes and in your choise of colour.<br /><br /></p>",
+          "cost": "95.00",
+          "toppings": []
+        },
+        "id_93701": {
+          "id": "93701",
+          "type": "shopProduct",
+          "title": "Exclusive Spa Gift",
+          "icon": "",
+          "image": "c/i/526a4866b062131aa029d3d3fa59c1d4.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nWelcome to a discreet inner sanctuary. Where time is put on hold, so you can drift through the sauna, steam, experience showers, ice fountain and relaxation room.\n\n<br /></p>",
+          "cost": "120.00",
+          "toppings": []
+        },
+        "id_93702": {
+          "id": "93702",
+          "type": "shopProduct",
+          "title": "Romantic Dinner",
+          "icon": "",
+          "image": "c/i/ff6545fcbad04e528c8bc114b45835d0.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\n\nYou are invited to enjoy an elegant three-course dinner menu paired with a complimentary glass of sparkling wine. Choose from tempting selection of four dishes for each course.\n<br /></p>",
+          "cost": "280.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93653": {
+      "id": "93653",
+      "type": "shopCategory",
+      "title": "Hot Drinks",
+      "icon": "",
+      "image": "c/i/1a54f71a6a81c8a836b50f6b80b8470d.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93654": {
+          "id": "93654",
+          "type": "shopProduct",
+          "title": "Black Tea",
+          "icon": "",
+          "image": "c/i/9092b21cc8116fe8f05aa679b3c18f84.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nTwinings black tea.\n\n<br /></p>",
+          "cost": "4.00",
+          "toppings": []
+        },
+        "id_93655": {
+          "id": "93655",
+          "type": "shopProduct",
+          "title": "Green Tea",
+          "icon": "",
+          "image": "c/i/25e3fc88d237109f4fab1a5bb6bf1f12.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nTwinings green tea.<br /><br /></p>",
+          "cost": "4.00",
+          "toppings": []
+        },
+        "id_93656": {
+          "id": "93656",
+          "type": "shopProduct",
+          "title": "Black Coffee",
+          "icon": "",
+          "image": "c/i/4b77b19fa971f273e3235b6c71b00a8f.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nBlack Coffe Lavaza Cream Aroma.<br /><br /></p>",
+          "cost": "5.00",
+          "toppings": []
+        },
+        "id_93657": {
+          "id": "93657",
+          "type": "shopProduct",
+          "title": "Cappuccino",
+          "icon": "",
+          "image": "c/i/978581fbdbe136db008db3d28b20b3c4.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nWe are making cappuccino using only best varieties of coffee and fresh milk.<br /><br /><br /></p>",
+          "cost": "6.00",
+          "toppings": []
+        },
+        "id_93658": {
+          "id": "93658",
+          "type": "shopProduct",
+          "title": "Hot Chocolate",
+          "icon": "",
+          "image": "c/i/7fa60b94f86f811b6055c4001cb89aca.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nA tasty cup of hot chocolate with whipped cream and cocoa powder.\n\n<br /></p>",
+          "cost": "6.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93659": {
+      "id": "93659",
+      "type": "shopCategory",
+      "title": "Alcohol",
+      "icon": "",
+      "image": "c/i/e03c22b7d4f2e6df5821c7d3d1fd2c29.jpg",
+      "parentId": "93612",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93660": {
+          "id": "93660",
+          "type": "shopCategory",
+          "title": "Cocktails",
+          "icon": "",
+          "image": "c/i/4fd3f963c02c807ac0ef047000b1fb4b.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93665": {
+          "id": "93665",
+          "type": "shopCategory",
+          "title": "Beer",
+          "icon": "",
+          "image": "c/i/b60db0fe80104ede07c4d04ab0e83f0c.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93670": {
+          "id": "93670",
+          "type": "shopCategory",
+          "title": "Wine",
+          "icon": "",
+          "image": "c/i/ac29c66f2d81d644571fb40944f31e35.jpg",
+          "imageWide": null,
+          "groups": []
+        },
+        "id_93675": {
+          "id": "93675",
+          "type": "shopCategory",
+          "title": "Whiskey",
+          "icon": "",
+          "image": "c/i/183569bb20b8f5c4e00b071baefadeb8.jpg",
+          "imageWide": null,
+          "groups": []
+        }
+      }
+    },
+    "id_93660": {
+      "id": "93660",
+      "type": "shopCategory",
+      "title": "Cocktails",
+      "icon": "",
+      "image": "c/i/4fd3f963c02c807ac0ef047000b1fb4b.jpg",
+      "parentId": "93659",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93661": {
+          "id": "93661",
+          "type": "shopProduct",
+          "title": "Old Fashioned",
+          "icon": "",
+          "image": "c/i/3983ffff27207d4c2b79194267a7948d.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThe Old Fashioned is made by muddling sugar with bitters then adding whiskey and a twist of citrus rind.<br />The first use of the name \"Old Fashioned\" for a Bourbon whiskey cocktail was said to have been, anachronistically, at the Pendennis Club, a gentlemen's club founded in 1881 in Louisville, Kentucky. The recipe was said to have been invented by a bartender at that club in honor of Colonel James E. Pepper, a prominent bourbon distiller, who brought it to the Waldorf-Astoria Hotel bar in New York City.<br /><br /></p>",
+          "cost": "8.00",
+          "toppings": []
+        },
+        "id_93662": {
+          "id": "93662",
+          "type": "shopProduct",
+          "title": "Margarita",
+          "icon": "",
+          "image": "c/i/248b29564b464784e8fc4d9add5154d6.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThe margarita is a Mexican cocktail consisting of tequila mixed with Cointreau and lime, served with salt on the glass rim.<br /><br />Margarita was invented in October 1941, at Hussong's Cantina in Ensenada, Mexico, by bartender Don Carlos Orozco. One slow afternoon, Don Carlos was experimenting with mixing new drinks when a prestigious visitor arrived: Margarita Henkel, the daughter of a German ambassador. Don Carlos offered the drink to Margarita, and named it after her for being the first person to taste it.<br /><br /></p>",
+          "cost": "8.00",
+          "toppings": []
+        },
+        "id_93663": {
+          "id": "93663",
+          "type": "shopProduct",
+          "title": "Daiquiri",
+          "icon": "",
+          "image": "c/i/cc77a4943c7a99fc9081c4bb7768126d.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nDaiquiri<b> </b>is a family of cocktails whose main ingredients are rum, lime juice and sugar.<br /><br />The Daiquir\u00ed was supposedly invented by an American mining engineer, named Jennings Cox, who was in Cuba at the time of the Spanish-American War. It is also possible that William Astor Chanler, a US congressman who purchased the Santiago Iron Mines in 1902, introduced the Daiquir\u00ed to clubs in New York in that year.<br /><br /></p>",
+          "cost": "10.00",
+          "toppings": []
+        },
+        "id_93664": {
+          "id": "93664",
+          "type": "shopProduct",
+          "title": "Pi\u00f1a Colada",
+          "icon": "",
+          "image": "c/i/9a31f965b5e504737885da3b5d96ed00.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThe Pi\u00f1a Colada is a sweet, rum-based cocktail made with rum, cream of coconut, and pineapple juice, served either blended or shaken with ice.<br />The name 'Pi\u00f1a Colada' literally means 'strained pineapple', a reference to the freshly pressed and strained pineapple juice used in the drink's preparation. Three Puerto Rican bartenders contest the ownership of their country's national drink. Ram\u00f3n 'Monchito' Marrero P\u00e9rez claims to have first made it at the Caribe Hilton Hotel's Beachcomber Bar in San Juan on 15th August 1952, using the then newly available Coco L\u00f3pez cream of coconut. Ricardo Garcia, who also worked at the Caribe, says that it was he who invented the drink.\n\n<br /></p>",
+          "cost": "10.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93665": {
+      "id": "93665",
+      "type": "shopCategory",
+      "title": "Beer",
+      "icon": "",
+      "image": "c/i/b60db0fe80104ede07c4d04ab0e83f0c.jpg",
+      "parentId": "93659",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93666": {
+          "id": "93666",
+          "type": "shopProduct",
+          "title": "Heiniken (33\u0441l), 5% alc",
+          "icon": "",
+          "image": "c/i/9492bdb88e1ff7e939de8b829da90e80.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nHeineken is a pale lager beer with 5% alcohol by volume.<b><br /></b>\n\n<br /></p>",
+          "cost": "4.00",
+          "toppings": []
+        },
+        "id_93667": {
+          "id": "93667",
+          "type": "shopProduct",
+          "title": "Heineken (50\u0441l), 5% alc",
+          "icon": "",
+          "image": "c/i/ca79038d4dc06397fcb5a52f3adfc2cb.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nHeineken<b> </b>is a pale lager beer with 5% alcohol by volume.<br /><br /><br /><br /></p>",
+          "cost": "5.00",
+          "toppings": []
+        },
+        "id_93668": {
+          "id": "93668",
+          "type": "shopProduct",
+          "title": "Guinness Draught (1pt), 4.3% alc",
+          "icon": "",
+          "image": "c/i/3b71df67c29d1403e69d5612f93d4fdb.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nGuinness is a popular Irish dry stout that originated in the brewery of Arthur Guinness.<b><br /><br /><br /></b><b><br /></b>\n\n<br /></p>",
+          "cost": "7.00",
+          "toppings": []
+        },
+        "id_93669": {
+          "id": "93669",
+          "type": "shopProduct",
+          "title": "Lindemans Kriek Cuvee Rene Grand Cru (0.75l), 4% alc",
+          "icon": "",
+          "image": "c/i/bc6a84995e90164cfd13c39649011ea0.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThe Kriek Cuv\u00e9e Ren\u00e9 by brewery Lindemans is an excellent sour kriek beer. It is brewed with wild yeast from the surrounding air in Vlezenbeek, water, malted barley, wheat, aged hop flowers and selected wild cherries.<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></p>",
+          "cost": "8.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93670": {
+      "id": "93670",
+      "type": "shopCategory",
+      "title": "Wine",
+      "icon": "",
+      "image": "c/i/ac29c66f2d81d644571fb40944f31e35.jpg",
+      "parentId": "93659",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93671": {
+          "id": "93671",
+          "type": "shopProduct",
+          "title": "Aia Vecchia, Morellino di Scansano DOC, 2009",
+          "icon": "",
+          "image": "c/i/69178138b509a44a6d5ece0e18507516.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nAia Vecchia, Morellino di Scansano DOC, 2009, 13% alc, 75cl,  red wine, Sangiovese.<br /><br />Lagone has a warm deep red color close to purple. Delicate aromas of Mediterranean wood and vanilla emphasize the structured and elegant taste with intense notes of wild berries, ripe juicy sour cherries and hints of sweet spices that leave the palate satisfied and pleasantly sweet and dry.<b><br /></b><br /><br /></p>",
+          "cost": "32.00",
+          "toppings": []
+        },
+        "id_93672": {
+          "id": "93672",
+          "type": "shopProduct",
+          "title": "Albizzia, Toscana IGT Chardonnay, 2011",
+          "icon": "",
+          "image": "c/i/f14be3d2946e9ad3b98e77cd3cdfaa5a.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\n<b>Albizzia, Toscana IGT Chardonnay, 2011, 13.5% alc, 75cl<br /><br /></b>There are myriad descriptors for the aromas and flavors of Chardonnay. Common aromas range from butter and toast through to tropical notes of banana, pineapple and guava.<b><br /><br /><br /><br /><br /></b>\n\n<br /></p>",
+          "cost": "21.00",
+          "toppings": []
+        },
+        "id_93673": {
+          "id": "93673",
+          "type": "shopProduct",
+          "title": "Domenico Clerico Ciabot Mentin Ginestra, 2005 ",
+          "icon": "",
+          "image": "c/i/92f246115de4c21031b54275831e2e44.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\n2005 Domenico Clerico Ciabot Mentin Ginestra, Barolo DOCG, Italy, 75cl, red wine.<b><br /><br /></b>The 2005 Barolo Ciabot Mentin Ginestra emerges from the glass with endless layers of sweet spices, menthol, violets and dark fruit on a powerful, authoritative frame. This is a beautifully defined, sculpted wine of the very highest level. Tar, smoke and licorice linger on the finish. The tannins are massive at this stage, and the wine needs time, but the 2005 is undoubtedly one of the stars of the vintage. <b><br /></b>\n\n<br /></p>",
+          "cost": "86.00",
+          "toppings": []
+        },
+        "id_93674": {
+          "id": "93674",
+          "type": "shopProduct",
+          "title": "Martinborough Vineyard Pinot Noir, 2006",
+          "icon": "",
+          "image": "c/i/a547ce720bcafc8ff10df22e70cf8b28.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nMartinborough Vineyard Pinot Noir, Martinborough, New Zealand, 2006, 75cl, red wine.<br /><b><br /></b>The 2006 Pinot Noir is endowed with a fabulous, mineral-rich nose, superbly defined with touches of strawberry and boysenberry, the palate very concentrated yet very well-defined with vibrant acidity, ebullient red-berried fruits and a svelte, silky, sophisticated finish. Its quality shines through this lovely wine that should drink over 3\u20135 years.<b><br /></b>\n\n<br /></p>",
+          "cost": "73.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93675": {
+      "id": "93675",
+      "type": "shopCategory",
+      "title": "Whiskey",
+      "icon": "",
+      "image": "c/i/183569bb20b8f5c4e00b071baefadeb8.jpg",
+      "parentId": "93659",
+      "backBtn": 1,
+      "groups": [],
+      "devices": [],
+      "children": {
+        "id_93676": {
+          "id": "93676",
+          "type": "shopProduct",
+          "title": "Glenfiddich 15 years old (70cl), 40% alc",
+          "icon": "",
+          "image": "c/i/5ea08cc026e61da9ac495e7769834d34.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nA single malt Scotch whisky aged in European, American and New American oak \u2013 for a careful release of virgin cask flavours. Mellowed in our first of a kind Solera Vat, and finally married in Portuguese oak tuns. Tradition and innovation gives this whisky great depth and consistency. An expression layered with intriguing aromas and bursting with flavours. The first 15 Year Old to enter the top ten best selling single malts in the world.<br /><br /></p>",
+          "cost": "54.00",
+          "toppings": []
+        },
+        "id_93677": {
+          "id": "93677",
+          "type": "shopProduct",
+          "title": "Glenfiddich 21 years old (70cl), 40% alc",
+          "icon": "",
+          "image": "c/i/d739d1f749def14637a1c7a972d7d302.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nCasks that once contained premium Caribbean rum are used to finish this expression, aged for 21 years. Four months in Gran Reserva barrels selected by our Malt Master, wrap this single malt whisky in distinct aromas and flavours. An intense and vanilla sweet aroma, floral with hints of banana. And a soft, lively taste with lime, ginger and spice are followed by a complex and very long ending. Our rum finish releases layers of intensity and sets this 21 Year Old apart from other whiskies.<br /><br /></p>",
+          "cost": "92.00",
+          "toppings": []
+        },
+        "id_93678": {
+          "id": "93678",
+          "type": "shopProduct",
+          "title": "Jack Daniels Old No.7 (75cl), 40% alc",
+          "icon": "",
+          "image": "c/i/af129b206c3107fe4225b3a190ebd5a7.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nMade in the Tennessee Sour Mash style, it is very similar to bourbon with the additional step of dripping the fresh make spirit through a vat of sugar maple charcoal to \"mellow\" the whiskey before going into barrel. The result is a smooth, versatile whiskey that is true to its country roots.<b> </b>\n\n<br /></p>",
+          "cost": "64.00",
+          "toppings": []
+        },
+        "id_93679": {
+          "id": "93679",
+          "type": "shopProduct",
+          "title": "Bushmills Original (70cl), 40% alc",
+          "icon": "",
+          "image": "c/i/13f67b44a7293d6b392ff6272a4be29c.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nBushmills\u201a the golden member of the family. It\u2019s a blend of triple distilled single malt whiskey with a lighter irish grain whiskey.<br /><br /></p>",
+          "cost": "47.00",
+          "toppings": []
+        },
+        "id_93680": {
+          "id": "93680",
+          "type": "shopProduct",
+          "title": "The Glenlivet 18 years old (70cl), 43% alc",
+          "icon": "",
+          "image": "c/i/01b749e0f0e87dc4bce8c19bbe898cc9.jpg",
+          "imageWide": null,
+          "groups": [],
+          "text": "<p>\nThis excellent 18 year old single malt from Glenlivet is a classic Speyside dram, it also won two golds at the International Wine and Spirits Competition. <br /><br /></p>",
+          "cost": "34.00",
+          "toppings": []
+        }
+      }
+    },
+    "id_93607": {
+      "id": "93607",
+      "type": "service",
+      "title": "Make-up Room",
+      "customField": "",
+      "cost": "",
+      "workingHours": "24 hours",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93608": {
+      "id": "93608",
+      "type": "service",
+      "title": "Laundry and Dry Cleaning",
+      "customField": "",
+      "cost": "25",
+      "workingHours": "10:00-18:00",
+      "pieces": "none",
+      "toppings": [
+        {
+          "id": "104592",
+          "name": "Socks",
+          "type": "select",
+          "price": "4",
+          "required": false,
+          "values": []
+        },
+        {
+          "id": "104593",
+          "name": "Shirt Short Sleeve",
+          "type": "counter",
+          "price": "7",
+          "required": false,
+          "values": []
+        },
+        {
+          "id": "104594",
+          "name": "Shirt Long Sleeve",
+          "type": "counter",
+          "price": "9",
+          "required": false,
+          "values": []
+        },
+        {
+          "id": "104595",
+          "name": "Trousers",
+          "type": "counter",
+          "price": "10",
+          "required": false,
+          "values": []
+        }
+      ],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93609": {
+      "id": "93609",
+      "type": "service",
+      "title": "Technical Support",
+      "customField": "",
+      "cost": "",
+      "workingHours": "24 hours",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93610": {
+      "id": "93610",
+      "type": "service",
+      "title": "Minibar Refill",
+      "customField": "",
+      "cost": "",
+      "workingHours": "24 hours",
+      "pieces": "none",
+      "toppings": [
+        {
+          "id": "104596",
+          "name": "San Pellegrino Mineral Water",
+          "type": "counter",
+          "price": "4",
+          "required": false,
+          "values": []
+        },
+        {
+          "id": "104597",
+          "name": "Perrier Mineral Water",
+          "type": "select",
+          "price": "4",
+          "required": false,
+          "values": [
+            { "name": "Perrier Mineral Water", "price": "", "id": "104599" }
+          ]
+        },
+        {
+          "id": "104600",
+          "name": "Coca-Cola (33\u0441l)",
+          "type": "counter",
+          "price": "",
+          "required": false,
+          "values": []
+        }
+      ],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93611": {
+      "id": "93611",
+      "type": "service",
+      "title": "Extra Pillows",
+      "customField": "",
+      "cost": "",
+      "workingHours": "24 hours",
+      "pieces": "none",
+      "toppings": [
+        {
+          "id": "104601",
+          "name": "Select one of these luxury pillows",
+          "type": "select",
+          "price": "",
+          "required": false,
+          "values": [
+            {
+              "name": "Goose Down Pillow 60x80 cm",
+              "price": "",
+              "id": "104602"
+            },
+            { "name": "Kapok Pillow 60x80 cm", "price": "", "id": "104603" },
+            { "name": "Buck Wheat 60x60 cm", "price": "", "id": "104604" },
+            { "name": "Igusa Pillow 60x60 cm", "price": "", "id": "104605" },
+            {
+              "name": "Memory Foam Pillow 45x70 cm",
+              "price": "",
+              "id": "104606"
+            }
+          ]
+        }
+      ],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93774": {
+      "id": "93774",
+      "type": "service",
+      "title": "Mercedes-Benz",
+      "customField": "",
+      "cost": "",
+      "workingHours": "",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93866": {
+      "id": "93866",
+      "type": "service",
+      "title": "Luggage services",
+      "customField": "",
+      "cost": "",
+      "workingHours": "24 hours",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93872": {
+      "id": "93872",
+      "type": "service",
+      "title": "Restaurant Booking",
+      "customField": "",
+      "cost": "",
+      "workingHours": "10:00-23:30",
+      "pieces": "pers",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93873": {
+      "id": "93873",
+      "type": "service",
+      "title": "Spa Booking",
+      "customField": "",
+      "cost": "",
+      "workingHours": "",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_93928": {
+      "id": "93928",
+      "type": "service",
+      "title": "Some service",
+      "customField": "",
+      "cost": "",
+      "workingHours": "",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104607": {
+      "id": "104607",
+      "type": "service",
+      "title": "De-stress Massage",
+      "customField": "DURATION: 50 MIN",
+      "cost": "55",
+      "workingHours": "08:00-20:00",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104608": {
+      "id": "104608",
+      "type": "service",
+      "title": "Sports Massage",
+      "customField": "DURATION: 50-90 MIN",
+      "cost": "",
+      "workingHours": "08:00-20:00",
+      "pieces": "none",
+      "toppings": [
+        {
+          "id": "104609",
+          "name": "50 min",
+          "type": "radio",
+          "price": "60",
+          "required": false,
+          "values": []
+        },
+        {
+          "id": "104610",
+          "name": "90 min",
+          "type": "radio",
+          "price": "91",
+          "required": false,
+          "values": []
+        }
+      ],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104611": {
+      "id": "104611",
+      "type": "service",
+      "title": "Face Cleansing",
+      "customField": "DURATION: 50-80 MIN",
+      "cost": "75",
+      "workingHours": "08:00-20:00",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104612": {
+      "id": "104612",
+      "type": "service",
+      "title": "Facial Massage",
+      "customField": "DURATION: 20 MIN",
+      "cost": "20",
+      "workingHours": "08:00-20:00",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104613": {
+      "id": "104613",
+      "type": "service",
+      "title": "Sunny Side Of Life",
+      "customField": "DURATION: 60 MIN",
+      "cost": "45",
+      "workingHours": "08:00-22:00",
+      "pieces": "pers",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104614": {
+      "id": "104614",
+      "type": "service",
+      "title": "Skybath",
+      "customField": "DURATION: 70 MIN",
+      "cost": "55",
+      "workingHours": "08:00-22:00",
+      "pieces": "pers",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104615": {
+      "id": "104615",
+      "type": "service",
+      "title": "Mediterranean Gateway",
+      "customField": "DURATION: 60 MIN",
+      "cost": "60",
+      "workingHours": "08:00-22:00",
+      "pieces": "pers",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104616": {
+      "id": "104616",
+      "type": "service",
+      "title": "Bubbles &amp; Romance ",
+      "customField": "DURATION: 90 MIN",
+      "cost": "85",
+      "workingHours": "08:00-22:00",
+      "pieces": "none",
+      "toppings": [],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    },
+    "id_104617": {
+      "id": "104617",
+      "type": "service",
+      "title": "Power plate ",
+      "customField": "",
+      "cost": "",
+      "workingHours": "08:00-20:00",
+      "pieces": "none",
+      "toppings": [
+        {
+          "id": "104618",
+          "name": "Power plate 30min",
+          "type": "radio",
+          "price": "35",
+          "required": false,
+          "values": []
+        },
+        {
+          "id": "104619",
+          "name": "Power plate 60min",
+          "type": "radio",
+          "price": "60",
+          "required": false,
+          "values": []
+        }
+      ],
+      "buttonName": "Select time",
+      "hasChoiceOfTime": true
+    }
+  }
+}

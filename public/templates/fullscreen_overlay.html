@@ -1,31 +1,63 @@
-
-<div id="tv_fullscreen_overlay" style="visibility:hidden;">
-    <div id="tv_fullscreen_logo"></div>
-    <div id="tv_fullscreen_info">
-        <div style="display: none;" id="tv_fullscreen_date"></div>
-        <div id="tv_fullscreen_time"><span class="ui-icon-clock"></span><span id="tv_fullscreen_time_hours">--</span><span class="blink">:</span><span id="tv_fullscreen_time_minutes">--</span></div>
-        <div id="tv_fullscreen_mosaic_time" style="visibility:hidden;">00:00</div>
-        <div id="tv_fullscreen_weather">0&deg;C<!--&#8451;--></div>
-        <div id="tv_fullscreen_room">{{:~getlang('tv_room')}}<span id="tv_fullscreen_roomnumber">101</span></div>
-        <div id="tv_fullscreen_alarm"><span class="icons8-alarm-clock"></span><span id="wakeup_time">00:00</span></div>
-        <div id="tv_fullscreen_parental_lock"><span class="ui-icon-lock"></span>18+</div>
+<div id="tv_fullscreen_overlay" style="visibility: hidden">
+  <div id="tv_fullscreen_logo"></div>
+  <div id="tv_fullscreen_info">
+    <div style="display: none" id="tv_fullscreen_date"></div>
+    <div id="tv_fullscreen_time">
+      <span class="ui-icon-clock"></span
+      ><span id="tv_fullscreen_time_hours">--</span><span class="blink">:</span
+      ><span id="tv_fullscreen_time_minutes">--</span>
     </div>
-    <div id="tv_fullscreen_welcome">{{:~getlang('tv_welcome')}}<span
-        id="tv_fullscreen_guestname">Mr. Pavorotti</span></div>
-    <div id="tv_fullscreen_welcome_big"></div>
-    <div id="tv_fullscreen_btns">
-        <div id="tv_fullscreen_btn_back" class="tv_fullscreen_btn btn_legend">
-            <svg class="svg_button" viewBox="0 0 24 19">
-                <use xlink:href="#btn_back"></use>
-            </svg>
-            {{:~getlang('tv_back')}}
-        </div>
-        <div id="tv_fullscreen_btn_lang" class="tv_fullscreen_btn btn_legend btn_blue">Language</div>
-        <div id="tv_fullscreen_btn_tvmode" class="tv_fullscreen_btn btn_legend btn_red">{{:~getlang('tv_television')}}</div>
-        <div id="tv_fullscreen_btn_tvcategories" class="tv_fullscreen_btn btn_legend btn_green">
-            {{:~getlang('tv_categories')}}
-        </div>
-        <div id="tv_fullscreen_btn_filters" class="tv_fullscreen_btn btn_legend btn_green">{{:~getlang('filter')}}<span
-            id="tv_fullscreen_btn_filters_enabled">{{:~getlang('enabled')}}</span></div>
+    <div id="tv_fullscreen_mosaic_time" style="visibility: hidden">00:00</div>
+    <div id="tv_fullscreen_weather">0&deg;C<!--&#8451;--></div>
+    <div id="tv_fullscreen_room">
+      {{:~getlang('tv_room')}}<span id="tv_fullscreen_roomnumber">101</span>
     </div>
+    <div id="tv_fullscreen_alarm">
+      <span class="icons8-alarm-clock"></span
+      ><span id="wakeup_time">00:00</span>
+    </div>
+    <div id="tv_fullscreen_parental_lock">
+      <span class="ui-icon-lock"></span>18+
+    </div>
+  </div>
+  <div id="tv_fullscreen_welcome">
+    {{:~getlang('tv_welcome')}}<span id="tv_fullscreen_guestname"
+      >Mr. Loc Nguyen</span
+    >
+  </div>
+  <div id="tv_fullscreen_welcome_big"></div>
+  <div id="tv_fullscreen_btns">
+    <div id="tv_fullscreen_btn_back" class="tv_fullscreen_btn btn_legend">
+      <svg class="svg_button" viewBox="0 0 24 19">
+        <use xlink:href="#btn_back"></use>
+      </svg>
+      {{:~getlang('tv_back')}}
+    </div>
+    <div
+      id="tv_fullscreen_btn_lang"
+      class="tv_fullscreen_btn btn_legend btn_blue"
+    >
+      Language
+    </div>
+    <div
+      id="tv_fullscreen_btn_tvmode"
+      class="tv_fullscreen_btn btn_legend btn_red"
+    >
+      {{:~getlang('tv_television')}}
+    </div>
+    <div
+      id="tv_fullscreen_btn_tvcategories"
+      class="tv_fullscreen_btn btn_legend btn_green"
+    >
+      {{:~getlang('tv_categories')}}
+    </div>
+    <div
+      id="tv_fullscreen_btn_filters"
+      class="tv_fullscreen_btn btn_legend btn_green"
+    >
+      {{:~getlang('filter')}}<span id="tv_fullscreen_btn_filters_enabled"
+        >{{:~getlang('enabled')}}</span
+      >
+    </div>
+  </div>
 </div>
