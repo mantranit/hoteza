@@ -1,124 +1,124 @@
 .scandic_menu #menu_wrapper {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: auto;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: auto;
 }
 
 .scandic_menu #menu {
-	position: absolute;
-	width: 1150px;
-	height: 210px;
-	top: auto;
-	bottom: 29px;
-	left: 65px;
-	overflow: hidden;
+  position: absolute;
+  width: 1150px;
+  height: 210px;
+  top: auto;
+  bottom: 29px;
+  left: 65px;
+  overflow: hidden;
 }
 .landscape_layout.tv.scandic_menu #menu ul {
-	position: absolute;
+  position: absolute;
 }
 .landscape_layout.tv.scandic_menu #menu li {
-	position: relative;
-	width: 210px;
-	height: 210px;
-	float: left;
-	margin-right: 25px;
-	padding: 0;
-	background-color: rgba(0,0,0,.7);
+  position: relative;
+  width: 210px;
+  height: 210px;
+  float: left;
+  margin-right: 25px;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 .landscape_layout.tv.scandic_menu #menu li:after {
-	content: none;
+  content: none;
 }
 .landscape_layout.tv.scandic_menu #menu li [class^="icons8-"]:before,
 .landscape_layout.tv.scandic_menu #menu li [class*=" icons8-"]:before {
-	font-size: 90px;
+  font-size: 90px;
 }
 .scandic_menu.menu_open #tv_fullscreen_btns {
-	bottom: 276px;
+  bottom: 276px;
 }
 .scandic_menu #tv_fullscreen_welcome_big {
-	position: absolute;
-	display: none;
-	left: 29px;
-	bottom: 263px;
-	font-size: 60px;
-	font-weight: 600;
-	line-height: 64px;
-	text-transform: uppercase;
-	letter-spacing: -1px;
+  position: absolute;
+  display: none;
+  left: 29px;
+  bottom: 263px;
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 54px;
+  text-transform: uppercase;
+  letter-spacing: -1px;
 }
 .scandic_menu #tv_fullscreen_welcome_big span {
-	font-weight: 400;
+  font-weight: 400;
 }
 .scandic_menu.menu_open #tv_fullscreen_welcome_big {
-	display: block;
+  display: block;
 }
 .scandic_menu.menu_open #tv_fullscreen_welcome {
-	display: none !important;
+  display: none !important;
 }
 #menu_wrapper .btn-arrow {
-	width: 24px;
-	height: 40px;
-	position: absolute;
-	bottom: 114px;
+  width: 24px;
+  height: 40px;
+  position: absolute;
+  bottom: 114px;
 }
 #menu_wrapper .btn-arrow.right:before {
-	content: url('../i/btn_arrow_right.png');
-	position: absolute;
+  content: url("../i/btn_arrow_right.png");
+  position: absolute;
 }
 #menu_wrapper .btn-arrow.left:before {
-	content: url('../i/btn_arrow_left.png');
-	position: absolute;
+  content: url("../i/btn_arrow_left.png");
+  position: absolute;
 }
 #menu_wrapper .btn-arrow.right {
-	right: 20px;
+  right: 20px;
 }
 #menu_wrapper .btn-arrow.left {
-	left: 20px;
+  left: 20px;
 }
-.landscape_layout.tv.scandic_menu #menu LI .weather_menu_scandic+.menulabel {
-	font-size: 30px;
-	line-height: 130px;
+.landscape_layout.tv.scandic_menu #menu LI .weather_menu_scandic + .menulabel {
+  font-size: 30px;
+  line-height: 130px;
 }
 div.weather_menu_scandic {
-	text-align: center;
-	margin-top: 29px;
+  text-align: center;
+  margin-top: 29px;
 }
 .weather_menu_scandic [class^="weather-icon"] {
-	font-size: 100px;
+  font-size: 100px;
 }
 #menu_wrapper .substrate {
-	display: none;
+  display: none;
 
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	background-image: url(../i/shadow.png);
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url(../i/shadow.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 #menu_wrapper.video .substrate {
-	display: block;
+  display: block;
 }
 .landscape_layout.metro_menu.scandic_menu #menu #messages_indicator,
 .landscape_layout.metro_menu.scandic_menu #menu #shop_cart_indicator,
-.landscape_layout.metro_menu.scandic_menu #menu #feedback_indicator{
-	left: 130px;
-	top: 0px;
-	z-index: 10;
-	width: 40px;
-	height: 40px;
-	border-radius: 20px;
-	line-height: 40px;
-	font-size: 24px;
+.landscape_layout.metro_menu.scandic_menu #menu #feedback_indicator {
+  left: 130px;
+  top: 0px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  line-height: 40px;
+  font-size: 24px;
 }
 
 /* Без этого правила на Samsung EA590 не видно изображение в меню,
    его перекрывает бэкграунд Body и Контейнера*/
 body.tv.landscape_layout.scandic_menu.metro_menu.menu_open,
 body.tv.landscape_layout.scandic_menu.metro_menu.menu_open #container {
-	background-image: none;
+  background-image: none;
 }

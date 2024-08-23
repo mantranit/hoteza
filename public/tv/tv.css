@@ -27,7 +27,7 @@ BODY {
   position: relative;
 }
 BODY.loading {
-  background-image: url("../i/loading.gif");
+  /* background-image: url("../i/loading.gif"); */
   background-size: 5%;
   background-position: center;
   background-repeat: no-repeat;
@@ -639,8 +639,8 @@ ul {
 
 #tv_fullscreen_welcome {
   position: relative;
-  top: 28px;
-  font-size: 20px;
+  top: 26px;
+  font-size: 23px;
   line-height: 28px;
   white-space: nowrap;
   display: none;
@@ -975,9 +975,9 @@ ul {
 }
 
 #tv_fullscreen_info {
-  top: 28px;
+  top: 26px;
   right: 29px;
-  font-size: 20px;
+  font-size: 23px;
   position: relative;
   max-width: 611px;
   float: right;

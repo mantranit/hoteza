@@ -95,7 +95,7 @@
       "type": "menuItem",
       "image": null,
       "video": "",
-      "title": "In-room Dining",
+      "title": "Dining",
       "groups": [],
       "devices": [],
       "icon": "roomservice",
@@ -1475,7 +1475,7 @@
     "id_93612": {
       "id": "93612",
       "type": "shop",
-      "title": "In-room Dining",
+      "title": "Dining",
       "image": null,
       "imageWide": null,
       "parentId": "",
