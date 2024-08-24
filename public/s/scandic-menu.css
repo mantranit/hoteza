@@ -99,7 +99,7 @@ div.weather_menu_scandic {
   background-image: url(../i/shadow.png);
   background-repeat: no-repeat;
   background-position: center center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 #menu_wrapper.video .substrate {
   display: block;
