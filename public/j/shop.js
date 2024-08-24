@@ -1363,52 +1363,59 @@ function shop_cancel_order(orderId, inputSuccessCallback, inputErrorCallback) {
 	}
 
 	$.post(
-		api_url + 'orderCancel',
-		JSON.stringify({
-			token: token,
-			orderId: orderId,
-			type: type
-		}),
-		function (r) {
-			// 0 - успех
-			// 2 - некорректный токен
-			// 3 - гость выселен
-			// 4 - гость выселен/отменён (рудимент, по идее никогда не появится)
-			// 5 - заказ с таким ID не найден
-			// 6 - по каким-то причинам не удалось изменить статус заказа, надо попробовать ещё раз или обратиться на ресепшен
-			// 9 - глобальная ошибка, всё накрылось
-			switch (r.result) {
-				case 0:
-					successCallback(orderId);
-					return true;
-				case 2:
-					log.add('SERVICES cancel order: token is incorrect');
-					break;
-				case 3:
-					log.add('SERVICES cancel order: guest evicted');
-					break;
-				case 4:
-					log.add('SERVICES cancel order: guest evicted or cancelled');
-					break;
-				case 5:
-					log.add('SERVICES cancel order: order id ' + orderId + ' didn\'t find');
-					break;
-				case 6:
-					log.add('SERVICES cancel order: order id ' + orderId + ' didn\'t change status');
-					break;
-				case 9:
-					log.add('SERVICES cancel order: server error');
-					break;
-			}
+    "http://103.153.72.195:8080/api/v1/orderCancel",
+    JSON.stringify({
+      token: token,
+      orderId: orderId,
+      type: type,
+    }),
+    function (r) {
+      // 0 - успех
+      // 2 - некорректный токен
+      // 3 - гость выселен
+      // 4 - гость выселен/отменён (рудимент, по идее никогда не появится)
+      // 5 - заказ с таким ID не найден
+      // 6 - по каким-то причинам не удалось изменить статус заказа, надо попробовать ещё раз или обратиться на ресепшен
+      // 9 - глобальная ошибка, всё накрылось
+      switch (r.result) {
+        case 0:
+          successCallback(orderId);
+          return true;
+        case 2:
+          log.add("SERVICES cancel order: token is incorrect");
+          break;
+        case 3:
+          log.add("SERVICES cancel order: guest evicted");
+          break;
+        case 4:
+          log.add("SERVICES cancel order: guest evicted or cancelled");
+          break;
+        case 5:
+          log.add(
+            "SERVICES cancel order: order id " + orderId + " didn't find"
+          );
+          break;
+        case 6:
+          log.add(
+            "SERVICES cancel order: order id " +
+              orderId +
+              " didn't change status"
+          );
+          break;
+        case 9:
+          log.add("SERVICES cancel order: server error");
+          break;
+      }
 
-			// Выполняется если от сервера получен ответ отличный от 0
-			errorCallback(r.message);
-
-		}
-	).fail(function (err) {
-		log.add('SERVICES cancel order: failed req - ' + err.status + '|' + err.statusText);
-		errorCallback();
-	});
+      // Выполняется если от сервера получен ответ отличный от 0
+      errorCallback(r.message);
+    }
+  ).fail(function (err) {
+    log.add(
+      "SERVICES cancel order: failed req - " + err.status + "|" + err.statusText
+    );
+    errorCallback();
+  });
 
 
 	function successCallback(orderId) {

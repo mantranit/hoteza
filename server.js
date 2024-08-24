@@ -237,6 +237,10 @@ app.post("/api/v1/orderCreate", function (req, res) {
   res.json({ result: 0, message: "OK", orderId: "203100" });
 });
 
+app.post("/api/v1/orderCancel", function (req, res) {
+  res.json({ result: 0, message: "OK" });
+});
+
 app.post("/api/v1/feedback", function (req, res) {
   res.json({ result: 0, token: "4cbe89fa62c38e61a29c02f2c45e38fe" });
 });
