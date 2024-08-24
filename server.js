@@ -198,7 +198,7 @@ app.post("/api/v1/im", function (req, res) {
     messageList: [
       {
         id: "1597981",
-        message: `CANCELED: Dining  11.00 $ (${now.format(
+        message: `CANCELED: Dining  $100.00 (${now.format(
           "YYYY-MM-DD HH:mm"
         )})`,
         original: "",

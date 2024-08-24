@@ -77,6 +77,19 @@
       "onvclick": "tv_sources_page();",
       "class": "icons8-sources"
     },
+    "id_93867": {
+      "id": "93867",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Radio",
+      "groups": [],
+      "devices": ["tv"],
+      "icon": "radio",
+      "link": "#radio",
+      "onvclick": "RADIO.open();",
+      "class": ""
+    },
     "id_93612": {
       "id": "93612",
       "type": "menuItem",
@@ -87,32 +100,6 @@
       "devices": [],
       "icon": "roomservice",
       "link": "#93612",
-      "onvclick": "",
-      "class": ""
-    },
-    "id_93603": {
-      "id": "93603",
-      "type": "menuItem",
-      "image": "c/i/9344f0d12c8d0ef7e6ca51b3387d97cc.png",
-      "video": "",
-      "title": "Restaurants &amp; Bars",
-      "groups": [],
-      "devices": [],
-      "icon": "food",
-      "link": "#93604",
-      "onvclick": "",
-      "class": ""
-    },
-    "id_93837": {
-      "id": "93837",
-      "type": "menuItem",
-      "image": "c/i/ff7feffc11f4f09aabd02ea284e973cd.png",
-      "video": "",
-      "title": "Spa &amp; Fitness",
-      "groups": [],
-      "devices": [],
-      "icon": "spa2",
-      "link": "#93838",
       "onvclick": "",
       "class": ""
     },
@@ -142,19 +129,6 @@
       "onvclick": "",
       "class": ""
     },
-    "id_93867": {
-      "id": "93867",
-      "type": "menuItem",
-      "image": null,
-      "video": "",
-      "title": "Radio",
-      "groups": [],
-      "devices": ["tv"],
-      "icon": "radio",
-      "link": "#radio",
-      "onvclick": "RADIO.open();",
-      "class": ""
-    },
     "id_93599": {
       "id": "93599",
       "type": "menuItem",
@@ -166,6 +140,32 @@
       "devices": [],
       "icon": "about",
       "link": "#93600",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93603": {
+      "id": "93603",
+      "type": "menuItem",
+      "image": "c/i/9344f0d12c8d0ef7e6ca51b3387d97cc.png",
+      "video": "",
+      "title": "Restaurants &amp; Bars",
+      "groups": [],
+      "devices": [],
+      "icon": "food",
+      "link": "#93604",
+      "onvclick": "",
+      "class": ""
+    },
+    "id_93837": {
+      "id": "93837",
+      "type": "menuItem",
+      "image": "c/i/ff7feffc11f4f09aabd02ea284e973cd.png",
+      "video": "",
+      "title": "Spa &amp; Fitness",
+      "groups": [],
+      "devices": [],
+      "icon": "spa2",
+      "link": "#93838",
       "onvclick": "",
       "class": ""
     },
@@ -260,6 +260,19 @@
       "link": "#vod",
       "onvclick": "VOD.open();",
       "class": "icons8-tv-show"
+    },
+    "id_93733": {
+      "id": "93733",
+      "type": "menuItem",
+      "image": null,
+      "video": "",
+      "title": "Use Mobile App",
+      "groups": [],
+      "devices": ["tv", "tablet"],
+      "icon": "home",
+      "link": "#93734",
+      "onvclick": "",
+      "class": ""
     },
     "id_181239": {
       "id": "181239",
