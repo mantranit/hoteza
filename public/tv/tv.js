@@ -1057,9 +1057,7 @@ function tv_set_guest(tmp, repeat) {
     if (scandic_menu && !repeat) {
       // перенос строки приветствия для scandic_menu
       tmp = addCarry(tmp);
-      $("#tv_fullscreen_welcome_big").html(
-        tmp.format(get_welcome_guest_data())
-      );
+      $("#tv_fullscreen_welcome_big").html(tmp.format(get_dear_guest_data()));
     }
   } else {
     log.add("Error: No format for welcome message");
@@ -1123,6 +1121,18 @@ function get_welcome_guest_data() {
   return {
     welcome: getlang("tv_welcome").replace(/[，, ]*$/, ""),
     w: getlang("tv_welcome").replace(/[，, ]*$/, ""),
+    title: Guest.guestTitle || "",
+    t: Guest.guestTitle || "",
+    firstname: Guest.guestName || "",
+    f: Guest.guestName || "",
+    lastname: Guest.guestSurname || "",
+    l: Guest.guestSurname || "",
+  };
+}
+function get_dear_guest_data() {
+  return {
+    welcome: getlang("tv_dear").replace(/[，, ]*$/, ""),
+    w: getlang("tv_dear").replace(/[，, ]*$/, ""),
     title: Guest.guestTitle || "",
     t: Guest.guestTitle || "",
     firstname: Guest.guestName || "",
