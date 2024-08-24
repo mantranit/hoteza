@@ -1194,7 +1194,7 @@ function shop_order(when, orderId, confirmed, callback, withUnavailableProducts)
 	var serializedOrder = Services.serialize(order)[0];
 
 	$.post(
-    "https://18eb-58-187-184-107.ngrok-free.app/api/v1/orderCreate",
+    "http://localhost:8080/api/v1/orderCreate",
     JSON.stringify(
       Object.assign(serializedOrder, { token: token, tvId: Events.TVID() })
     ), //TVID: Фильтрация будильника по зонам

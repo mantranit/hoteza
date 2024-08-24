@@ -51,10 +51,10 @@
   font-weight: 400;
 }
 .scandic_menu.menu_open #tv_fullscreen_welcome_big {
-  display: block;
+  display: none;
 }
 .scandic_menu.menu_open #tv_fullscreen_welcome {
-  display: none !important;
+  display: block;
 }
 #menu_wrapper .btn-arrow {
   width: 24px;

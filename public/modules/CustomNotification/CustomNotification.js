@@ -205,7 +205,7 @@
 
 			if(Guest.token){
 				getServerCommandsAsync({
-          url: "https://18eb-58-187-184-107.ngrok-free.app/api/v1/marketing",
+          url: "http://localhost:8080/api/v1/marketing",
           method: "POST",
           payload: {
             cmd: "get",

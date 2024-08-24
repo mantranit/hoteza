@@ -189,7 +189,7 @@ var Messages = {
 			}
 
 			$.post(
-        "https://18eb-58-187-184-107.ngrok-free.app/api/v1/im",
+        "http://localhost:8080/api/v1/im",
         {
           cmd: "read",
           lastId: lastId,
@@ -437,7 +437,7 @@ var Messages = {
 				Messages.type = 'poll';
 				Messages.listener = $.ajax({
           url:
-            "https://18eb-58-187-184-107.ngrok-free.app/api/v1/queue/subpoll/" +
+            "http://localhost:8080/api/v1/queue/subpoll/" +
             Guest.token +
             "?tag=" +
             Messages.last.tag +

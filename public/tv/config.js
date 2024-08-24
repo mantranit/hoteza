@@ -98,8 +98,7 @@ config["tv"] = {
     //object {'channel': 2, 'volume': 10}
     enabled: true,
     mediaType: "video",
-    video:
-      "https://18eb-58-187-184-107.ngrok-free.app/video/HITEC_Scandic_Video_No_Sound.mp4",
+    video: "http://localhost:8080/video/HITEC_Scandic_Video_No_Sound.mp4",
     // mediaType: "image",
     // image: "images/0_Sea View Villa 2 - Salinda Resort - Phu Quoc_HD.jpg",
     always: true,

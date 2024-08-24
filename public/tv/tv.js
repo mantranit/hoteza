@@ -936,8 +936,7 @@ var time = {
   },
   sync: function () {
     $.get(
-      "https://18eb-58-187-184-107.ngrok-free.app/api/v1/datetime?tz=" +
-        isset("config.timezone"),
+      "http://localhost:8080/api/v1/datetime?tz=" + isset("config.timezone"),
       function (response) {
         time.dof = (response.time | 0) * 1000 - Date.now();
         time.tz = (response.offset | 0) * 1000;
@@ -1080,7 +1079,7 @@ function tv_set_guest(tmp, repeat) {
     for (var i = 0; i < queries.length; i++) {
       var query = queries[i];
       if (string.indexOf(query) !== -1) {
-        return string.replace(query, "<span>" + query + "</span><br />");
+        return string.replace(query, "<span>" + query + "</span>");
       }
     }
 
@@ -1211,7 +1210,7 @@ function tv_weather() {
     hotelId: get_hotelId(),
   };
   $.post(
-    "https://18eb-58-187-184-107.ngrok-free.app/api/v1/weather",
+    "http://localhost:8080/api/v1/weather",
     data,
     function (response) {
       switch (response.result) {
@@ -1386,7 +1385,6 @@ function tv_keydown(event, isNotOverride) {
       tv_keydown_override(event);
     } catch (e) {
       log.add("Error executing override function (" + e + ")");
-      console.log(e);
       log.post_error("Error executing override function (" + e + ")");
     }
     return false;
@@ -4266,7 +4264,7 @@ function tv_register() {
         }
 
         $.post(
-          "https://18eb-58-187-184-107.ngrok-free.app/api/v1/tvconnect/registration",
+          "http://localhost:8080/api/v1/tvconnect/registration",
           data,
           function (r) {
             if (typeof r == "object") {
@@ -4345,7 +4343,7 @@ function tv_register_v2() {
     }
 
     $.post(
-      "https://18eb-58-187-184-107.ngrok-free.app/api/v1/tvconnect/registration",
+      "http://localhost:8080/api/v1/tvconnect/registration",
       data,
       function (r) {
         if (typeof r == "object") {
@@ -4400,181 +4398,167 @@ var GuestList = null;
 //TODO: контроллировать изменение прав
 //TODO: хранить все параметры в объекте. (группы, права, фамилия)
 var Guest = {
-	_token: false,
-	surname: '',
-	guestName: '',
-	guestTitle: '',
-	rightsContent: {},
-	set_guest: function(r){
-		if(typeof(r.token) === 'string'){
+  _token: false,
+  surname: "",
+  guestName: "",
+  guestTitle: "",
+  rightsContent: {},
+  set_guest: function (r) {
+    if (typeof r.token === "string") {
+      if (storage.getItem("token") !== r.token) {
+        //First time got this token
+        log.add("TV: new guest");
 
-			if(storage.getItem('token') !== r.token){
+        var tmp = $(structv2.language)
+            .map(function () {
+              return this.code;
+            })
+            .toArray(),
+          curLang = get_language();
 
-				//First time got this token
-				log.add('TV: new guest');
+        if (r.lang && r.lang !== curLang) {
+          if (tmp.indexOf(r.lang) !== -1) {
+            return change_language(r.lang);
+          } else if (curLang !== isset("config.defaults.language")) {
+            log.add("TV: guest language " + r.lang + " not supported");
+            return change_language(isset("config.defaults.language"));
+          }
+        }
+      }
 
-				var tmp = $(structv2.language).map(function(){return this.code;}).toArray(),
-					curLang = get_language();
+      if (storage.getItem("guestData_token") !== r.token) {
+        //Очистка, не совпадающий гость
+        guestData_clear();
 
-				if (
-					r.lang &&
-					r.lang !== curLang
-				) {
-					if (tmp.indexOf(r.lang) !== -1) {
-						return change_language(r.lang);
-					}
-					else if (curLang !== isset('config.defaults.language')) {
-						log.add('TV: guest language ' + r.lang + ' not supported');
-						return change_language(isset('config.defaults.language'));
-					}
-				}
+        storage.setItem("guestData_token", r.token);
+      }
 
-			}
+      if (typeof _tv_checkin == "function") {
+        setTimeout(function () {
+          _tv_checkin();
+        }, 2000);
+      }
 
-			if(storage.getItem('guestData_token') !== r.token){
-				//Очистка, не совпадающий гость
-				guestData_clear();
+      Guest.guestSurname = r.guestName || "";
+      Guest.guestName = r.guestFirstName || "";
+      Guest.guestTitle = r.guestTitle || "";
+      Guest.rightsContent = r.rights || {};
 
-				storage.setItem('guestData_token', r.token);
-			}
+      /**
+       * video
+       *   0    без ограничений
+       *   1    Без платных услуг
+       *   2    Без ХХХ услуг
+       *   3    Все отключено
+       * nopost
+       *   0    с платным контентом
+       *   1    без платного контента
+       */
+      guestData.groups = r.groups;
 
-			if(typeof(_tv_checkin) == 'function'){
-				setTimeout(function(){
-					_tv_checkin();
-				}, 2000);
-			}
+      if (typeof tv_auth_function === "function") {
+        try {
+          tv_auth_function();
+        } catch (e) {
+          log.add("TV: override failed");
+          tv_set_guest();
+        }
+      } else {
+        tv_set_guest();
+      }
+      log.add("TV: got token - " + r.token);
 
-			Guest.guestSurname = r.guestName||'';
-			Guest.guestName = r.guestFirstName||'';
-			Guest.guestTitle = r.guestTitle||'';
-			Guest.rightsContent = r.rights||{};
+      //Обработчик кастомных полей PMS
+      if (typeof tv_pms_function === "function") {
+        try {
+          tv_pms_function(r.additional);
+        } catch (e) {
+          log.add("TV: Error: PMS custom field function failed");
+        }
+      }
 
-			/**
-				* video
-				*   0    без ограничений
-				*   1    Без платных услуг
-				*   2    Без ХХХ услуг
-				*   3    Все отключено
-				* nopost
-				*   0    с платным контентом
-				*   1    без платного контента
-				*/
-			guestData.groups = r.groups;
+      // фильтруем каналы по группам
+      _tv_channels = tv_mosaic.filter_channels_by_groups();
 
-			if(typeof(tv_auth_function) === 'function'){
-				try {
-					tv_auth_function();
-				}
-				catch(e) {
-					log.add('TV: override failed');
-					tv_set_guest();
-				}
-			}
-			else {
-				tv_set_guest();
-			}
-			log.add('TV: got token - ' + r.token);
+      //Перестроение списка каналов и VOD с учётом доступных групп
+      tv_channellist_build(true);
+      wakeup_status(true);
+      filter_content_by_group();
+      // tv_sel_block();
 
-			//Обработчик кастомных полей PMS
-			if(typeof(tv_pms_function) === 'function'){
-				try {
-					tv_pms_function(r.additional);
-				}
-				catch(e) {
-					log.add('TV: Error: PMS custom field function failed');
-				}
-			}
+      //TODO: контроллировать изменение прав
+      if (Guest.token != r.token) {
+        Guest.token = r.token;
+        tv_open_app.open(true);
+      } else {
+        console.log("reauth");
+      }
 
-			// фильтруем каналы по группам
-			_tv_channels = tv_mosaic.filter_channels_by_groups();
+      //Получение команд от сервера
+      tv_get_server_commands();
+      manageFeedbackSending();
 
-			//Перестроение списка каналов и VOD с учётом доступных групп
-			tv_channellist_build(true);
-			wakeup_status(true);
-			filter_content_by_group();
-			// tv_sel_block();
+      // по логике описанной Антоном, в Events приходит сообшение о том,
+      // что что-то произошло с тем или иным сервисом,
+      // после event'a мы должны сходить на сервер и узнать что же именно произошло
+      Events.registerListener("feedback", manageFeedbackSending);
 
-			//TODO: контроллировать изменение прав
-			if(Guest.token != r.token){
-				Guest.token = r.token;
-				tv_open_app.open(true);
-			}else{
-				console.log('reauth');
-			}
-
-			//Получение команд от сервера
-			tv_get_server_commands();
-			manageFeedbackSending();
-
-			// по логике описанной Антоном, в Events приходит сообшение о том,
-			// что что-то произошло с тем или иным сервисом,
-			// после event'a мы должны сходить на сервер и узнать что же именно произошло
-			Events.registerListener('feedback', manageFeedbackSending);
-
-			if(r.guestList && r.guestList.length){
-				GuestList = r.guestList;
-			}else{
-				GuestList = null;
-			}
-
-		}else{
-			log.add('TV: token error');
-			//То да не то
-		}
-	}
-
+      if (r.guestList && r.guestList.length) {
+        GuestList = r.guestList;
+      } else {
+        GuestList = null;
+      }
+    } else {
+      log.add("TV: token error");
+      //То да не то
+    }
+  },
 };
-Object.defineProperty(Guest, 'token', {
-		get: function(){
-			return Guest._token;
-		},
-		set: function(newval){
-			if(newval == false || newval == null || typeof(newval) == 'undefined'){
-				storage.removeItem('token');
-				console.log('token reset');
-			}else{
-				storage.setItem('token', newval);
-				console.log('token set');
-			}
+Object.defineProperty(Guest, "token", {
+  get: function () {
+    return Guest._token;
+  },
+  set: function (newval) {
+    if (newval == false || newval == null || typeof newval == "undefined") {
+      storage.removeItem("token");
+      console.log("token reset");
+    } else {
+      storage.setItem("token", newval);
+      console.log("token set");
+    }
 
-			Guest._token = newval;
-			$(HotezaTV).trigger('auth');
-		}
-	}
-);
+    Guest._token = newval;
+    $(HotezaTV).trigger("auth");
+  },
+});
 
 function get_media_subtitles(subtitles) {
-	var d = $.Deferred();
+  var d = $.Deferred();
 
-	if (
-		typeof subtitles === 'undefined' ||
-		!Object.keys(subtitles).length
-	) {
-		return d.resolve(null);
-	}
+  if (typeof subtitles === "undefined" || !Object.keys(subtitles).length) {
+    return d.resolve(null);
+  }
 
-	d.resolve(subtitles);
+  d.resolve(subtitles);
 
-	return d.promise();
+  return d.promise();
 }
 
+function tv_auth() {
+  if (!tv_mac || !tv_sign) {
+    //МАК и ключ не получен
+    log.add("TV: nomac, nosign");
+    return false;
+  } else {
+    var data = {
+      hotelId: get_hotelId(),
+      mac: tv_mac,
+      manufacturer: tv_manufacturer,
+      sign: tv_sign,
+    };
 
-function tv_auth(){
-	if(!tv_mac || !tv_sign){
-		//МАК и ключ не получен
-		log.add('TV: nomac, nosign');
-		return false;
-	}
-	else{
-		var data = {
-			'hotelId': get_hotelId(),
-			'mac': tv_mac,
-			'manufacturer': tv_manufacturer,
-			'sign': tv_sign
-		};
-
-		$.post(
-      "https://18eb-58-187-184-107.ngrok-free.app/api/v1/tvconnect/token",
+    $.post(
+      "http://localhost:8080/api/v1/tvconnect/token",
       data,
       function (r) {
         $("#tv_fullscreen_welcome").hide();
@@ -4615,137 +4599,136 @@ function tv_auth(){
       HotezaTV.auth = "error " + err.status + "|" + err.statusText;
       log.add("TV: " + HotezaTV.auth);
     });
-	}
+  }
 }
 
-function check_auth(){
-	var token = Guest.token;
-	if(token){
-		return token;
-	}else{
-		return false;
-	}
+function check_auth() {
+  var token = Guest.token;
+  if (token) {
+    return token;
+  } else {
+    return false;
+  }
 }
 
-function require_auth(){
-	var token = check_auth();
-	if(token){
-		return token;
-	}else{
-		//Добавить сообщение
-		return false;
-	}
+function require_auth() {
+  var token = check_auth();
+  if (token) {
+    return token;
+  } else {
+    //Добавить сообщение
+    return false;
+  }
 }
 
 function tv_set_guest_language(guest_language) {
-	if (storage.getItem('language') === guest_language) {return;}
-	if (storage.getItem('data') && JSON.parse(storage.getItem('data')).language) {return;}
+  if (storage.getItem("language") === guest_language) {
+    return;
+  }
+  if (storage.getItem("data") && JSON.parse(storage.getItem("data")).language) {
+    return;
+  }
 
+  for (var i = 0; i < structv2.language.length; i++) {
+    var language = structv2.language[i];
 
-	for (var i = 0; i < structv2.language.length; i++) {
-		var language = structv2.language[i];
-
-		if (language.code.indexOf(guest_language) !== -1) {
-			change_language(guest_language);
-			break;
-		}
-	}
+    if (language.code.indexOf(guest_language) !== -1) {
+      change_language(guest_language);
+      break;
+    }
+  }
 }
 
 /**
  * Функция циклического переключения звуковой дорожки (только в classic channels)
  */
-function tv_change_audio(){
-	if(typeof(_tv_change_audio) == 'function'){
-		return _tv_change_audio();
-	}else{
-		log.add('APP: _tv_change_audio not implemented yet');
-		console.log('APP: _tv_change_audio not implemented yet');
-		return $.Deferred().reject('APP: _tv_change_audio not implemented yet');
-	}
+function tv_change_audio() {
+  if (typeof _tv_change_audio == "function") {
+    return _tv_change_audio();
+  } else {
+    log.add("APP: _tv_change_audio not implemented yet");
+    console.log("APP: _tv_change_audio not implemented yet");
+    return $.Deferred().reject("APP: _tv_change_audio not implemented yet");
+  }
 }
 
-function tv_cur_audio_display(audio) { //{int index, array list} {0, ['ru','en']}
-//	audio['list'][audio['index']] = audio['list'][audio['index']].toUpperCase();
-//	tv_log(audio['list'].join(' '));
-	if(!$('#tv_channel_number').length){
-		$(document.body).append($('<div id="tv_channel_number"></div>'));
-	}
-	$('#tv_channel_number').html(audio.list[audio.index].toUpperCase());
+function tv_cur_audio_display(audio) {
+  //{int index, array list} {0, ['ru','en']}
+  //	audio['list'][audio['index']] = audio['list'][audio['index']].toUpperCase();
+  //	tv_log(audio['list'].join(' '));
+  if (!$("#tv_channel_number").length) {
+    $(document.body).append($('<div id="tv_channel_number"></div>'));
+  }
+  $("#tv_channel_number").html(audio.list[audio.index].toUpperCase());
 
-	setTimeout(function(){
-		$('#tv_channel_number').remove();
-	}, 5000);
-
+  setTimeout(function () {
+    $("#tv_channel_number").remove();
+  }, 5000);
 }
 
 function tv_get_server_commands() {
-	var data = {
-		token: Guest.token,
-		cmd: 'alarm',
-		tvIndex: Events.TVID()
-	};
+  var data = {
+    token: Guest.token,
+    cmd: "alarm",
+    tvIndex: Events.TVID(),
+  };
 
-	$.post(
-    "https://18eb-58-187-184-107.ngrok-free.app/api/v1/getTask",
-    data,
-    function (r) {
-      switch (r.result) {
-        case 0:
-          if (r.payload.length === 0) {
-            log.add("TV: cmd: no commands");
-          }
+  $.post("http://localhost:8080/api/v1/getTask", data, function (r) {
+    switch (r.result) {
+      case 0:
+        if (r.payload.length === 0) {
+          log.add("TV: cmd: no commands");
+        }
 
-          for (var i in r.payload) {
-            var cmd = r.payload[i];
-            switch (cmd.cmd) {
-              case "alarm":
-                //Фильтрация будильника по зонам
-                if (cmd.data[3] && cmd.data[3] != Events.TVID()) {
-                  log.add("WAKEUP: got wakeup for another TVID");
-                  return false;
-                }
+        for (var i in r.payload) {
+          var cmd = r.payload[i];
+          switch (cmd.cmd) {
+            case "alarm":
+              //Фильтрация будильника по зонам
+              if (cmd.data[3] && cmd.data[3] != Events.TVID()) {
+                log.add("WAKEUP: got wakeup for another TVID");
+                return false;
+              }
 
-                wakeup_status(false);
+              wakeup_status(false);
 
-                var alarm_dif = Math.round(time.now(true) / 1000) - cmd.data[1];
-                if (alarm_dif < 10 * 60) {
-                  switch (cmd.data[2]) {
-                    case "tv_channel":
-                      if (system_started) {
+              var alarm_dif = Math.round(time.now(true) / 1000) - cmd.data[1];
+              if (alarm_dif < 10 * 60) {
+                switch (cmd.data[2]) {
+                  case "tv_channel":
+                    if (system_started) {
+                      setTimeout(tv_wakeup, 1000);
+                    } else {
+                      $(HotezaTV).one("final", function () {
                         setTimeout(tv_wakeup, 1000);
-                      } else {
-                        $(HotezaTV).one("final", function () {
-                          setTimeout(tv_wakeup, 1000);
-                        });
-                      }
-                      break;
-                    default:
-                      log.add("WAKEUP: unknown type " + cmd.data[2]);
-                      break;
-                  }
-                } else {
-                  log.add("WAKEUP: overdue " + toHHMMSS(alarm_dif));
+                      });
+                    }
+                    break;
+                  default:
+                    log.add("WAKEUP: unknown type " + cmd.data[2]);
+                    break;
                 }
-                break;
+              } else {
+                log.add("WAKEUP: overdue " + toHHMMSS(alarm_dif));
+              }
+              break;
 
-              case "welcome":
-                // Вся логика перенесена в tv_open_app.open()
-                break;
+            case "welcome":
+              // Вся логика перенесена в tv_open_app.open()
+              break;
 
-              default:
-                log.add('TV: cmd: not yet implemented "' + cmd[0] + '"');
-                break;
-            }
+            default:
+              log.add('TV: cmd: not yet implemented "' + cmd[0] + '"');
+              break;
           }
-          break;
+        }
+        break;
 
-        default:
-          log.add("TV: cmd: Error or Unknown answer - " + r.result);
-          break;
-      }
+      default:
+        log.add("TV: cmd: Error or Unknown answer - " + r.result);
+        break;
     }
-  ).fail(function (xhr, error) {
+  }).fail(function (xhr, error) {
     log.add("TV: cmd: error");
   });
 }

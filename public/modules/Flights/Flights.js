@@ -480,7 +480,7 @@
 		var d = $.Deferred();
 
 		$.post(
-      "https://18eb-58-187-184-107.ngrok-free.app/api/v1/getScheduleAirport",
+      "http://localhost:8080/api/v1/getScheduleAirport",
       JSON.stringify({
         code: [code],
         type: direction,

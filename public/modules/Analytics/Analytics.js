@@ -1,7 +1,7 @@
 (function () {
   window.Analytics = {
     deps: [],
-    url: "https://18eb-58-187-184-107.ngrok-free.app/api/v1/analytics/",
+    url: "http://localhost:8080/api/v1/analytics/",
     observer: null,
     timer: {
       channels: null,

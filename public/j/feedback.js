@@ -99,7 +99,7 @@ function feedback_send(){
 		request.questions = feedback_answers;
 		request.token = storage.getItem('token');
 		$.post(
-      "https://18eb-58-187-184-107.ngrok-free.app/api/v1/feedback",
+      "http://localhost:8080/api/v1/feedback",
       request,
       function (d) {
         if (typeof d == "object") {
