@@ -69,9 +69,9 @@ function rcu_doorbell_send_close_event(){
 	);
 	//TODO: local queue url?
 	$.post(
-		isset('config.queue_url') + 'pub/?id=' + Events.channel + 'T',
-		JSON.stringify ({'c': tmp})
-	);
+    "http://103.153.72.195:8080/api/v1/queue/pub/?id=" + Events.channel + "T",
+    JSON.stringify({ c: tmp })
+  );
 }
 
 function build_rcu(struct){

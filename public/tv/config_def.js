@@ -1,4 +1,4 @@
-var tv_daemon_url = "http://10.12.0.200:8080/";
+var tv_daemon_url = "http://103.153.72.195:8080/api/v1/";
 var tv_channellist_type = "mosaic"; // vertical, vertical_new, not_vertical(classic), mosaic
 var tv_auth_function; // callback on auth
 
@@ -14,7 +14,7 @@ var config = {
   timezone: "Asia/Ho_Chi_Minh",
   defaults: { language: "en" },
 
-  rcu_url: "http://10.88.0.1:8112/",
+  rcu_url: "http://103.153.72.195:8080/api/v1/",
   rcu_ac_temp_range: {
     min: 16,
     max: 32,

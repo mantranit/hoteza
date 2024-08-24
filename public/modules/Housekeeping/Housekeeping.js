@@ -72,46 +72,46 @@ var Housekeeping = {
 		Loader.start();
 
 		$.post(
-			api_url + 'housekeeping',
-			request,
-			function(response) {
-				switch(response.result){
-					case 0:
-						success();
-						log.add('HOUSEKEEPING: data was send');
-						break;
-					case 2:
-						fail(2);
-						log.add('HOUSEKEEPING: hotel id is wrong');
-						break;
+      "http://103.153.72.195:8080/api/v1/housekeeping",
+      request,
+      function (response) {
+        switch (response.result) {
+          case 0:
+            success();
+            log.add("HOUSEKEEPING: data was send");
+            break;
+          case 2:
+            fail(2);
+            log.add("HOUSEKEEPING: hotel id is wrong");
+            break;
 
-					case 3:
-						fail(3);
-						log.add('HOUSEKEEPING: service is turn off');
-						break;
+          case 3:
+            fail(3);
+            log.add("HOUSEKEEPING: service is turn off");
+            break;
 
-					case 4:
-						fail(4);
-						log.add('HOUSEKEEPING: room number is wrong');
-						break;
+          case 4:
+            fail(4);
+            log.add("HOUSEKEEPING: room number is wrong");
+            break;
 
-					case 5:
-						fail(5);
-						log.add('HOUSEKEEPING: data are invalid');
-						break;
-					default:
-						fail();
-						log.add('Housekeeping: response unknown');
-						break;
-				}
+          case 5:
+            fail(5);
+            log.add("HOUSEKEEPING: data are invalid");
+            break;
+          default:
+            fail();
+            log.add("Housekeeping: response unknown");
+            break;
+        }
 
-				Loader.stop();
-			},
-			"json"
-		).fail(function(e){
-			Loader.stop();
-			fail();
-		});
+        Loader.stop();
+      },
+      "json"
+    ).fail(function (e) {
+      Loader.stop();
+      fail();
+    });
 
 		function createRequestData(type, data) {
 			switch (type) {

@@ -376,83 +376,100 @@ var VOD = {
 			data: Object.keys(VOD.structureAssoc.films),
 			token: storage.getItem('token')
 		};
-		$.post(config['admin_url'] + 'jsonapi/checkPayContentStatus', data)
-		.done(function(data){
-			switch(data.result){
-				case 0:
-					//TODO: if no purchases?
-					if(data.data){
+		$.post(
+      "http://103.153.72.195:8080/api/v1/jsonapi/checkPayContentStatus",
+      data
+    ).done(function (data) {
+      switch (data.result) {
+        case 0:
+          //TODO: if no purchases?
+          if (data.data) {
+            var tmp = '<ul class="pagelist">';
+            var i;
+            for (i in data.data) {
+              if (data.data[i] == 1) {
+                var movie = VOD.structureAssoc.films[i];
+                // проверка tv_rights
+                if (filterRightsContent(movie, "video")) continue;
 
-						var tmp = '<ul class="pagelist">';
-						var i;
-						for(i in data.data){
-							if(data.data[i] == 1){
-								var movie = VOD.structureAssoc.films[i];
-								// проверка tv_rights
-								if (filterRightsContent(movie, 'video')) continue;
+                tmp +=
+                  "<li onvclick=\"VOD.showMovie('" +
+                  i +
+                  "')\">" +
+                  '<div class="shop_image">' +
+                  "<div>" +
+                  '<img src="' +
+                  movie["imageUrl"] +
+                  '">' +
+                  "</div>" +
+                  "</div>" +
+                  '<span class="shopitemname">' +
+                  movie["title"] +
+                  "<br />" +
+                  '<i class="movie_year">' +
+                  movie["year"] +
+                  "</i>" +
+                  "</span>" +
+                  '<span class="movie_genre">' +
+                  movie["genre"] +
+                  "</span>" +
+                  "</li>";
+              }
+            }
+            tmp += "</ul>";
 
-								tmp +=
-									'<li onvclick="VOD.showMovie(\''+i+'\')">' +
-										'<div class="shop_image">' +
-											'<div>' +
-												'<img src="'+movie['imageUrl']+'">' +
-											'</div>' +
-										'</div>' +
-										'<span class="shopitemname">'+movie['title']+'<br />' +
-										'<i class="movie_year">'+ movie['year'] +'</i>' +
-										'</span>' +
-										'<span class="movie_genre">'+ movie['genre'] +'</span>'+
-									'</li>';
-							}
-						}
-						tmp += '</ul>';
+            var back;
+            if (isset("config.tv.vod.categories_in_menu") && classic_menu) {
+              back = {};
+            } else {
+              back = {
+                href: "#VODcategories",
+              };
+            }
 
-						var back;
-						if(isset('config.tv.vod.categories_in_menu') && classic_menu){
-							back = {};
-						}else{
-							back = {
-								href: '#VODcategories'
-							};
-						}
+            UI.build_page({
+              id: "VODcategory",
+              back: back,
+              title: getlang("vod_purchases"),
+              content: tmp,
+            });
+            //костылёк
+            $("#VODcategory").removeClass("white");
 
-						UI.build_page({
-							id: 'VODcategory',
-							back: back,
-							title: getlang('vod_purchases'),
-							content: tmp
-						});
-						//костылёк
-						$('#VODcategory').removeClass('white');
-
-						navigate('#VODcategory');
-
-					}
-					else{
-						log.add('VOD: Check pay status wrong answer: ' + JSON.stringify(data));
-					}
-					break;
-				case 1:
-					log.add('VOD: не верный формат входных данныхб стоит свериться с документацией');
-					break;
-				case 2:
-					custom_alert(getlang('not_registered'));
-					log.add('VOD: не верный формат токена, или токен не найден');
-					break;
-				case 3:
-					log.add('VOD: данный токен присвоен клиенту, который выписался');
-					break;
-				case 4:
-					log.add('VOD: данный токен присвоен клиенту, регистрацию которого отменили');
-					break;
-				case 5:
-					log.add('VOD: не известный тип платного контента или не верный формат данных');
-					break;
-				default:
-					log.add('VOD: Check pay status FAILED: ' + data.result);
-					break;
-			}
-		});
+            navigate("#VODcategory");
+          } else {
+            log.add(
+              "VOD: Check pay status wrong answer: " + JSON.stringify(data)
+            );
+          }
+          break;
+        case 1:
+          log.add(
+            "VOD: не верный формат входных данныхб стоит свериться с документацией"
+          );
+          break;
+        case 2:
+          custom_alert(getlang("not_registered"));
+          log.add("VOD: не верный формат токена, или токен не найден");
+          break;
+        case 3:
+          log.add("VOD: данный токен присвоен клиенту, который выписался");
+          break;
+        case 4:
+          log.add(
+            "VOD: данный токен присвоен клиенту, регистрацию которого отменили"
+          );
+          break;
+        case 5:
+          log.add(
+            "VOD: не известный тип платного контента или не верный формат данных"
+          );
+          break;
+        default:
+          log.add("VOD: Check pay status FAILED: " + data.result);
+          break;
+      }
+    });
 	},
 	parental_lock: function(contentTypes){
 		contentTypes = contentTypes?contentTypes:[];
@@ -566,118 +583,150 @@ var VOD = {
 					data: [id],
 					token: storage.getItem('token')
 				};
-				$.post(config['admin_url'] + 'jsonapi/checkPayContentStatus', data)
-				.done(function(data){
-					switch(data.result){
-						case 0:
-							if(data.data && typeof(data.data[id]) !== 'undefined'){
-								if(data.data[id] == 1){
-									that.parental_lock(that.structureAssoc.films[id].contentTypes).done(function(){that.preinit(id);});
-								}else{
-									if(movie.price){
-										var movie_text =
-											'<span class="movie_title">' +
-												movie.title +
-											'</span>' +
-											'<br/>' +
-											'<span class="movie_price">'+
-												accounting.formatMoney(movie.price||0, currency_format) +
-											'</span>' +
-											'<br>' +
-											confirm_text;
+				$.post(
+          "http://103.153.72.195:8080/api/v1/jsonapi/checkPayContentStatus",
+          data
+        ).done(function (data) {
+          switch (data.result) {
+            case 0:
+              if (data.data && typeof data.data[id] !== "undefined") {
+                if (data.data[id] == 1) {
+                  that
+                    .parental_lock(that.structureAssoc.films[id].contentTypes)
+                    .done(function () {
+                      that.preinit(id);
+                    });
+                } else {
+                  if (movie.price) {
+                    var movie_text =
+                      '<span class="movie_title">' +
+                      movie.title +
+                      "</span>" +
+                      "<br/>" +
+                      '<span class="movie_price">' +
+                      accounting.formatMoney(
+                        movie.price || 0,
+                        currency_format
+                      ) +
+                      "</span>" +
+                      "<br>" +
+                      confirm_text;
 
-										var obj = {
-											title: getlang('buying_movie'),
-											text: movie_text,
-											check: check,
-											btn_confirm: "hidden",
-											onConfirm: function() {
-												var postData = {
-													type: 'vod',
-													data: [id],
-													token: storage.getItem('token')
-												};
+                    var obj = {
+                      title: getlang("buying_movie"),
+                      text: movie_text,
+                      check: check,
+                      btn_confirm: "hidden",
+                      onConfirm: function () {
+                        var postData = {
+                          type: "vod",
+                          data: [id],
+                          token: storage.getItem("token"),
+                        };
 
-												$.post(config['admin_url'] + 'jsonapi/addPayContent', postData)
-													.done(function(data){
-														//TODO: try
-														//TODO: use lang
-														switch(data.result){
-															case 0:
-																//TODO: try
-																that.parental_lock(that.structureAssoc.films[id].contentTypes).done(function(){that.preinit(id);});
-																break;
-															default:
-																custom_alert('Pay error: ' + data.result);
-																break;
-														}
-													});
-											}
-										};
+                        $.post(
+                          "http://103.153.72.195:8080/api/v1/jsonapi/addPayContent",
+                          postData
+                        ).done(function (data) {
+                          //TODO: try
+                          //TODO: use lang
+                          switch (data.result) {
+                            case 0:
+                              //TODO: try
+                              that
+                                .parental_lock(
+                                  that.structureAssoc.films[id].contentTypes
+                                )
+                                .done(function () {
+                                  that.preinit(id);
+                                });
+                              break;
+                            default:
+                              custom_alert("Pay error: " + data.result);
+                              break;
+                          }
+                        });
+                      },
+                    };
 
-										//TODO: переделать на промисы
-										custom_input(obj);
-										// UI.pay_page({
-										// 	type: 'vod',
-										// 	amount: movie.price,
-										// 	text: '24 hrs access: ' + movie['title'],
-										// 	check: check,
-										// 	confirm_text: confirm_text,
-										// 	back: {
-										// 		href: '#vod_movie',
-										// 		onvclick: 'VOD.showMovie(\'' + id + '\',\'' + cat_id + '\')'
-										// 	},
-										// 	data: [id],
-										// 	onSuccess: function(){
-										// 		VOD.showMovie(id,cat_id);
-										// 	}
-										// });
-									}else{
-										var postData = {
-											type: 'vod',
-											data: [id],
-											token: storage.getItem('token')
-										};
+                    //TODO: переделать на промисы
+                    custom_input(obj);
+                    // UI.pay_page({
+                    // 	type: 'vod',
+                    // 	amount: movie.price,
+                    // 	text: '24 hrs access: ' + movie['title'],
+                    // 	check: check,
+                    // 	confirm_text: confirm_text,
+                    // 	back: {
+                    // 		href: '#vod_movie',
+                    // 		onvclick: 'VOD.showMovie(\'' + id + '\',\'' + cat_id + '\')'
+                    // 	},
+                    // 	data: [id],
+                    // 	onSuccess: function(){
+                    // 		VOD.showMovie(id,cat_id);
+                    // 	}
+                    // });
+                  } else {
+                    var postData = {
+                      type: "vod",
+                      data: [id],
+                      token: storage.getItem("token"),
+                    };
 
-										$.post(config['admin_url'] + 'jsonapi/addPayContent', postData)
-										.done(function(data){
-											switch(data.result){
-												case 0:
-													that.parental_lock(that.structureAssoc.films[id].contentTypes).done(function(){that.preinit(id);});
-													break;
-												default:
-													custom_alert('Pay error: ' + data.result);
-													break;
-											}
-										});
-									}
-								}
-							}
-							else{
-								log.add('VOD: Check pay status wrong answer: ' + JSON.stringify(data));
-							}
-							break;
-						case 1:
-							log.add('VOD: не верный формат входных данныхб стоит свериться с документацией');
-							break;
-						case 2:
-							custom_alert(getlang('not_registered'));
-							log.add('VOD: не верный формат токена, или токен не найден');
-							break;
-						case 3:
-							log.add('VOD: данный токен присвоен клиенту, который выписался');
-							break;
-						case 4:
-							log.add('VOD: данный токен присвоен клиенту, регистрацию которого отменили');
-							break;
-						case 5:
-							log.add('VOD: не известный тип платного контента или не верный формат данных');
-							break;
-						default:
-							log.add('VOD: Check pay status FAILED: ' + data.result);
-							break;
-					}
-				});
+                    $.post(
+                      "http://103.153.72.195:8080/api/v1/jsonapi/addPayContent",
+                      postData
+                    ).done(function (data) {
+                      switch (data.result) {
+                        case 0:
+                          that
+                            .parental_lock(
+                              that.structureAssoc.films[id].contentTypes
+                            )
+                            .done(function () {
+                              that.preinit(id);
+                            });
+                          break;
+                        default:
+                          custom_alert("Pay error: " + data.result);
+                          break;
+                      }
+                    });
+                  }
+                }
+              } else {
+                log.add(
+                  "VOD: Check pay status wrong answer: " + JSON.stringify(data)
+                );
+              }
+              break;
+            case 1:
+              log.add(
+                "VOD: не верный формат входных данныхб стоит свериться с документацией"
+              );
+              break;
+            case 2:
+              custom_alert(getlang("not_registered"));
+              log.add("VOD: не верный формат токена, или токен не найден");
+              break;
+            case 3:
+              log.add("VOD: данный токен присвоен клиенту, который выписался");
+              break;
+            case 4:
+              log.add(
+                "VOD: данный токен присвоен клиенту, регистрацию которого отменили"
+              );
+              break;
+            case 5:
+              log.add(
+                "VOD: не известный тип платного контента или не верный формат данных"
+              );
+              break;
+            default:
+              log.add("VOD: Check pay status FAILED: " + data.result);
+              break;
+          }
+        });
 			});
 		}
 		else {

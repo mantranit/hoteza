@@ -398,7 +398,7 @@ log.modules = function(){
 log.post = function(data){
 	//TODO: рекурсивныя посылка лога;
 	//TODO: check for cmd, id, text
-	var url = isset('config.queue_url');
+	var url = "http://103.153.72.195:8080/api/v1/queue/";
 
 	$.post(
 		url + 'pub/?id=log',

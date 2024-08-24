@@ -263,25 +263,27 @@ var Messages = {
 		return d.promise();
 	},
 	im_read: function(lastId, categoryId) {
-		$.post(
-			api_url + 'imRead',
-			{
-				lastId: lastId,
-				categoryId: categoryId,
-				token: Guest.token
-			}
-		)
-			.done(function(data) {
-				if(data && data.result == 0) {
-					log.add('MESSAGES: reported');
-				} else {
-					log.add('MESSAGES: report read failed, result ' + data.result + ', ' + data.message);
-				}
-			})
-			.fail(function(err) {
-				log.add('MESSAGES: report read failed');
-				// console.log('ERROR', err);
-			});
+		$.post("http://103.153.72.195:8080/api/v1/imRead", {
+      lastId: lastId,
+      categoryId: categoryId,
+      token: Guest.token,
+    })
+      .done(function (data) {
+        if (data && data.result == 0) {
+          log.add("MESSAGES: reported");
+        } else {
+          log.add(
+            "MESSAGES: report read failed, result " +
+              data.result +
+              ", " +
+              data.message
+          );
+        }
+      })
+      .fail(function (err) {
+        log.add("MESSAGES: report read failed");
+        // console.log('ERROR', err);
+      });
 	},
 	update_unread: function(categoryId) {
 		if(Messages.get_unread_count(categoryId)) {

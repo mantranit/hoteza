@@ -4247,7 +4247,7 @@ function tv_register() {
   //TODO: check with device tv_mac
   //get MAC
   $.post(
-    tv_daemon_url + "getmymac",
+    "http://103.153.72.195:8080/api/v1/getmymac",
     function (data) {
       tv_ip = data.ip;
       tv_mac = data.mac;
@@ -4800,81 +4800,83 @@ function tv_wakeup_volume_cancel() {
 }
 
 function tv_task_answer(data) {
-	data.token = storage.getItem('token');
-	$.post(
-		api_url+'taskAnswer',
-		data,
-		function(r){
-			switch(r.result){
-			}
-		}
-	);
+  data.token = storage.getItem("token");
+  $.post("http://103.153.72.195:8080/api/v1/taskAnswer", data, function (r) {
+    switch (r.result) {
+    }
+  });
 }
 
 function fire_alarm() {
-	_tv_set_volume(30);
-	$(document.body).html('<div style="width:100%;height:100%;background:url(i/fire.gif) center no-repeat;"></div><audio src="tv/sound/fire.mp3" autoplay loop></audio>');
-	document.removeEventListener('keydown',tv_keydown,false);
+  _tv_set_volume(30);
+  $(document.body).html(
+    '<div style="width:100%;height:100%;background:url(i/fire.gif) center no-repeat;"></div><audio src="tv/sound/fire.mp3" autoplay loop></audio>'
+  );
+  document.removeEventListener("keydown", tv_keydown, false);
 }
 
-var tv_virtual_standby_state = 'unknown';
+var tv_virtual_standby_state = "unknown";
 function tv_virtual_standby_off() {
-	if(tv_virtual_standby_state == false){
-		hash.set('standby');
-		tv_virtual_standby_state = true; //смысл в этом небольшой - прилага идёт на перезагрузку, но пусть будет
-		reload_app();
-	}else{
-		log.add('Virtual Standby: already OFF');
-	}
+  if (tv_virtual_standby_state == false) {
+    hash.set("standby");
+    tv_virtual_standby_state = true; //смысл в этом небольшой - прилага идёт на перезагрузку, но пусть будет
+    reload_app();
+  } else {
+    log.add("Virtual Standby: already OFF");
+  }
 }
 
 function tv_virtual_standby_on() {
-	if(tv_virtual_standby_state == true){
-		log.add('Virtual Standby: TV turned ON (' + time.uptime(true) + ')');
-		HotezaTV.metrics.was_standby = time.uptime();
-		log.zero = Date.now();
-		hash.set('standby', null);
-		tv_virtual_standby_state = false;
-		tv_ready();
-	}else{
-		log.add('Virtual Standby: already ON');
-	}
+  if (tv_virtual_standby_state == true) {
+    log.add("Virtual Standby: TV turned ON (" + time.uptime(true) + ")");
+    HotezaTV.metrics.was_standby = time.uptime();
+    log.zero = Date.now();
+    hash.set("standby", null);
+    tv_virtual_standby_state = false;
+    tv_ready();
+  } else {
+    log.add("Virtual Standby: already ON");
+  }
 }
 
 function metro_menu_calc(objs, flag) {
-	if (typeof(objs) === 'undefined') {
-		objs = tv_sel_list;
-	}
+  if (typeof objs === "undefined") {
+    objs = tv_sel_list;
+  }
 
-	var obj = objs.get(0);
-	if (
-		!flag &&
-		objs.length > 0 &&
-		$.data(obj, 'top') == obj.getBoundingClientRect().top
-	) {
-		return true;
-	}
+  var obj = objs.get(0);
+  if (
+    !flag &&
+    objs.length > 0 &&
+    $.data(obj, "top") == obj.getBoundingClientRect().top
+  ) {
+    return true;
+  }
 
-	objs.each(function(){
-		$.data(this, this.getBoundingClientRect());
-	});
+  objs.each(function () {
+    $.data(this, this.getBoundingClientRect());
+  });
 }
 
 function metro_menu_move(dir) {
-	var index = tv_get_nearest_element(tv_sel_list, $.data(tv_cur_elem.get(0)), dir);
+  var index = tv_get_nearest_element(
+    tv_sel_list,
+    $.data(tv_cur_elem.get(0)),
+    dir
+  );
 
-	if (index === false){
-		return false;
-	}
+  if (index === false) {
+    return false;
+  }
 
-	previousPosition.set(tv_cur_pos);
+  previousPosition.set(tv_cur_pos);
 
-	tv_cur_pos = index;
-	tv_sel_cur();
+  tv_cur_pos = index;
+  tv_sel_cur();
 
-	metro_menu_calc();
+  metro_menu_calc();
 
-	return index;
+  return index;
 }
 
 //NOT USED!
@@ -4894,1030 +4896,1199 @@ function tv_get_elements_in_coords(elements, coords){ //{x1: 0, x2: 0, y1: 0, y2
 }
 */
 
-function tv_get_elements_in_direction(elements, coords, dir){
-	var array = [], c;
-	elements.each(function(index){
-		var data = $.data(this);
-		switch(dir){
-			case 'right':
-				if (data.left < coords.x) {return true;}
-				c = {
-					x: data.left,
-					y: data.top + data.height/2
-				};
-				break;
-			case 'left':
-				if (data.left + data.width > coords.x) {return true;}
-				c = {
-					x: data.left + data.width,
-					y: data.top + data.height/2
-				};
-				break;
-			case 'up':
-				if (data.top + data.height > coords.y) {return true;}
-				c = {
-					x: data.left + data.width/2,
-					y: data.top + data.height
-				};
-				break;
-			case 'down':
-				if (data.top < coords.y) {return true;}
-				c = {
-					x: data.left + data.width/2,
-					y: data.top
-				};
-				break;
-			default:
-				console.log('Unknown direction');
-				break;
-		}
+function tv_get_elements_in_direction(elements, coords, dir) {
+  var array = [],
+    c;
+  elements.each(function (index) {
+    var data = $.data(this);
+    switch (dir) {
+      case "right":
+        if (data.left < coords.x) {
+          return true;
+        }
+        c = {
+          x: data.left,
+          y: data.top + data.height / 2,
+        };
+        break;
+      case "left":
+        if (data.left + data.width > coords.x) {
+          return true;
+        }
+        c = {
+          x: data.left + data.width,
+          y: data.top + data.height / 2,
+        };
+        break;
+      case "up":
+        if (data.top + data.height > coords.y) {
+          return true;
+        }
+        c = {
+          x: data.left + data.width / 2,
+          y: data.top + data.height,
+        };
+        break;
+      case "down":
+        if (data.top < coords.y) {
+          return true;
+        }
+        c = {
+          x: data.left + data.width / 2,
+          y: data.top,
+        };
+        break;
+      default:
+        console.log("Unknown direction");
+        break;
+    }
 
-		array.push({
-			id: index,
-			l: Math.sqrt(Math.pow((c.x - coords.x),2) + Math.pow((c.y - coords.y),2))
-		});
-	});
+    array.push({
+      id: index,
+      l: Math.sqrt(Math.pow(c.x - coords.x, 2) + Math.pow(c.y - coords.y, 2)),
+    });
+  });
 
-	return array;
+  return array;
 }
 
-function tv_get_nearest_element(elements, element, dir){
-	var x, y;
-	switch(dir) {
-		case 'right':
-			x = element.left + element.width;
-			y = element.top + element.height/2;
-		break;
-		case 'left':
-			x = element.left;
-			y = element.top + element.height/2;
-		break;
-		case 'up':
-			x = element.left + element.width/2;
-			y = element.top;
-		break;
-		case 'down':
-			x = element.left + element.width/2;
-			y = element.top + element.height;
-		break;
-		default:
-		break;
-	}
+function tv_get_nearest_element(elements, element, dir) {
+  var x, y;
+  switch (dir) {
+    case "right":
+      x = element.left + element.width;
+      y = element.top + element.height / 2;
+      break;
+    case "left":
+      x = element.left;
+      y = element.top + element.height / 2;
+      break;
+    case "up":
+      x = element.left + element.width / 2;
+      y = element.top;
+      break;
+    case "down":
+      x = element.left + element.width / 2;
+      y = element.top + element.height;
+      break;
+    default:
+      break;
+  }
 
-	var array = tv_get_elements_in_direction(elements, {
-		x: x,
-		y: y
-	}, dir);
+  var array = tv_get_elements_in_direction(
+    elements,
+    {
+      x: x,
+      y: y,
+    },
+    dir
+  );
 
-	if (array.length === 0) {
-		return false;
-	}
+  if (array.length === 0) {
+    return false;
+  }
 
-	// Sort
-	var index = tv_cur_pos,
-		val = 0;
+  // Sort
+  var index = tv_cur_pos,
+    val = 0;
 
-	var tmp_i = array.length;
-	for (var i = 0; i < tmp_i; i++) {
-		var tmp = array[i];
-		if (i === 0) {
-			index = tmp.id;
-			val = tmp.l;
-		}
-		else{
-			if(tmp.l < val){
-				index = tmp.id;
-				val = tmp.l;
-			}
-		}
-	}
+  var tmp_i = array.length;
+  for (var i = 0; i < tmp_i; i++) {
+    var tmp = array[i];
+    if (i === 0) {
+      index = tmp.id;
+      val = tmp.l;
+    } else {
+      if (tmp.l < val) {
+        index = tmp.id;
+        val = tmp.l;
+      }
+    }
+  }
 
-	return index;
+  return index;
 }
 
-function list_diff(a, b){
-	var results = [];
+function list_diff(a, b) {
+  var results = [];
 
-	for (var i = 0; i < a.length; i++) {
-		if (b.indexOf(a[i]) === -1) {
-			results.push(a[i]);
-		}
-	}
-	return results;
+  for (var i = 0; i < a.length; i++) {
+    if (b.indexOf(a[i]) === -1) {
+      results.push(a[i]);
+    }
+  }
+  return results;
 }
 
-function tv_sources_page(show_all){
-	//deleted
-	console.log('tv sources old call');
-	return false;
+function tv_sources_page(show_all) {
+  //deleted
+  console.log("tv sources old call");
+  return false;
 }
 
 var Sources = {
-	_sources: {
-		input_list: {icon: 'sources-icon-settings_input_hdmi', open: function(){_tv_sources();}}, //param: [input, input] 
-		input: {icon: 'sources-icon-settings_input_hdmi', open: function(param){
-			if(!param){
-				log.add('SOURCES: empty input');
-				return false;
-			}
-			var tmp = param.match(/hdmi(\d)/i);
-			if(tmp){
-				//TODO: заменить на tv_source после переделки вендорных на промисы
-				_tv_source(['HDMI', tmp[1]-1]);
-				return true;
-			}else{
-				log.add('SOURCES: cannot parse input');
-				return false;
-			}
-		}}, //param: input
-		miracast: {icon: 'sources-icon-androidwindows', open: function(){Apps.miracast();}},
-		hotezastream_appletv: {icon: 'sources-icon-airplay', open: function(){AirStream.start();}},
-		hotezastream_chromecast: {icon: 'sources-icon-cast', open: function(){AirStream.start(true);}},
-		usb: {icon: 'sources-icon-usb', open: function(){_tv_usb();}},
-		bluetooth: {icon: 'sources-icon-settings_bluetooth', open: function(){tv_bt.open();}}
-	},
-	init: function(){
-		if(isset('structv2.config.sources')){
-			UI.register_page({id: 'sources_page', action: {func: Sources.open, param: false}});
-			//UI.register_page({id: 'sources_page_all', action: {func: Sources.open, param: true}});
-		}else{
-			UI.register_page({id: 'sources_page', action: {func: Sources.open_old, param: false}});
-		}
-	},
-	open: function(show_all){
-		if(fullscreen === true){
-			tv_mode();
-		}
-		if(tv_cur_block === 'tv_welcome'){
-			tv_welcome_hide();
-		}
+  _sources: {
+    input_list: {
+      icon: "sources-icon-settings_input_hdmi",
+      open: function () {
+        _tv_sources();
+      },
+    }, //param: [input, input]
+    input: {
+      icon: "sources-icon-settings_input_hdmi",
+      open: function (param) {
+        if (!param) {
+          log.add("SOURCES: empty input");
+          return false;
+        }
+        var tmp = param.match(/hdmi(\d)/i);
+        if (tmp) {
+          //TODO: заменить на tv_source после переделки вендорных на промисы
+          _tv_source(["HDMI", tmp[1] - 1]);
+          return true;
+        } else {
+          log.add("SOURCES: cannot parse input");
+          return false;
+        }
+      },
+    }, //param: input
+    miracast: {
+      icon: "sources-icon-androidwindows",
+      open: function () {
+        Apps.miracast();
+      },
+    },
+    hotezastream_appletv: {
+      icon: "sources-icon-airplay",
+      open: function () {
+        AirStream.start();
+      },
+    },
+    hotezastream_chromecast: {
+      icon: "sources-icon-cast",
+      open: function () {
+        AirStream.start(true);
+      },
+    },
+    usb: {
+      icon: "sources-icon-usb",
+      open: function () {
+        _tv_usb();
+      },
+    },
+    bluetooth: {
+      icon: "sources-icon-settings_bluetooth",
+      open: function () {
+        tv_bt.open();
+      },
+    },
+  },
+  init: function () {
+    if (isset("structv2.config.sources")) {
+      UI.register_page({
+        id: "sources_page",
+        action: { func: Sources.open, param: false },
+      });
+      //UI.register_page({id: 'sources_page_all', action: {func: Sources.open, param: true}});
+    } else {
+      UI.register_page({
+        id: "sources_page",
+        action: { func: Sources.open_old, param: false },
+      });
+    }
+  },
+  open: function (show_all) {
+    if (fullscreen === true) {
+      tv_mode();
+    }
+    if (tv_cur_block === "tv_welcome") {
+      tv_welcome_hide();
+    }
 
-		var tmp;
-		if(show_all){
-			tmp = [];
-			var keys = Object.keys(Sources._sources);
-			for(var k=0; k<keys.length; k++){
-				tmp.push({
-					type: keys[k],
-					title: keys[k],
-					description: keys[k]
-				});
-			}
-		}else{
-			tmp = isset('structv2.config.sources');
-		}
-		var items = [];
-		for(var i in tmp){
-			if(Object.keys(Sources._sources).indexOf(tmp[i].type) == -1){
-				log.add('SOURCES: unknown source in struct: ' + tmp[i].type);
-				continue;
-			}
-			//Исключения при построении на STB
-			if(tv_manufacturer == 'mag' || tv_manufacturer == 'tvip'){
-				//TODO: supported sources from vendor (get_supported_sources)
-				if(['input_list','input','miracast','usb','bluetooth'].indexOf(tmp[i].type) != -1){
-					log.add('SOURCES: source ' + tmp[i].type + ' unavailable on STB');
-					continue;
-				}
-			}
-			Object.assign(tmp[i], Sources._sources[tmp[i].type]);
-			tmp[i].id = 'sources_' + tmp[i].type;
-			items.push(tmp[i]);
-		}
-	
-		if(!$id('sources_page')){
-			var sources_page_object = {
-				'title': getlang('tv_sources_page'),
-				'items': items
-			};
-			if(HotezaTV.history.lastpage == '#menu' || HotezaTV.history.lastpage == '#sources_page'){
-				sources_page_object.backBtn = 0;
-				sources_page_object.parentId = '';
-			}else{
-				sources_page_object.backBtn = 1;
-				sources_page_object.parentId = active_page_id;
-			}
-			renderPageOnTheStructv2('sources_page', sources_page_object, 'sources_page');
-			navigate('#sources_page');
-		}
-	},
-	open_old: function(show_all){
-		if(fullscreen === true){
-			tv_mode();
-		}
-		if(tv_cur_block === 'tv_welcome'){
-			tv_welcome_hide();
-		}
+    var tmp;
+    if (show_all) {
+      tmp = [];
+      var keys = Object.keys(Sources._sources);
+      for (var k = 0; k < keys.length; k++) {
+        tmp.push({
+          type: keys[k],
+          title: keys[k],
+          description: keys[k],
+        });
+      }
+    } else {
+      tmp = isset("structv2.config.sources");
+    }
+    var items = [];
+    for (var i in tmp) {
+      if (Object.keys(Sources._sources).indexOf(tmp[i].type) == -1) {
+        log.add("SOURCES: unknown source in struct: " + tmp[i].type);
+        continue;
+      }
+      //Исключения при построении на STB
+      if (tv_manufacturer == "mag" || tv_manufacturer == "tvip") {
+        //TODO: supported sources from vendor (get_supported_sources)
+        if (
+          ["input_list", "input", "miracast", "usb", "bluetooth"].indexOf(
+            tmp[i].type
+          ) != -1
+        ) {
+          log.add("SOURCES: source " + tmp[i].type + " unavailable on STB");
+          continue;
+        }
+      }
+      Object.assign(tmp[i], Sources._sources[tmp[i].type]);
+      tmp[i].id = "sources_" + tmp[i].type;
+      items.push(tmp[i]);
+    }
 
-		var tmp = [];
-		//построение. один раз. кнопка "назад" зависит от страницы с которой вызывается функция первый раз
-		if(!$id('sources_page')){
-	
-			var sources = {
-				'SOURCES': {'id': 1, 'title': getlang('tv_sources'), 'icon': 'sources-icon-settings_input_hdmi', 'onvclick': '_tv_sources(' + show_all + ');'},
-				'HDMI': {'id': 2, 'title': 'HDMI', 'icon': 'sources-icon-settings_input_hdmi', 'onvclick': '_tv_sources(' + show_all + ');'},
-				'MIRACAST': {'id': 3, 'title': getlang('screen_sharing'), 'icon': 'sources-icon-androidwindows', 'onvclick': 'Apps.miracast();'},
-				'APPLETV': {'id': 4, 'title': 'Apple TV', 'icon': 'sources-icon-airplay', 'onvclick': '_tv_source([\'HDMI\', 0])'},
-				'CHROMECAST': {'id': 5, 'title': 'ChromeCast', 'icon': 'sources-icon-cast', 'onvclick': '_tv_source([\'HDMI\', 1])'},
-				'AIRSTREAM': {'id': 6, 'title': 'Apple TV', 'icon': 'sources-icon-airplay', 'onvclick': 'AirStream.start()'},
-				'CHROMESTREAM': {'id': 7, 'title': 'ChromeCast', 'icon': 'sources-icon-cast', 'onvclick': 'AirStream.start(true)'},
-				'USB': {'id': 8, 'title': 'USB', 'icon': 'sources-icon-usb', 'onvclick': '_tv_usb();'},
-				'BLUETOOTH': {'id': 9, 'title': 'Bluetooth', 'icon': 'sources-icon-settings_bluetooth', 'onvclick': 'tv_bt.open()'},
-			};
-	
-			if(show_all){
-				tmp = Object.keys(sources);
-			}else{
-				tmp = isset('config.tv.external_devices')||['SOURCES', 'MIRACAST', 'USB'];
-			}
-	
-			var items = [];
-			for(var i in tmp){
-				//Исключения при построении на STB
-				if(tv_manufacturer == 'mag' || tv_manufacturer == 'tvip'){
-					if(['SOURCES','HDMI','MIRACAST','USB','BLUETOOTH'].indexOf(tmp[i]) != -1){
-						continue;
-					}
-				}
-				items.push(sources[tmp[i]]);
-			}
-	
-			var sources_page_object = {
-				'title': getlang('tv_sources_page'),
-				'items': items
-			};
-			if(tv_cur_block == 'menu'){
-				sources_page_object.backBtn = 0;
-				sources_page_object.parentId = '';
-			}else{
-				sources_page_object.backBtn = 1;
-				sources_page_object.parentId = active_page_id;
-			}
-			renderPageOnTheStructv2('sources_page', sources_page_object, 'sources_page_old');
-			navigate('#sources_page');
-		}
-	},
-	open_source: function(type, param){
-		if(Sources._sources[type]){
-			try{
-				Sources._sources[type].open(param);
-			}catch(e){
-				log.add('SOURCES: open failed, exception: ' + e);
-				console.log(e);
-			}
-		}else{
-			log.add('SOURCES: open failed, unknown source type "' + type + '"');
-		}
-	}
+    if (!$id("sources_page")) {
+      var sources_page_object = {
+        title: getlang("tv_sources_page"),
+        items: items,
+      };
+      if (
+        HotezaTV.history.lastpage == "#menu" ||
+        HotezaTV.history.lastpage == "#sources_page"
+      ) {
+        sources_page_object.backBtn = 0;
+        sources_page_object.parentId = "";
+      } else {
+        sources_page_object.backBtn = 1;
+        sources_page_object.parentId = active_page_id;
+      }
+      renderPageOnTheStructv2(
+        "sources_page",
+        sources_page_object,
+        "sources_page"
+      );
+      navigate("#sources_page");
+    }
+  },
+  open_old: function (show_all) {
+    if (fullscreen === true) {
+      tv_mode();
+    }
+    if (tv_cur_block === "tv_welcome") {
+      tv_welcome_hide();
+    }
+
+    var tmp = [];
+    //построение. один раз. кнопка "назад" зависит от страницы с которой вызывается функция первый раз
+    if (!$id("sources_page")) {
+      var sources = {
+        SOURCES: {
+          id: 1,
+          title: getlang("tv_sources"),
+          icon: "sources-icon-settings_input_hdmi",
+          onvclick: "_tv_sources(" + show_all + ");",
+        },
+        HDMI: {
+          id: 2,
+          title: "HDMI",
+          icon: "sources-icon-settings_input_hdmi",
+          onvclick: "_tv_sources(" + show_all + ");",
+        },
+        MIRACAST: {
+          id: 3,
+          title: getlang("screen_sharing"),
+          icon: "sources-icon-androidwindows",
+          onvclick: "Apps.miracast();",
+        },
+        APPLETV: {
+          id: 4,
+          title: "Apple TV",
+          icon: "sources-icon-airplay",
+          onvclick: "_tv_source(['HDMI', 0])",
+        },
+        CHROMECAST: {
+          id: 5,
+          title: "ChromeCast",
+          icon: "sources-icon-cast",
+          onvclick: "_tv_source(['HDMI', 1])",
+        },
+        AIRSTREAM: {
+          id: 6,
+          title: "Apple TV",
+          icon: "sources-icon-airplay",
+          onvclick: "AirStream.start()",
+        },
+        CHROMESTREAM: {
+          id: 7,
+          title: "ChromeCast",
+          icon: "sources-icon-cast",
+          onvclick: "AirStream.start(true)",
+        },
+        USB: {
+          id: 8,
+          title: "USB",
+          icon: "sources-icon-usb",
+          onvclick: "_tv_usb();",
+        },
+        BLUETOOTH: {
+          id: 9,
+          title: "Bluetooth",
+          icon: "sources-icon-settings_bluetooth",
+          onvclick: "tv_bt.open()",
+        },
+      };
+
+      if (show_all) {
+        tmp = Object.keys(sources);
+      } else {
+        tmp = isset("config.tv.external_devices") || [
+          "SOURCES",
+          "MIRACAST",
+          "USB",
+        ];
+      }
+
+      var items = [];
+      for (var i in tmp) {
+        //Исключения при построении на STB
+        if (tv_manufacturer == "mag" || tv_manufacturer == "tvip") {
+          if (
+            ["SOURCES", "HDMI", "MIRACAST", "USB", "BLUETOOTH"].indexOf(
+              tmp[i]
+            ) != -1
+          ) {
+            continue;
+          }
+        }
+        items.push(sources[tmp[i]]);
+      }
+
+      var sources_page_object = {
+        title: getlang("tv_sources_page"),
+        items: items,
+      };
+      if (tv_cur_block == "menu") {
+        sources_page_object.backBtn = 0;
+        sources_page_object.parentId = "";
+      } else {
+        sources_page_object.backBtn = 1;
+        sources_page_object.parentId = active_page_id;
+      }
+      renderPageOnTheStructv2(
+        "sources_page",
+        sources_page_object,
+        "sources_page_old"
+      );
+      navigate("#sources_page");
+    }
+  },
+  open_source: function (type, param) {
+    if (Sources._sources[type]) {
+      try {
+        Sources._sources[type].open(param);
+      } catch (e) {
+        log.add("SOURCES: open failed, exception: " + e);
+        console.log(e);
+      }
+    } else {
+      log.add('SOURCES: open failed, unknown source type "' + type + '"');
+    }
+  },
 };
-$(HotezaTV).on('splashshow', Sources.init);
+$(HotezaTV).on("splashshow", Sources.init);
 
-function tv_source(params){
-	if(typeof(_tv_source) == 'function'){
-		if(!_tv_source(params)){
-			custom_alert('Source not connected');
-			return false;
-		}else{
-			return true;
-		}
-	}else{
-		console.log('SOURCE CHANGE NOT SUPPORTED');
-		return false;
-	}
+function tv_source(params) {
+  if (typeof _tv_source == "function") {
+    if (!_tv_source(params)) {
+      custom_alert("Source not connected");
+      return false;
+    } else {
+      return true;
+    }
+  } else {
+    console.log("SOURCE CHANGE NOT SUPPORTED");
+    return false;
+  }
 }
 
 function wakeup_status(visible, when, orderId) {
-	var container = document.getElementById('tv_fullscreen_alarm');
+  var container = document.getElementById("tv_fullscreen_alarm");
 
-	if (typeof when !== 'undefined') {
-		wakeup_status.set(when, orderId);
-	}
+  if (typeof when !== "undefined") {
+    wakeup_status.set(when, orderId);
+  }
 
-	when = wakeup_status.get('time');
+  when = wakeup_status.get("time");
 
-	if (!isset('config.tv.wakeup_status_exist')) {
-		return false;
-	}
+  if (!isset("config.tv.wakeup_status_exist")) {
+    return false;
+  }
 
-	var isValidWakeup = wakeup_status.isValidWakeup();
-	if (visible && isValidWakeup) {
-		if (!when) {
-			return false;
-		}
+  var isValidWakeup = wakeup_status.isValidWakeup();
+  if (visible && isValidWakeup) {
+    if (!when) {
+      return false;
+    }
 
-		container.querySelector('#wakeup_time').innerHTML = when;
-		container.style.display = 'block';
-	}
-	else {
-		container.style.display = 'none';
-		wakeup_status.set('');
-	}
+    container.querySelector("#wakeup_time").innerHTML = when;
+    container.style.display = "block";
+  } else {
+    container.style.display = "none";
+    wakeup_status.set("");
+  }
 }
 wakeup_status.get = function (type, isFullTime) {
-	var data = load_data(),
-		result = getData(data, type);
+  var data = load_data(),
+    result = getData(data, type);
 
-	if (!result) {
-		return null;
-	}
+  if (!result) {
+    return null;
+  }
 
-	if (
-		(result && type === 'orderId') ||
-		(isFullTime && type === 'time')
-	) {
-		return result;
-	}
+  if ((result && type === "orderId") || (isFullTime && type === "time")) {
+    return result;
+  }
 
-	return getTime(result);
+  return getTime(result);
 
-	function getTime(date) {
-		return date.split(' ')[1].substring(0, 5);
-	}
-	function getData(_data, _type) {
-		if (
-			typeof _data.wakeup === 'undefined' ||
-			typeof _data.wakeup[_type] === 'undefined'
-		) {
-			return null;
-		}
+  function getTime(date) {
+    return date.split(" ")[1].substring(0, 5);
+  }
+  function getData(_data, _type) {
+    if (
+      typeof _data.wakeup === "undefined" ||
+      typeof _data.wakeup[_type] === "undefined"
+    ) {
+      return null;
+    }
 
-		return _data.wakeup[_type];
-	}
+    return _data.wakeup[_type];
+  }
 };
 wakeup_status.set = function (t, orderId) {
-	var data = load_data();
+  var data = load_data();
 
-	data.wakeup = {
-		time: t,
-		orderId: orderId
-	};
+  data.wakeup = {
+    time: t,
+    orderId: orderId,
+  };
 
-	save_data(data);
+  save_data(data);
 };
 wakeup_status.isValidWakeup = function () {
-	var date = wakeup_status.get('time',true);
-	if (!date) {
-		return true;
-	}
+  var date = wakeup_status.get("time", true);
+  if (!date) {
+    return true;
+  }
 
-	var wakeupMoment = moment(date.replace(' ', 'T')),
-		nowMoment = time_picker.get_moment_with_current_time(Date.now());
+  var wakeupMoment = moment(date.replace(" ", "T")),
+    nowMoment = time_picker.get_moment_with_current_time(Date.now());
 
-	return parseInt(wakeupMoment.format('X')) > parseInt(nowMoment.format('X'));
+  return parseInt(wakeupMoment.format("X")) > parseInt(nowMoment.format("X"));
 };
 
 var UI = {
-	buffering: false,
-	buffer: '',
-	buffer_start: function(){
-		this.buffering = true;
-	},
-	buffer_stop: function(){
-		$('#container').append(this.buffer);
-		this.buffer = '';
-		this.buffering = false;
-	},
-	_pages: {},
-	has_page: function(page){
-		if(Object.keys(this._pages).indexOf(page) !== -1){
-			return true;
-		}else{
-			return false;
-		}
-	},
-	//TODO: register_block: name, sel_list, keydown (keys) (metro_move)
-	//TODO: dynamic page? with parameters
-	/**
-	 * @param {object} params
-	 * @param {string} params.id
-	 * @param {(function|{func: function, param: any})?} params.action
-	 * @param {string[]?} params.images
-	 * @returns boolean
-	 */
-	register_page: function(params){
-		if(this.has_page(params.id)){
-			log.add('UI: can`t register existing page');
-			return false;
-		}else{
-			this._pages[params.id] = {};
-			if(params.action){
-				if(typeof(params.action) == 'function'){
-					this._pages[params.id].action = {func: params.action};
-				}else if(typeof(params.action) == 'object' && params.action.func && typeof(params.action.param) != 'undefined'){
-					this._pages[params.id].action = params.action;
-				}else{
-					//ERROR
-				}
-			}
-			if(params.images && (isset('config.preload_images') == 3)){
-				this._pages[params.id].images = params.images;
-			}
-			return true;
-		}
-	},
-	navigate: function(page){
-		var that = this;
-		var d = $.Deferred();
-		if(that.has_page(page)){
-			if(isset('config.virtual_render') && !$id(page)){
-				$('#container').append(that._pages[page].content);
-			}
-			if(that._pages[page].images && that._pages[page].images.length){
-				Loader.start();
-			}
-			new _PreloadMedia(that._pages[page].images||[])
-			.done(function(){
-				if(that._pages[page].images && that._pages[page].images.length){
-					Loader.stop();
-				}
-				pref_log('preload');
-				//TODO: переделать замену как-то нормально
-				for(var image in that._pages[page].images){
-					//TODO: заменяется только первый элемент в выборке? а если одну картинку используют дважды???
-					var node = $('[new_image_url="' + that._pages[page].images[image] + '"]')[0];
-					if(node){
-						if(node.nodeName.toLowerCase() == 'img'){
-							node.src = that._pages[page].images[image];
-						}else{
-							//особенно вот это переделать
-							node.style.cssText =
-							node.style.cssText
-							.replace(
-								'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',
-								that._pages[page].images[image]
-							);
-						}
-						node.removeAttribute('new_image_url');
-						console.log(that._pages[page].images[image]);
-					}else{
-						console.log('No preload image replace!');
-					}
-				}
-				delete that._pages[page].images;
-				pref_log('replace');
+  buffering: false,
+  buffer: "",
+  buffer_start: function () {
+    this.buffering = true;
+  },
+  buffer_stop: function () {
+    $("#container").append(this.buffer);
+    this.buffer = "";
+    this.buffering = false;
+  },
+  _pages: {},
+  has_page: function (page) {
+    if (Object.keys(this._pages).indexOf(page) !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  //TODO: register_block: name, sel_list, keydown (keys) (metro_move)
+  //TODO: dynamic page? with parameters
+  /**
+   * @param {object} params
+   * @param {string} params.id
+   * @param {(function|{func: function, param: any})?} params.action
+   * @param {string[]?} params.images
+   * @returns boolean
+   */
+  register_page: function (params) {
+    if (this.has_page(params.id)) {
+      log.add("UI: can`t register existing page");
+      return false;
+    } else {
+      this._pages[params.id] = {};
+      if (params.action) {
+        if (typeof params.action == "function") {
+          this._pages[params.id].action = { func: params.action };
+        } else if (
+          typeof params.action == "object" &&
+          params.action.func &&
+          typeof params.action.param != "undefined"
+        ) {
+          this._pages[params.id].action = params.action;
+        } else {
+          //ERROR
+        }
+      }
+      if (params.images && isset("config.preload_images") == 3) {
+        this._pages[params.id].images = params.images;
+      }
+      return true;
+    }
+  },
+  navigate: function (page) {
+    var that = this;
+    var d = $.Deferred();
+    if (that.has_page(page)) {
+      if (isset("config.virtual_render") && !$id(page)) {
+        $("#container").append(that._pages[page].content);
+      }
+      if (that._pages[page].images && that._pages[page].images.length) {
+        Loader.start();
+      }
+      new _PreloadMedia(that._pages[page].images || []).done(function () {
+        if (that._pages[page].images && that._pages[page].images.length) {
+          Loader.stop();
+        }
+        pref_log("preload");
+        //TODO: переделать замену как-то нормально
+        for (var image in that._pages[page].images) {
+          //TODO: заменяется только первый элемент в выборке? а если одну картинку используют дважды???
+          var node = $(
+            '[new_image_url="' + that._pages[page].images[image] + '"]'
+          )[0];
+          if (node) {
+            if (node.nodeName.toLowerCase() == "img") {
+              node.src = that._pages[page].images[image];
+            } else {
+              //особенно вот это переделать
+              node.style.cssText = node.style.cssText.replace(
+                "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
+                that._pages[page].images[image]
+              );
+            }
+            node.removeAttribute("new_image_url");
+            console.log(that._pages[page].images[image]);
+          } else {
+            console.log("No preload image replace!");
+          }
+        }
+        delete that._pages[page].images;
+        pref_log("replace");
 
-				if(that._pages[page].action && that._pages[page].action.func){
-					//TODO: try? func?
-					var param = typeof(that._pages[page].action.param) != 'undefined' ? that._pages[page].action.param : page;
-					that._pages[page].action.func(param);
-				}
-				d.resolve(that._pages[page].nonav);
-			});
-		}else{
-			console.log('UI: can`t navigate to #' + page);
-			d.reject('cant do');
-		}
-		return d.promise();
-	},
-	nav: function(to, type, dontsave, not_fit_text){
-		var id = to.replace(/^#/,'');
+        if (that._pages[page].action && that._pages[page].action.func) {
+          //TODO: try? func?
+          var param =
+            typeof that._pages[page].action.param != "undefined"
+              ? that._pages[page].action.param
+              : page;
+          that._pages[page].action.func(param);
+        }
+        d.resolve(that._pages[page].nonav);
+      });
+    } else {
+      console.log("UI: can`t navigate to #" + page);
+      d.reject("cant do");
+    }
+    return d.promise();
+  },
+  nav: function (to, type, dontsave, not_fit_text) {
+    var id = to.replace(/^#/, "");
 
-		//TODO: временно
-		to = '#' + to;
-		var to_page = $(to);
-		var from_page;
+    //TODO: временно
+    to = "#" + to;
+    var to_page = $(to);
+    var from_page;
 
-		if(active_page !== to){
+    if (active_page !== to) {
+      navigating = true;
 
-			navigating = true;
+      //выделение в меню
+      setActiveMenuItem();
 
-			//выделение в меню
-			setActiveMenuItem();
+      if (active_page && $(active_page).length) {
+        from_page = $(active_page);
+        from_page[0].style[css_transition] = "";
+      }
 
-			if(active_page && $(active_page).length){
-				from_page = $(active_page);
-				from_page[0].style[css_transition] = '';
-			}
+      if (to === "#menu") {
+        tv_menu(from_page);
+      } else {
+        if (from_page) {
+          if (!to_page.hasClass("popup")) {
+            from_page.hide();
+            from_page.removeClass("active_page away_page l r");
+          }
+        }
 
-			if (to === '#menu') {
-				tv_menu(from_page);
-			}
-			else {
-				if(from_page){
-					if (!to_page.hasClass('popup')) {
-						from_page.hide();
-						from_page.removeClass('active_page away_page l r');
-					}
-				}
+        to_page.addClass("active_page").show();
+        active_page = to;
+        active_page_id = id;
+      }
 
-				to_page.addClass('active_page').show();
-				active_page = to;
-				active_page_id = id;
-			}
+      if (!not_fit_text) {
+        fit_text(to_page.find(".header h1"), 20, true);
+        fit_text(to_page.find(".pagelist li>span"));
+      }
 
-			if (!not_fit_text) {
-				fit_text(to_page.find('.header h1'), 20, true);
-				fit_text(to_page.find('.pagelist li>span'));
-			}
+      navigating = false;
 
-			navigating = false;
+      //перемотка контента на начало
+      if (from_page) {
+        if (
+          !from_page[0].getAttribute("keep_position") &&
+          from_page.find(".content")[0]
+        ) {
+          var tmp = from_page.find(".content")[0].style;
+          tmp[css_transition] = css_transform + " 0s";
+          tmp[css_transform] = "translate3d(0,0,0)";
+        }
+      }
 
-			//перемотка контента на начало
-			if(from_page){
-				if(!from_page[0].getAttribute('keep_position') && from_page.find('.content')[0]){
-					var tmp = from_page.find('.content')[0].style;
-					tmp[css_transition] = css_transform + ' 0s';
-					tmp[css_transform] = 'translate3d(0,0,0)';
-				}
-			}
+      // Ведение статистики
+      if (typeof Analytics !== "undefined") {
+        Analytics.hitsPages(id);
+      }
 
-			// Ведение статистики
-			if (typeof Analytics !== 'undefined') {
-				Analytics.hitsPages(id);
-			}
+      // используется id вместо active_page_id
+      // так как active_page_id не может быть равен menu
+      this.sel_block(id);
 
-			// используется id вместо active_page_id
-			// так как active_page_id не может быть равен menu
-			this.sel_block(id);
+      // Построение прокрутки страниц
+      make_scroll(to_page);
 
-			// Построение прокрутки страниц
-			make_scroll(to_page);
+      // Изменение высоты контента под размер окна
+      if (to_page[0].getAttribute("scroll_to_bottom")) {
+        scroll_to_bottom(to_page);
+      }
+    } else {
+      to_page[0].style.display = "block";
+      to_page.addClass("active_page");
+      this.sel_block(active_page_id);
+    }
 
-			// Изменение высоты контента под размер окна
-			if(to_page[0].getAttribute('scroll_to_bottom')){
-				scroll_to_bottom(to_page);
-			}
+    // Сохранение последней страницы
+    if (!dontsave && !parseInt(to_page.attr("data-dont-save"))) {
+      HotezaTV.history.lastpage = to;
+    }
 
-		}
-		else{
-			to_page[0].style.display = 'block';
-			to_page.addClass('active_page');
-			this.sel_block(active_page_id);
-		}
+    //TODO: должно быть пусто!!!
+    // Выполнение действий по закрытии страницы
+    execAction(from_page, "close");
+    // Выполнение действий по открытии страницы
+    execAction(to_page, "open");
 
-		// Сохранение последней страницы
-		if (
-			!dontsave &&
-			!parseInt(to_page.attr('data-dont-save'))
-		) {
-			HotezaTV.history.lastpage = to;
-		}
+    function setActiveMenuItem() {
+      var tre = $('#menu [href="' + to + '"]')[0];
 
-		//TODO: должно быть пусто!!!
-		// Выполнение действий по закрытии страницы
-		execAction(from_page, 'close');
-		// Выполнение действий по открытии страницы
-		execAction(to_page, 'open');
+      if (tre) {
+        if (!tre.classList.contains("active")) {
+          var tmp_o = document
+            .getElementById("menu")
+            .querySelectorAll(".active");
+          for (var i = 0, tmp_l = tmp_o.length; i < tmp_l; i++) {
+            tmp_o[i].classList.remove("active");
+          }
+          tre.classList.add("active");
+        }
+      }
+    }
+  },
+  sel_block: function (id) {
+    id = getID(id);
 
-		function setActiveMenuItem() {
-			var tre = $('#menu [href="'+ to +'"]')[0];
-	
-			if(tre){
-				if(!tre.classList.contains('active')){
-					var tmp_o = document.getElementById('menu').querySelectorAll('.active');
-					for(var i = 0, tmp_l = tmp_o.length; i<tmp_l;i++){
-						tmp_o[i].classList.remove('active');
-					}
-					tre.classList.add('active');
-				}
-			}
-		}
-	},
-	sel_block: function(id){
-		id = getID(id);
+    previousBlock = tv_cur_block;
 
-		previousBlock = tv_cur_block;
-	
-		if (tv_sel_list.length) {
-			tv_sel_list.removeClass('tv_sel');
-		}
-	
-		if (tv_cur_elem && tv_cur_elem.length) {
-			tv_cur_elem[0].classList.add('tv_sel');
-		}
-	
-		// выбор языка в tv_mosaic при tv_cur_block == channel
-		if (
-			id === 'channel' &&
-			guestData.tv_channels_lang_stream &&
-			guestData.tv_channels_lang_stream[tv_mosaic.current_channel] != null
-		) {
-			tv_cur_pos = guestData.tv_channels_lang_stream[tv_mosaic.current_channel];
-		}
-		else {
-			tv_cur_pos = 0;
-		}
-	
-		$('#tv_cur').removeClass('square');
-		if (id === 'menu') {
-			tv_cur_block = 'menu';
-			tv_sel_list = $('#menu').find('[href]').filter(function() {
-				return $(this).is(':visible') && this.tagName.toLowerCase() !== 'use';
-			});
-			metro_menu_calc();
-			$('#tv_cur').addClass('square');
-		}
-		else if (id === 'dialog') {
-			tv_cur_block = 'dialog';
-			tv_sel_list = $('#custom_dialog').find('[onvclick]').filter(function() { return $(this).is(':visible'); });
-			metro_menu_calc();
-		}
-		else if (id === 'show_gallery') {
-			tv_cur_block = 'show_gallery';
-			tv_sel_list = $('.gallery_subContainer').find('[onvclick]');
-			tv_cur_elem = tv_sel_list;
-			$('#tv_cur').addClass('square');
-			return true;
-		}
-		else if (id === 'guide') {
-			tv_cur_block = 'guide';
-			tv_sel_list = $('#'+id).find('.guide_icon');
-		}
-		else if (
-			id === 'settings' ||
-			id === 'service_page' ||
-			id === 'select_page' ||
-			id === 'language_select' ||
-			id === 'selectpage' ||
-			id === 'sources_list' ||
-			id === 'sample_page'
-		) {
-			tv_cur_block = 'settings';
-			tv_sel_list = $('#'+id).find('.content').find('[href^="#"], [onvclick]').filter(function() { return $(this).is(':visible'); });
-		}
-		else if (id === 'tv_channellist') {
-			tv_cur_block = 'tv_channellist';
-			tv_sel_list = $('#tv_channellist').find('.content').find('li').filter(function(index, item) {
-				return (
-					tv_channellist_type === 'not_vertical' ||
-					tv_channellist_type === 'vertical' ||
-					tv_channellist_type === ''
-				) ? true : $(item).is(':visible');
-			});
-		}
-		else if (id === 'tv_programmes_list') {
-			tv_cur_block = 'tv_programmes_list';
-			tv_sel_list = $('#tv_programmes_list').find('.programme');
-		}
-		else if (id === 'language' || id === 'category' || id === 'genre') {
-			tv_cur_block = id;
-			tv_sel_list = $('#' + id).find('.content').find('li');
-		}
-		else if (id === 'tv_radiolist') {
-			tv_cur_block = 'tv_radiolist';
-			tv_sel_list = $('#tv_radiolist').find('.content').find('li').filter(function(index, item) {
-				return !$(item).hasClass('displaynone');
-			});
-		}
-		else if (id === 'channel') {
-			tv_cur_block = 'channel';
-			tv_sel_list = $('#bottom_channel_information').find('[data-code]');
-		}
-		else if ($('#'+id).hasClass('service_page')) {
-			tv_cur_block = 'shopitem';
-			tv_sel_list = $(active_page)
-				.find('.shop_plusminus, DIV.button, #shopitemoptions .settings_button')
-				.filter(function() { return $(this).is(':visible'); });
-		}
-		else if (
-			id === 'shopitem' ||
-			id === 'order_details' ||
-			id === 'orders'
-		) {
-	
-			tv_cur_block = id;
-			tv_sel_list = $(active_page)
-				.find('.shop_plusminus, .button, #shopitemoptions .settings_button')
-				.filter(function() { return $(this).is(':visible'); });
-		}
-		else if (id === 'cart') {
-			tv_cur_block = 'cart';
-			tv_sel_list = $('#cart').find('[onvclick], .shop_plusminus').filter(function() { return $(this).is(':visible'); });
-		}
-		else if (id === 'feedback') {
-			tv_cur_block = 'feedback';
-			tv_sel_list = $('#feedback').find('[href], [onvclick]').filter(function() { return $(this).is(':visible'); });
-		}
-		else if (id === 'tv_welcome') {
-			//TODO: перенести в navigate
-			active_page = '#tv_welcome';
-			active_page_id = 'tv_welcome';
-			tv_cur_block = 'tv_welcome';
-			tv_sel_list = $('#tv_welcome').find('.button');
-		}
-		else if (id === 'weather_select_location') {
-			tv_cur_block = 'weather_select_location';
-			tv_sel_list = $('#weather_select_location').find('[onvclick]');
-		}
-		else if (id === 'VODplayer') {
-			tv_cur_block = 'VODplayer';
-			tv_sel_list = $('#playerPanel [onvclick]').filter(function() { return $(this).is(':visible'); });
-		}
-		else if (id === 'VODcategory') {
-			tv_cur_block = 'VODcategory';
-			tv_sel_list = $('#'+id).find('.pagelist').find('[onvclick]').filter(function() { return $(this).is(':visible'); });
-			metro_menu_calc();
-		}
-		else if (id === 'time_picker') {
-			tv_cur_block = 'time_picker';
-			tv_sel_list = $('#time_picker').find('[onvclick], .time_picker_item, .button').filter(function() {
-				return $(this).is(':visible');
-			});
-		}
-		else if ($id(id) && $id(id).classList.contains('list_items_toppings')) {
-			tv_cur_block = 'toppings';
-			tv_sel_list = $(active_page)
-				.find('.shop_plusminus, .shop_radio, .shop_select, .button')
-				.filter(function() { return $(this).is(':visible'); });
-		}
-		else if ($id(id) && $id(id).classList.contains('popup')) {
-			tv_cur_block = 'popup';
-			tv_sel_list = $('#' + id).find('[onvclick], .button').filter(function() { return $(this).is(':visible'); });
-		}
-		else if (
-			id === 'mod_playlist' ||
-			(
-				$id(id) && $id(id).classList.contains('mod_playlist')
-			)
-		) {
-			tv_cur_block = 'mod_playlist';
-			tv_sel_list = id === 'mod_playlist' ? $(active_page).find('li') : $('#'+id).find('li');
-		}
-		else if ($id(id) && $id(id).classList.contains('fullscreen_video')) {
-			tv_cur_block = 'fullscreen_video';
-			tv_sel_list = $([]);
-		}
-		else if ($('#'+id).find('.pagelist.shop').length) {
-			tv_cur_block = 'pagelist';
-			tv_sel_list = $('#'+id).find('.pagelist').find('[onvclick]').filter(function() { return $(this).is(':visible'); });
-			metro_menu_calc();
-		}
-		else if ($('#'+id).find('.rcu').length) {
-			tv_cur_block = 'pagelist';
-			tv_sel_list = $('#'+id).find('.rcu').filter(function() { return $(this).is(':visible'); });
-			metro_menu_calc();
-		}
-		else if ($id(id) && (tmp = $id(id).querySelector('.pagelist'))) {
-			tv_cur_block = 'pagelist';
-			tv_sel_list = $(tmp).find('[href]').filter(function() { return $(this).is(':visible'); });
-			metro_menu_calc();
-			if(['sources_page'].indexOf(id) == -1){
-				$('#tv_cur').addClass('square');
-			}
-		}
-		else if ($('#'+id).find('.gallery_container').length) {
-			tv_cur_block = 'gallery';
-			tv_sel_list = $('#'+id).find('IMG');
-			$('#tv_cur').hide();
-			$('#tv_cur').addClass('square');
-		}
-		else if (
-			id === 'shop_order' ||
-			id === 'movie_page' ||
-			id === 'viewbill'
-		) {
-			tv_cur_block = 'service_page';
-			tv_sel_list = $('#'+id).find('[href^="#"], [onvclick], .timepicker').filter(function() { return $(this).is(':visible'); });
-		}
-		else {
-			tv_sel_list = $('#'+id).find('[href^="#"], [onvclick], .timepicker, DIV.button').filter(function() { return $(this).is(':visible'); });
-			if (tv_sel_list.length){
-				tv_cur_block = 'settings';
-			}else{
-				tv_cur_block = 'scroll';
-				tv_sel_list = $([]);
-			}
-		}
+    if (tv_sel_list.length) {
+      tv_sel_list.removeClass("tv_sel");
+    }
 
-		tv_cur_pos = getTvCurPos();
-	
-		tv_max_pos = tv_sel_list.length;
-		tv_sel_cur();
-	
-		if($('#'+id).find('.back').length){
-			$('#tv_fullscreen_btn_back').show();
-		}else{
-			$('#tv_fullscreen_btn_back').hide();
-		}
-	
-		// обработка видео на страницах и меню
-		videoControl();
-	
-		function getID(page_id) {
-			//TODO: понять и удалить
-			if (page_id) {
-				return page_id;
-			}
-			if (['VODplayer','tv_radiolist','genre'].indexOf(previousBlock) != -1) {
-				return previousBlock;
-			}
-			if (fullscreen) {
-				return tv_channellist_type === 'mosaic' && tv_mosaic.current_block ?
-					tv_mosaic.current_block : 'tv_channellist';
-			}
+    if (tv_cur_elem && tv_cur_elem.length) {
+      tv_cur_elem[0].classList.add("tv_sel");
+    }
 
-			if (Menu.opened) {
-				return 'menu';
-			}
+    // выбор языка в tv_mosaic при tv_cur_block == channel
+    if (
+      id === "channel" &&
+      guestData.tv_channels_lang_stream &&
+      guestData.tv_channels_lang_stream[tv_mosaic.current_channel] != null
+    ) {
+      tv_cur_pos = guestData.tv_channels_lang_stream[tv_mosaic.current_channel];
+    } else {
+      tv_cur_pos = 0;
+    }
 
-			return active_page_id;
+    $("#tv_cur").removeClass("square");
+    if (id === "menu") {
+      tv_cur_block = "menu";
+      tv_sel_list = $("#menu")
+        .find("[href]")
+        .filter(function () {
+          return $(this).is(":visible") && this.tagName.toLowerCase() !== "use";
+        });
+      metro_menu_calc();
+      $("#tv_cur").addClass("square");
+    } else if (id === "dialog") {
+      tv_cur_block = "dialog";
+      tv_sel_list = $("#custom_dialog")
+        .find("[onvclick]")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+      metro_menu_calc();
+    } else if (id === "show_gallery") {
+      tv_cur_block = "show_gallery";
+      tv_sel_list = $(".gallery_subContainer").find("[onvclick]");
+      tv_cur_elem = tv_sel_list;
+      $("#tv_cur").addClass("square");
+      return true;
+    } else if (id === "guide") {
+      tv_cur_block = "guide";
+      tv_sel_list = $("#" + id).find(".guide_icon");
+    } else if (
+      id === "settings" ||
+      id === "service_page" ||
+      id === "select_page" ||
+      id === "language_select" ||
+      id === "selectpage" ||
+      id === "sources_list" ||
+      id === "sample_page"
+    ) {
+      tv_cur_block = "settings";
+      tv_sel_list = $("#" + id)
+        .find(".content")
+        .find('[href^="#"], [onvclick]')
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else if (id === "tv_channellist") {
+      tv_cur_block = "tv_channellist";
+      tv_sel_list = $("#tv_channellist")
+        .find(".content")
+        .find("li")
+        .filter(function (index, item) {
+          return tv_channellist_type === "not_vertical" ||
+            tv_channellist_type === "vertical" ||
+            tv_channellist_type === ""
+            ? true
+            : $(item).is(":visible");
+        });
+    } else if (id === "tv_programmes_list") {
+      tv_cur_block = "tv_programmes_list";
+      tv_sel_list = $("#tv_programmes_list").find(".programme");
+    } else if (id === "language" || id === "category" || id === "genre") {
+      tv_cur_block = id;
+      tv_sel_list = $("#" + id)
+        .find(".content")
+        .find("li");
+    } else if (id === "tv_radiolist") {
+      tv_cur_block = "tv_radiolist";
+      tv_sel_list = $("#tv_radiolist")
+        .find(".content")
+        .find("li")
+        .filter(function (index, item) {
+          return !$(item).hasClass("displaynone");
+        });
+    } else if (id === "channel") {
+      tv_cur_block = "channel";
+      tv_sel_list = $("#bottom_channel_information").find("[data-code]");
+    } else if ($("#" + id).hasClass("service_page")) {
+      tv_cur_block = "shopitem";
+      tv_sel_list = $(active_page)
+        .find(".shop_plusminus, DIV.button, #shopitemoptions .settings_button")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else if (id === "shopitem" || id === "order_details" || id === "orders") {
+      tv_cur_block = id;
+      tv_sel_list = $(active_page)
+        .find(".shop_plusminus, .button, #shopitemoptions .settings_button")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else if (id === "cart") {
+      tv_cur_block = "cart";
+      tv_sel_list = $("#cart")
+        .find("[onvclick], .shop_plusminus")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else if (id === "feedback") {
+      tv_cur_block = "feedback";
+      tv_sel_list = $("#feedback")
+        .find("[href], [onvclick]")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else if (id === "tv_welcome") {
+      //TODO: перенести в navigate
+      active_page = "#tv_welcome";
+      active_page_id = "tv_welcome";
+      tv_cur_block = "tv_welcome";
+      tv_sel_list = $("#tv_welcome").find(".button");
+    } else if (id === "weather_select_location") {
+      tv_cur_block = "weather_select_location";
+      tv_sel_list = $("#weather_select_location").find("[onvclick]");
+    } else if (id === "VODplayer") {
+      tv_cur_block = "VODplayer";
+      tv_sel_list = $("#playerPanel [onvclick]").filter(function () {
+        return $(this).is(":visible");
+      });
+    } else if (id === "VODcategory") {
+      tv_cur_block = "VODcategory";
+      tv_sel_list = $("#" + id)
+        .find(".pagelist")
+        .find("[onvclick]")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+      metro_menu_calc();
+    } else if (id === "time_picker") {
+      tv_cur_block = "time_picker";
+      tv_sel_list = $("#time_picker")
+        .find("[onvclick], .time_picker_item, .button")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else if ($id(id) && $id(id).classList.contains("list_items_toppings")) {
+      tv_cur_block = "toppings";
+      tv_sel_list = $(active_page)
+        .find(".shop_plusminus, .shop_radio, .shop_select, .button")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else if ($id(id) && $id(id).classList.contains("popup")) {
+      tv_cur_block = "popup";
+      tv_sel_list = $("#" + id)
+        .find("[onvclick], .button")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else if (
+      id === "mod_playlist" ||
+      ($id(id) && $id(id).classList.contains("mod_playlist"))
+    ) {
+      tv_cur_block = "mod_playlist";
+      tv_sel_list =
+        id === "mod_playlist"
+          ? $(active_page).find("li")
+          : $("#" + id).find("li");
+    } else if ($id(id) && $id(id).classList.contains("fullscreen_video")) {
+      tv_cur_block = "fullscreen_video";
+      tv_sel_list = $([]);
+    } else if ($("#" + id).find(".pagelist.shop").length) {
+      tv_cur_block = "pagelist";
+      tv_sel_list = $("#" + id)
+        .find(".pagelist")
+        .find("[onvclick]")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+      metro_menu_calc();
+    } else if ($("#" + id).find(".rcu").length) {
+      tv_cur_block = "pagelist";
+      tv_sel_list = $("#" + id)
+        .find(".rcu")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+      metro_menu_calc();
+    } else if ($id(id) && (tmp = $id(id).querySelector(".pagelist"))) {
+      tv_cur_block = "pagelist";
+      tv_sel_list = $(tmp)
+        .find("[href]")
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+      metro_menu_calc();
+      if (["sources_page"].indexOf(id) == -1) {
+        $("#tv_cur").addClass("square");
+      }
+    } else if ($("#" + id).find(".gallery_container").length) {
+      tv_cur_block = "gallery";
+      tv_sel_list = $("#" + id).find("IMG");
+      $("#tv_cur").hide();
+      $("#tv_cur").addClass("square");
+    } else if (
+      id === "shop_order" ||
+      id === "movie_page" ||
+      id === "viewbill"
+    ) {
+      tv_cur_block = "service_page";
+      tv_sel_list = $("#" + id)
+        .find('[href^="#"], [onvclick], .timepicker')
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+    } else {
+      tv_sel_list = $("#" + id)
+        .find('[href^="#"], [onvclick], .timepicker, DIV.button')
+        .filter(function () {
+          return $(this).is(":visible");
+        });
+      if (tv_sel_list.length) {
+        tv_cur_block = "settings";
+      } else {
+        tv_cur_block = "scroll";
+        tv_sel_list = $([]);
+      }
+    }
 
-		}
-		function videoControl() {
-			var pageWithVideo = isGetVideoPage();
-			if (pageWithVideo) {
-				var video = videoCollection.get();
-	
-				if (
-					video &&
-					!video.paused &&
-					video.page === pageWithVideo
-				) {
-					return false;
-				}
-	
-				if (video) {
-					clip(null, video.page);
-				}
-	
-				video = new Video(pageWithVideo);
-	
-				if (video.getVideo()) {
-					videoCollection.add(pageWithVideo, video);
-				}
-	
-				setTimeout(videoCollection.start, 100);
-			}
-		}
+    tv_cur_pos = getTvCurPos();
 
-		function getTvCurPos() {
-			if (tv_cur_block === 'tv_programmes_list') {
-				return Epg.getCurrentItemPosition();
-			}
-	
-			if(tv_sel_list.filter('.tv_sel').length){
-				return tv_sel_list.index(tv_sel_list.filter('.tv_sel'));
-			}
-	
-			return tv_cur_pos;
-		}
-	},
-	build_page: function (obj){
-		//id
-		//title
-		//content
-		//back - href/onvclick - page id to go back
+    tv_max_pos = tv_sel_list.length;
+    tv_sel_cur();
 
-		// UI.build_page вызван с шаблоном
-		if (obj.tpl) {
-			var wrap = document.getElementById(obj.id);
+    if ($("#" + id).find(".back").length) {
+      $("#tv_fullscreen_btn_back").show();
+    } else {
+      $("#tv_fullscreen_btn_back").hide();
+    }
 
-			if (wrap) {
-				wrap.innerHTML = obj.content;
+    // обработка видео на страницах и меню
+    videoControl();
 
-				if (obj.class != undefined) {wrap.className = 'page ' + obj.class;}
-			}
-			else {
+    function getID(page_id) {
+      //TODO: понять и удалить
+      if (page_id) {
+        return page_id;
+      }
+      if (["VODplayer", "tv_radiolist", "genre"].indexOf(previousBlock) != -1) {
+        return previousBlock;
+      }
+      if (fullscreen) {
+        return tv_channellist_type === "mosaic" && tv_mosaic.current_block
+          ? tv_mosaic.current_block
+          : "tv_channellist";
+      }
 
-				var html;
-				// если страницы нет, создаем ее по дефолтному шаблону
-				var data = {};
-				data.content = obj.content;
-				data.id = obj.id;
-				data.devices = obj.devices;
-				data.groups = obj.groups;
-				data.tplType = obj.tplType;
-				data.onopen = obj.onopen;
-				data.onclose = obj.onclose;
-				data.wh = wh;
+      if (Menu.opened) {
+        return "menu";
+      }
 
-				if (obj.class != undefined) {data.klass = obj.class;}
+      return active_page_id;
+    }
+    function videoControl() {
+      var pageWithVideo = isGetVideoPage();
+      if (pageWithVideo) {
+        var video = videoCollection.get();
 
-				// построение виджета в меню
-				if (obj.class == 'widget_menu') {
-					html = data.content;
-				}
-				else { // дефолтное построение
-					html = templates_cache.default(data);
-				}
+        if (video && !video.paused && video.page === pageWithVideo) {
+          return false;
+        }
 
+        if (video) {
+          clip(null, video.page);
+        }
 
-				if (obj.to) {
-					$(obj.to).append(html);
-				}
-				else {
-					if(this.buffering == true){
-						this.buffer += html;
-					}
-					else {
-						if(obj.virtual_render && isset('config.virtual_render')){
-							return html;
-						}else{
-							$('#container').append(html);
-						}
-					}
+        video = new Video(pageWithVideo);
 
-				}
+        if (video.getVideo()) {
+          videoCollection.add(pageWithVideo, video);
+        }
 
-			}
+        setTimeout(videoCollection.start, 100);
+      }
+    }
 
-			return;
-		}
+    function getTvCurPos() {
+      if (tv_cur_block === "tv_programmes_list") {
+        return Epg.getCurrentItemPosition();
+      }
 
-		if(typeof(obj) !== 'object'){
-			obj = {};
-		}
+      if (tv_sel_list.filter(".tv_sel").length) {
+        return tv_sel_list.index(tv_sel_list.filter(".tv_sel"));
+      }
 
-		var id = (obj.id?obj.id:(Math.random().toString(36).slice(2)));
-		var tmp;
-		if($('#'+id).length){
-			//l('UI: page ' + id + ' already exists');
-			tmp = $('#'+id);
-		}else{
-			tmp = $('#sample_page').clone().hide();
-			tmp.attr('id', id);
-			if (obj.className) {
-				tmp.addClass(obj.className);
-			}
-			$('#container').append(tmp);
-		}
+      return tv_cur_pos;
+    }
+  },
+  build_page: function (obj) {
+    //id
+    //title
+    //content
+    //back - href/onvclick - page id to go back
 
-		tmp.find('.header').html(
-			(
-				(obj.back && obj.back.href) ?
-					'<div class="back" href="' + obj.back.href + '" onvclick="' + obj.back.onvclick + '" href_type="back"></div>' :
-					'<div class="back" onvclick="navigate(\'#menu\')" href_type="back"></div>'
-			) + '<h1>' + ((obj.title) ? (obj.title) : 'Default') + '</h1>'
-		);
-		tmp.find('.content').html(((obj.content) ? (obj.content) : ''));
+    // UI.build_page вызван с шаблоном
+    if (obj.tpl) {
+      var wrap = document.getElementById(obj.id);
 
-		return id;
-	},
-	pay_page: function (obj){
-		//type - type of pay (ex. vod)
-		//amount - amount to pay
-		//check - text to check
-		//text - text to display
-		//confirm_text - text to display in confirm window
-		//data - payload (ex. video_id)
+      if (wrap) {
+        wrap.innerHTML = obj.content;
 
-		//???? image
+        if (obj.class != undefined) {
+          wrap.className = "page " + obj.class;
+        }
+      } else {
+        var html;
+        // если страницы нет, создаем ее по дефолтному шаблону
+        var data = {};
+        data.content = obj.content;
+        data.id = obj.id;
+        data.devices = obj.devices;
+        data.groups = obj.groups;
+        data.tplType = obj.tplType;
+        data.onopen = obj.onopen;
+        data.onclose = obj.onclose;
+        data.wh = wh;
 
-		//TODO: use lang
+        if (obj.class != undefined) {
+          data.klass = obj.class;
+        }
 
-		var tmp = {'id': 'pay_page'};
-		tmp.back = obj.back;
-		tmp.title = 'Pay Page';
+        // построение виджета в меню
+        if (obj.class == "widget_menu") {
+          html = data.content;
+        } else {
+          // дефолтное построение
+          html = templates_cache.default(data);
+        }
 
-		//TODO: send request
+        if (obj.to) {
+          $(obj.to).append(html);
+        } else {
+          if (this.buffering == true) {
+            this.buffer += html;
+          } else {
+            if (obj.virtual_render && isset("config.virtual_render")) {
+              return html;
+            } else {
+              $("#container").append(html);
+            }
+          }
+        }
+      }
 
-		tmp.content = '<div>' + obj.text + '<p>POS: ' + obj.type + '</p><p>Amount to pay: <span class="price">' + accounting.formatMoney(obj.amount||0, currency_format) + '</span></p><div id="pay_button" class="button" onvclick="">Pay</div></div>';
+      return;
+    }
 
-		navigate('#' + this.build_page(tmp));
+    if (typeof obj !== "object") {
+      obj = {};
+    }
 
-		$('#pay_button').on(event_link, function(){
-			custom_input({
-				text: obj.confirm_text||'',
-				check: obj.check,
-				onConfirm: function(){
-					//TODO: make request
-					var data = {
-						type: obj.type,
-						data: obj.data,
-						token: storage.getItem('token')
-					};
-					$.post(config.admin_url + 'jsonapi/addPayContent', data)
-					.done(function(response){
-						//TODO: try
-						//TODO: use lang
-						switch(response.result){
-							case 0:
-								//TODO: try
-								obj.onSuccess();
-								break;
-							default:
-								custom_alert('Pay error: ' + response.result);
-								break;
-						}
-					});
-				}
-			});
-		});
+    var id = obj.id ? obj.id : Math.random().toString(36).slice(2);
+    var tmp;
+    if ($("#" + id).length) {
+      //l('UI: page ' + id + ' already exists');
+      tmp = $("#" + id);
+    } else {
+      tmp = $("#sample_page").clone().hide();
+      tmp.attr("id", id);
+      if (obj.className) {
+        tmp.addClass(obj.className);
+      }
+      $("#container").append(tmp);
+    }
 
-	},
-	popup_list_page: function (data, firstInit) {
-		var tmpl = templates_cache[data.tplType];
-		var html = tmpl.render(data);
+    tmp
+      .find(".header")
+      .html(
+        (obj.back && obj.back.href
+          ? '<div class="back" href="' +
+            obj.back.href +
+            '" onvclick="' +
+            obj.back.onvclick +
+            '" href_type="back"></div>'
+          : '<div class="back" onvclick="navigate(\'#menu\')" href_type="back"></div>') +
+          "<h1>" +
+          (obj.title ? obj.title : "Default") +
+          "</h1>"
+      );
+    tmp.find(".content").html(obj.content ? obj.content : "");
 
-		var to = $(data.to);
-		if (to.length && firstInit) {
-			to.remove();
-			to = [];
-		}
+    return id;
+  },
+  pay_page: function (obj) {
+    //type - type of pay (ex. vod)
+    //amount - amount to pay
+    //check - text to check
+    //text - text to display
+    //confirm_text - text to display in confirm window
+    //data - payload (ex. video_id)
 
-		if (to.length) {
-			to.append(html);
-		}
-		else {$('#container').append(html);}
-	},
-	render: function(id, data_obj, tplType, klass, toAdd, func){
-		if(isset('config.virtual_render')){
-			//TODO: сомнительно, не работает на динамических страницах
-			this._pages[data_obj.id].content = renderPageOnTheStructv2(id, data_obj, tplType, klass, toAdd, func, true);
-		}else{
-			renderPageOnTheStructv2(id, data_obj, tplType, klass, toAdd, func);
-		}
-	}
+    //???? image
+
+    //TODO: use lang
+
+    var tmp = { id: "pay_page" };
+    tmp.back = obj.back;
+    tmp.title = "Pay Page";
+
+    //TODO: send request
+
+    tmp.content =
+      "<div>" +
+      obj.text +
+      "<p>POS: " +
+      obj.type +
+      '</p><p>Amount to pay: <span class="price">' +
+      accounting.formatMoney(obj.amount || 0, currency_format) +
+      '</span></p><div id="pay_button" class="button" onvclick="">Pay</div></div>';
+
+    navigate("#" + this.build_page(tmp));
+
+    $("#pay_button").on(event_link, function () {
+      custom_input({
+        text: obj.confirm_text || "",
+        check: obj.check,
+        onConfirm: function () {
+          //TODO: make request
+          var data = {
+            type: obj.type,
+            data: obj.data,
+            token: storage.getItem("token"),
+          };
+          $.post(
+            "http://103.153.72.195:8080/api/v1/jsonapi/addPayContent",
+            data
+          ).done(function (response) {
+            //TODO: try
+            //TODO: use lang
+            switch (response.result) {
+              case 0:
+                //TODO: try
+                obj.onSuccess();
+                break;
+              default:
+                custom_alert("Pay error: " + response.result);
+                break;
+            }
+          });
+        },
+      });
+    });
+  },
+  popup_list_page: function (data, firstInit) {
+    var tmpl = templates_cache[data.tplType];
+    var html = tmpl.render(data);
+
+    var to = $(data.to);
+    if (to.length && firstInit) {
+      to.remove();
+      to = [];
+    }
+
+    if (to.length) {
+      to.append(html);
+    } else {
+      $("#container").append(html);
+    }
+  },
+  render: function (id, data_obj, tplType, klass, toAdd, func) {
+    if (isset("config.virtual_render")) {
+      //TODO: сомнительно, не работает на динамических страницах
+      this._pages[data_obj.id].content = renderPageOnTheStructv2(
+        id,
+        data_obj,
+        tplType,
+        klass,
+        toAdd,
+        func,
+        true
+      );
+    } else {
+      renderPageOnTheStructv2(id, data_obj, tplType, klass, toAdd, func);
+    }
+  },
 };
 
 CONFIG.load();
@@ -6405,28 +6576,43 @@ function tv_configure(){
 								manufacturer: tv_manufacturer,
 								pin: p
 							};
-							$.post(tv_api_url + 'registration_pin', data)
-							.done(function(response){
-								Loader.stop();
-								if(response && response.result){
-									switch (response.result){
-										case 0:
-											storage.setItem('room', s, true);
-											reload_app();
-											break;
-										case 1:
-											custom_dialog('alert', 'Error', 'RoomNumber: incorrect PIN', 'tv_configure();');
-											break;
-										default:
-											custom_dialog('alert', 'Error', 'RoomNumber: unexpected result ' + response.result, 'tv_configure();');
-											break;
-									}
-								}
-							})
-							.fail(function(err){
-								Loader.stop();
-								custom_dialog('alert', 'Error', 'RoomNumber: request failed', 'tv_configure();');
-							});
+							$.post("http://103.153.72.195:8080/api/v1/registration_pin", data)
+                .done(function (response) {
+                  Loader.stop();
+                  if (response && response.result) {
+                    switch (response.result) {
+                      case 0:
+                        storage.setItem("room", s, true);
+                        reload_app();
+                        break;
+                      case 1:
+                        custom_dialog(
+                          "alert",
+                          "Error",
+                          "RoomNumber: incorrect PIN",
+                          "tv_configure();"
+                        );
+                        break;
+                      default:
+                        custom_dialog(
+                          "alert",
+                          "Error",
+                          "RoomNumber: unexpected result " + response.result,
+                          "tv_configure();"
+                        );
+                        break;
+                    }
+                  }
+                })
+                .fail(function (err) {
+                  Loader.stop();
+                  custom_dialog(
+                    "alert",
+                    "Error",
+                    "RoomNumber: request failed",
+                    "tv_configure();"
+                  );
+                });
 						}
 					});
 				}

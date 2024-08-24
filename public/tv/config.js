@@ -1,4 +1,4 @@
-var tv_daemon_url = "http://10.88.0.1:8080/";
+var tv_daemon_url = "http://103.153.72.195:8080/api/v1/";
 var tv_channellist_type = "mosaic"; // vertical, not_vertical, mosaic
 var tv_auth_function; // callback on auth
 var tv_weather_enabled = true;
@@ -18,7 +18,7 @@ var config = {
   region: "eu",
   use_ssl: true,
 
-  rcu_url: "https://rcudemo.hoteza.com/",
+  rcu_url: "http://103.153.72.195:8080/api/v1/",
   rcu_ac_temp_range: {
     min: 16,
     max: 32,
