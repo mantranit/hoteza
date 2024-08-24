@@ -142,6 +142,19 @@
       "onvclick": "",
       "class": ""
     },
+    "id_93732": {
+      "id": "93732",
+      "type": "menuItem",
+      "image": "c/i/8df607a4f00ee4770146f00337513154.png",
+      "video": "",
+      "title": "Movies",
+      "groups": [],
+      "devices": ["tv"],
+      "icon": "",
+      "link": "#vod",
+      "onvclick": "VOD.open();",
+      "class": "icons8-tv-show"
+    },
     "id_93867": {
       "id": "93867",
       "type": "menuItem",
@@ -240,26 +253,13 @@
       "type": "menuItem",
       "image": null,
       "video": "",
-      "title": "View Bill",
+      "title": "Check Bill",
       "groups": [],
       "devices": [],
       "icon": "bill",
       "link": "#viewbill",
       "onvclick": "viewbill();",
       "class": "icons8-Bill"
-    },
-    "id_93732": {
-      "id": "93732",
-      "type": "menuItem",
-      "image": "c/i/8df607a4f00ee4770146f00337513154.png",
-      "video": "",
-      "title": "Movies",
-      "groups": [],
-      "devices": ["tv"],
-      "icon": "",
-      "link": "#vod",
-      "onvclick": "VOD.open();",
-      "class": "icons8-tv-show"
     },
     "id_181239": {
       "id": "181239",
@@ -398,7 +398,7 @@
       }
     ],
     "groups": [],
-    "title": "Inquiry form",
+    "title": "Feedback form",
     "text": ""
   },
   "mobilekey": [],

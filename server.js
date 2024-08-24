@@ -18,7 +18,7 @@ app.get("/api/v1/datetime", function (req, res) {
     tz: "UTC",
     datetime: now.format(),
     time: Math.round(new Date(now.format()).getTime() / 1000),
-    offset: 7,
+    offset: now.utcOffset() * 60,
   });
 });
 

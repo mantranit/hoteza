@@ -240,7 +240,7 @@
       "type": "menuItem",
       "image": null,
       "video": "",
-      "title": "View Bill",
+      "title": "Check Bill",
       "groups": [],
       "devices": [],
       "icon": "bill",
@@ -411,7 +411,7 @@
       }
     ],
     "groups": [],
-    "title": "Inquiry form",
+    "title": "Feedback form",
     "text": ""
   },
   "mobilekey": [],
