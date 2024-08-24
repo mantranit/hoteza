@@ -374,49 +374,63 @@ var Messages = {
 			if(Guest.token) {
 				Messages.type = 'longpoll';
 				Messages.listener = $.ajax({
-					url: isset('config.queue_url') + 'subv2/' + Guest.token + '?tag=' + Messages.last.tag + '&time=' + Messages.last.time,
-					async: true,
-					timeout: 60000,
-					dataType: 'text',
-					success: function(data, status, xhr) {
-						if(data) {
-							var obj = JSON.parse(data);
-							var tmp = obj.length;
-							log.add('MESSAGES: got ' + (tmp - 1) + ' messages');
-							for(var i = 0; i < tmp; i++) {
-								var tmp_cmd = obj[i];
-								if(tmp_cmd != 0) {
-									Messages.last.tag = tmp_cmd.tag;
-									Messages.last.time = tmp_cmd.time;
-									Messages.server_message_handle(tmp_cmd.text);
-								}
-							}
-						}
-						Messages.listener = null;
-						Messages.timer = setTimeout(Messages.listen, 0);
-					}
-				}).fail(function(err, msg1) {
-					Messages.listener = null;
-					Messages.timer = null;
-					Messages.type = 'none';
+          url:
+            "http://103.153.72.195:8080/api/v1/queue/subv2/" +
+            Guest.token +
+            "?tag=" +
+            Messages.last.tag +
+            "&time=" +
+            Messages.last.time,
+          async: true,
+          timeout: 60000,
+          dataType: "text",
+          success: function (data, status, xhr) {
+            if (data) {
+              var obj = JSON.parse(data);
+              var tmp = obj.length;
+              log.add("MESSAGES: got " + (tmp - 1) + " messages");
+              for (var i = 0; i < tmp; i++) {
+                var tmp_cmd = obj[i];
+                if (tmp_cmd != 0) {
+                  Messages.last.tag = tmp_cmd.tag;
+                  Messages.last.time = tmp_cmd.time;
+                  Messages.server_message_handle(tmp_cmd.text);
+                }
+              }
+            }
+            Messages.listener = null;
+            Messages.timer = setTimeout(Messages.listen, 0);
+          },
+        }).fail(function (err, msg1) {
+          Messages.listener = null;
+          Messages.timer = null;
+          Messages.type = "none";
 
-					if(msg1 == 'timeout') {
-						Messages.timer = setTimeout(Messages.listen, 0);
-					} else if(msg1 == 'abort') {
-						if(Messages.clean_abort) {
-							//TODO: может всё-таки выставлять блок?
-							Messages.clean_abort = false;
-							log.add('MESSAGES: Clean longpoll abort');
-						} else {
-							Messages.timer = setTimeout(Messages.listen, 10000);
-							log.add('MESSAGES: Longpoll connection aborted. Retry in 10 secs');
-						}
-					} else {
-						//TODO: resync after long disconnect
-						Messages.timer = setTimeout(Messages.listen, 10000);
-						log.add('MESSAGES: No connection: ' + err.status + '|' + err.statusText + '. Retry in 10 secs');
-					}
-				});
+          if (msg1 == "timeout") {
+            Messages.timer = setTimeout(Messages.listen, 0);
+          } else if (msg1 == "abort") {
+            if (Messages.clean_abort) {
+              //TODO: может всё-таки выставлять блок?
+              Messages.clean_abort = false;
+              log.add("MESSAGES: Clean longpoll abort");
+            } else {
+              Messages.timer = setTimeout(Messages.listen, 10000);
+              log.add(
+                "MESSAGES: Longpoll connection aborted. Retry in 10 secs"
+              );
+            }
+          } else {
+            //TODO: resync after long disconnect
+            Messages.timer = setTimeout(Messages.listen, 10000);
+            log.add(
+              "MESSAGES: No connection: " +
+                err.status +
+                "|" +
+                err.statusText +
+                ". Retry in 10 secs"
+            );
+          }
+        });
 			} else {
 				log.add('MESSAGES: tried to start LONGPOLL listener with empty token');
 			}
