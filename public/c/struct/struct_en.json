@@ -135,7 +135,7 @@
       "image": "c/i/d88efa75b91a47ea601ed0ef72fc271b.png",
       "video": "https://aae0-58-187-184-107.ngrok-free.app/video/HITEC_Scandic_Video_No_Sound.mp4",
       "sound": false,
-      "title": "Resort Information",
+      "title": "Hotel Information",
       "groups": [],
       "devices": [],
       "icon": "about",
@@ -509,8 +509,8 @@
     "id_93844": {
       "id": "93844",
       "type": "page",
-      "title": "About Resort",
-      "content": "Resort is located right in the centre of the capital city, in a modern district of business, commerce and entertainment. <br /><br />The hotel stands next to the river, near the Old Town with its major sites of attraction: the Cathedral, Palace, Castle, as well as streets so popular among the city guests and local inhabitants.<br /><br />",
+      "title": "About Hotel",
+      "content": "Hotel is located right in the centre of the capital city, in a modern district of business, commerce and entertainment. <br /><br />The hotel stands next to the river, near the Old Town with its major sites of attraction: the Cathedral, Palace, Castle, as well as streets so popular among the city guests and local inhabitants.<br /><br />",
       "serviceId": null,
       "slotId": null,
       "image": "c/i/b16c6a2ea1acfc2e5effbcb28f9c9f84.jpg",
@@ -1004,12 +1004,12 @@
     "id_93600": {
       "id": "93600",
       "type": "list",
-      "title": "Resort Information",
+      "title": "Hotel Information",
       "listItems": {
         "id_93844": {
           "id": "93844",
           "type": "listItem",
-          "title": "About Resort",
+          "title": "About Hotel",
           "image": "c/i/d8a3cd1fef0322ddc6e516d1dc199b8c.jpg",
           "link": "",
           "onvclick": ""
@@ -1017,7 +1017,7 @@
         "id_93601": {
           "id": "93601",
           "type": "listItem",
-          "title": "Resort Rooms",
+          "title": "Hotel Rooms",
           "image": "c/i/a6d65a074d021ec85238c57ae3438d94.jpg",
           "link": "",
           "onvclick": ""
@@ -1033,7 +1033,7 @@
         "id_93602": {
           "id": "93602",
           "type": "listItem",
-          "title": "Resort Services",
+          "title": "Hotel Services",
           "image": "c/i/7fef70f367e794b9dbb048c0c245575f.jpg",
           "link": "",
           "onvclick": ""
@@ -1325,7 +1325,7 @@
     "id_93601": {
       "id": "93601",
       "type": "list",
-      "title": "Resort Rooms",
+      "title": "Hotel Rooms",
       "listItems": {
         "id_93845": {
           "id": "93845",
@@ -1405,7 +1405,7 @@
     "id_93602": {
       "id": "93602",
       "type": "list",
-      "title": "Resort Services",
+      "title": "Hotel Services",
       "listItems": {
         "id_93855": {
           "id": "93855",

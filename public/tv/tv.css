@@ -630,7 +630,7 @@ ul {
   height: 132px;
   background: url("../images/logo_white.png") left center no-repeat;
   display: none;
-  background-size: 50%;
+  background-size: 64%;
 }
 
 .fullscreen #tv_fullscreen_logo {
@@ -1001,7 +1001,7 @@ ul {
 
 .tv.metro_menu #tv_fullscreen_logo {
   display: block;
-  height: 116px;
+  height: 82px;
 }
 .tv_mosaic_fullscreen #tv_fullscreen_logo {
   height: 80px;

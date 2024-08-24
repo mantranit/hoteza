@@ -270,7 +270,7 @@ function map_show_hotel() {
           icon: "i/map_hotel.png",
           position: tmp_pos,
           map: guide_map,
-          title: "Resort position",
+          title: "Hotel position",
         });
         google.maps.event.addListener(map_hotel, "click", function () {
           if (infowindow) {
