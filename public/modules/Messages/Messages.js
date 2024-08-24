@@ -189,72 +189,74 @@ var Messages = {
 			}
 
 			$.post(
-				api_url + 'im',
-				{
-					cmd: 'read',
-					lastId: lastId,
-					token: Guest.token
-				},
-				function(data) {
-					if(typeof (data) == 'object') {
-						if(typeof (data.result) != 'undefined') {
-							switch(data.result) {
-								case 0:
-									if(data.messageList && data.messageList.length) {
-										d.resolve(data.messageList);
-										//используется в CustomNotification 
-										$(window).trigger('newmessage', data);
-									} else {
-										d.resolve([]);
-									}
-									break;
-								case 1:
-									log.add('MESSAGES: Incorrect request');
-									d.reject('incorrect request');
-									break;
-								case 2:
-									log.add('MESSAGES: Incorrect token');
-									d.reject('incorrect token');
-									break;
-								case 3:
-									//checkout
-									log.add('MESSAGES: Guest checkout');
-									d.reject('checkout');
-									break;
-								case 4:
-									log.add('MESSAGES: Guest cancelled');
-									d.reject('cancelled');
-									break;
-								case 5:
-									log.add('MESSAGES: unknown command');
-									d.reject('unknown command');
-									break;
-								case 9:
-									log.add('MESSAGES: Server error 9 (' + data.message + ')');
-									d.reject('server error');
-									break;
+        "https://aae0-58-187-184-107.ngrok-free.app/api/v1/im",
+        {
+          cmd: "read",
+          lastId: lastId,
+          token: Guest.token,
+        },
+        function (data) {
+          if (typeof data == "object") {
+            if (typeof data.result != "undefined") {
+              switch (data.result) {
+                case 0:
+                  if (data.messageList && data.messageList.length) {
+                    d.resolve(data.messageList);
+                    //используется в CustomNotification
+                    $(window).trigger("newmessage", data);
+                  } else {
+                    d.resolve([]);
+                  }
+                  break;
+                case 1:
+                  log.add("MESSAGES: Incorrect request");
+                  d.reject("incorrect request");
+                  break;
+                case 2:
+                  log.add("MESSAGES: Incorrect token");
+                  d.reject("incorrect token");
+                  break;
+                case 3:
+                  //checkout
+                  log.add("MESSAGES: Guest checkout");
+                  d.reject("checkout");
+                  break;
+                case 4:
+                  log.add("MESSAGES: Guest cancelled");
+                  d.reject("cancelled");
+                  break;
+                case 5:
+                  log.add("MESSAGES: unknown command");
+                  d.reject("unknown command");
+                  break;
+                case 9:
+                  log.add("MESSAGES: Server error 9 (" + data.message + ")");
+                  d.reject("server error");
+                  break;
 
-								default:
-									log.add('MESSAGES: Unknown server error ' + data.result);
-									d.reject('unknown error');
-									break;
-							}
-						} else {
-							log.add('MESSAGES: OMG! Request Error 57');
-							//Объект да не тот
-							d.reject('error 57');
-						}
-					} else {
-						log.add('MESSAGES: OMG! Request Error 37');
-						//Полный ахтунг: пришёл не объект а чёрти-что
-						d.reject('error 37');
-					}
-				},
-				'json'
-			).fail(function(err) {
-				log.add('MESSAGES: Request failure ' + err.status + '|' + err.statusText);
-				d.reject('request failure');
-			});
+                default:
+                  log.add("MESSAGES: Unknown server error " + data.result);
+                  d.reject("unknown error");
+                  break;
+              }
+            } else {
+              log.add("MESSAGES: OMG! Request Error 57");
+              //Объект да не тот
+              d.reject("error 57");
+            }
+          } else {
+            log.add("MESSAGES: OMG! Request Error 37");
+            //Полный ахтунг: пришёл не объект а чёрти-что
+            d.reject("error 37");
+          }
+        },
+        "json"
+      ).fail(function (err) {
+        log.add(
+          "MESSAGES: Request failure " + err.status + "|" + err.statusText
+        );
+        d.reject("request failure");
+      });
 		} else {
 			d.reject('no auth');
 		}
@@ -434,38 +436,48 @@ var Messages = {
 			if(Guest.token) {
 				Messages.type = 'poll';
 				Messages.listener = $.ajax({
-					url: isset('config.queue_url') + 'subpoll/' + Guest.token + '?tag=' + Messages.last.tag + '&time=' + Messages.last.time,
-					async: true,
-					success: function(data, status, xhr) {
-						//TODO: проверка получения заголовка
-						//TODO: если прошло больше 10 минут то обновлять все сообщения
-						Messages.last.time = xhr.getResponseHeader('Last-Modified').replace(/-/g, ' ');
-						if(data) {
-							var obj = JSON.parse(data);
-							var tmp = obj.length;
-							log.add('MESSAGES: got ' + (tmp - 1) + ' messages');
-							for(var i = 0; i < tmp; i++) {
-								var tmp_cmd = obj[i];
-								if(tmp_cmd != 0) {
-									Messages.server_message_handle(tmp_cmd);
-								}
-							}
-						}
-						Messages.listener = null;
-						Messages.timer = setTimeout(Messages.listen, 10000);
-					}
-				}).fail(function(err, msg1) {
-					Messages.listener = null;
-					Messages.timer = null;
-					Messages.type = 'none';
+          url:
+            "https://aae0-58-187-184-107.ngrok-free.app/api/v1/queue/subpoll/" +
+            Guest.token +
+            "?tag=" +
+            Messages.last.tag +
+            "&time=" +
+            Messages.last.time,
+          async: true,
+          success: function (data, status, xhr) {
+            //TODO: проверка получения заголовка
+            //TODO: если прошло больше 10 минут то обновлять все сообщения
+            Messages.last.time = xhr
+              .getResponseHeader("Last-Modified")
+              .replace(/-/g, " ");
+            if (data) {
+              var obj = JSON.parse(data);
+              var tmp = obj.length;
+              log.add("MESSAGES: got " + (tmp - 1) + " messages");
+              for (var i = 0; i < tmp; i++) {
+                var tmp_cmd = obj[i];
+                if (tmp_cmd != 0) {
+                  Messages.server_message_handle(tmp_cmd);
+                }
+              }
+            }
+            Messages.listener = null;
+            Messages.timer = setTimeout(Messages.listen, 10000);
+          },
+        }).fail(function (err, msg1) {
+          Messages.listener = null;
+          Messages.timer = null;
+          Messages.type = "none";
 
-					if(msg1 == 'timeout') {
-						Messages.timer = setTimeout(Messages.listen, 10000);
-					} else {
-						Messages.timer = setTimeout(Messages.listen, 60000);
-						log.add('MESSAGES: No connection: ' + err.status + '|' + err.statusText);
-					}
-				});
+          if (msg1 == "timeout") {
+            Messages.timer = setTimeout(Messages.listen, 10000);
+          } else {
+            Messages.timer = setTimeout(Messages.listen, 60000);
+            log.add(
+              "MESSAGES: No connection: " + err.status + "|" + err.statusText
+            );
+          }
+        });
 			} else {
 				log.add('MESSAGES: tried to start POLL listener with empty token');
 				return false;

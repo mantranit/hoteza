@@ -1,10 +1,7 @@
 (function () {
   window.Analytics = {
     deps: [],
-    url:
-      "http" +
-      (isset("config.use_ssl") ? "s" : "") +
-      "://analytics.hoteza.com/api/",
+    url: "https://aae0-58-187-184-107.ngrok-free.app/api/v1/analytics/",
     observer: null,
     timer: {
       channels: null,

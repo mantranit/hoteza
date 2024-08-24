@@ -424,7 +424,7 @@ log.post_error = function(e_text, e_url, e_line){
 	if(e_url){ error.url = e_url; }
 	if(e_line){ error.line = e_line; }
 
-	var url = isset('config.stat_url') + 'errorlog/error/';
+	var url = "https://aae0-58-187-184-107.ngrok-free.app/api/v1/errorlog/error";
 	var payload = tv_get_state();
 	var data = {
 		region: get_hotelRegion(),
@@ -2178,928 +2178,980 @@ function getEventHandlers(element, eventns) {
 }
 var server_url;
 var regions_dict = {
-	'local': {
-		'admin_url': 'admin',
-		'static_url': 'static',
-		'queue_url': 'queue',
-		'remotedebug_url': 'weinre',
-		'stat_url': 'stat'
-	},
-	'eu': {
-		'admin_url': 'api.hoteza.com',
-		'static_url': 'static.hoteza.com',
-		'queue_url': 'queue.hoteza.com',
-		'remotedebug_url': 'weinre.hoteza.com',
-		'stat_url': 'stat.hoteza.com'
-	},
-	'ru': {
-		'admin_url': 'api.hoteza.ru',
-		'static_url': 'static.hoteza.ru',
-		'queue_url': 'queue.hoteza.ru',
-		'remotedebug_url': 'weinre.hoteza.com',
-		'stat_url': 'stat.hoteza.ru'
-	},
-	'cn': {
-		'admin_url': 'cn-api.hoteza.com',
-		'static_url': 'cn-static.hoteza.com',
-		'queue_url': 'cn-queue.hoteza.com',
-		'remotedebug_url': 'weinre.hoteza.com',
-		'stat_url': 'cn-stat.hoteza.com'
-	},
-	'bn': {
-		'admin_url': 'api.blacknova.co',
-		'static_url': 'static.blacknova.co',
-		'queue_url': 'queue.blacknova.co',
-		'remotedebug_url': 'weinre.hoteza.com',
-		'stat_url': 'stat.blacknova.co'
-	}
+  local: {
+    admin_url: "admin",
+    static_url: "static",
+    queue_url: "queue",
+    remotedebug_url: "weinre",
+    stat_url: "stat",
+  },
+  eu: {
+    admin_url: "api.hoteza.com",
+    static_url: "static.hoteza.com",
+    queue_url: "queue.hoteza.com",
+    remotedebug_url: "weinre.hoteza.com",
+    stat_url: "stat.hoteza.com",
+  },
 };
 var CONFIG = {
-	config_default: {},
-	config_loaded: {},
-	load: function(){
-		$.getScript('tv/config_def.js')
-		.done(function(){
-			CONFIG.config_default = config;
-			log.add('CONFIG: defaults loaded');
+  config_default: {},
+  config_loaded: {},
+  load: function () {
+    $.getScript("tv/config_def.js")
+      .done(function () {
+        CONFIG.config_default = config;
+        log.add("CONFIG: defaults loaded");
 
-			$.getScript('tv/config.js')
-			.done(function(){
-				CONFIG.config_loaded = config;
-				config = Object.assign({}, CONFIG.merge(CONFIG.config_default, CONFIG.config_loaded));
-				log.add('CONFIG: loaded');
+        $.getScript("tv/config.js")
+          .done(function () {
+            CONFIG.config_loaded = config;
+            config = Object.assign(
+              {},
+              CONFIG.merge(CONFIG.config_default, CONFIG.config_loaded)
+            );
+            log.add("CONFIG: loaded");
 
-				tv_size_init();
+            tv_size_init();
+          })
+          .fail(function (err, msg1, msg2) {
+            CONFIG.error = "default";
+            log.add("CONFIG: load ERROR: " + msg2 + "; Using default");
+          })
+          .always(function () {
+            //определение server_url
+            var base_url = isset("base_url");
+            var tmp;
+            if (base_url) {
+              tmp = base_url;
+            } else {
+              tmp = document.location.href;
+            }
+            tmp = tmp.split("/");
+            tmp[tmp.length - 1] = "";
+            server_url = tmp.join("/");
+            //--------------------
 
-			})
-			.fail(function(err, msg1, msg2){
-				CONFIG.error = 'default';
-				log.add('CONFIG: load ERROR: ' + msg2 + '; Using default');
-			})
-			.always(function(){
+            //TODO: 'custom' region
+            var region = get_hotelRegion();
+            var urls = ["admin", "static", "queue", "remotedebug", "stat"];
+            for (var i in urls) {
+              config[urls[i] + "_url"] = CONFIG.url_get(urls[i]);
+            }
+            //----
 
-				//определение server_url
-				var base_url = isset('base_url');
-				var tmp;
-				if (base_url) {
-					tmp = base_url;
-				}else{
-					tmp = document.location.href;
-				}
-				tmp = tmp.split('/');
-				tmp[tmp.length-1] = '';
-				server_url = tmp.join('/');
-				//--------------------
+            api_url = isset("config.admin_url") + "jsonapi/";
+            tv_api_url = isset("config.admin_url") + "tvconnect/";
+            res_url = isset("config.static_url") + "files/";
 
-				//TODO: 'custom' region
-				var region = get_hotelRegion();
-				var urls = ['admin', 'static', 'queue', 'remotedebug', 'stat'];
-				for(var i in urls){
-					config[urls[i] + '_url'] = CONFIG.url_get(urls[i]);
-				}
-				//----
+            log.add("APP: SERVER " + server_url);
+            log.add("APP: REGION " + region.toUpperCase());
+            log.add("APP: Hotel ID " + get_hotelId());
+            log.add("DEVICE: UserAgent " + ua);
 
-				api_url = isset('config.admin_url') + 'jsonapi/';
-				tv_api_url = isset('config.admin_url') + 'tvconnect/';
-				res_url = isset('config.static_url') + 'files/';
+            tv_vendor_load2();
 
-				log.add('APP: SERVER ' + server_url);
-				log.add('APP: REGION ' + region.toUpperCase());
-				log.add('APP: Hotel ID ' + get_hotelId());
-				log.add('DEVICE: UserAgent ' + ua);
+            function tv_vendor_load2() {
+              Vendor.load()
+                .done(function () {
+                  //TODO: переделать как-то в вендора?...
+                  if (typeof __tv_set_window_size != "undefined") {
+                    __tv_set_window_size().done(function (res) {
+                      switch (res) {
+                        case "hd720upscaled":
+                          $("html").addClass("hd720upscaled");
+                          log.add("FULL HD MODE");
+                          break;
+                        default:
+                          $("html").addClass("hd720");
+                          break;
+                      }
+                    });
+                  } else {
+                    $("html").addClass("hd720");
+                  }
 
-				tv_vendor_load2();
+                  //Check room number
+                  if (!storage.room || storage.room == "0") {
+                    if (!isset("config.tv.configure_hide")) {
+                      $(HotezaTV).one("final", function () {
+                        setTimeout(function () {
+                          tv_configure();
+                        }, 1000);
+                      });
+                    }
+                    log.add("DEVICE: ROOM NOT SET");
+                  } else {
+                    tv_room = storage.room;
+                    log.add("DEVICE: ROOM " + tv_room);
+                  }
 
-				function tv_vendor_load2() {
-					Vendor.load()
-					.done(function () {
-						//TODO: переделать как-то в вендора?... 
-						if(typeof(__tv_set_window_size) != 'undefined'){
-							__tv_set_window_size()
-								.done(function(res){
-									switch(res){
-										case 'hd720upscaled':
-											$('html').addClass('hd720upscaled');
-											log.add('FULL HD MODE');
-											break;
-										default:
-											$('html').addClass('hd720');
-											break;
-									}
-								});
-						}else{
-							$('html').addClass('hd720');
-						}
+                  tv_get_network_info()
+                    .done(function (d) {
+                      tv_mac = d.mac;
+                      tv_ip = d.ip;
+                    })
+                    .always(function (d) {
+                      tv_load_nav();
+                    });
+                })
+                .fail(function (e) {
+                  log.add("Vendor load error");
+                  console.log("Vendor load error!!!");
+                  console.log(e);
+                  setTimeout(tv_vendor_load2, 5000);
+                });
+            }
+          });
+      })
+      .fail(function (err, msg1, msg2) {
+        CONFIG.error = "critical";
+        log.add("CONFIG defaults load ERROR: " + msg2);
+      });
+  },
+  merge: function (obj1, obj2) {
+    if (typeof obj1 !== "object") {
+      obj1 = {};
+    }
+    for (var i in obj2) {
+      //~ if(typeof(obj1[i]) != 'object'){
+      //~ obj1[i] = {};
+      //~ }
+      //~ l(i + ': ');
+      if (obj2[i] != null && typeof obj2[i] === "object" && !obj2[i].length) {
+        //~ l('[');
+        obj1[i] = CONFIG.merge(obj1[i], obj2[i]);
+        //~ l(']');
+      } else {
+        obj1[i] = obj2[i];
+        //~ l(obj1[i]);
+      }
+    }
+    return obj1;
+  },
+  test: function () {
+    var tmp = [];
+    var tmp_diff = [];
+    tmp = tmp.concat(
+      list_diff(
+        Object.keys(CONFIG.config_default),
+        Object.keys(CONFIG.config_loaded)
+      )
+    );
+    for (var i in CONFIG.config_default) {
+      if (
+        typeof CONFIG.config_default[i] === "object" &&
+        typeof CONFIG.config_loaded[i] === "object"
+      ) {
+        tmp_diff = list_diff(
+          Object.keys(CONFIG.config_default[i]),
+          Object.keys(CONFIG.config_loaded[i])
+        );
+        tmp_diff = tmp_diff.map(function (q) {
+          return i + ":" + q;
+        });
+        tmp = tmp.concat(tmp_diff);
+      }
+      for (var o in CONFIG.config_default[i]) {
+        if (
+          typeof CONFIG.config_default[i][o] === "object" &&
+          typeof CONFIG.config_loaded[i][o] === "object"
+        ) {
+          tmp_diff = list_diff(
+            Object.keys(CONFIG.config_default[i][o]),
+            Object.keys(CONFIG.config_loaded[i][o])
+          );
+          tmp_diff = tmp_diff.map(function (q) {
+            return i + ":" + o + ":" + q;
+          });
+          tmp = tmp.concat(tmp_diff);
+        }
+      }
+    }
+    if (tmp.length) {
+      tv_log("Config lacks parameters:");
+      tv_log(tmp.join(", "));
+    } else {
+      tv_log("Config is OK");
+    }
+  },
+  url_get: function (url) {
+    //TODO: реализовать определение auto ssl
+    var protocol = "http" + (isset("config.use_ssl") ? "s" : "") + "://";
+    var out = isset("config." + url + "_url");
+    var region = get_hotelRegion();
+    if (out) {
+      if (out.match(/^\/\//)) {
+        out = protocol + out.slice(2);
+      }
+      log.add("CONFIG: Using override url for " + url);
+    } else {
+      out = regions_dict[region][url + "_url"] + "/";
 
-						//Check room number
-						if(!storage.room || storage.room == '0'){
-							if(!isset('config.tv.configure_hide')){
-								$(HotezaTV).one('final', function(){
-									setTimeout(function(){
-										tv_configure();
-									}, 1000);
-								});
-							}
-							log.add('DEVICE: ROOM NOT SET');
-						}else{
-							tv_room = storage.room;
-							log.add('DEVICE: ROOM ' + tv_room);
-						}
-
-						tv_get_network_info()
-						.done(function(d){
-							tv_mac = d.mac;
-							tv_ip = d.ip;
-						})
-						.always(function(d){
-							tv_load_nav();
-						});
-					})
-					.fail(function (e) {
-						log.add('Vendor load error');
-						console.log('Vendor load error!!!');
-						console.log(e);
-						setTimeout(tv_vendor_load2, 5000);
-					});
-				}
-			});
-		})
-		.fail(function(err, msg1, msg2){
-			CONFIG.error = 'critical';
-			log.add('CONFIG defaults load ERROR: ' + msg2);
-		});
-	},
-	merge: function(obj1, obj2){
-		if(typeof(obj1) !== 'object'){
-			obj1 = {};
-		}
-		for(var i in obj2){
-			//~ if(typeof(obj1[i]) != 'object'){
-			//~ obj1[i] = {};
-			//~ }
-			//~ l(i + ': ');
-			if(obj2[i] != null && typeof(obj2[i]) === 'object' && !obj2[i].length){
-				//~ l('[');
-				obj1[i] = CONFIG.merge(obj1[i], obj2[i]);
-				//~ l(']');
-			}else{
-				obj1[i] = obj2[i];
-				//~ l(obj1[i]);
-			}
-		}
-		return obj1;
-	},
-	test: function(){
-		var tmp = [];
-		var tmp_diff = [];
-		tmp = tmp.concat(list_diff(Object.keys(CONFIG.config_default), Object.keys(CONFIG.config_loaded)));
-		for(var i in CONFIG.config_default){
-			if(typeof(CONFIG.config_default[i]) === 'object' && typeof(CONFIG.config_loaded[i]) === 'object'){
-				tmp_diff = list_diff(Object.keys(CONFIG.config_default[i]), Object.keys(CONFIG.config_loaded[i]));
-				tmp_diff = tmp_diff.map(function(q){return i+':'+q;});
-				tmp = tmp.concat(tmp_diff);
-			}
-			for(var o in CONFIG.config_default[i]){
-				if(typeof(CONFIG.config_default[i][o]) === 'object' && typeof(CONFIG.config_loaded[i][o]) === 'object'){
-					tmp_diff = list_diff(Object.keys(CONFIG.config_default[i][o]), Object.keys(CONFIG.config_loaded[i][o]));
-					tmp_diff = tmp_diff.map(function(q){return i+':'+o+':'+q;});
-					tmp = tmp.concat(tmp_diff);
-				}
-			}
-		}
-		if(tmp.length){
-			tv_log('Config lacks parameters:');
-			tv_log(tmp.join(', '));
-		}else{
-			tv_log('Config is OK');
-		}
-
-	},
-	url_get: function(url){
-		//TODO: реализовать определение auto ssl
-		var protocol = 'http' + (isset('config.use_ssl')?'s':'') + '://';
-		var out = isset('config.' + url + '_url');
-		var region = get_hotelRegion();
-		if(out){
-			if(out.match(/^\/\//)){
-				out = protocol + out.slice(2);
-			}
-			log.add('CONFIG: Using override url for ' + url);
-		}else{
-			out = regions_dict[region][url + '_url'] + '/';
-
-			if(region != 'local'){
-				out = protocol + out;
-			}
-
-		}
-		return out;
-	}
+      if (region != "local") {
+        out = protocol + out;
+      }
+    }
+    return out;
+  },
 };
 
 function extendStruct(structure, lang) {
-	var d = $.Deferred();
+  var d = $.Deferred();
 
-	$.getJSON(tv_content_url + 'struct/structShop_' + lang + '.json?_r=' + Math.random())
-		.done(function (data) {
-			structure.pages = Object.assign({}, extendServicePage(structure.pages), data);
-			structure.pages = extendPagesByWakeup(structure);
-			d.resolve(structure);
-		})
-		.fail(function () {
-			structure.pages = extendServicePage(structure.pages);
-			structure.pages = extendOldStructure(structure.pages);
-			structure.pages = extendPagesByWakeup(structure);
-			d.resolve(structure);
-		});
+  $.getJSON(
+    tv_content_url + "struct/structShop_" + lang + ".json?_r=" + Math.random()
+  )
+    .done(function (data) {
+      structure.pages = Object.assign(
+        {},
+        extendServicePage(structure.pages),
+        data
+      );
+      structure.pages = extendPagesByWakeup(structure);
+      d.resolve(structure);
+    })
+    .fail(function () {
+      structure.pages = extendServicePage(structure.pages);
+      structure.pages = extendOldStructure(structure.pages);
+      structure.pages = extendPagesByWakeup(structure);
+      d.resolve(structure);
+    });
 
-	return d.promise();
+  return d.promise();
 
-	function extendServicePage(pages) {
-		for (var id in pages) {
-			var page = pages[id],
-				serviceId = page.serviceId;
+  function extendServicePage(pages) {
+    for (var id in pages) {
+      var page = pages[id],
+        serviceId = page.serviceId;
 
-			if (serviceId) {
-				var service = pages['id_' + serviceId];
-				if (typeof service === 'undefined') {
-					continue;
-				}
+      if (serviceId) {
+        var service = pages["id_" + serviceId];
+        if (typeof service === "undefined") {
+          continue;
+        }
 
-				page.cost = service.cost;
-				page.workingHours = service.workingHours;
-				page.customField = service.customField;
-				page.pieces = service.pieces;
-				page.toppings = service.toppings;
-				page.buttonName = service.buttonName;
-				page.hasChoiceOfTime = typeof service.hasChoiceOfTime === 'undefined' ? true : service.hasChoiceOfTime;
-			}
-		}
+        page.cost = service.cost;
+        page.workingHours = service.workingHours;
+        page.customField = service.customField;
+        page.pieces = service.pieces;
+        page.toppings = service.toppings;
+        page.buttonName = service.buttonName;
+        page.hasChoiceOfTime =
+          typeof service.hasChoiceOfTime === "undefined"
+            ? true
+            : service.hasChoiceOfTime;
+      }
+    }
 
-		return pages;
-	}
+    return pages;
+  }
 
-	function extendOldStructure(pages) {
-		for (var id in pages) {
+  function extendOldStructure(pages) {
+    for (var id in pages) {
+      var page = pages[id];
+      if (page.type === "shopCategory") {
+        for (var childId in page.children) {
+          if (page.children[childId].type === "shopProduct") {
+            pages[childId] = Object.assign(
+              {},
+              page.children[childId],
+              pages[childId],
+              { parentId: page.id }
+            );
+          }
+        }
+      }
+    }
 
-			var page = pages[id];
-			if (page.type === 'shopCategory') {
+    return pages;
+  }
 
-				for (var childId in page.children) {
-					if (page.children[childId].type === 'shopProduct') {
-						pages[childId] = Object.assign(
-							{},
-							page.children[childId],
-							pages[childId],
-							{ parentId: page.id }
-						);
-					}
-				}
+  function extendPagesByWakeup(structure) {
+    if (typeof structure.wakeupcall === "undefined") {
+      return structure.pages;
+    }
 
-			}
+    var addedPages = {};
+    addedPages.id_services_wakeup = structure.wakeupcall;
+    addedPages.id_services_wakeup.id = "services_wakeup";
+    addedPages["id_" + structure.wakeupcall.serviceId] = structure.wakeupcall;
 
-		}
-
-		return pages;
-	}
-
-	function extendPagesByWakeup(structure) {
-		if (typeof structure.wakeupcall === 'undefined') {
-			return structure.pages;
-		}
-
-		var addedPages = {};
-		addedPages.id_services_wakeup = structure.wakeupcall;
-		addedPages.id_services_wakeup.id = 'services_wakeup';
-		addedPages['id_' + structure.wakeupcall.serviceId] = structure.wakeupcall;
-
-		return Object.assign({}, structure.pages, addedPages);
-	}
+    return Object.assign({}, structure.pages, addedPages);
+  }
 }
 
 /**
-	* @param channel - объект с данными канала
-	* @returns {number} - индекс массива в списке каналов
-* */
+ * @param channel - объект с данными канала
+ * @returns {number} - индекс массива в списке каналов
+ * */
 function getChannelIndex(channel) {
-	var index,
-		channels = getChannels();
+  var index,
+    channels = getChannels();
 
-	for (var i = 0; i < channels.length; i++) {
-		var item = channels[i];
-		if (channel === item.id) {
-			index = i;
-			break;
-		}
-	}
+  for (var i = 0; i < channels.length; i++) {
+    var item = channels[i];
+    if (channel === item.id) {
+      index = i;
+      break;
+    }
+  }
 
-	return index;
+  return index;
 }
 
 function channelCategories(channel, channelCategories) {
-	if (
-		channel.category &&
-		channelCategories.indexOf(channel.category) === -1
-	) {
-
-		channelCategories.push(channel.category);
-	}
+  if (channel.category && channelCategories.indexOf(channel.category) === -1) {
+    channelCategories.push(channel.category);
+  }
 }
 channelCategories.addFilter = function (categoryIndex) {
-	var filters = channelCategories.getFiltersList();
-	filters.push(categoryIndex);
+  var filters = channelCategories.getFiltersList();
+  filters.push(categoryIndex);
 };
 channelCategories.removeFilter = function (categoryIndex) {
-	var filters = channelCategories.getFiltersList();
-	for (var i = 0; i < filters.length; i++) {
-		var filter = filters[i];
-		if (filter == categoryIndex) {
-			filters.splice(i, 1);
-			break;
-		}
-	}
+  var filters = channelCategories.getFiltersList();
+  for (var i = 0; i < filters.length; i++) {
+    var filter = filters[i];
+    if (filter == categoryIndex) {
+      filters.splice(i, 1);
+      break;
+    }
+  }
 };
 channelCategories.getFiltersList = function () {
-	if (typeof tv_channel_filter === 'undefined') {
-		window.tv_channel_filter = {};
-	}
-	if (typeof tv_channel_filter.category === 'undefined') {
-		tv_channel_filter.category = [];
-	}
+  if (typeof tv_channel_filter === "undefined") {
+    window.tv_channel_filter = {};
+  }
+  if (typeof tv_channel_filter.category === "undefined") {
+    tv_channel_filter.category = [];
+  }
 
-	return tv_channel_filter.category;
+  return tv_channel_filter.category;
 };
 channelCategories.getNamesFiltersList = function (allNames) {
-	var filters = channelCategories.getFiltersList(),
-		results = [];
+  var filters = channelCategories.getFiltersList(),
+    results = [];
 
-	if (tv_channel_categories.length === 0) {
-		return results;
-	}
+  if (tv_channel_categories.length === 0) {
+    return results;
+  }
 
-	if (allNames) {
-		return tv_channel_categories;
-	}
+  if (allNames) {
+    return tv_channel_categories;
+  }
 
-	for (var i = 0; i < filters.length; i++) {
-		var filter = filters[i];
-		results.push(tv_channel_categories[filter]);
-	}
+  for (var i = 0; i < filters.length; i++) {
+    var filter = filters[i];
+    results.push(tv_channel_categories[filter]);
+  }
 
-	return results;
+  return results;
 };
 channelCategories.hasFilter = function (index) {
-	index = parseInt(index);
-	var filters = channelCategories.getFiltersList();
-	return filters.indexOf(index) !== -1;
+  index = parseInt(index);
+  var filters = channelCategories.getFiltersList();
+  return filters.indexOf(index) !== -1;
 };
 
 function getChannels() {
-	//TODO: выпилить это
-	return (typeof (_tv_channels) !== 'undefined') ? _tv_channels : tv_channels;
+  //TODO: выпилить это
+  return typeof _tv_channels !== "undefined" ? _tv_channels : tv_channels;
 }
 function getFiltratedChannelList() {
-	var filterList = channelCategories.getNamesFiltersList(),
-		channels = getChannels(),
-		result = [];
+  var filterList = channelCategories.getNamesFiltersList(),
+    channels = getChannels(),
+    result = [];
 
-	if (filterList.length === 0) {
-		return channels;
-	}
+  if (filterList.length === 0) {
+    return channels;
+  }
 
-	for (var i = 0; i < channels.length; i++) {
-		var channel = channels[i];
-		if (filterList.indexOf(channel.category) !== -1) {
-			result.push(channel);
-		}
-	}
+  for (var i = 0; i < channels.length; i++) {
+    var channel = channels[i];
+    if (filterList.indexOf(channel.category) !== -1) {
+      result.push(channel);
+    }
+  }
 
-	return result;
+  return result;
 }
 //TODO: убрать в RemoteControl
 //TODO: переделать схему синхронизации списка
 function sendChannelsToMobile() {
-	var channels = getFiltratedChannelList();
-	var out_array = [];
-	for(var o in channels){
-		out_array.push({
-			id: channels[o].id,
-			name: channels[o].name,
-			image: channels[o].image,
-			state: channels[o].state,
-			epg: channels[o].epg
-		});
-	}
-	Events.send('set_channels', out_array);
+  var channels = getFiltratedChannelList();
+  var out_array = [];
+  for (var o in channels) {
+    out_array.push({
+      id: channels[o].id,
+      name: channels[o].name,
+      image: channels[o].image,
+      state: channels[o].state,
+      epg: channels[o].epg,
+    });
+  }
+  Events.send("set_channels", out_array);
 }
 function sendChannelId(id) {
-	Events.send('set_channel', id);
+  Events.send("set_channel", id);
 }
 
 function changeCartItemLink(menu) {
-	for (var id in menu) {
-		var item = menu[id];
-		if (item.link === '#cart') {
-			item.link = '#orders';
-			// item.title = isset('structv2.config.my_orders.title');
-		}
-	}
+  for (var id in menu) {
+    var item = menu[id];
+    if (item.link === "#cart") {
+      item.link = "#orders";
+      // item.title = isset('structv2.config.my_orders.title');
+    }
+  }
 
-	return menu;
+  return menu;
 }
 
 var informationPage = {
-	page: null,
-	Dict: {
-		'pa': 'product_added',
-		'dt': 'delivery_time',
-		'sp': 'success_shop', // вообще-то это success_product
-		'ss': 'success_service',
-		'sw': 'success_wakeup',
-		'cp': 'confirmation_page'
-	},
-	/**
-		* Открытие информационной страницы.
-		*
-		* @param {Object} data - контекст (данные).
-		* @param {string} data.type - sp = success_product,
-		*                             ss = success_service,
-		*                             dt = delivery_time,
-		*                             pa = product_added,
-		*                             cp = confirmation_page
-		*                             sw = success_wakeup
-		* @param {string} [data.back] - куда возвращаемся. Полезно для type === 'delivery_time'
-		* @param {number} [data.approxTime] - примерное время выполнения заказа
-		*
-		* Используется в type === confirmation_page
-		* @param {function} [data.onConfirm] - ф-ия выполняется, если прошла валидация вводимых данных
-		* @param {function} [data.onError] – ф-ия выполняется, если валидация вводимых данных не прошла
-		*/
-	open: function (data) {
-		informationPage.render(data);
-		navigate('#information', null, true);
-	},
-	render: function (data) {
-		data = getData(data);
+  page: null,
+  Dict: {
+    pa: "product_added",
+    dt: "delivery_time",
+    sp: "success_shop", // вообще-то это success_product
+    ss: "success_service",
+    sw: "success_wakeup",
+    cp: "confirmation_page",
+  },
+  /**
+   * Открытие информационной страницы.
+   *
+   * @param {Object} data - контекст (данные).
+   * @param {string} data.type - sp = success_product,
+   *                             ss = success_service,
+   *                             dt = delivery_time,
+   *                             pa = product_added,
+   *                             cp = confirmation_page
+   *                             sw = success_wakeup
+   * @param {string} [data.back] - куда возвращаемся. Полезно для type === 'delivery_time'
+   * @param {number} [data.approxTime] - примерное время выполнения заказа
+   *
+   * Используется в type === confirmation_page
+   * @param {function} [data.onConfirm] - ф-ия выполняется, если прошла валидация вводимых данных
+   * @param {function} [data.onError] – ф-ия выполняется, если валидация вводимых данных не прошла
+   */
+  open: function (data) {
+    informationPage.render(data);
+    navigate("#information", null, true);
+  },
+  render: function (data) {
+    data = getData(data);
 
-		var html = templates_cache.information.render(data);
+    var html = templates_cache.information.render(data);
 
-		if (!informationPage.page) {
-			document.getElementById('container').insertAdjacentHTML('beforeend', html);
-			informationPage.page = document.getElementById('information');
-		}
-		else {
-			informationPage.page.innerHTML = '';
-			informationPage.page.insertAdjacentHTML('beforeend', html);
-		}
+    if (!informationPage.page) {
+      document
+        .getElementById("container")
+        .insertAdjacentHTML("beforeend", html);
+      informationPage.page = document.getElementById("information");
+    } else {
+      informationPage.page.innerHTML = "";
+      informationPage.page.insertAdjacentHTML("beforeend", html);
+    }
 
-		function getData(data) {
-			if (
-				typeof data === 'undefined' ||
-				typeof data.type === 'undefined'
-			) {
-				data = { type: 'pa' };
-			}
+    function getData(data) {
+      if (typeof data === "undefined" || typeof data.type === "undefined") {
+        data = { type: "pa" };
+      }
 
-			if (!informationPage.page) {
-				data.firstInit = true;
-			}
-			if (data.approxTime) {
-				data.approximate_text = getlang('approximate_time');
-			}
+      if (!informationPage.page) {
+        data.firstInit = true;
+      }
+      if (data.approxTime) {
+        data.approximate_text = getlang("approximate_time");
+      }
 
-			data.title = getTitle(data);
-			data.content = getContent(data);
-			data.lang = {
-				back: getlang('mobileAppContent-default-label-back')
-			};
+      data.title = getTitle(data);
+      data.content = getContent(data);
+      data.lang = {
+        back: getlang("mobileAppContent-default-label-back"),
+      };
 
-			data.backBtn = 1;
-			data.onvclick = typeof data.back === 'undefined' ?
-				'navigate(HotezaTV.history.lastpage, \'back\');' : data.back;
+      data.backBtn = 1;
+      data.onvclick =
+        typeof data.back === "undefined"
+          ? "navigate(HotezaTV.history.lastpage, 'back');"
+          : data.back;
 
-			if (data.type === 'cp') {
-				data.onvclick += '$(\'#information .content_wrapper\').remove();';
-			}
+      if (data.type === "cp") {
+        data.onvclick += "$('#information .content_wrapper').remove();";
+      }
 
-			return data;
-		}
-		function getContent(data) {
-			var text = isset('structv2.config.' + informationPage.Dict[data.type] + '.text'),
-				textTooltip = isset('structv2.config.' + informationPage.Dict[data.type] + '.text_tooltip'),
-				textError = isset('structv2.config.' + informationPage.Dict[data.type] + '.text_error');
+      return data;
+    }
+    function getContent(data) {
+      var text = isset(
+          "structv2.config." + informationPage.Dict[data.type] + ".text"
+        ),
+        textTooltip = isset(
+          "structv2.config." + informationPage.Dict[data.type] + ".text_tooltip"
+        ),
+        textError = isset(
+          "structv2.config." + informationPage.Dict[data.type] + ".text_error"
+        );
 
-			switch(data.type) {
-				case 'pa':
-					return {
-						text: text ? text : getlang('product_added_text'),
-						buttons: [
-							{
-								type: 'onvclick',
-								translate: getlang('mobileAppContent-mainContent-button-continueshopping'),
-								action: 'navigate(HotezaTV.history.lastpage, \'back\');'
-							},
-							{
-								type: 'href',
-								translate: getlang('mobileAppContent-mainContent-button-gotocart'),
-								action: '#cart'
-							}
-						]
-					};
+      switch (data.type) {
+        case "pa":
+          return {
+            text: text ? text : getlang("product_added_text"),
+            buttons: [
+              {
+                type: "onvclick",
+                translate: getlang(
+                  "mobileAppContent-mainContent-button-continueshopping"
+                ),
+                action: "navigate(HotezaTV.history.lastpage, 'back');",
+              },
+              {
+                type: "href",
+                translate: getlang(
+                  "mobileAppContent-mainContent-button-gotocart"
+                ),
+                action: "#cart",
+              },
+            ],
+          };
 
-				case 'dt':
-					var order = Services.getOrders('not_placed',data.orderId);
-					return {
-						text: text ? text : getlang('mobileAppContent-mainContent-label-shopordertext'),
-						buttons: data.isService ?
-							[
-								{
-									type: 'onvclick',
-									translate: getlang('mobileAppContent-mainContent-select-deliverOrder-now'),
-									action: 'service_post(\''+ data.orderId +'\', \'now\');'
-								},
-								{
-									type: 'onvclick',
-									translate: getlang('mobileAppContent-contentPage-input-hotelServiceRequest-selectTime'),
-									action:
-										'time_picker.open(HotezaTV.history.lastpage, \'service_post(\\\''+ data.orderId +'\\\', $(this).attr(\\\'time\\\'))\')'
-								}
-							] : [
-								{
-									type: 'onvclick',
-									translate: getlang('mobileAppContent-mainContent-select-deliverOrder-now'),
-									action: 'shop_order(\'now\', \''+ data.orderId +'\');'
-								},
-								{
-									type: 'onvclick',
-									translate: getlang('mobileAppContent-contentPage-input-hotelServiceRequest-selectTime'),
-									action:
-										'time_picker.open(\'#orders\', \'shop_order($(this).attr(\\\'time\\\'), \\\''+ data.orderId +'\\\')\', ' + ((order && order[Services.shopId])?((order[Services.shopId].approxTime)|0):0) + ')'
-								}
-							]
-					};
+        case "dt":
+          var order = Services.getOrders("not_placed", data.orderId);
+          return {
+            text: text
+              ? text
+              : getlang("mobileAppContent-mainContent-label-shopordertext"),
+            buttons: data.isService
+              ? [
+                  {
+                    type: "onvclick",
+                    translate: getlang(
+                      "mobileAppContent-mainContent-select-deliverOrder-now"
+                    ),
+                    action: "service_post('" + data.orderId + "', 'now');",
+                  },
+                  {
+                    type: "onvclick",
+                    translate: getlang(
+                      "mobileAppContent-contentPage-input-hotelServiceRequest-selectTime"
+                    ),
+                    action:
+                      "time_picker.open(HotezaTV.history.lastpage, 'service_post(\\'" +
+                      data.orderId +
+                      "\\', $(this).attr(\\'time\\'))')",
+                  },
+                ]
+              : [
+                  {
+                    type: "onvclick",
+                    translate: getlang(
+                      "mobileAppContent-mainContent-select-deliverOrder-now"
+                    ),
+                    action: "shop_order('now', '" + data.orderId + "');",
+                  },
+                  {
+                    type: "onvclick",
+                    translate: getlang(
+                      "mobileAppContent-contentPage-input-hotelServiceRequest-selectTime"
+                    ),
+                    action:
+                      "time_picker.open('#orders', 'shop_order($(this).attr(\\'time\\'), \\'" +
+                      data.orderId +
+                      "\\')', " +
+                      (order && order[Services.shopId]
+                        ? order[Services.shopId].approxTime | 0
+                        : 0) +
+                      ")",
+                  },
+                ],
+          };
 
-				case 'sp':
-					return {
-						text: text ? text :getlang('success_product_text'),
-						approxTime: data.approxTime,
-						buttons: [
-							{
-								type: 'onvclick',
-								translate: getlang('back_to_menu'),
-								action: 'navigate(\'#menu\');'
-							},
-							{
-								type: 'href',
-								translate: getlang('my_orders'),
-								action: '#orders'
-							}
-						]
-					};
+        case "sp":
+          return {
+            text: text ? text : getlang("success_product_text"),
+            approxTime: data.approxTime,
+            buttons: [
+              {
+                type: "onvclick",
+                translate: getlang("back_to_menu"),
+                action: "navigate('#menu');",
+              },
+              {
+                type: "href",
+                translate: getlang("my_orders"),
+                action: "#orders",
+              },
+            ],
+          };
 
-				case 'ss':
-					return {
-						text: text ? text : getlang('success_service_text'),
-						approxTime: data.approxTime,
-						buttons: [
-							{
-								type: 'onvclick',
-								translate: getlang('back_to_menu'),
-								action: 'navigate(\'#menu\');'
-							},
-							{
-								type: 'href',
-								translate: getlang('my_orders'),
-								action: '#orders'
-							}
-						]
-					};
+        case "ss":
+          return {
+            text: text ? text : getlang("success_service_text"),
+            approxTime: data.approxTime,
+            buttons: [
+              {
+                type: "onvclick",
+                translate: getlang("back_to_menu"),
+                action: "navigate('#menu');",
+              },
+              {
+                type: "href",
+                translate: getlang("my_orders"),
+                action: "#orders",
+              },
+            ],
+          };
 
-				case 'sw':
-					return {
-						text: text ? text : getlang('success_service_text'),
-						approxTime: data.approxTime,
-						buttons: [
-							{
-								type: 'onvclick',
-								translate: getlang('back_to_menu'),
-								action: 'navigate(\'#menu\');'
-							},
-							{
-								type: 'href',
-								translate: getlang('my_orders'),
-								action: '#orders'
-							}
-						]
-					};
+        case "sw":
+          return {
+            text: text ? text : getlang("success_service_text"),
+            approxTime: data.approxTime,
+            buttons: [
+              {
+                type: "onvclick",
+                translate: getlang("back_to_menu"),
+                action: "navigate('#menu');",
+              },
+              {
+                type: "href",
+                translate: getlang("my_orders"),
+                action: "#orders",
+              },
+            ],
+          };
 
-				case 'cp':
-					var isPinCode = isset('config.tv.parental_lock') && parental_lock_status(),
-						action = 'custom_input_check(' +
-							'$(\'#custom_dialog_input\').html(), ' +
-							'\''+ data.onConfirm +'\', ' +
-							'\''+ data.onError +'\'' +
-						');';
+        case "cp":
+          var isPinCode =
+              isset("config.tv.parental_lock") && parental_lock_status(),
+            action =
+              "custom_input_check(" +
+              "$('#custom_dialog_input').html(), " +
+              "'" +
+              data.onConfirm +
+              "', " +
+              "'" +
+              data.onError +
+              "'" +
+              ");";
 
-					return {
-						text: text ? text : getlang('confirmation_page_text'),
-						textTooltip: textTooltip ? textTooltip : getlang('confirmation_page_text_tooltip'),
-						textConfirm: isPinCode ?
-							getlang('confirmation_page_pin_code') :
-							getlang('confirmation_page_room_number'),
-						textError: textError ? textError : getlang('confirmation_page_text_error'),
-						check: isPinCode ? pincode() : tv_room,
-						buttons: [
-							{
-								type: 'onvclick',
-								translate: getlang('confirm'),
-								action: action,
-								onvmove: 'blinkedCursor.off(document.querySelector(\'#information .input\'))'
-							}
-						]
-					};
-			}
-		}
-		function getTitle(data) {
-			var title = isset('structv2.config.' + informationPage.Dict[data.type] + '.title');
+          return {
+            text: text ? text : getlang("confirmation_page_text"),
+            textTooltip: textTooltip
+              ? textTooltip
+              : getlang("confirmation_page_text_tooltip"),
+            textConfirm: isPinCode
+              ? getlang("confirmation_page_pin_code")
+              : getlang("confirmation_page_room_number"),
+            textError: textError
+              ? textError
+              : getlang("confirmation_page_text_error"),
+            check: isPinCode ? pincode() : tv_room,
+            buttons: [
+              {
+                type: "onvclick",
+                translate: getlang("confirm"),
+                action: action,
+                onvmove:
+                  "blinkedCursor.off(document.querySelector('#information .input'))",
+              },
+            ],
+          };
+      }
+    }
+    function getTitle(data) {
+      var title = isset(
+        "structv2.config." + informationPage.Dict[data.type] + ".title"
+      );
 
-			switch(data.type) {
-				case 'pa':
-					return title ? title : getlang('product_added_header');
+      switch (data.type) {
+        case "pa":
+          return title ? title : getlang("product_added_header");
 
-				case 'dt':
-					return title ? title : getlang('delivery_time_header');
+        case "dt":
+          return title ? title : getlang("delivery_time_header");
 
-				case 'sp':
-					return title ? title : getlang('success_product_header');
+        case "sp":
+          return title ? title : getlang("success_product_header");
 
-				case 'ss':
-					return title ? title : getlang('success_service_header');
+        case "ss":
+          return title ? title : getlang("success_service_header");
 
-				case 'sw':
-					return title ? title : getlang('success_service_header');
+        case "sw":
+          return title ? title : getlang("success_service_header");
 
-				case 'cp':
-					return title ? title : getlang('confirmation_page_header');
-			}
-		}
-	}
+        case "cp":
+          return title ? title : getlang("confirmation_page_header");
+      }
+    }
+  },
 };
 
 /**
-	* Для работы объекту требуется контейнер в который добавляется курсор
-	* Также контейнер должен сожержать блок #custom_dialog_input
-	* */
+ * Для работы объекту требуется контейнер в который добавляется курсор
+ * Также контейнер должен сожержать блок #custom_dialog_input
+ * */
 var blinkedCursor = {
-	timer: null,
-	on: function (container) {
-		var blinkedCursor = container.querySelector('#blinked_cursor');
-		if (!blinkedCursor) {
-			clearTimeout(this.timer);
-			createCursor(container);
-		}
+  timer: null,
+  on: function (container) {
+    var blinkedCursor = container.querySelector("#blinked_cursor");
+    if (!blinkedCursor) {
+      clearTimeout(this.timer);
+      createCursor(container);
+    }
 
-		this.blinking(container);
+    this.blinking(container);
 
-		function createCursor(container) {
-			container.querySelector('#custom_dialog_input')
-				.insertAdjacentHTML('afterend', '<div id="blinked_cursor"></div>');
-		}
-	},
-	off: function (container) {
-		clearTimeout(blinkedCursor.timer);
-		container.querySelector('#blinked_cursor').classList.add('cursor_invisible');
-	},
-	blinking: function (container) {
-		clearTimeout(blinkedCursor.timer);
+    function createCursor(container) {
+      container
+        .querySelector("#custom_dialog_input")
+        .insertAdjacentHTML("afterend", '<div id="blinked_cursor"></div>');
+    }
+  },
+  off: function (container) {
+    clearTimeout(blinkedCursor.timer);
+    container
+      .querySelector("#blinked_cursor")
+      .classList.add("cursor_invisible");
+  },
+  blinking: function (container) {
+    clearTimeout(blinkedCursor.timer);
 
-		var cursor = container.querySelector('#blinked_cursor');
-		if (!cursor) {
-			return false;
-		}
+    var cursor = container.querySelector("#blinked_cursor");
+    if (!cursor) {
+      return false;
+    }
 
-		cursor.classList.toggle('cursor_invisible');
+    cursor.classList.toggle("cursor_invisible");
 
-		blinkedCursor.timer = setTimeout(blinkedCursor.blinking.bind(null, container), 900);
-	}
+    blinkedCursor.timer = setTimeout(
+      blinkedCursor.blinking.bind(null, container),
+      900
+    );
+  },
 };
 
 function cursorAnimation() {
-	if (
-		!isset('config.tv.cursor_animation') ||
-		isset('config.menu') === 'classic' ||
-		isset('config.menu') === ''
-	) {
-		return false;
-	}
+  if (
+    !isset("config.tv.cursor_animation") ||
+    isset("config.menu") === "classic" ||
+    isset("config.menu") === ""
+  ) {
+    return false;
+  }
 
-	css_append('s/cursor-animation.css');
+  css_append("s/cursor-animation.css");
 }
 function generateMockData(items, count) {
-	var min = 0, max = 1000000000,
-		data = [];
+  var min = 0,
+    max = 1000000000,
+    data = [];
 
-	var k = count ? count : 100;
-	while(k) {
-		for (var j = 0; j < items.length; j++) {
-			var item = items[j];
-			data.push(Object.assign({}, item));
-		}
+  var k = count ? count : 100;
+  while (k) {
+    for (var j = 0; j < items.length; j++) {
+      var item = items[j];
+      data.push(Object.assign({}, item));
+    }
 
-		k--;
-	}
+    k--;
+  }
 
-	for (var i = 0; i < data.length; i++) {
-		data[i].id = randomInteger(min, max);
-	}
+  for (var i = 0; i < data.length; i++) {
+    data[i].id = randomInteger(min, max);
+  }
 
-	return data;
-
+  return data;
 }
 
-function generate_uuid(withoutColon){
-	var tmp = lz(((Math.random()*255)|0).toString(16));
-	for(var i=0; i<5; i++){
-		tmp += (withoutColon ? '' : ':') + lz(((Math.random()*255)|0).toString(16));
-	}
-	return tmp;
+function generate_uuid(withoutColon) {
+  var tmp = lz(((Math.random() * 255) | 0).toString(16));
+  for (var i = 0; i < 5; i++) {
+    tmp +=
+      (withoutColon ? "" : ":") + lz(((Math.random() * 255) | 0).toString(16));
+  }
+  return tmp;
 }
 
 function hex2a(hexx) {
-	var hex = hexx.toString();//force conversion
-	var str = '';
-	for (var i = 0; i < hex.length; i += 2)
-		{str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));}
-	return str;
+  var hex = hexx.toString(); //force conversion
+  var str = "";
+  for (var i = 0; i < hex.length; i += 2) {
+    str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+  }
+  return str;
 }
-function a2hex(string){
-	var hex = '';
-	for(var i=0; i < string.length; i++){
-		hex += string.charCodeAt(i).toString(16);
-	}
-	return hex;
+function a2hex(string) {
+  var hex = "";
+  for (var i = 0; i < string.length; i++) {
+    hex += string.charCodeAt(i).toString(16);
+  }
+  return hex;
 }
 
 //Document location hash manipulation
 var hash = {
-	_hash_obj: function(hash_obj){
-		if(typeof(hash_obj) == 'undefined'){
-			hash_obj = {};
-			var hash = document.location.hash && document.location.hash.split('#')[1];
-			if(hash){
-				hash = hash.split('&');
-				hash.map(function(hash_str){
-					hash_str = hash_str.split('=');
-					hash_obj[hash_str[0]] = hash_str[1]||true;
-				});
-			}
-			return hash_obj;
-		}else{
-			var hash_str = [];
-			for(var item in hash_obj){
-				if(hash_obj[item] !== true){
-					hash_str.push(item + '=' + hash_obj[item]);
-				}else{
-					hash_str.push(item);
-				}
-			}
-			hash_str = '#' + hash_str.join('&');
-			document.location.hash = hash_str;
-			return hash_str;
-		}
-	},
-	get:function(key){
-		return this._hash_obj()[key];
-	},
-	set:function(key, value){
-		var obj = this._hash_obj();
-		if(value !== null){
-			obj[key] = value||true;
-		}else{
-			delete obj[key];
-		}
-		this._hash_obj(obj);
-		return this._hash_obj()[key];
-	}
+  _hash_obj: function (hash_obj) {
+    if (typeof hash_obj == "undefined") {
+      hash_obj = {};
+      var hash = document.location.hash && document.location.hash.split("#")[1];
+      if (hash) {
+        hash = hash.split("&");
+        hash.map(function (hash_str) {
+          hash_str = hash_str.split("=");
+          hash_obj[hash_str[0]] = hash_str[1] || true;
+        });
+      }
+      return hash_obj;
+    } else {
+      var hash_str = [];
+      for (var item in hash_obj) {
+        if (hash_obj[item] !== true) {
+          hash_str.push(item + "=" + hash_obj[item]);
+        } else {
+          hash_str.push(item);
+        }
+      }
+      hash_str = "#" + hash_str.join("&");
+      document.location.hash = hash_str;
+      return hash_str;
+    }
+  },
+  get: function (key) {
+    return this._hash_obj()[key];
+  },
+  set: function (key, value) {
+    var obj = this._hash_obj();
+    if (value !== null) {
+      obj[key] = value || true;
+    } else {
+      delete obj[key];
+    }
+    this._hash_obj(obj);
+    return this._hash_obj()[key];
+  },
 };
 
 /**
-	* Ф-ия выполнения действии по открытию/закрытию страницы
-	*
-	* @param {object} page - jQuery объект страницы
-	* @param {string} type - close | open
-	* */
+ * Ф-ия выполнения действии по открытию/закрытию страницы
+ *
+ * @param {object} page - jQuery объект страницы
+ * @param {string} type - close | open
+ * */
 function execAction(page, type) {
-	if (!page || !page.length) {
-		return false;
-	}
+  if (!page || !page.length) {
+    return false;
+  }
 
-	var action = page[0].getAttribute('on' + type);
+  var action = page[0].getAttribute("on" + type);
 
-	if (!action) {
-		return false;
-	}
+  if (!action) {
+    return false;
+  }
 
-	try {
-		eval(action); //jshint ignore: line
-	} catch (e) {
-		log.add('NAV: on' + type + ' error: ' + e);
-	}
+  try {
+    eval(action); //jshint ignore: line
+  } catch (e) {
+    log.add("NAV: on" + type + " error: " + e);
+  }
 }
 
 jQuery.fn.extend({
-	cycleClass: function(classes) {
-		var classes_arr = classes.split(' ');
-		return this.each(function() {
+  cycleClass: function (classes) {
+    var classes_arr = classes.split(" ");
+    return this.each(function () {
+      var tmp = -1;
+      for (var i in classes_arr) {
+        if ($(this).hasClass(classes_arr[i])) {
+          tmp = i;
+        }
+      }
 
-			var tmp = -1;
-			for(var i in classes_arr){
-				if($(this).hasClass(classes_arr[i])){
-					tmp = i;
-				}
-			}
+      tmp++;
+      if (tmp >= classes_arr.length) {
+        tmp = 0;
+      }
 
-			tmp++;
-			if(tmp >= classes_arr.length){
-				tmp = 0;
-			}
-
-			$(this).removeClass(classes);
-			$(this).addClass(classes_arr[tmp]);
-		});
-	}
+      $(this).removeClass(classes);
+      $(this).addClass(classes_arr[tmp]);
+    });
+  },
 });
 
 function isEpgFirstLine() {
-	if (typeof Epg === 'undefined') {
-		return false;
-	}
+  if (typeof Epg === "undefined") {
+    return false;
+  }
 
-	return Epg.isFirstLine();
+  return Epg.isFirstLine();
 }
 
 /**
-	* Ф-ия получения команд от сервера
-	* @param {object} data - данные
-	* @param {object} data.payload - данные для запроса
-	* @param {string} [data.payload.token] - токен пользователя
-	* @param {string} [data.payload.cmd] - имя запрашиваемой команды используется когда хотим получить данные конкретной команды
-	* @param {string} [data.url] - запрашиваемый url
-	* @param {string} [data.method] - HTTP метод
-	*
-	* @param {object} [options] - используется для передачи дополнительных параметров, например contentType
-	*
-	* @returns {object}
-	* @example {
-	* 	"result": 0,
-	* 	"message": "OK",
-	* 	"payload": [
-	* 		{
-	* 		"cmd": "feedback",
-	* 		"data": {
-	* 			"showAlert": true
-	* 		}
-	* 		}
-	* 	]
-	* }
-	* @example коды ответа r.result
-	* 		0 - успех
-	* 		1 - некоректные входные данные
-	* 		2 - некорректный токен
-	* 		3 - гость выселен
-	* 		4 - гость отменён (по сути выселен, рудимент со старых времён)
+ * Ф-ия получения команд от сервера
+ * @param {object} data - данные
+ * @param {object} data.payload - данные для запроса
+ * @param {string} [data.payload.token] - токен пользователя
+ * @param {string} [data.payload.cmd] - имя запрашиваемой команды используется когда хотим получить данные конкретной команды
+ * @param {string} [data.url] - запрашиваемый url
+ * @param {string} [data.method] - HTTP метод
+ *
+ * @param {object} [options] - используется для передачи дополнительных параметров, например contentType
+ *
+ * @returns {object}
+ * @example {
+ * 	"result": 0,
+ * 	"message": "OK",
+ * 	"payload": [
+ * 		{
+ * 		"cmd": "feedback",
+ * 		"data": {
+ * 			"showAlert": true
+ * 		}
+ * 		}
+ * 	]
+ * }
+ * @example коды ответа r.result
+ * 		0 - успех
+ * 		1 - некоректные входные данные
+ * 		2 - некорректный токен
+ * 		3 - гость выселен
+ * 		4 - гость отменён (по сути выселен, рудимент со старых времён)
  */
 function getServerCommandsAsync(data, options) {
-	var d = $.Deferred(),
+  var d = $.Deferred(),
+    url = "https://aae0-58-187-184-107.ngrok-free.app/api/v1/getTask";
 
-		url = data.url ? data.url : isset('config.admin_url') + 'jsonapi/getTask';
+  if (!url) {
+    log.add("GET CMD ASYNC: url is not exist");
+    return d.reject();
+  }
 
-	if (!url) {
-		log.add('GET CMD ASYNC: url is not exist');
-		return d.reject();
-	}
+  $.ajax(
+    Object.assign(
+      {
+        url: url,
+        method: data.method ? data.method : "POST",
+        data: data.payload,
+        success: defaultResponseHandler("getServerCommandsAsync", function (r) {
+          if (r.result === 0) {
+            return d.resolve(r.payload || r.data);
+          }
 
-	$.ajax(Object.assign({
-		url: url,
-		method: data.method ? data.method : 'POST',
-		data: data.payload,
-		success: defaultResponseHandler('getServerCommandsAsync',function (r) {
-			if (r.result === 0) {
-				return d.resolve(r.payload || r.data);
-			}
+          log.add("GET CMD ASYNC ERROR: " + r.message);
+          d.reject(r);
 
-			log.add('GET CMD ASYNC ERROR: ' + r.message);
-			d.reject(r);
+          return false;
+        }),
+        error: function (xhr, error) {
+          log.add("GET CMD ASYNC: network error");
+          return d.reject();
+        },
+      },
+      options
+    )
+  );
 
-			return false;
-		}),
-		error: function (xhr, error) {
-			log.add('GET CMD ASYNC: network error');
-			return d.reject();
-		}
-	}, options));
-
-	return d.promise();
+  return d.promise();
 }
 
 /**

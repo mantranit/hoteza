@@ -915,3229 +915,3268 @@ function set_first_active_cursor_in_menu() {
 }
 
 var time = {
-	timer: null,
-	secs: null,
-	date: new Date(),
-	dof: 0,
-	tz: 0,
-	uptime: function (human_readable){
-		var out = (Date.now() - log.zero);
-		if(human_readable == true){
-			out = toHHMMSS(out/1000);
-		}
-		return out;
-	},
-	now: function (utc){
-		var out = Date.now() + this.dof;
-		if(!utc){
-			out += this.tz;
-		}
-		return out;
-	},
-	sync: function(){
-		$.get(isset('config.admin_url') + 'datetime.php?tz=' + isset('config.timezone'), function(response){
+  timer: null,
+  secs: null,
+  date: new Date(),
+  dof: 0,
+  tz: 0,
+  uptime: function (human_readable) {
+    var out = Date.now() - log.zero;
+    if (human_readable == true) {
+      out = toHHMMSS(out / 1000);
+    }
+    return out;
+  },
+  now: function (utc) {
+    var out = Date.now() + this.dof;
+    if (!utc) {
+      out += this.tz;
+    }
+    return out;
+  },
+  sync: function () {
+    $.get(
+      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/datetime?tz=" +
+        isset("config.timezone"),
+      function (response) {
+        time.dof = (response.time | 0) * 1000 - Date.now();
+        time.tz = (response.offset | 0) * 1000;
 
-			time.dof = (response.time|0)*1000 - (Date.now());
-			time.tz = (response.offset|0)*1000;
+        log.add(
+          "TIME: synced, offset = " +
+            toHHMMSS(time.dof / 1000) +
+            " / " +
+            time.dof +
+            ", timezone: " +
+            response.tz
+        );
+        log.add("TIME: date " + time.date);
 
-			log.add('TIME: synced, offset = ' + toHHMMSS(time.dof/1000) + ' / ' + time.dof + ', timezone: ' + response.tz);
-			log.add('TIME: date ' + time.date);
+        if (typeof _tv_time_set == "function") {
+          try {
+            _tv_time_set();
+            log.add("TIME: clock set");
+          } catch (e) {
+            log.add("TIME: error setting TV clock");
+          }
+        }
 
-			if(typeof(_tv_time_set) == 'function'){
-				try{
-					_tv_time_set();
-					log.add('TIME: clock set');
-				}catch(e){
-					log.add('TIME: error setting TV clock');
-				}
-			}
+        time.set();
+      },
+      "json"
+    ).fail(function (err) {
+      log.add("TIME: sync error: " + err.status + "|" + err.statusText);
+    });
+  },
+  set: function () {
+    if (isset("config.tv.time_status_exist")) {
+      $("#tv_fullscreen_time").show();
+    }
 
-			time.set();
-		}, 'json')
-		.fail(function(err){
-			log.add('TIME: sync error: ' + err.status + '|' + err.statusText);
-		});
-	},
-	set: function(){
-		if (isset('config.tv.time_status_exist')){
-			$('#tv_fullscreen_time').show();
-		}
-	
-		if(time.timer){
-			clearTimeout(time.timer);
-		}
-	
-		if(time.secs > 0){
-			var time_passed = (time.now() - time.date.getTime())/1000;
-			if(Math.abs(time_passed - time.secs) > 60){
-				log.add('TIME: passed ' + toHHMMSS(time_passed) + ', expect ' + toHHMMSS(time.secs) + ', resyncing');
-				time.secs = null;
-				time.sync();
-				return false;
-			}
-		}
-	
-		time.date = new Date(time.now());
-	
-		tv_set_date(time.date);
-	
-		$('#tv_fullscreen_time_hours').html(time.date.getUTCHours());
-		$('#tv_fullscreen_time_minutes').html(lz(time.date.getUTCMinutes()));
-	
-		if (tv_channellist_type === 'mosaic' &&
-			isset('config.tv.mosaic_clock')) {
-			$('#tv_fullscreen_mosaic_time').html('<span class="ui-icon-clock"></span>' + time.date.getUTCHours() + '<span class="blink">:</span>' + lz(time.date.getUTCMinutes()));
-		}
-	
-		var tmp = 60 - new Date(time.now()).getSeconds();
-		time.timer = setTimeout(time.set, tmp*1000);
-	
-		time.secs = tmp;
-	}
+    if (time.timer) {
+      clearTimeout(time.timer);
+    }
+
+    if (time.secs > 0) {
+      var time_passed = (time.now() - time.date.getTime()) / 1000;
+      if (Math.abs(time_passed - time.secs) > 60) {
+        log.add(
+          "TIME: passed " +
+            toHHMMSS(time_passed) +
+            ", expect " +
+            toHHMMSS(time.secs) +
+            ", resyncing"
+        );
+        time.secs = null;
+        time.sync();
+        return false;
+      }
+    }
+
+    time.date = new Date(time.now());
+
+    tv_set_date(time.date);
+
+    $("#tv_fullscreen_time_hours").html(time.date.getUTCHours());
+    $("#tv_fullscreen_time_minutes").html(lz(time.date.getUTCMinutes()));
+
+    if (tv_channellist_type === "mosaic" && isset("config.tv.mosaic_clock")) {
+      $("#tv_fullscreen_mosaic_time").html(
+        '<span class="ui-icon-clock"></span>' +
+          time.date.getUTCHours() +
+          '<span class="blink">:</span>' +
+          lz(time.date.getUTCMinutes())
+      );
+    }
+
+    var tmp = 60 - new Date(time.now()).getSeconds();
+    time.timer = setTimeout(time.set, tmp * 1000);
+
+    time.secs = tmp;
+  },
 };
 function tv_set_date(date) {
-	if(!date || !('getUTCDate' in date)){
-		return false;
-	}
-	var container = $('#tv_fullscreen_date');
-	if (isset('config.tv.date_status_exist')) {
-		container.show();
-	}else{
-		container.hide();
-		return false;
-	}
+  if (!date || !("getUTCDate" in date)) {
+    return false;
+  }
+  var container = $("#tv_fullscreen_date");
+  if (isset("config.tv.date_status_exist")) {
+    container.show();
+  } else {
+    container.hide();
+    return false;
+  }
 
-	container.html(date.getUTCDate() + ' ' + getlang(MONTHOFYEAR[date.getUTCMonth()] + '_short') + ' ' + date.getUTCFullYear());
+  container.html(
+    date.getUTCDate() +
+      " " +
+      getlang(MONTHOFYEAR[date.getUTCMonth()] + "_short") +
+      " " +
+      date.getUTCFullYear()
+  );
 }
 
-function tv_set_room(){
-	if(tv_room){
-		$('#tv_fullscreen_roomnumber').html(' ' + tv_room);
-		$('#tv_fullscreen_room').show();
-	}
+function tv_set_room() {
+  if (tv_room) {
+    $("#tv_fullscreen_roomnumber").html(" " + tv_room);
+    $("#tv_fullscreen_room").show();
+  }
 }
 
-function tv_set_guest(tmp, repeat){
-	tmp = tmp ? tmp : isset('config.tv.welcome_format');
+function tv_set_guest(tmp, repeat) {
+  tmp = tmp ? tmp : isset("config.tv.welcome_format");
 
-	/*Обратная совместимость config*/
-	tmp = backward_compatibility_welcome_format(tmp);
-	/*-------*/
+  /*Обратная совместимость config*/
+  tmp = backward_compatibility_welcome_format(tmp);
+  /*-------*/
 
-	if (tmp) {
-		$('#tv_fullscreen_welcome').html(tmp.format(get_welcome_guest_data()));
-		$('#tv_fullscreen_welcome').show();
+  if (tmp) {
+    $("#tv_fullscreen_welcome").html(tmp.format(get_welcome_guest_data()));
+    $("#tv_fullscreen_welcome").show();
 
-		if (scandic_menu && !repeat) {
-			// перенос строки приветствия для scandic_menu
-			tmp = addCarry(tmp);
-			$('#tv_fullscreen_welcome_big').html(tmp.format(get_welcome_guest_data()));
-		}
-	}
-	else{
-		log.add('Error: No format for welcome message');
-	}
+    if (scandic_menu && !repeat) {
+      // перенос строки приветствия для scandic_menu
+      tmp = addCarry(tmp);
+      $("#tv_fullscreen_welcome_big").html(
+        tmp.format(get_welcome_guest_data())
+      );
+    }
+  } else {
+    log.add("Error: No format for welcome message");
+  }
 
-	if (!checkWelcomeWidth()) {
-		setTimeout(function () {
-			tv_set_guest(isset('config.tv.welcome_format').replace('{w}, ', ''), true);
-		}, 100);
-	}
+  if (!checkWelcomeWidth()) {
+    setTimeout(function () {
+      tv_set_guest(
+        isset("config.tv.welcome_format").replace("{w}, ", ""),
+        true
+      );
+    }, 100);
+  }
 
-	function addCarry(string) {
-		var queries = ['{w} ', '{w}, '];
+  function addCarry(string) {
+    var queries = ["{w} ", "{w}, "];
 
-		for (var i = 0; i < queries.length; i++) {
-			var query = queries[i];
-			if (string.indexOf(query) !== -1) {
-				return string.replace(query, '<span>'+ query + '</span><br />');
-			}
-		}
+    for (var i = 0; i < queries.length; i++) {
+      var query = queries[i];
+      if (string.indexOf(query) !== -1) {
+        return string.replace(query, "<span>" + query + "</span><br />");
+      }
+    }
 
-		return string;
-	}
+    return string;
+  }
 }
 function tv_get_guest_name() {
-	var guestName = '';
+  var guestName = "";
 
-	if (check_auth()) {
-		var tmp = isset('config.tv.greeting_format') || isset('config.tv.welcome_format');
+  if (check_auth()) {
+    var tmp =
+      isset("config.tv.greeting_format") || isset("config.tv.welcome_format");
 
-		/*Обратная совместимость config*/
-		tmp = backward_compatibility_welcome_format(tmp).replace(/{w}, |{w}*$/, '');
-		/*-------*/
+    /*Обратная совместимость config*/
+    tmp = backward_compatibility_welcome_format(tmp).replace(/{w}, |{w}*$/, "");
+    /*-------*/
 
-		guestName = tmp.format(get_welcome_guest_data()).trim();
-	}
+    guestName = tmp.format(get_welcome_guest_data()).trim();
+  }
 
-	return guestName.length > 1 && guestName !== 'null' ? guestName : '';
+  return guestName.length > 1 && guestName !== "null" ? guestName : "";
 }
 function tv_set_welcome_guest_greeting(text) {
-	var guestName = tv_get_guest_name();
-	return setGuestNameIntoText(text, guestName);
+  var guestName = tv_get_guest_name();
+  return setGuestNameIntoText(text, guestName);
 }
 function tv_set_welcome_guest_greeting_v2() {
-	var guestName = tv_get_guest_name();
-	$('.tv_welcome_greeting_placeholder').html(addCarry(guestName));
+  var guestName = tv_get_guest_name();
+  $(".tv_welcome_greeting_placeholder").html(addCarry(guestName));
 
-	function addCarry(name) {
-		if (
-			typeof ScandicWelcome !== 'undefined' &&
-			isset('config.menu') !== ''
-		) {
-			return '<br />' + name;
-		}
+  function addCarry(name) {
+    if (typeof ScandicWelcome !== "undefined" && isset("config.menu") !== "") {
+      return "<br />" + name;
+    }
 
-		return name;
-	}
+    return name;
+  }
 }
 function get_welcome_guest_data() {
-	return {
-		'welcome': getlang('tv_welcome').replace(/[，, ]*$/, ''),
-		'w': getlang('tv_welcome').replace(/[，, ]*$/, ''),
-		'title': Guest.guestTitle||'',
-		't': Guest.guestTitle||'',
-		'firstname': Guest.guestName||'',
-		'f': Guest.guestName||'',
-		'lastname': Guest.guestSurname||'',
-		'l': Guest.guestSurname||''
-	};
+  return {
+    welcome: getlang("tv_welcome").replace(/[，, ]*$/, ""),
+    w: getlang("tv_welcome").replace(/[，, ]*$/, ""),
+    title: Guest.guestTitle || "",
+    t: Guest.guestTitle || "",
+    firstname: Guest.guestName || "",
+    f: Guest.guestName || "",
+    lastname: Guest.guestSurname || "",
+    l: Guest.guestSurname || "",
+  };
 }
 function backward_compatibility_welcome_format(welcome_format) {
-	if(window.tv_hide_guestname || window.tv_show_guesttitle || window.tv_show_guestfirstname){
-		welcome_format = '{w}, ';
-		if(!isset('tv_hide_guestname')){
-			if(isset('tv_show_guesttitle')){
-				welcome_format += '{t} ';
-			}
-			if(isset('tv_show_guestfirstname')){
-				welcome_format += '{f} ';
-			}
-			welcome_format += '{l}';
-		}
-		else{
-			welcome_format = '{w}';
-		}
-		log.add('Backward compatibility: Welcome format: ' + welcome_format);
-	}
+  if (
+    window.tv_hide_guestname ||
+    window.tv_show_guesttitle ||
+    window.tv_show_guestfirstname
+  ) {
+    welcome_format = "{w}, ";
+    if (!isset("tv_hide_guestname")) {
+      if (isset("tv_show_guesttitle")) {
+        welcome_format += "{t} ";
+      }
+      if (isset("tv_show_guestfirstname")) {
+        welcome_format += "{f} ";
+      }
+      welcome_format += "{l}";
+    } else {
+      welcome_format = "{w}";
+    }
+    log.add("Backward compatibility: Welcome format: " + welcome_format);
+  }
 
-	return welcome_format;
+  return welcome_format;
 }
 function checkWelcomeWidth() {
-	var welcome = document.getElementById('tv_fullscreen_welcome'),
-		info = document.getElementById('tv_fullscreen_info'),
-		logo = metro_menu || scandic_menu ?
-			document.getElementById('tv_fullscreen_logo') :
-			document.getElementById('menu_wrapper');
+  var welcome = document.getElementById("tv_fullscreen_welcome"),
+    info = document.getElementById("tv_fullscreen_info"),
+    logo =
+      metro_menu || scandic_menu
+        ? document.getElementById("tv_fullscreen_logo")
+        : document.getElementById("menu_wrapper");
 
-	if (!welcome) {
-		return false;
-	}
+  if (!welcome) {
+    return false;
+  }
 
-	var welcomeMargin = parseInt(getComputedStyle(welcome).marginRight),
-		containerWidth = metro_menu ?
-			1280 - logo.clientWidth - 29 - 29 :
-			1280 - logo.clientWidth - 36 - 29;
+  var welcomeMargin = parseInt(getComputedStyle(welcome).marginRight),
+    containerWidth = metro_menu
+      ? 1280 - logo.clientWidth - 29 - 29
+      : 1280 - logo.clientWidth - 36 - 29;
 
-	return containerWidth - info.clientWidth - welcomeMargin > welcome.clientWidth;
+  return (
+    containerWidth - info.clientWidth - welcomeMargin > welcome.clientWidth
+  );
 }
 
-function tv_set_guest_deprecated(){ //DEPRECATED! NOT USED
-	if(!('tv_hide_guestname' in window && tv_hide_guestname == true)){
-		var tmp = '';
-		if('tv_show_guesttitle' in window && tv_show_guesttitle == true){
-			if(typeof(Guest.guestTitle)!='undefined'){
-				tmp += Guest.guestTitle + ' ';
-			}else{
-				log.add('TV: GUEST TITLE EMPTY!');
-			}
-		}
-		if('tv_show_guestfirstname' in window && tv_show_guestfirstname == true){
-			if(typeof(Guest.guestName)!='undefined'){
-				tmp += Guest.guestName + ' ';
-			}else{
-				log.add('TV: GUEST NAME EMPTY!');
-			}
-		}
-		tmp += Guest.guestSurname;
-		$('#tv_fullscreen_guestname').html(tmp);
-	$('#tv_fullscreen_welcome').show();
-		fit_text($('#tv_fullscreen_welcome'), 14, true);
-	}else{
-		$('#tv_fullscreen_welcome').html(getlang('tv_welcome').replace(/[, ]*$/, '')).show();
-	}
+function tv_set_guest_deprecated() {
+  //DEPRECATED! NOT USED
+  if (!("tv_hide_guestname" in window && tv_hide_guestname == true)) {
+    var tmp = "";
+    if ("tv_show_guesttitle" in window && tv_show_guesttitle == true) {
+      if (typeof Guest.guestTitle != "undefined") {
+        tmp += Guest.guestTitle + " ";
+      } else {
+        log.add("TV: GUEST TITLE EMPTY!");
+      }
+    }
+    if ("tv_show_guestfirstname" in window && tv_show_guestfirstname == true) {
+      if (typeof Guest.guestName != "undefined") {
+        tmp += Guest.guestName + " ";
+      } else {
+        log.add("TV: GUEST NAME EMPTY!");
+      }
+    }
+    tmp += Guest.guestSurname;
+    $("#tv_fullscreen_guestname").html(tmp);
+    $("#tv_fullscreen_welcome").show();
+    fit_text($("#tv_fullscreen_welcome"), 14, true);
+  } else {
+    $("#tv_fullscreen_welcome")
+      .html(getlang("tv_welcome").replace(/[, ]*$/, ""))
+      .show();
+  }
 }
 
 var weather;
-function tv_weather(){
-	var data = {
-		hotelId: get_hotelId()
-	};
-	$.post(
-		api_url+'weather',
-		data,
-		function(response){
-			switch(response.result){
-				case 0:
-					weather = response;
-					if(weather.timestamp|0){
-						var tmp = time.now(true) - weather.timestamp*1000;
-						if(tmp > 3*T_HOUR){
-							//TODO: weather hide
-							log.add('WEATHER: outdated: ' + toHHMMSS(tmp/1000));
-							log.post_log('WEATHER: ERROR: hotel ' + get_hotelId() + ': weather outdated: ' + toHHMMSS(tmp/1000));
-						}else{
-							tv_set_weather();
-							log.add('WEATHER: OK');
-						}
-					}
-					break;
-				case 1:
-					log.add('WEATHER: Invalid hotel');
-					clearInterval(weather_updater);
-				break;
-				case 2:
-					log.add('WEATHER: not activated');
-					clearInterval(weather_updater);
-				break;
-				default:
-				log.add('WEATHER: response unknown');
-				clearInterval(weather_updater);
-				break;
-			}
-		},
-		'json'
-	).fail(function(err){
-		log.add('WEATHER: error ' + err.status + '|' + err.statusText);
-	});
+function tv_weather() {
+  var data = {
+    hotelId: get_hotelId(),
+  };
+  $.post(
+    "https://aae0-58-187-184-107.ngrok-free.app/api/v1/weather",
+    data,
+    function (response) {
+      switch (response.result) {
+        case 0:
+          weather = response;
+          if (weather.timestamp | 0) {
+            var tmp = time.now(true) - weather.timestamp * 1000;
+            if (tmp > 3 * T_HOUR) {
+              //TODO: weather hide
+              log.add("WEATHER: outdated: " + toHHMMSS(tmp / 1000));
+              log.post_log(
+                "WEATHER: ERROR: hotel " +
+                  get_hotelId() +
+                  ": weather outdated: " +
+                  toHHMMSS(tmp / 1000)
+              );
+            } else {
+              tv_set_weather();
+              log.add("WEATHER: OK");
+            }
+          }
+          break;
+        case 1:
+          log.add("WEATHER: Invalid hotel");
+          clearInterval(weather_updater);
+          break;
+        case 2:
+          log.add("WEATHER: not activated");
+          clearInterval(weather_updater);
+          break;
+        default:
+          log.add("WEATHER: response unknown");
+          clearInterval(weather_updater);
+          break;
+      }
+    },
+    "json"
+  ).fail(function (err) {
+    log.add("WEATHER: error " + err.status + "|" + err.statusText);
+  });
 }
-function tv_set_weather(get){
-	var tmp_temp, tmp_icon;
-	if(weather){
-		if(weather.tempC && weather.tempC>0){
+function tv_set_weather(get) {
+  var tmp_temp, tmp_icon;
+  if (weather) {
+    if (weather.tempC && weather.tempC > 0) {
+      if (isset("config.weather.plus")) {
+        tmp_temp = "+" + weather.tempC;
+      } else {
+        tmp_temp = weather.tempC;
+      }
+    } else {
+      tmp_temp = weather.tempC;
+    }
+    if (isset("config.weather.icon")) {
+      tmp_icon =
+        '<span class="weather-icon-' +
+        weather.weatherIconTxt.split(" ").join("-") +
+        '"></span>';
+    } else {
+      tmp_icon = "";
+    }
 
-			if(isset('config.weather.plus')){
-				tmp_temp = '+' + weather.tempC;
-			}else{
-				tmp_temp = weather.tempC;
-			}
-		}else{
-			tmp_temp = weather.tempC;
-		}
-		if(isset('config.weather.icon')){
-			tmp_icon = '<span class="weather-icon-' + (weather.weatherIconTxt.split(' ').join('-')) +'"></span>';
-		}else{
-			tmp_icon = '';
-		}
-
-		if (get) {
-			return {
-				icon: tmp_icon,
-				temp: tmp_temp + '&deg;C',
-				desc: getlang('icon-' + weather.weatherIconTxt.split(' ').join('-'))
-			};
-		} else {
-			$('#tv_fullscreen_weather').html(tmp_icon + tmp_temp + '&deg;C').show();
-		}
-	}
-	else if (get) {return {};}
+    if (get) {
+      return {
+        icon: tmp_icon,
+        temp: tmp_temp + "&deg;C",
+        desc: getlang("icon-" + weather.weatherIconTxt.split(" ").join("-")),
+      };
+    } else {
+      $("#tv_fullscreen_weather")
+        .html(tmp_icon + tmp_temp + "&deg;C")
+        .show();
+    }
+  } else if (get) {
+    return {};
+  }
 }
 
-var tv_channel_number = '';
+var tv_channel_number = "";
 var tv_channel_number_entered;
 
-function tv_channel_number_press(num){
-	if(fullscreen){
-		var channels = getChannels();
+function tv_channel_number_press(num) {
+  if (fullscreen) {
+    var channels = getChannels();
 
-		if(tv_channel_number.length < 4){
-			tv_channel_number += ''+num;
-		}
-		if(!$('#tv_channel_number').length){
-			$(document.body).append($('<div id="tv_channel_number"></div>'));
-		}
-		$('#tv_channel_number').html(tv_channel_number + '-');
-		if(tv_channel_number_entered){
-			clearTimeout(tv_channel_number_entered);
-		}
-		tv_channel_number_entered = setTimeout(function(){
-			tv_channel_number = tv_channel_number|0;
-			if(channels[tv_channel_number-1]){
-				$('#tv_channel_number').html(tv_channel_number);
+    if (tv_channel_number.length < 4) {
+      tv_channel_number += "" + num;
+    }
+    if (!$("#tv_channel_number").length) {
+      $(document.body).append($('<div id="tv_channel_number"></div>'));
+    }
+    $("#tv_channel_number").html(tv_channel_number + "-");
+    if (tv_channel_number_entered) {
+      clearTimeout(tv_channel_number_entered);
+    }
+    tv_channel_number_entered = setTimeout(function () {
+      tv_channel_number = tv_channel_number | 0;
+      if (channels[tv_channel_number - 1]) {
+        $("#tv_channel_number").html(tv_channel_number);
 
-				if (tv_channellist_type === 'vertical_new') {
-					VerticalChannel.chooseChannel(tv_channel_number - 1);
-				}
-				else {
-					tv_channel_show(tv_channel_number - 1);
-				}
-				tv_channellist_show();
-				tv_channellist_fade();
-			}
-			else{
-				$('#tv_channel_number').html('<span style="color:Red;">'+tv_channel_number+'</span>');
-			}
+        if (tv_channellist_type === "vertical_new") {
+          VerticalChannel.chooseChannel(tv_channel_number - 1);
+        } else {
+          tv_channel_show(tv_channel_number - 1);
+        }
+        tv_channellist_show();
+        tv_channellist_fade();
+      } else {
+        $("#tv_channel_number").html(
+          '<span style="color:Red;">' + tv_channel_number + "</span>"
+        );
+      }
 
-
-			tv_channel_number = '';
-			setTimeout(function(){
-				$('#tv_channel_number').remove();
-			}, 3000);
-		}, 1000);
-	}else{
-		tv_channel_number += ''+num;
-		if(tv_channel_number_entered){
-			clearTimeout(tv_channel_number_entered);
-		}
-		tv_channel_number_entered = setTimeout(function(){
-			ServiceCodes.evaluate(tv_channel_number);
-			tv_channel_number = '';
-		}, 1000);
-		if(tv_channel_number.length === 4){
-			ServiceCodes.evaluate(tv_channel_number);
-			tv_channel_number = '';
-		}
-
-	}
+      tv_channel_number = "";
+      setTimeout(function () {
+        $("#tv_channel_number").remove();
+      }, 3000);
+    }, 1000);
+  } else {
+    tv_channel_number += "" + num;
+    if (tv_channel_number_entered) {
+      clearTimeout(tv_channel_number_entered);
+    }
+    tv_channel_number_entered = setTimeout(function () {
+      ServiceCodes.evaluate(tv_channel_number);
+      tv_channel_number = "";
+    }, 1000);
+    if (tv_channel_number.length === 4) {
+      ServiceCodes.evaluate(tv_channel_number);
+      tv_channel_number = "";
+    }
+  }
 }
 
-function _tv_keydown_external(e){
-	if (!e) {e = event;}
-	var code = (e.keyCode ? e.keyCode : e.which);
-	switch(code){
-		case tv_keys.INPUT:
-		case tv_keys.EXIT:
-		case tv_keys.BACK:
-		case tv_keys.MENU:
-			_tv_source(['TV', 0]);
-			break;
-		default:
-			break;
-	}
+function _tv_keydown_external(e) {
+  if (!e) {
+    e = event;
+  }
+  var code = e.keyCode ? e.keyCode : e.which;
+  switch (code) {
+    case tv_keys.INPUT:
+    case tv_keys.EXIT:
+    case tv_keys.BACK:
+    case tv_keys.MENU:
+      _tv_source(["TV", 0]);
+      break;
+    default:
+      break;
+  }
 }
 //индикатор загрузки системы, до true - загрузка в процессе, выставляется в tv_final
 var system_started = false;
 //индикатор, что кто-то трогал систему, используется в tv_open_app.open
 var system_idle = true;
-function tv_keydown(event, isNotOverride){
+function tv_keydown(event, isNotOverride) {
+  system_idle = false;
 
-	system_idle = false;
+  var code = getKeyCode(event);
 
-	var code = getKeyCode(event);
+  //Object.keys(tv_keys)[Object.values(tv_keys).indexOf(code)]
+  tv_last_key = code;
 
-	//Object.keys(tv_keys)[Object.values(tv_keys).indexOf(code)]
-	tv_last_key = code;
+  //Механизм перехвата нажатия кнопок сторонними модулями
+  if (
+    tv_cur_block !== "dialog" &&
+    typeof tv_keydown_override === "function" &&
+    !isNotOverride &&
+    //костыльная отмена оверрайда кнопок громкости (если перехватываются)
+    [tv_keys.VOL_UP, tv_keys.VOL_DOWN, tv_keys.MUTE].indexOf(code) == -1
+  ) {
+    try {
+      tv_keydown_override(event);
+    } catch (e) {
+      log.add("Error executing override function (" + e + ")");
+      console.log(e);
+      log.post_error("Error executing override function (" + e + ")");
+    }
+    return false;
+  }
 
-	//Механизм перехвата нажатия кнопок сторонними модулями
-	if (
-		tv_cur_block !== 'dialog' &&
-		typeof tv_keydown_override === 'function' &&
-		!isNotOverride &&
-		//костыльная отмена оверрайда кнопок громкости (если перехватываются)
-		[tv_keys.VOL_UP,tv_keys.VOL_DOWN,tv_keys.MUTE].indexOf(code) == -1
-	) {
-		try {
-			tv_keydown_override(event);
-		} catch (e) {
-			log.add('Error executing override function (' + e + ')');
-			console.log(e);
-			log.post_error('Error executing override function (' + e + ')');
-		}
-		return false;
-	}
+  if (!tv_cur_block) {
+    navigate("#menu");
+    if ([tv_keys.RED, tv_keys.BLUE, tv_keys.EXIT].indexOf(code) === -1) {
+      return true;
+    }
+  }
 
-	if(!tv_cur_block){
-		navigate('#menu');
-		if([tv_keys.RED,tv_keys.BLUE,tv_keys.EXIT].indexOf(code) === -1){
-			return true;
-		}
-	}
+  if (
+    tv_cur_elem &&
+    tv_cur_elem.length &&
+    tv_cur_elem.get(0).hasAttribute("ontvkey")
+  ) {
+    var key = tv_keys_reverse[code];
 
-	if(
-		tv_cur_elem &&
-		tv_cur_elem.length &&
-		tv_cur_elem.get(0).hasAttribute('ontvkey')
-	){
+    var tv_cur_trigger_elem = $();
+    if (tv_cur_elem.get(0).hasAttribute("on_" + key)) {
+      tv_cur_trigger_elem = tv_cur_elem;
+    } else if (tv_cur_elem.find("[on_" + key + "]").length) {
+      tv_cur_trigger_elem = tv_cur_elem.find("[on_" + key + "]");
+    }
+    tv_cur_trigger_elem.trigger(event_link);
+  }
 
-		var key = tv_keys_reverse[code];
+  switch (code) {
+    case 0:
+      break;
+    case tv_keys.NUM_0:
+      tv_channel_number_press(0);
+      break;
+    case tv_keys.NUM_1:
+      tv_channel_number_press(1);
+      break;
+    case tv_keys.NUM_2:
+      tv_channel_number_press(2);
+      break;
+    case tv_keys.NUM_3:
+      tv_channel_number_press(3);
+      break;
+    case tv_keys.NUM_4:
+      tv_channel_number_press(4);
+      break;
+    case tv_keys.NUM_5:
+      tv_channel_number_press(5);
+      break;
+    case tv_keys.NUM_6:
+      tv_channel_number_press(6);
+      break;
+    case tv_keys.NUM_7:
+      tv_channel_number_press(7);
+      break;
+    case tv_keys.NUM_8:
+      tv_channel_number_press(8);
+      break;
+    case tv_keys.NUM_9:
+      tv_channel_number_press(9);
+      break;
 
-		var tv_cur_trigger_elem = $();
-		if(tv_cur_elem.get(0).hasAttribute('on_'+key)){
-			tv_cur_trigger_elem = tv_cur_elem;
-		}else if(tv_cur_elem.find('[on_'+key+']').length){
-			tv_cur_trigger_elem = tv_cur_elem.find('[on_'+key+']');
-		}
-		tv_cur_trigger_elem.trigger(event_link);
+    case tv_keys.INPUT:
+      navigate("#sources_page");
+      break;
 
-	}
+    case tv_keys.UP:
+      tv_up();
+      break;
+    case tv_keys.DOWN:
+      tv_down();
+      break;
+    case tv_keys.LEFT:
+      tv_left();
+      break;
+    case tv_keys.RIGHT:
+      tv_right();
+      break;
+    case tv_keys.ENTER:
+      tv_ok();
+      if (event.stopPropagation) {
+        event.stopPropagation();
+      }
+      break;
+    case tv_keys.EXIT:
+    case tv_keys.BACK:
+      tv_back();
+      break;
+    case tv_keys.CH_UP:
+      tv_chup();
+      break;
+    case tv_keys.CH_DOWN:
+      tv_chdown();
+      break;
 
-	switch(code){
-		case 0:
-			break;
-		case tv_keys.NUM_0:
-			tv_channel_number_press(0);
-			break;
-		case tv_keys.NUM_1:
-			tv_channel_number_press(1);
-			break;
-		case tv_keys.NUM_2:
-			tv_channel_number_press(2);
-			break;
-		case tv_keys.NUM_3:
-			tv_channel_number_press(3);
-			break;
-		case tv_keys.NUM_4:
-			tv_channel_number_press(4);
-			break;
-		case tv_keys.NUM_5:
-			tv_channel_number_press(5);
-			break;
-		case tv_keys.NUM_6:
-			tv_channel_number_press(6);
-			break;
-		case tv_keys.NUM_7:
-			tv_channel_number_press(7);
-			break;
-		case tv_keys.NUM_8:
-			tv_channel_number_press(8);
-			break;
-		case tv_keys.NUM_9:
-			tv_channel_number_press(9);
-			break;
+    case tv_keys.RED:
+      if (tv_cur_block === "popup") {
+        tv_back();
+      }
 
-		case tv_keys.INPUT:
-			navigate('#sources_page');
-			break;
+      tv_mode();
+      break;
+    case tv_keys.GREEN:
+      if (fullscreen && tv_channellist_type === "vertical_new") {
+        VerticalChannel.toggleBlock("category");
+      } else if (fullscreen && !tv_channellist_hidden) {
+        tv_channel_category_build();
+      }
 
-		case tv_keys.UP:
-			tv_up();
-			break;
-		case tv_keys.DOWN:
-			tv_down();
-			break;
-		case tv_keys.LEFT:
-			tv_left();
-			break;
-		case tv_keys.RIGHT:
-			tv_right();
-			break;
-		case tv_keys.ENTER:
-			tv_ok();
-			if(event.stopPropagation){
-				event.stopPropagation();
-			}
-			break;
-		case tv_keys.EXIT:
-		case tv_keys.BACK:
-			tv_back();
-			break;
-		case tv_keys.CH_UP:
-			tv_chup();
-			break;
-		case tv_keys.CH_DOWN:
-			tv_chdown();
-			break;
+      if (
+        tv_cur_block === "VODplayer" &&
+        isset("config.tv.sleep_timer.enabled")
+      ) {
+        sleep_timer.open(undefined, "closeSleepTimerForVOD();");
+      }
 
-		case tv_keys.RED:
-			if (tv_cur_block === 'popup') {
-				tv_back();
-			}
+      // открываем popup фильтров магазина
+      if (tv_cur_block === "pagelist") {
+        Services.openChooseFilters();
+      }
 
-			tv_mode();
-			break;
-		case tv_keys.GREEN:
-			if (fullscreen && tv_channellist_type === 'vertical_new') {
-				VerticalChannel.toggleBlock('category');
-			}
-			else if (fullscreen && !tv_channellist_hidden) {
-				tv_channel_category_build();
-			}
+      //TODO: заменить костыль на управление кнопками
+      if (active_page == "#sanatorium_schedule") {
+        Sanatorium.select_guest_popup();
+      }
 
-			if (tv_cur_block === 'VODplayer' && isset('config.tv.sleep_timer.enabled')) {
-				sleep_timer.open(undefined, 'closeSleepTimerForVOD();');
-			}
+      break;
+    case tv_keys.YELLOW:
+      if (tv_cur_block === "cart") {
+        shop_item_delete();
+      }
 
-			// открываем popup фильтров магазина
-			if (tv_cur_block === 'pagelist') {
-				Services.openChooseFilters();
-			}
+      if (tv_cur_block === "VODplayer") {
+        VOD.show_menu("subtitles");
+      }
+      break;
+    case tv_keys.BLUE:
+      if (fullscreen) {
+        tv_change_audio();
+      } else {
+        if (tv_cur_block === "VODplayer") {
+          VOD.show_menu("languages");
+        } else {
+          navigate("#language_select");
+        }
+      }
+      //tv_sel_block(active_page_id);
+      break;
 
-			//TODO: заменить костыль на управление кнопками
-			if (active_page == '#sanatorium_schedule') {
-				Sanatorium.select_guest_popup();
-			}
+    case tv_keys.PORTAL:
+    case tv_keys.GUIDE:
+    case tv_keys.Q_MENU:
+    case tv_keys.MENU:
+    case tv_keys.HOME:
+      if (fullscreen) {
+        tv_mode();
+      } else {
+        navigate("#menu");
+      }
+      break;
 
-			break;
-		case tv_keys.YELLOW:
-			if (tv_cur_block === 'cart') {
-				shop_item_delete();
-			}
+    //только на Филипсах xx14
+    case tv_keys.YOUTUBE:
+      Apps.open("youtube");
+      break;
+    case tv_keys.NETFLIX:
+      Apps.open("netflix");
+      break;
+    case tv_keys.CAST:
+      _tv_miracast();
+      break;
 
-			if (tv_cur_block === 'VODplayer') {
-				VOD.show_menu('subtitles');
-			}
-			break;
-		case tv_keys.BLUE:
-			if(fullscreen){
-				tv_change_audio();
-			}else{
-				if(tv_cur_block === 'VODplayer'){
-					VOD.show_menu('languages');
-				}else{
-					navigate('#language_select');
-				}
-			}
-			//tv_sel_block(active_page_id);
-			break;
+    case 69:
+    case 412:
+      if (tv_cur_block === "VODplayer") {
+        VOD.rwd(20);
+      }
+      break;
 
-		case tv_keys.PORTAL:
-		case tv_keys.GUIDE:
-		case tv_keys.Q_MENU:
-		case tv_keys.MENU:
-		case tv_keys.HOME:
-			if(fullscreen){
-				tv_mode();
-			}
-			else {
-				navigate('#menu');
-			}
-			break;
+    case 70:
+    case 413:
+      if (tv_cur_block === "VODplayer") {
+        tv_back(); //VOD.stop();
+      }
+      break;
 
-		//только на Филипсах xx14
-		case tv_keys.YOUTUBE:
-			Apps.open('youtube');
-			break;
-		case tv_keys.NETFLIX:
-			Apps.open('netflix');
-			break;
-		case tv_keys.CAST:
-			_tv_miracast();
-			break;
-	
+    case 72:
+    case 417:
+      if (tv_cur_block === "VODplayer") {
+        VOD.ffw(20);
+      }
+      break;
 
-		case 69:
-		case 412:
-			if(tv_cur_block === 'VODplayer'){
-				VOD.rwd(20);
-			}
-			break;
+    case 74:
+    case 19:
+      if (tv_cur_block === "VODplayer") {
+        VOD.pause();
+      }
+      break;
 
-		case 70:
-		case 413:
-			if(tv_cur_block === 'VODplayer'){
-				tv_back(); //VOD.stop();
-			}
-			break;
+    case 71:
+    case 415:
+      if (tv_cur_block === "VODplayer") {
+        VOD.play();
+      }
+      break;
 
-		case 72:
-		case 417:
-			if(tv_cur_block === 'VODplayer'){
-				VOD.ffw(20);
-			}
-			break;
+    case tv_keys.DOOREYE:
+      if (typeof DoorEye != "undefined") {
+        DoorEye.ask();
+      } else {
+        log.add("DoorEye: module not loaded!");
+      }
+      break;
 
-		case 74:
-		case 19:
-			if(tv_cur_block === 'VODplayer'){
-				VOD.pause();
-			}
-			break;
+    case tv_keys.VOL_UP:
+      //TODO: max volume from config
+      if (typeof _tv_set_volume == "function") {
+        _tv_get_volume()
+          .done(function (data) {
+            var tmp = Math.min(99, data + 1);
+            _tv_set_volume(tmp);
+            //TODO: должно быть через event handler
+            Volume.set(tmp);
+          })
+          .fail(function (f) {
+            log.add("VOLUME: failed to get");
+          });
+      } else {
+        log.add("VOLUME: not implemented");
+      }
+      break;
 
-		case 71:
-		case 415:
-			if(tv_cur_block === 'VODplayer'){
-				VOD.play();
-			}
-			break;
+    case tv_keys.VOL_DOWN:
+      if (typeof _tv_set_volume == "function") {
+        _tv_get_volume()
+          .done(function (data) {
+            var tmp = Math.max(0, data - 1);
+            _tv_set_volume(tmp);
+            //TODO: должно быть через event handler
+            Volume.set(tmp);
+          })
+          .fail(function (f) {
+            log.add("VOLUME: failed to get");
+          });
+      } else {
+        log.add("VOLUME: not implemented");
+      }
+      break;
 
-		case tv_keys.DOOREYE:
-			if(typeof(DoorEye) != 'undefined'){
-				DoorEye.ask();
-			}else{
-				log.add('DoorEye: module not loaded!');
-			}
-			break;
+    case tv_keys.MUTE:
+      tv_mute()
+        .done(function (data) {
+          if (data) {
+            Volume.set(-1);
+          } else {
+            _tv_get_volume().done(function (volume) {
+              Volume.set(volume);
+            });
+          }
+        })
+        .fail(function () {
+          console.log("VOLUME: mute failed");
+        });
+      break;
 
-		case tv_keys.VOL_UP:
-			//TODO: max volume from config
-			if(typeof(_tv_set_volume) == 'function'){
-				_tv_get_volume()
-				.done(function(data){
-					var tmp = Math.min(99, (data + 1));
-					_tv_set_volume(tmp);
-					//TODO: должно быть через event handler
-					Volume.set(tmp);
-				})
-				.fail(function(f){
-					log.add('VOLUME: failed to get');
-				});
-			}else{
-				log.add('VOLUME: not implemented');
-			}
-			break;
+    case tv_keys.NUMBERS:
+      Keypad.toggle();
+      break;
 
-		case tv_keys.VOL_DOWN:
-			if(typeof(_tv_set_volume) == 'function'){
-				_tv_get_volume()
-				.done(function(data){
-					var tmp = Math.max(0, (data - 1));
-					_tv_set_volume(tmp);
-					//TODO: должно быть через event handler
-					Volume.set(tmp);
-				})
-				.fail(function(f){
-					log.add('VOLUME: failed to get');
-				});
-			}else{
-				log.add('VOLUME: not implemented');
-			}
-			break;
-
-		case tv_keys.MUTE:
-			tv_mute()
-			.done(function(data){
-				if(data){
-					Volume.set(-1);
-				}else{
-					_tv_get_volume()
-					.done(function(volume){
-						Volume.set(volume);
-					});
-				}
-			})
-			.fail(function(){
-				console.log('VOLUME: mute failed');
-			});
-			break;
-
-		case tv_keys.NUMBERS:
-			Keypad.toggle();
-			break;
-
-		default:
-			//tv_log('code ' + code);
-			break;
-
-	}
-
+    default:
+      //tv_log('code ' + code);
+      break;
+  }
 }
 
 function tv_up() {
-	var tmp = $(active_page).find('.content'),
-		tmp_parent = tmp.parent(),
-		shift;
+  var tmp = $(active_page).find(".content"),
+    tmp_parent = tmp.parent(),
+    shift;
 
-	if (tv_cur_block === 'menu') {
+  if (tv_cur_block === "menu") {
+    if (metro_menu) {
+      metro_menu_move("up");
+      return true;
+    }
 
-		if (metro_menu) {
-			metro_menu_move('up');
-			return true;
-		}
+    if (tv_cur_pos > 0) {
+      tv_cur_pos--;
+    } else {
+      tv_cur_pos = 0;
+    }
+  } else if (tv_cur_block === "service_page") {
+    tmp = $(active_page).find(".content");
+    tmp_parent = tmp.parent();
 
-		if (tv_cur_pos > 0) {
-			tv_cur_pos--;
-		}
-		else {
-			tv_cur_pos = 0;
-		}
-	}
-	else if (tv_cur_block === 'service_page') {
-		tmp = $(active_page).find('.content');
-		tmp_parent = tmp.parent();
+    if ($(active_page).attr("scroll_to_bottom")) {
+      shift = Math.max(
+        tmp_parent.height() - tmp.outerHeight(),
+        Math.min(tmp.position().top + 50, 0)
+      );
+      tmp[0].style.top = shift + "px";
+    } else {
+      shift = Math.min(
+        0,
+        Math.max(
+          tmp.position().top + 50,
+          tmp_parent.height() - tmp.outerHeight()
+        )
+      );
+      tmp[0].style.top = shift + "px";
+    }
 
-		if ($(active_page).attr('scroll_to_bottom')) {
-			shift = Math.max((tmp_parent.height() - tmp.outerHeight()), Math.min(tmp.position().top + 50,0));
-			tmp[0].style.top = shift + 'px';
-		}
-		else {
-			shift = Math.min(0, Math.max(tmp.position().top + 50,(tmp_parent.height() - tmp.outerHeight())));
-			tmp[0].style.top = shift + 'px';
-		}
+    if (
+      tv_sel_list[tv_cur_pos - 1] &&
+      $(tv_sel_list[tv_cur_pos - 1]).hasClass("button")
+    ) {
+      tv_cur_pos--;
+      tv_sel_cur("up");
+    }
 
-		if (tv_sel_list[tv_cur_pos-1] && $(tv_sel_list[tv_cur_pos-1]).hasClass('button')) {
-			tv_cur_pos--;
-			tv_sel_cur('up');
-		}
+    move_scroll(shift);
+    return true;
+  } else if (tv_cur_block === "show_gallery") {
+    return true;
+  } else if (
+    tv_cur_block === "shopitem" ||
+    ((tv_cur_block === "order_details" || tv_cur_block === "orders") &&
+      tv_sel_list.length === 1)
+  ) {
+    tmp = $(active_page).find(".content");
+    tmp_parent = tmp.parent();
 
-		move_scroll(shift);
-		return true;
-	}
-	else if (tv_cur_block === 'show_gallery') {
-		return true;
-	}
-	else if (
-		tv_cur_block === 'shopitem' ||
-		(
-			(
-				tv_cur_block === 'order_details' ||
-				tv_cur_block === 'orders'
-			) &&
-				tv_sel_list.length === 1
-		)
-	) {
+    if ($(active_page).attr("scroll_to_bottom")) {
+      shift = Math.max(
+        tmp_parent.height() - tmp.outerHeight(),
+        Math.min(tmp.position().top + 50, 0)
+      );
+      tmp[0].style.top = shift + "px";
+    } else {
+      shift = Math.min(
+        0,
+        Math.max(
+          tmp.position().top + 50,
+          tmp_parent.height() - tmp.outerHeight()
+        )
+      );
+      tmp[0].style.top = shift + "px";
+    }
 
-		tmp = $(active_page).find('.content');
-		tmp_parent = tmp.parent();
+    move_scroll(shift);
 
-		if ($(active_page).attr('scroll_to_bottom')) {
-			shift = Math.max((tmp_parent.height() - tmp.outerHeight()), Math.min(tmp.position().top + 50,0));
-			tmp[0].style.top = shift + 'px';
-		}
-		else {
-			shift = Math.min(0, Math.max(tmp.position().top + 50,(tmp_parent.height() - tmp.outerHeight())));
-			tmp[0].style.top = shift + 'px';
-		}
+    if (tv_cur_pos > 0) {
+      tv_cur_pos--;
+    } else {
+      tv_cur_pos = 0;
+    }
+  } else if (
+    tv_cur_block === "settings" ||
+    tv_cur_block === "weather_select_location" ||
+    tv_cur_block === "mod_playlist" ||
+    tv_cur_block === "popup" ||
+    tv_cur_block === "toppings" ||
+    tv_cur_block === "language" ||
+    tv_cur_block === "category" ||
+    tv_cur_block === "cart" ||
+    ((tv_cur_block === "order_details" || tv_cur_block === "orders") &&
+      tv_sel_list.length > 1)
+  ) {
+    if (tv_cur_pos > 0) {
+      tv_cur_pos--;
+    } else {
+      tv_cur_pos = 0;
+    }
+  } else if (tv_cur_block === "dialog") {
+    metro_menu_move("up");
+    return true;
+  } else if (tv_cur_block === "pagelist" || tv_cur_block === "VODcategory") {
+    metro_menu_move("up");
 
-		move_scroll(shift);
+    if (tv_cur_block === "VODcategory") {
+      VirtualScroll.set(tv_cur_block, tv_cur_block);
+    }
+    return true;
+  } else if (tv_cur_block === "feedback") {
+    if (
+      tv_cur_elem.parent().hasClass("stars") ||
+      tv_cur_elem.parent().hasClass("emoticons")
+    ) {
+      tmp = tv_cur_elem.index();
+      if (tv_cur_pos - (tmp + 1) > 0) {
+        if (
+          $(tv_sel_list[tv_cur_pos - (tmp + 1)])
+            .parent()
+            .hasClass("stars")
+        ) {
+          tv_cur_pos -= 5;
+        } else {
+          tv_cur_pos = tv_cur_pos - (tmp + 1);
+        }
+      }
+    } else {
+      if (tv_cur_pos > 0) {
+        if (
+          $(tv_sel_list[tv_cur_pos - 1])
+            .parent()
+            .hasClass("stars")
+        ) {
+          tv_cur_pos -= 5;
+        } else {
+          tv_cur_pos--;
+        }
+      } else {
+        tv_cur_pos = 0;
+      }
+    }
+  } else if (tv_cur_block === "tv_channellist") {
+    if (tv_channellist_type === "vertical_new") {
+      VerticalChannel.showEpg();
+    }
 
-		if (tv_cur_pos > 0) {
-			tv_cur_pos--;
-		}
-		else {
-			tv_cur_pos = 0;
-		}
-	}
-	else if (
-		tv_cur_block === 'settings' ||
-		tv_cur_block === 'weather_select_location' ||
-		tv_cur_block === 'mod_playlist' ||
-		tv_cur_block === 'popup' ||
-		tv_cur_block === 'toppings' ||
-		tv_cur_block === 'language' ||
-		tv_cur_block === 'category' ||
-		tv_cur_block === 'cart' ||
-		(
-			(
-				tv_cur_block === 'order_details' ||
-				tv_cur_block === 'orders'
-			) &&
-				tv_sel_list.length > 1
-		)
-	) {
+    tv_left();
+    return true;
+  } else if (tv_cur_block === "VODplayer") {
+    if (!VOD.playerVisible) {
+      VOD.show();
+    }
+  } else if (tv_cur_block !== "tv_welcome") {
+    // DEFAULT
+    tmp = $(active_page).find(".content");
+    tmp_parent = tmp.parent();
 
-		if (tv_cur_pos > 0) {
-			tv_cur_pos--;
-		}
-		else {
-			tv_cur_pos = 0;
-		}
-	}
-	else if (tv_cur_block === 'dialog') {
-		metro_menu_move('up');
-		return true;
-	}
-	else if (
-		tv_cur_block === 'pagelist' ||
-		tv_cur_block === 'VODcategory'
-	) {
-		metro_menu_move('up');
+    if ($(active_page).attr("scroll_to_bottom")) {
+      shift = Math.max(
+        tmp_parent.height() - tmp.outerHeight(),
+        Math.min(tmp.position().top + 50, 0)
+      );
+      tmp[0].style.top = shift + "px";
+    } else {
+      shift = Math.min(
+        0,
+        Math.max(
+          tmp.position().top + 50,
+          tmp_parent.height() - tmp.outerHeight()
+        )
+      );
+      tmp[0].style.top = shift + "px";
+    }
 
-		if (tv_cur_block === 'VODcategory') {
-			VirtualScroll.set(tv_cur_block, tv_cur_block);
-		}
-		return true;
-	}
-	else if (tv_cur_block === 'feedback') {
-		if (
-			tv_cur_elem.parent().hasClass('stars') ||
-			tv_cur_elem.parent().hasClass('emoticons')
-		) {
-			tmp = tv_cur_elem.index();
-			if (tv_cur_pos - (tmp+1) > 0) {
-				if ($(tv_sel_list[tv_cur_pos - (tmp+1)]).parent().hasClass('stars')) {
-					tv_cur_pos -= 5;
-				}
-				else {
-					tv_cur_pos = tv_cur_pos - (tmp+1);
-				}
-			}
-		}
-		else {
-			if (tv_cur_pos > 0) {
-				if ($(tv_sel_list[tv_cur_pos-1]).parent().hasClass('stars')) {
-					tv_cur_pos -= 5;
-				}
-				else {
-					tv_cur_pos--;
-				}
-			}
-			else {
-				tv_cur_pos = 0;
-			}
-		}
-	}
-	else if (tv_cur_block === 'tv_channellist') {
-		if (tv_channellist_type === 'vertical_new') {
-			VerticalChannel.showEpg();
-		}
+    move_scroll(shift);
+  }
 
-		tv_left();
-		return true;
-	}
-	else if (tv_cur_block === 'VODplayer') {
-		if (!VOD.playerVisible) {VOD.show();}
-	}
-	else if (tv_cur_block !== 'tv_welcome') { // DEFAULT
-		tmp = $(active_page).find('.content');
-		tmp_parent = tmp.parent();
-
-		if ($(active_page).attr('scroll_to_bottom')) {
-			shift = Math.max((tmp_parent.height() - tmp.outerHeight()), Math.min(tmp.position().top + 50,0));
-			tmp[0].style.top = shift + 'px';
-		}
-		else {
-			shift = Math.min(0, Math.max(tmp.position().top + 50,(tmp_parent.height() - tmp.outerHeight())));
-			tmp[0].style.top = shift + 'px';
-		}
-
-		move_scroll(shift);
-	}
-
-	change_sel_list('up');
-	tv_sel_cur();
+  change_sel_list("up");
+  tv_sel_cur();
 }
 
 function tv_down() {
-	var tmp,
-		tmp_parent,
-		shift;
+  var tmp, tmp_parent, shift;
 
-	if (!tv_cur_block) {
-		navigate('#menu');
-	}
-	else {
-		if (tv_cur_block === 'menu') {
+  if (!tv_cur_block) {
+    navigate("#menu");
+  } else {
+    if (tv_cur_block === "menu") {
+      if (metro_menu) {
+        metro_menu_move("down");
+        return true;
+      }
 
-			if (metro_menu) {
-				metro_menu_move('down');
-				return true;
-			}
+      if (scandic_menu) {
+        return false;
+      }
 
-			if (scandic_menu) {
-				return false;
-			}
+      if (tv_cur_pos < tv_max_pos - 1) {
+        tv_cur_pos++;
+      } else {
+        tv_cur_pos = tv_max_pos - 1;
+      }
+    } else if (tv_cur_block === "service_page") {
+      tmp = $(active_page).find(".content");
+      tmp_parent = tmp.parent();
 
-			if (tv_cur_pos < tv_max_pos - 1) {
-				tv_cur_pos++;
-			}
-			else {
-				tv_cur_pos = tv_max_pos - 1;
-			}
-		}
-		else if (tv_cur_block === 'service_page') {
-			tmp = $(active_page).find('.content');
-			tmp_parent = tmp.parent();
+      if ($(active_page).attr("scroll_to_bottom")) {
+        shift = Math.max(
+          tmp.position().top - 50,
+          tmp_parent.height() - tmp.outerHeight()
+        );
+        tmp[0].style.top = shift + "px";
+      } else {
+        shift = Math.min(
+          0,
+          Math.max(
+            tmp.position().top - 50,
+            tmp_parent.height() - tmp.outerHeight()
+          )
+        );
+        tmp[0].style.top = shift + "px";
+      }
 
-			if ($(active_page).attr('scroll_to_bottom')) {
+      move_scroll(shift);
 
-				shift = Math.max(tmp.position().top - 50,(tmp_parent.height() - tmp.outerHeight()));
-				tmp[0].style.top = shift + 'px';
+      if (tv_cur_elem.hasClass("button") && tv_sel_list[tv_cur_pos + 1]) {
+        tv_cur_pos++;
+        tv_sel_cur("down");
+      }
 
-			}
-			else {
+      return true;
+    } else if (tv_cur_block === "show_gallery") {
+      return true;
+    } else if (
+      tv_cur_block === "shopitem" ||
+      ((tv_cur_block === "order_details" || tv_cur_block === "orders") &&
+        tv_sel_list.length === 1)
+    ) {
+      tmp = $(active_page).find(".content");
+      tmp_parent = tmp.parent();
 
-				shift = Math.min(0, Math.max(tmp.position().top - 50,(tmp_parent.height() - tmp.outerHeight())));
-				tmp[0].style.top = shift +'px';
+      if ($(active_page).attr("scroll_to_bottom")) {
+        shift = Math.max(
+          tmp.position().top - 50,
+          tmp_parent.height() - tmp.outerHeight()
+        );
+      } else {
+        shift = Math.min(
+          0,
+          Math.max(
+            tmp.position().top - 50,
+            tmp_parent.height() - tmp.outerHeight()
+          )
+        );
+      }
 
-			}
+      tmp[0].style.top = shift + "px";
+      move_scroll(shift);
 
-			move_scroll(shift);
+      if (tv_cur_pos < tv_max_pos - 1) {
+        tv_cur_pos++;
+      }
+    } else if (tv_cur_block === "dialog") {
+      metro_menu_move("down");
+      return true;
+    } else if (tv_cur_block === "pagelist" || tv_cur_block === "VODcategory") {
+      metro_menu_move("down");
 
-			if (tv_cur_elem.hasClass('button') && tv_sel_list[tv_cur_pos+1]) {
-				tv_cur_pos++;
-				tv_sel_cur('down');
-			}
+      if (tv_cur_block === "VODcategory") {
+        VirtualScroll.set(tv_cur_block, tv_cur_block);
+      }
+      return true;
+    } else if (tv_cur_block === "feedback") {
+      if (
+        tv_cur_elem.parent().hasClass("stars") ||
+        tv_cur_elem.parent().hasClass("emoticons")
+      ) {
+        tmp = tv_cur_elem.index();
+        if (tv_cur_pos + (5 - tmp) < tv_max_pos) {
+          if (
+            $(tv_sel_list[tv_cur_pos + (5 - tmp)])
+              .parent()
+              .hasClass("stars")
+          ) {
+            tv_cur_pos += 5;
+          } else {
+            tv_cur_pos = tv_cur_pos + (5 - tmp);
+          }
+        }
+      } else {
+        if (tv_cur_pos < tv_max_pos - 1) {
+          tv_cur_pos++;
+        } else {
+          tv_cur_pos = tv_max_pos - 1;
+        }
+      }
+    } else if (tv_cur_block === "tv_channellist") {
+      if (tv_channellist_type === "vertical_new") {
+        VerticalChannel.showEpg();
+      }
 
-			return true;
-		}
-		else if (tv_cur_block === 'show_gallery') {
-			return true;
-		}
-		else if (
-			tv_cur_block === 'shopitem' ||
-			(
-				(
-					tv_cur_block === 'order_details' ||
-					tv_cur_block === 'orders'
-				) &&
-					tv_sel_list.length === 1
-			)
-		) {
+      tv_right();
+      return true;
+    } else if (tv_cur_block === "VODplayer") {
+      if (!VOD.playerVisible) {
+        VOD.show();
+      }
+    } else if (
+      tv_cur_block === "settings" ||
+      tv_cur_block === "weather_select_location" ||
+      tv_cur_block === "mod_playlist" ||
+      tv_cur_block === "popup" ||
+      tv_cur_block === "toppings" ||
+      tv_cur_block === "language" ||
+      tv_cur_block === "category" ||
+      tv_cur_block === "cart" ||
+      ((tv_cur_block === "order_details" || tv_cur_block === "orders") &&
+        tv_sel_list.length > 1)
+    ) {
+      if (tv_cur_pos < tv_max_pos - 1) {
+        tv_cur_pos++;
+      }
+    } else if (tv_cur_block !== "tv_welcome") {
+      tmp = $(active_page).find(".content");
+      tmp_parent = tmp.parent();
 
-			tmp = $(active_page).find('.content');
-			tmp_parent = tmp.parent();
+      if ($(active_page).attr("scroll_to_bottom")) {
+        shift = Math.max(
+          tmp.position().top - 50,
+          tmp_parent.height() - tmp.outerHeight()
+        );
+        tmp[0].style.top = shift + "px";
+      } else {
+        shift = Math.min(
+          0,
+          Math.max(
+            tmp.position().top - 50,
+            tmp_parent.height() - tmp.outerHeight()
+          )
+        );
+        tmp[0].style.top = shift + "px";
+      }
 
-			if ($(active_page).attr('scroll_to_bottom')) {
+      move_scroll(shift);
+    }
+  }
 
-				shift = Math.max(
-					tmp.position().top - 50,
-					tmp_parent.height() - tmp.outerHeight()
-				);
-
-			}
-			else {
-
-				shift = Math.min(
-					0,
-					Math.max(
-						tmp.position().top - 50,
-						tmp_parent.height() - tmp.outerHeight()
-					)
-				);
-
-			}
-
-			tmp[0].style.top = shift + 'px';
-			move_scroll(shift);
-
-			if (tv_cur_pos < tv_max_pos - 1) {
-				tv_cur_pos++;
-			}
-
-		}
-		else if (tv_cur_block === 'dialog') {
-			metro_menu_move('down');
-			return true;
-		}
-		else if (
-			tv_cur_block === 'pagelist' ||
-			tv_cur_block === 'VODcategory'
-		) {
-			metro_menu_move('down');
-
-			if (tv_cur_block === 'VODcategory') {
-				VirtualScroll.set(tv_cur_block, tv_cur_block);
-			}
-			return true;
-		}
-		else if (tv_cur_block === 'feedback') {
-			if (
-				tv_cur_elem.parent().hasClass('stars') ||
-				tv_cur_elem.parent().hasClass('emoticons')
-			) {
-				tmp = tv_cur_elem.index();
-				if (tv_cur_pos + (5 - tmp) < tv_max_pos) {
-					if ($(tv_sel_list[tv_cur_pos + (5 - tmp)]).parent().hasClass('stars')) {
-						tv_cur_pos += 5;
-					}
-					else {
-						tv_cur_pos = tv_cur_pos + (5 - tmp);
-					}
-				}
-			}
-			else {
-				if (tv_cur_pos < tv_max_pos - 1) {
-					tv_cur_pos++;
-				}
-				else {
-					tv_cur_pos = tv_max_pos - 1;
-				}
-			}
-		}
-		else if (tv_cur_block === 'tv_channellist') {
-			if (tv_channellist_type === 'vertical_new') {
-				VerticalChannel.showEpg();
-			}
-
-			tv_right();
-			return true;
-		}
-		else if (tv_cur_block === 'VODplayer') {
-			if (!VOD.playerVisible) {
-				VOD.show();
-			}
-		}
-		else if (
-			tv_cur_block === 'settings' ||
-			tv_cur_block === 'weather_select_location' ||
-			tv_cur_block === 'mod_playlist' ||
-			tv_cur_block === 'popup' ||
-			tv_cur_block === 'toppings' ||
-			tv_cur_block === 'language' ||
-			tv_cur_block === 'category' ||
-			tv_cur_block === 'cart' ||
-			(
-				(
-					tv_cur_block === 'order_details' ||
-					tv_cur_block === 'orders'
-				) &&
-					tv_sel_list.length > 1
-			)
-		) {
-
-			if (tv_cur_pos < tv_max_pos - 1) {
-				tv_cur_pos++;
-			}
-		}
-		else if (tv_cur_block !== 'tv_welcome') {
-			tmp = $(active_page).find('.content');
-			tmp_parent = tmp.parent();
-
-			if ($(active_page).attr('scroll_to_bottom')) {
-
-				shift = Math.max(tmp.position().top - 50,(tmp_parent.height() - tmp.outerHeight()));
-				tmp[0].style.top = shift + 'px';
-
-			}
-			else {
-
-				shift = Math.min(0, Math.max(tmp.position().top - 50,(tmp_parent.height() - tmp.outerHeight())));
-				tmp[0].style.top = shift +'px';
-
-			}
-
-			move_scroll(shift);
-		}
-	}
-
-	change_sel_list('down');
-	tv_sel_cur();
+  change_sel_list("down");
+  tv_sel_cur();
 }
 
 function move_scroll(shift, target) {
-	var scroll;
+  var scroll;
 
-	if (!target) {
-		scroll = document.getElementById(active_page_id+'_scroll_inner');
-	}
-	else {
-		scroll = document.getElementById(target + '_scroll_inner');
-	}
+  if (!target) {
+    scroll = document.getElementById(active_page_id + "_scroll_inner");
+  } else {
+    scroll = document.getElementById(target + "_scroll_inner");
+  }
 
-	if(scroll && tv_cur_block !== 'menu') {
-		var val;
+  if (scroll && tv_cur_block !== "menu") {
+    var val;
 
-		if (
-			(
-				tv_cur_block === 'pagelist' ||
-				tv_cur_block === 'cart' ||
-				tv_cur_block === 'language' ||
-				tv_cur_block === 'category'
-			) &&
-			(tv_cur_pos + 1) === tv_sel_list.length
-		) {
-			val = scroll.max;
-		}
-		else {
-			val = Math.min(scroll.max, Math.max(0, -(shift) * scroll.coef))|0;
-		}
+    if (
+      (tv_cur_block === "pagelist" ||
+        tv_cur_block === "cart" ||
+        tv_cur_block === "language" ||
+        tv_cur_block === "category") &&
+      tv_cur_pos + 1 === tv_sel_list.length
+    ) {
+      val = scroll.max;
+    } else {
+      val = Math.min(scroll.max, Math.max(0, -shift * scroll.coef)) | 0;
+    }
 
-		//scroll.style[css_transform] = 'translate3D(0,'+val+'px,0)';
-		scroll.style.top = val + 'px';
+    //scroll.style[css_transform] = 'translate3D(0,'+val+'px,0)';
+    scroll.style.top = val + "px";
 
-		// добавление теней к тексту
-		// manageShadowOnPage({
-		//     shift: shift,
-		//     scroll: scroll,
-		//     value: val
-		// });
-	}
-
+    // добавление теней к тексту
+    // manageShadowOnPage({
+    //     shift: shift,
+    //     scroll: scroll,
+    //     value: val
+    // });
+  }
 }
 
-function tv_left(){
-	if (tv_cur_block === 'menu') {
-		if (metro_menu) {
-			metro_menu_move('left');
-			return true;
-		}
-		if (scandic_menu) {
-			var isPermitted = cursorMovingPermitted.get({
-				key: 'scandic_menu',
-				direct: 'left'
-			});
+function tv_left() {
+  if (tv_cur_block === "menu") {
+    if (metro_menu) {
+      metro_menu_move("left");
+      return true;
+    }
+    if (scandic_menu) {
+      var isPermitted = cursorMovingPermitted.get({
+        key: "scandic_menu",
+        direct: "left",
+      });
 
-			if (!isPermitted) {
-				return false;
-			}
+      if (!isPermitted) {
+        return false;
+      }
 
-			if (tv_cur_pos > 0) {
-				previousPosition.set(tv_cur_pos);
-				tv_cur_pos--;
-				tv_sel_cur();
-			}
+      if (tv_cur_pos > 0) {
+        previousPosition.set(tv_cur_pos);
+        tv_cur_pos--;
+        tv_sel_cur();
+      }
 
-			return true;
-		}
-	}
-	else if (
-		tv_cur_block === 'pagelist' ||
-		tv_cur_block === 'VODcategory'
-	) {
-		if (
-			metro_menu_move('left') === false &&
-			classic_menu
-		) {
-			navigate('#menu');
-		}
+      return true;
+    }
+  } else if (tv_cur_block === "pagelist" || tv_cur_block === "VODcategory") {
+    if (metro_menu_move("left") === false && classic_menu) {
+      navigate("#menu");
+    }
 
-		if (tv_cur_block === 'VODcategory') {
-			VirtualScroll.set(tv_cur_block, tv_cur_block);
-		}
-		return true;
-	}
-	else if (tv_cur_block === 'cart') {
-		if (tv_cur_elem.hasClass('shop_plusminus')) {
-			shop_minus_persons();
-		}
-		else if (classic_menu) {
-			navigate('#menu');
-		}
-	}
-	else if (tv_cur_block === 'gallery') {
-		if ((tv_cur_pos > 0)) {
-			tv_cur_pos--;
-			var tmp = $(active_page).find('.gallery_indicator');
-			tmp.find('DIV.current').removeClass('current');
-			$(tmp.find('DIV')[tv_cur_pos]).addClass('current');
-			$(active_page).find('.gallery_container')[0].style[css_transform] = 'translate3d('+(-pw*tv_cur_pos)+'px,0,0)';
-		}
-		else {
-			if (classic_menu) {
-				navigate('#menu');
-			}
-		}
-	}
-	else if (tv_cur_block === 'guide') {
-		if ((tv_cur_pos > 0)) {
-			tv_cur_pos--;
-		}
-		else {
-			if (classic_menu) {
-				navigate('#menu');
-			}
-		}
-	}
-	else if (tv_cur_block === 'tv_channellist') {
-		if (tv_channellist_hidden) {
-			tv_channellist_show(true);
-		}
-		if (tv_cur_pos > 0) {
-			tv_cur_pos--;
-		}
-		else {
-			if (tv_channellist_type === 'vertical_new') {
-				tv_cur_pos = tv_max_pos - 1;
-			}
-			else {
-				return true;
-			}
-			//tv_cur_pos = tv_max_pos - 1;
-		}
-		tv_channellist_fade(true);
-	}
-	else if (tv_cur_block === 'service_page') {
+    if (tv_cur_block === "VODcategory") {
+      VirtualScroll.set(tv_cur_block, tv_cur_block);
+    }
+    return true;
+  } else if (tv_cur_block === "cart") {
+    if (tv_cur_elem.hasClass("shop_plusminus")) {
+      shop_minus_persons();
+    } else if (classic_menu) {
+      navigate("#menu");
+    }
+  } else if (tv_cur_block === "gallery") {
+    if (tv_cur_pos > 0) {
+      tv_cur_pos--;
+      var tmp = $(active_page).find(".gallery_indicator");
+      tmp.find("DIV.current").removeClass("current");
+      $(tmp.find("DIV")[tv_cur_pos]).addClass("current");
+      $(active_page).find(".gallery_container")[0].style[css_transform] =
+        "translate3d(" + -pw * tv_cur_pos + "px,0,0)";
+    } else {
+      if (classic_menu) {
+        navigate("#menu");
+      }
+    }
+  } else if (tv_cur_block === "guide") {
+    if (tv_cur_pos > 0) {
+      tv_cur_pos--;
+    } else {
+      if (classic_menu) {
+        navigate("#menu");
+      }
+    }
+  } else if (tv_cur_block === "tv_channellist") {
+    if (tv_channellist_hidden) {
+      tv_channellist_show(true);
+    }
+    if (tv_cur_pos > 0) {
+      tv_cur_pos--;
+    } else {
+      if (tv_channellist_type === "vertical_new") {
+        tv_cur_pos = tv_max_pos - 1;
+      } else {
+        return true;
+      }
+      //tv_cur_pos = tv_max_pos - 1;
+    }
+    tv_channellist_fade(true);
+  } else if (tv_cur_block === "service_page") {
+    if (classic_menu) {
+      navigate("#menu");
+    }
 
-		if (classic_menu) {
-			navigate('#menu');
-		}
+    return true;
+  } else if (tv_cur_block === "settings") {
+    //actually DEAFULT
+    if (
+      tv_sel_list[tv_cur_pos - 1] &&
+      ($(tv_sel_list[tv_cur_pos - 1]).hasClass("timepicker") ||
+        $(tv_sel_list[tv_cur_pos - 1]).hasClass("button"))
+    ) {
+      tv_cur_pos--;
+    } else {
+      if (tv_cur_elem.hasClass("button")) {
+        return tv_back();
+      }
 
-		return true;
-	}
-	else if (tv_cur_block === 'settings') { //actually DEAFULT
-		if (
-			tv_sel_list[tv_cur_pos-1] &&
-			(
-				$(tv_sel_list[tv_cur_pos-1]).hasClass('timepicker') ||
-				$(tv_sel_list[tv_cur_pos-1]).hasClass('button')
-			)
-		) {
-			tv_cur_pos--;
-		}
-		else {
-			if (tv_cur_elem.hasClass('button')) {
-				return tv_back();
-			}
+      if (classic_menu) {
+        if (Wakeupcall.opened) {
+          return Wakeupcall.close("choose_wakeup");
+        }
 
-			if (classic_menu) {
-				if (Wakeupcall.opened) {
-					return Wakeupcall.close('choose_wakeup');
-				}
-
-				navigate('#menu');
-			}
-		}
-	}
-	else if (tv_cur_block === 'shopitem') {
-		if (tv_cur_elem.hasClass('shop_plusminus')) {
-			shop_minus();
-		}
-		else {
-			if (classic_menu) {
-				navigate('#menu');
-			}
-		}
-	}
-	else if (tv_cur_block === 'toppings') {
-		if (tv_cur_elem.hasClass('shop_plusminus')) {
-			shop_minus('#' + tv_cur_elem.attr('id'));
-		}
-		else if (tv_cur_elem.hasClass('shop_radio')) {
-			shop_change_radio('#' + tv_cur_elem.attr('id'));
-		}
-	}
-	else if (tv_cur_block === 'feedback') {
-		if (
-			tv_cur_elem.parent().hasClass('stars') ||
-			tv_cur_elem.parent().hasClass('emoticons')
-		) {
-			if (tv_cur_elem.index() > 0) {
-				tv_cur_pos--;
-			}
-			else {
-				if(classic_menu){
-					navigate('#menu');
-				}
-			}
-		}
-		else {
-			if (classic_menu) {
-				navigate('#menu');
-			}
-		}
-	}
-	else if (tv_cur_block === 'tv_welcome') {
-		if (tv_cur_elem.hasClass('btn_lng')) {
-			if (tv_cur_pos > 0) {
-				tv_cur_pos--;
-			}
-			else {
-				return true;
-			}
-		}
-	}
-	else if (tv_cur_block === 'dialog' || tv_cur_block === 'popup') {
-		metro_menu_move('left');
-		return true;
-	}
-	else if(tv_cur_block === 'VODplayer') {
-		if (VOD.playerVisible) {
-			if ((tv_cur_pos > 0)) {
-				tv_cur_pos--;
-			}
-			VOD.hideReset();
-		}
-		else {
-			VOD.show();
-		}
-	}
-	else if (
-		tv_cur_block === 'mod_playlist' ||
-		tv_cur_block === 'time_picker'
-	) {
-		if (tv_cur_pos > 0) {
-			tv_cur_pos--;
-		}
-	}
-	else {
-		//TODO: move to module override
-		if(tv_cur_block == 'scroll' && !classic_menu){
-			scroll_to_top();
-		}
-		if (classic_menu) {
-			navigate('#menu');
-		}
-	}
-	tv_sel_cur();
+        navigate("#menu");
+      }
+    }
+  } else if (tv_cur_block === "shopitem") {
+    if (tv_cur_elem.hasClass("shop_plusminus")) {
+      shop_minus();
+    } else {
+      if (classic_menu) {
+        navigate("#menu");
+      }
+    }
+  } else if (tv_cur_block === "toppings") {
+    if (tv_cur_elem.hasClass("shop_plusminus")) {
+      shop_minus("#" + tv_cur_elem.attr("id"));
+    } else if (tv_cur_elem.hasClass("shop_radio")) {
+      shop_change_radio("#" + tv_cur_elem.attr("id"));
+    }
+  } else if (tv_cur_block === "feedback") {
+    if (
+      tv_cur_elem.parent().hasClass("stars") ||
+      tv_cur_elem.parent().hasClass("emoticons")
+    ) {
+      if (tv_cur_elem.index() > 0) {
+        tv_cur_pos--;
+      } else {
+        if (classic_menu) {
+          navigate("#menu");
+        }
+      }
+    } else {
+      if (classic_menu) {
+        navigate("#menu");
+      }
+    }
+  } else if (tv_cur_block === "tv_welcome") {
+    if (tv_cur_elem.hasClass("btn_lng")) {
+      if (tv_cur_pos > 0) {
+        tv_cur_pos--;
+      } else {
+        return true;
+      }
+    }
+  } else if (tv_cur_block === "dialog" || tv_cur_block === "popup") {
+    metro_menu_move("left");
+    return true;
+  } else if (tv_cur_block === "VODplayer") {
+    if (VOD.playerVisible) {
+      if (tv_cur_pos > 0) {
+        tv_cur_pos--;
+      }
+      VOD.hideReset();
+    } else {
+      VOD.show();
+    }
+  } else if (
+    tv_cur_block === "mod_playlist" ||
+    tv_cur_block === "time_picker"
+  ) {
+    if (tv_cur_pos > 0) {
+      tv_cur_pos--;
+    }
+  } else {
+    //TODO: move to module override
+    if (tv_cur_block == "scroll" && !classic_menu) {
+      scroll_to_top();
+    }
+    if (classic_menu) {
+      navigate("#menu");
+    }
+  }
+  tv_sel_cur();
 }
 
-function tv_right(){
-	if (tv_cur_block === 'menu'){
+function tv_right() {
+  if (tv_cur_block === "menu") {
+    if (metro_menu) {
+      metro_menu_move("right");
+      return true;
+    }
+    if (scandic_menu) {
+      var isPermitted = cursorMovingPermitted.get({
+        key: "scandic_menu",
+        direct: "right",
+      });
 
-		if(metro_menu){
-			metro_menu_move('right');
-			return true;
-		}
-		if (scandic_menu) {
-			var isPermitted = cursorMovingPermitted.get({
-				key: 'scandic_menu',
-				direct: 'right'
-			});
+      if (!isPermitted) {
+        return false;
+      }
 
-			if (!isPermitted) {
-				return false;
-			}
+      if (tv_cur_pos < tv_max_pos - 1) {
+        previousPosition.set(tv_cur_pos);
+        tv_cur_pos++;
+        tv_sel_cur();
+      }
 
+      return true;
+    }
 
-			if (tv_cur_pos < tv_max_pos - 1) {
-				previousPosition.set(tv_cur_pos);
-				tv_cur_pos++;
-				tv_sel_cur();
-			}
+    var widgetList = widgetObserver.get_list("id");
+    if (widgetList && widgetList.indexOf(active_page_id) !== -1) {
+      widgetObserver.open(active_page_id);
+      return;
+    }
 
-			return true;
-		}
+    //TODO: странная механика (сделано только для будильника в классике)
+    var activeItem = document.querySelector("#menu .active");
+    if (activeItem && activeItem.hasAttribute("onvclick")) {
+      return $(activeItem).trigger(event_link);
+    }
 
-		var widgetList = widgetObserver.get_list('id');
-		if (widgetList && widgetList.indexOf(active_page_id) !== -1) {
-			widgetObserver.open(active_page_id);
-			return;
-		}
+    tv_sel_block(active_page_id);
+    return true;
+  } else if (tv_cur_block === "pagelist" || tv_cur_block === "VODcategory") {
+    metro_menu_move("right");
 
-		//TODO: странная механика (сделано только для будильника в классике)
-		var activeItem = document.querySelector('#menu .active');
-		if (activeItem && activeItem.hasAttribute('onvclick')) {
-			return $(activeItem).trigger(event_link);
-		}
+    if (tv_cur_block === "VODcategory") {
+      VirtualScroll.set(tv_cur_block, tv_cur_block);
+    }
+    return true;
+  } else if (tv_cur_block === "cart") {
+    if (tv_cur_elem.hasClass("shop_plusminus")) {
+      shop_plus_persons();
+    }
+  } else if (tv_cur_block === "gallery") {
+    if (tv_cur_pos < tv_max_pos - 1) {
+      tv_cur_pos++;
+      var tmp = $(active_page).find(".gallery_indicator");
+      tmp.find("DIV.current").removeClass("current");
+      $(tmp.find("DIV")[tv_cur_pos]).addClass("current");
+      $(active_page).find(".gallery_container")[0].style[css_transform] =
+        "translate3d(" + -pw * tv_cur_pos + "px,0,0)";
+    }
+  } else if (tv_cur_block === "guide") {
+    if (tv_cur_pos < tv_max_pos - 1) {
+      tv_cur_pos++;
+    }
+  } else if (tv_cur_block === "tv_channellist") {
+    if (tv_channellist_hidden) {
+      tv_channellist_show(true);
+    }
+    if (tv_cur_pos < tv_max_pos - 1) {
+      tv_cur_pos++;
+    } else {
+      if (tv_channellist_type === "vertical_new") {
+        tv_cur_pos = 0;
+      } else {
+        return true;
+      }
 
-		tv_sel_block(active_page_id);
-		return true;
-	}
-	else if (
-		tv_cur_block === 'pagelist' ||
-		tv_cur_block === 'VODcategory'
-	) {
-		metro_menu_move('right');
-
-		if (tv_cur_block === 'VODcategory') {
-			VirtualScroll.set(tv_cur_block, tv_cur_block);
-		}
-		return true;
-	}
-	else if (tv_cur_block === 'cart') {
-		if (tv_cur_elem.hasClass('shop_plusminus')) {
-			shop_plus_persons();
-		}
-	}
-	else if (tv_cur_block === 'gallery') {
-		if ((tv_cur_pos < tv_max_pos - 1)) {
-			tv_cur_pos++;
-			var tmp = $(active_page).find('.gallery_indicator');
-			tmp.find('DIV.current').removeClass('current');
-			$(tmp.find('DIV')[tv_cur_pos]).addClass('current');
-			$(active_page).find('.gallery_container')[0].style[css_transform] = 'translate3d('+(-pw*tv_cur_pos)+'px,0,0)';
-		}
-	}
-	else if (tv_cur_block === 'guide') {
-		if ((tv_cur_pos < tv_max_pos - 1)) {
-			tv_cur_pos++;
-		}
-	}
-	else if (tv_cur_block === 'tv_channellist') {
-		if (tv_channellist_hidden) {
-			tv_channellist_show(true);
-		}
-		if ((tv_cur_pos < tv_max_pos - 1)) {
-			tv_cur_pos++;
-		}
-		else {
-			if (tv_channellist_type === 'vertical_new') {
-				tv_cur_pos = 0;
-			}
-			else {
-				return true;
-			}
-
-			//tv_cur_pos = 0;
-		}
-		tv_channellist_fade(true);
-	}
-	else if (tv_cur_block === 'shopitem') {
-		if (tv_cur_elem.hasClass('shop_plusminus')) {
-			shop_plus();
-		}
-	}
-	else if (tv_cur_block === 'toppings') {
-		if (tv_cur_elem.hasClass('shop_plusminus')) {
-			shop_plus('#' + tv_cur_elem.attr('id'));
-		}
-		else if (tv_cur_elem.hasClass('shop_radio')) {
-			shop_change_radio('#' + tv_cur_elem.attr('id'));
-		}
-	}
-	else if (tv_cur_block === 'feedback') {
-		if (
-			tv_cur_elem.parent().hasClass('stars') ||
-			tv_cur_elem.parent().hasClass('emoticons')
-		) {
-			if (tv_cur_elem.index() < 4) {
-				tv_cur_pos++;
-			}
-		}
-	}
-	else if (tv_cur_block === 'tv_welcome') {
-		if (tv_cur_elem.hasClass('btn_lng')) {
-			if ((tv_cur_pos < tv_max_pos - 1)) {
-				tv_cur_pos++;
-			}
-			else {
-				return true;
-			}
-		}
-	}
-	else if (tv_cur_block === 'dialog' || tv_cur_block === 'popup') {
-		metro_menu_move('right');
-		return true;
-	}
-	else if (tv_cur_block === 'VODplayer') {
-		//VOD.ffw(10);
-		if (VOD.playerVisible) {
-			if ((tv_cur_pos < tv_max_pos - 1)) {
-				tv_cur_pos++;
-			}
-			VOD.hideReset();
-		}
-		else {
-			VOD.show();
-		}
-	}
-	else if (tv_cur_block === 'service_page') {
-		return true;
-	}
-	else if (tv_cur_block === 'settings') { //actually DEAFULT
-		if (
-			(
-				tv_cur_elem.hasClass('button') ||
-				tv_cur_elem.hasClass('timepicker')
-			) &&
-			tv_sel_list[tv_cur_pos+1]
-		) {
-			tv_cur_pos++;
-		}
-	}
-	else if (
-		tv_cur_block === 'mod_playlist' ||
-		tv_cur_block === 'time_picker'
-	) {
-		if (tv_sel_list[tv_cur_pos+1]) {
-			tv_cur_pos++;
-		}
-	}else{
-		//TODO: move to module override
-		if(tv_cur_block == 'scroll' && !classic_menu){
-			scroll_to_bottom();
-		}
-		
-	}
-	tv_sel_cur();
+      //tv_cur_pos = 0;
+    }
+    tv_channellist_fade(true);
+  } else if (tv_cur_block === "shopitem") {
+    if (tv_cur_elem.hasClass("shop_plusminus")) {
+      shop_plus();
+    }
+  } else if (tv_cur_block === "toppings") {
+    if (tv_cur_elem.hasClass("shop_plusminus")) {
+      shop_plus("#" + tv_cur_elem.attr("id"));
+    } else if (tv_cur_elem.hasClass("shop_radio")) {
+      shop_change_radio("#" + tv_cur_elem.attr("id"));
+    }
+  } else if (tv_cur_block === "feedback") {
+    if (
+      tv_cur_elem.parent().hasClass("stars") ||
+      tv_cur_elem.parent().hasClass("emoticons")
+    ) {
+      if (tv_cur_elem.index() < 4) {
+        tv_cur_pos++;
+      }
+    }
+  } else if (tv_cur_block === "tv_welcome") {
+    if (tv_cur_elem.hasClass("btn_lng")) {
+      if (tv_cur_pos < tv_max_pos - 1) {
+        tv_cur_pos++;
+      } else {
+        return true;
+      }
+    }
+  } else if (tv_cur_block === "dialog" || tv_cur_block === "popup") {
+    metro_menu_move("right");
+    return true;
+  } else if (tv_cur_block === "VODplayer") {
+    //VOD.ffw(10);
+    if (VOD.playerVisible) {
+      if (tv_cur_pos < tv_max_pos - 1) {
+        tv_cur_pos++;
+      }
+      VOD.hideReset();
+    } else {
+      VOD.show();
+    }
+  } else if (tv_cur_block === "service_page") {
+    return true;
+  } else if (tv_cur_block === "settings") {
+    //actually DEAFULT
+    if (
+      (tv_cur_elem.hasClass("button") || tv_cur_elem.hasClass("timepicker")) &&
+      tv_sel_list[tv_cur_pos + 1]
+    ) {
+      tv_cur_pos++;
+    }
+  } else if (
+    tv_cur_block === "mod_playlist" ||
+    tv_cur_block === "time_picker"
+  ) {
+    if (tv_sel_list[tv_cur_pos + 1]) {
+      tv_cur_pos++;
+    }
+  } else {
+    //TODO: move to module override
+    if (tv_cur_block == "scroll" && !classic_menu) {
+      scroll_to_bottom();
+    }
+  }
+  tv_sel_cur();
 }
 
-function tv_sel_cur(btn_move){
-	if (isAnimating) {
-		$('#tv_cur').hide();
-		return $(window).one('finish_animate', tv_sel_cur);
-	}
+function tv_sel_cur(btn_move) {
+  if (isAnimating) {
+    $("#tv_cur").hide();
+    return $(window).one("finish_animate", tv_sel_cur);
+  }
 
-	if(!tv_max_pos){
-		$('#tv_cur').hide();
-		return false;
-	}
+  if (!tv_max_pos) {
+    $("#tv_cur").hide();
+    return false;
+  }
 
-	tv_cur_elem = tv_sel_list.eq(tv_cur_pos);
+  tv_cur_elem = tv_sel_list.eq(tv_cur_pos);
 
-	var tv_cur_offset,
-		tv_cur_offset_target = $(),
-		tv_cur_height = tv_cur_elem.outerHeight(true),
-		tv_offset_threshold = 50,
-		tv_cur_offset_target_top,
-		tv_max_offset,
-		container,
-		shift;
+  var tv_cur_offset,
+    tv_cur_offset_target = $(),
+    tv_cur_height = tv_cur_elem.outerHeight(true),
+    tv_offset_threshold = 50,
+    tv_cur_offset_target_top,
+    tv_max_offset,
+    container,
+    shift;
 
-	if (tv_cur_block === 'menu') {
-		if (!config.menu || config.menu === 'classic') {
-			tv_cur_offset_target = $('#menu');
-		}
-		else if (config.menu === 'scandic') {
-			tv_cur_offset_target = $('#menu ul');
-		}
-		else {
-			//TODO: UL in #menu
-			tv_cur_offset_target = $('#menu_wrapper');
-		}
-		tv_max_offset = wh;
-	}
-	else if (
-		tv_cur_block === 'tv_radiolist' ||
-		tv_cur_block === 'tv_channellist' ||
-		tv_cur_block === 'tv_programmes_list' ||
-		tv_cur_block === 'choosing_list' ||
-		tv_cur_block === 'language' ||
-		tv_cur_block === 'category' ||
-		tv_cur_block === 'genre'
-	) {
-		tv_cur_offset_target = $('#' + tv_cur_block).find('.content');
+  if (tv_cur_block === "menu") {
+    if (!config.menu || config.menu === "classic") {
+      tv_cur_offset_target = $("#menu");
+    } else if (config.menu === "scandic") {
+      tv_cur_offset_target = $("#menu ul");
+    } else {
+      //TODO: UL in #menu
+      tv_cur_offset_target = $("#menu_wrapper");
+    }
+    tv_max_offset = wh;
+  } else if (
+    tv_cur_block === "tv_radiolist" ||
+    tv_cur_block === "tv_channellist" ||
+    tv_cur_block === "tv_programmes_list" ||
+    tv_cur_block === "choosing_list" ||
+    tv_cur_block === "language" ||
+    tv_cur_block === "category" ||
+    tv_cur_block === "genre"
+  ) {
+    tv_cur_offset_target = $("#" + tv_cur_block).find(".content");
 
-		if (
-			tv_channellist_type === 'mosaic' ||
-			tv_cur_block === 'tv_radiolist' ||
-			tv_cur_block === 'tv_programmes_list' ||
-			tv_cur_block === 'genre'
-		) {
+    if (
+      tv_channellist_type === "mosaic" ||
+      tv_cur_block === "tv_radiolist" ||
+      tv_cur_block === "tv_programmes_list" ||
+      tv_cur_block === "genre"
+    ) {
+      tv_max_offset = $("#" + tv_cur_block)
+        .find(".content_wrapper")
+        .height();
+      tv_offset_threshold =
+        tv_cur_block === "language" ||
+        tv_cur_block === "category" ||
+        tv_cur_block === "genre"
+          ? 20
+          : 0;
+    } else {
+      tv_max_offset = 0;
+      tv_offset_threshold = 1000;
+    }
+  } else if (tv_cur_block === "VODplayer") {
+    if (tv_cur_elem.hasClass("btn_player_lng")) {
+      tv_max_offset = 0;
+      tv_offset_threshold = 1000;
+      tv_cur_offset_target = $("#playerListMenu");
+    } else {
+      tv_cur_offset_target = $(document.body);
+    }
+  } else if (tv_cur_block === "VODcategory") {
+    tv_offset_threshold = 74;
+    tv_cur_offset_target = $(active_page).find(".content");
+    tv_max_offset = $(active_page).find(".content_wrapper").height();
+  } else if (tv_cur_block === "channel") {
+    if (tv_cur_elem.hasClass("btn_player_lng")) {
+      tv_max_offset = 0;
+      tv_offset_threshold = 1000;
+      tv_cur_offset_target = $("#switch_language");
+    } else {
+      tv_cur_offset_target = $(document.body);
+    }
+  } else if (tv_cur_block === "tv_welcome") {
+    tv_cur_offset_target = $("#tv_welcome .container, #tv_welcome .content");
+  } else if (tv_cur_block === "weather_select_location") {
+    container = $("#" + tv_cur_block);
 
-			tv_max_offset = $('#' + tv_cur_block).find('.content_wrapper').height();
-			tv_offset_threshold =
-				(
-					tv_cur_block === 'language' ||
-					tv_cur_block === 'category' ||
-					tv_cur_block === 'genre'
-				) ?
-					20 : 0;
-		}
-		else {
-			tv_max_offset = 0;
-			tv_offset_threshold = 1000;
-		}
-	}
-	else if (tv_cur_block === 'VODplayer') {
-		if (tv_cur_elem.hasClass('btn_player_lng')) {
-			tv_max_offset = 0;
-			tv_offset_threshold = 1000;
-			tv_cur_offset_target = $('#playerListMenu');
-		}
-		else {
-			tv_cur_offset_target = $(document.body);
-		}
-	}
-	else if (tv_cur_block === 'VODcategory') {
-		tv_offset_threshold = 74;
-		tv_cur_offset_target = $(active_page).find('.content');
-		tv_max_offset = $(active_page).find('.content_wrapper').height();
-	}
-	else if (tv_cur_block === 'channel') {
-		if (tv_cur_elem.hasClass('btn_player_lng')) {
-			tv_max_offset = 0;
-			tv_offset_threshold = 1000;
-			tv_cur_offset_target = $('#switch_language');
-		}
-		else {
-			tv_cur_offset_target = $(document.body);
-		}
-	}
-	else if (tv_cur_block === 'tv_welcome') {
-		tv_cur_offset_target = $('#tv_welcome .container, #tv_welcome .content');
-	}
-	else if (tv_cur_block === 'weather_select_location') {
-		container = $('#' + tv_cur_block);
+    tv_cur_offset_target = container.find(".content");
+    tv_max_offset = container.find(".content_wrapper").height();
+    tv_offset_threshold = 20;
+  } else if (tv_cur_block === "popup") {
+    container = $(active_page);
 
-		tv_cur_offset_target = container.find('.content');
-		tv_max_offset = container.find('.content_wrapper').height();
-		tv_offset_threshold = 20;
-	}
-	else if (tv_cur_block === 'popup') {
-		container = $(active_page);
+    tv_cur_offset_target = container.find(".content");
+    tv_max_offset = container.find(".content_wrapper").height();
+    tv_offset_threshold = 20;
+  } else if (tv_cur_block === "mod_playlist") {
+    container = $("#" + MOD.current_playlist_id);
 
-		tv_cur_offset_target = container.find('.content');
-		tv_max_offset = container.find('.content_wrapper').height();
-		tv_offset_threshold = 20;
-	}
-	else if (tv_cur_block === 'mod_playlist') {
-		container = $('#' + MOD.current_playlist_id);
+    tv_cur_offset_target = container.find(".content");
+    tv_max_offset = container.find(".content_wrapper").height();
+    tv_offset_threshold = 20;
+  } else if (tv_cur_block === "dialog") {
+    tv_cur_offset_target = $("#custom_dialog_content");
+    tv_max_offset = wh;
+  } else if (tv_cur_block == "keypad") {
+    tv_cur_offset_target = $("#custom_dialog_content");
+    tv_max_offset = wh;
+  } else {
+    tv_cur_offset_target = $(active_page).find(".content");
+    tv_max_offset = $(active_page).find(".content_wrapper").height();
+  }
 
-		tv_cur_offset_target = container.find('.content');
-		tv_max_offset = container.find('.content_wrapper').height();
-		tv_offset_threshold = 20;
-	}
-	else if (tv_cur_block === 'dialog') {
-		tv_cur_offset_target = $('#custom_dialog_content');
-		tv_max_offset = wh;
-	} else if (tv_cur_block == 'keypad') {
-		tv_cur_offset_target = $('#custom_dialog_content');
-		tv_max_offset = wh;
-	} else {
-		tv_cur_offset_target = $(active_page).find('.content');
-		tv_max_offset = $(active_page).find('.content_wrapper').height();
-	}
+  tv_cur_offset =
+    tv_cur_elem.get(0).getBoundingClientRect().top -
+    tv_cur_offset_target.get(0).getBoundingClientRect().top;
 
-	tv_cur_offset = tv_cur_elem.get(0).getBoundingClientRect().top - tv_cur_offset_target.get(0).getBoundingClientRect().top;
+  if (tv_cur_block === "VODplayer" || tv_cur_block === "channel") {
+    if (tv_cur_elem.hasClass("btn_player_lng")) {
+      tv_cur_offset_target[0].style.left =
+        "-" + (Math.round(tv_cur_elem.position().left) + "px");
+    } else {
+      tv_sel_list.removeClass("tv_cur");
+      tv_cur_elem.addClass("tv_cur");
+    }
+  } else if (
+    tv_cur_block === "tv_radiolist" ||
+    tv_cur_block === "tv_channellist" ||
+    tv_cur_block === "tv_programmes_list" ||
+    tv_cur_block === "language" ||
+    tv_cur_block === "category" ||
+    tv_cur_block === "genre"
+  ) {
+    if (tv_cur_block === "tv_radiolist" || tv_cur_block === "genre") {
+      if (
+        (tv_cur_pos === 0 && tv_cur_block === "genre") ||
+        (tv_cur_block === "tv_radiolist" &&
+          (tv_cur_pos === 0 ||
+            tv_cur_pos === 1 ||
+            tv_cur_pos === 2 ||
+            tv_cur_pos === 3))
+      ) {
+        tv_cur_offset_target[0].style.top = 0;
+        move_scroll(0, tv_cur_block);
+      } else {
+        tv_cur_offset_target_top = tv_cur_offset_target.position().top;
 
-	if (tv_cur_block === 'VODplayer' || tv_cur_block === 'channel') {
-		if (tv_cur_elem.hasClass('btn_player_lng')) {
-			tv_cur_offset_target[0].style.left = '-' + (Math.round(tv_cur_elem.position().left)+'px');
-		}
-		else {
-			tv_sel_list.removeClass('tv_cur');
-			tv_cur_elem.addClass('tv_cur');
-		}
-	}
-	else if (
-		tv_cur_block === 'tv_radiolist' ||
-		tv_cur_block === 'tv_channellist' ||
-		tv_cur_block === 'tv_programmes_list' ||
-		tv_cur_block === 'language' ||
-		tv_cur_block === 'category'  ||
-		tv_cur_block === 'genre'
-	) {
-		if (tv_cur_block === 'tv_radiolist' || tv_cur_block === 'genre') {
-			if (
-				(
-					tv_cur_pos === 0 &&
-					tv_cur_block === 'genre'
-				) ||
-				(
-					tv_cur_block === 'tv_radiolist' &&
-					(
-						tv_cur_pos === 0 ||
-						tv_cur_pos === 1 ||
-						tv_cur_pos === 2 ||
-						tv_cur_pos === 3
-					)
-				)
-			) {
-				tv_cur_offset_target[0].style.top = 0;
-				move_scroll(0, tv_cur_block);
-			}
-			else {
+        if (
+          tv_cur_offset + tv_cur_height - 2 + tv_offset_threshold >
+          tv_max_offset - tv_cur_offset_target_top
+        ) {
+          shift = Math.min(
+            0,
+            Math.max(
+              tv_max_offset - tv_cur_offset_target.outerHeight(true),
+              tv_max_offset -
+                (tv_cur_offset + tv_cur_height) -
+                tv_offset_threshold
+            )
+          );
 
-				tv_cur_offset_target_top = tv_cur_offset_target.position().top;
+          if (tv_cur_block === "genre") {
+            tv_cur_offset_target[0].style.top = shift + "px";
+          } else {
+            tv_cur_offset_target[0].style.top =
+              -(tv_cur_offset - tv_max_offset + tv_cur_height) + "px";
+          }
 
-				if ((tv_cur_offset + tv_cur_height - 2 + tv_offset_threshold) > tv_max_offset - tv_cur_offset_target_top) {
-					shift = Math.min(0,Math.max((tv_max_offset-tv_cur_offset_target.outerHeight(true)),(tv_max_offset - (tv_cur_offset + tv_cur_height) - tv_offset_threshold)));
+          move_scroll(shift, tv_cur_block);
+        } else if (
+          tv_cur_offset <
+          tv_offset_threshold - tv_cur_offset_target_top
+        ) {
+          shift = Math.min(0, -tv_cur_offset + tv_offset_threshold);
 
-					if (tv_cur_block === 'genre') {
-						tv_cur_offset_target[0].style.top = shift + 'px';
-					}
-					else {
-						tv_cur_offset_target[0].style.top = - (tv_cur_offset - tv_max_offset + tv_cur_height) + 'px';
-					}
+          if (tv_cur_block === "genre") {
+            tv_cur_offset_target[0].style.top = shift + "px";
+          } else {
+            tv_cur_offset_target[0].style.top =
+              tv_cur_offset_target_top + tv_cur_height + "px";
+          }
 
-					move_scroll(shift, tv_cur_block);
-				}
-				else if (tv_cur_offset < tv_offset_threshold - tv_cur_offset_target_top){
-					shift = Math.min(0,(-tv_cur_offset + tv_offset_threshold));
+          move_scroll(shift, tv_cur_block);
+        }
+      }
+    } else if (
+      typeof tv_channellist_type !== "undefined" &&
+      (tv_channellist_type === "vertical" ||
+        tv_channellist_type === "vertical_new")
+    ) {
+      tv_offset_threshold = 10;
+      tv_max_offset = $("#tv_channellist_cont").height();
+      if (
+        tv_cur_offset + tv_cur_height + tv_offset_threshold >
+        tv_max_offset - tv_cur_offset_target.position().top
+      ) {
+        tv_cur_offset_target[0].style.top =
+          Math.min(
+            0,
+            Math.max(
+              tv_max_offset - tv_cur_offset_target.outerHeight(true),
+              tv_max_offset -
+                (tv_cur_elem.position().top + tv_cur_height) -
+                tv_offset_threshold
+            )
+          ) + "px";
+      } else if (
+        tv_cur_offset <
+        tv_offset_threshold - tv_cur_offset_target.position().top
+      ) {
+        tv_cur_offset_target[0].style.top =
+          Math.min(0, -tv_cur_elem.position().top + tv_offset_threshold) + "px";
+      }
+      var percent = Math.abs(
+        tv_cur_offset_target.position().top /
+          (tv_max_offset - tv_cur_offset_target.outerHeight(true))
+      );
 
-					if (tv_cur_block === 'genre') {
-						tv_cur_offset_target[0].style.top = shift + 'px';
-					}
-					else {
-						tv_cur_offset_target[0].style.top = tv_cur_offset_target_top + tv_cur_height +'px';
-					}
+      var scroll = document.getElementById("scroll_scroll");
+      if (scroll) {
+        scroll.style.top =
+          Math.round(
+            percent *
+              ($("#scroll_inner").height() - $("#scroll_scroll").height())
+          ) + "px";
+      }
+    } else if (
+      typeof tv_channellist_type !== "undefined" &&
+      tv_channellist_type !== "mosaic"
+    ) {
+      tv_cur_offset_target[0].style.left =
+        Math.round(
+          ($("#tv_channellist_cont").width() - tv_cur_elem.width()) / 2 -
+            tv_cur_elem.position().left
+        ) + "px";
+    } else if (
+      typeof tv_channellist_type !== "undefined" &&
+      tv_channellist_type === "mosaic"
+    ) {
+      if (
+        (tv_cur_block === "tv_programmes_list" && isEpgFirstLine()) ||
+        (tv_cur_pos === 0 &&
+          (tv_cur_block === "language" || tv_cur_block === "category"))
+      ) {
+        tv_cur_offset_target[0].style.top = 0;
+        move_scroll(0, tv_cur_block);
+      } else {
+        tv_cur_offset_target_top = tv_cur_offset_target.position().top;
 
-					move_scroll(shift, tv_cur_block);
-				}
-			}
-		}
-		else if (
-			typeof(tv_channellist_type) !== 'undefined' &&
-			(tv_channellist_type === 'vertical' || tv_channellist_type === 'vertical_new')
-		) {
-			tv_offset_threshold = 10;
-			tv_max_offset = $('#tv_channellist_cont').height();
-			if ((tv_cur_offset + tv_cur_height + tv_offset_threshold) > tv_max_offset - tv_cur_offset_target.position().top) {
-				tv_cur_offset_target[0].style.top = Math.min(0,Math.max((tv_max_offset-tv_cur_offset_target.outerHeight(true)),(tv_max_offset - (tv_cur_elem.position().top + tv_cur_height) - tv_offset_threshold)))+'px';
-			}
-			else if (tv_cur_offset < tv_offset_threshold - tv_cur_offset_target.position().top) {
-				tv_cur_offset_target[0].style.top = Math.min(0,(-tv_cur_elem.position().top + tv_offset_threshold))+'px';
-			}
-			var percent = Math.abs(tv_cur_offset_target.position().top / (tv_max_offset-tv_cur_offset_target.outerHeight(true)));
+        tv_cur_offset = appUseZoom ? Math.ceil(tv_cur_offset) : tv_cur_offset;
+        tv_cur_offset_target_top = appUseZoom
+          ? Math.ceil(tv_cur_offset_target_top)
+          : tv_cur_offset_target_top;
 
-			var scroll = document.getElementById('scroll_scroll');
-			if (scroll) {
-				scroll.style.top = Math.round(percent*($('#scroll_inner').height()-$('#scroll_scroll').height()))+'px';
-			}
-		}
-		else if (typeof(tv_channellist_type) !== 'undefined' && tv_channellist_type !== 'mosaic') {
-			tv_cur_offset_target[0].style.left =
-				Math.round(
-					($('#tv_channellist_cont').width() - tv_cur_elem.width())/2 - tv_cur_elem.position().left
-				)+'px';
-		}
-		else if (
-			typeof tv_channellist_type !== 'undefined' &&
-			tv_channellist_type === 'mosaic'
-		) {
-			if (
-				(
-					tv_cur_block === 'tv_programmes_list' &&
-					isEpgFirstLine()
-				) ||
-				(
-					tv_cur_pos === 0 &&
-					(
-						tv_cur_block === 'language' ||
-						tv_cur_block === 'category'
-					)
-				)
-			) {
-				tv_cur_offset_target[0].style.top = 0;
-				move_scroll(0, tv_cur_block);
-			}
-			else {
+        if (
+          tv_cur_offset + tv_cur_height - 2 + tv_offset_threshold >
+          tv_max_offset - tv_cur_offset_target_top
+        ) {
+          shift = Math.min(
+            0,
+            Math.max(
+              tv_max_offset - tv_cur_offset_target.outerHeight(true),
+              tv_max_offset -
+                (tv_cur_offset + tv_cur_height) -
+                tv_offset_threshold
+            )
+          );
 
-				tv_cur_offset_target_top = tv_cur_offset_target.position().top;
+          if (tv_cur_block === "language" || tv_cur_block === "category") {
+            tv_cur_offset_target[0].style.top = shift + "px";
+          } else {
+            tv_cur_offset_target[0].style.top =
+              -(tv_cur_offset - tv_max_offset + tv_cur_height) + "px";
+          }
 
-				tv_cur_offset = appUseZoom ? Math.ceil(tv_cur_offset) : tv_cur_offset;
-				tv_cur_offset_target_top = appUseZoom ? Math.ceil(tv_cur_offset_target_top) : tv_cur_offset_target_top;
+          move_scroll(shift, tv_cur_block);
+        } else if (
+          tv_cur_offset <
+          tv_offset_threshold - tv_cur_offset_target_top
+        ) {
+          shift = Math.min(0, -tv_cur_offset + tv_offset_threshold);
 
-				if ((tv_cur_offset + tv_cur_height - 2 + tv_offset_threshold) > tv_max_offset - tv_cur_offset_target_top) {
-					shift = Math.min(
-						0,
-						Math.max(
-							(tv_max_offset - tv_cur_offset_target.outerHeight(true)),
-							(tv_max_offset - (tv_cur_offset + tv_cur_height) - tv_offset_threshold)
-						)
-					);
+          if (tv_cur_block === "language" || tv_cur_block === "category") {
+            tv_cur_offset_target[0].style.top = shift + "px";
+          } else {
+            tv_cur_offset_target[0].style.top =
+              tv_cur_offset_target_top + tv_cur_height + "px";
+          }
 
-					if (tv_cur_block === 'language' || tv_cur_block === 'category') {
-						tv_cur_offset_target[0].style.top = shift + 'px';
-					}
-					else {
-						tv_cur_offset_target[0].style.top = - (tv_cur_offset - tv_max_offset + tv_cur_height) + 'px';
-					}
+          move_scroll(shift, tv_cur_block);
+        }
+      }
+    }
+  } else if (tv_cur_block === "weather_select_location") {
+    if (tv_cur_pos === 0) {
+      tv_cur_offset_target[0].style.top = 0;
+      move_scroll(0, "substrate");
+    } else {
+      tv_cur_offset_target_top = tv_cur_offset_target.position().top;
 
-					move_scroll(shift, tv_cur_block);
-				}
-				else if (tv_cur_offset < tv_offset_threshold - tv_cur_offset_target_top){
-					shift = Math.min(0,(-tv_cur_offset + tv_offset_threshold));
+      if (
+        tv_cur_offset + tv_cur_height + tv_offset_threshold >
+        tv_max_offset - tv_cur_offset_target_top
+      ) {
+        shift = Math.min(
+          0,
+          Math.max(
+            tv_max_offset - tv_cur_offset_target.outerHeight(true),
+            tv_max_offset -
+              (tv_cur_offset + tv_cur_height) -
+              tv_offset_threshold
+          )
+        );
 
-					if (tv_cur_block === 'language' || tv_cur_block === 'category') {
-						tv_cur_offset_target[0].style.top = shift + 'px';
-					}
-					else {
-						tv_cur_offset_target[0].style.top = tv_cur_offset_target_top + tv_cur_height +'px';
-					}
+        tv_cur_offset_target[0].style.top =
+          -(tv_cur_offset - tv_max_offset + tv_cur_height) + "px";
+        move_scroll(shift, "substrate");
+      } else if (
+        tv_cur_offset <
+        tv_offset_threshold - tv_cur_offset_target_top
+      ) {
+        shift = Math.min(0, -tv_cur_offset + tv_offset_threshold);
+        tv_cur_offset_target[0].style.top =
+          tv_cur_offset_target_top + tv_cur_height + "px";
+        move_scroll(shift, "substrate");
+      }
+    }
+  } else if (tv_cur_block === "tv_welcome") {
+    tv_sel_list.removeClass("tv_cur");
+    tv_cur_elem.addClass("tv_cur");
+  } else if (tv_cur_block === "menu" && scandic_menu) {
+    if (tv_cur_pos === previousPosition.get()) {
+      return false;
+    }
 
-					move_scroll(shift, tv_cur_block);
-				}
-			}
-		}
+    var tvCurPositionX = isset("config.tv.hacks.tv_cursor_no_transform")
+        ? parseInt(tv_cur.style.left)
+        : parseInt(matrixToArray($(tv_cur).css("transform"))[4]),
+      ITEM_MARGIN_RIGHT = 25,
+      ITEM_WIDTH = 210,
+      VISIBLE_ITEMS = 5,
+      positionLeft,
+      positionPrev;
 
-	}
-	else if (tv_cur_block === 'weather_select_location') {
+    if (tv_cur_pos === 0) {
+      positionLeft = 0 + "px";
+    } else if (
+      tvCurPositionX > 1000 &&
+      tv_cur_pos - previousPosition.get() > 0
+    ) {
+      positionLeft =
+        -((tv_cur_pos + 1 - VISIBLE_ITEMS) * (ITEM_WIDTH + ITEM_MARGIN_RIGHT)) +
+        "px";
+    } else if (
+      tvCurPositionX < 100 &&
+      tv_cur_pos - previousPosition.get() < 0
+    ) {
+      positionLeft = -(tv_cur_pos * (ITEM_WIDTH + ITEM_MARGIN_RIGHT)) + "px";
+    }
 
-		if (tv_cur_pos === 0) {
-			tv_cur_offset_target[0].style.top = 0;
-			move_scroll(0, 'substrate');
-		}
-		else {
+    positionPrev = tv_cur_offset_target[0].style.left;
 
-			tv_cur_offset_target_top = tv_cur_offset_target.position().top;
+    if (typeof positionLeft === "undefined") {
+      positionLeft = positionPrev;
+    }
 
-			if ((tv_cur_offset + tv_cur_height + tv_offset_threshold) > tv_max_offset - tv_cur_offset_target_top) {
-				shift = Math.min(0,Math.max((tv_max_offset-tv_cur_offset_target.outerHeight(true)),(tv_max_offset - (tv_cur_offset + tv_cur_height) - tv_offset_threshold)));
+    cursorMovingPermitted.set({
+      key: "scandic_menu",
+      direct: tv_cur_pos > previousPosition.get() ? "right" : "left",
+      animation: positionPrev !== positionLeft,
+      time: 200,
+    });
 
-				tv_cur_offset_target[0].style.top = - (tv_cur_offset - tv_max_offset + tv_cur_height) + 'px';
-				move_scroll(shift, 'substrate');
-			}
-			else if (tv_cur_offset < tv_offset_threshold - tv_cur_offset_target_top){
-				shift = Math.min(0,(-tv_cur_offset + tv_offset_threshold));
-				tv_cur_offset_target[0].style.top = tv_cur_offset_target_top + tv_cur_height +'px';
-				move_scroll(shift, 'substrate');
-			}
-		}
-	}
-	else if (tv_cur_block === 'tv_welcome') {
-		tv_sel_list.removeClass('tv_cur');
-		tv_cur_elem.addClass('tv_cur');
-	}
-	else if (tv_cur_block === 'menu' && scandic_menu) {
-		if (tv_cur_pos === previousPosition.get()) {
-			return false;
-		}
+    // управление opacity стрелок
+    serveArrowMenuOpacity();
 
-		var tvCurPositionX = isset('config.tv.hacks.tv_cursor_no_transform') ?
-			parseInt(tv_cur.style.left) :
-			parseInt(matrixToArray($(tv_cur).css('transform'))[4]),
+    if (
+      // если перемещаем меню, не перемещаем tv_cur
+      positionPrev !== positionLeft &&
+      // когда возвращаемся со страницы в меню
+      // tv_cur скрыт
+      // это вызывает сдвиг меню влево
+      tvCurPositionX !== 0
+    ) {
+      tv_cur_offset_target[0].style.left = positionLeft;
 
-			ITEM_MARGIN_RIGHT = 25,
-			ITEM_WIDTH = 210,
-			VISIBLE_ITEMS = 5,
-			positionLeft,
-			positionPrev;
+      return false;
+    }
+  } else if (!btn_move) {
+    if (tv_cur_block === "cart" || tv_cur_block === "feedback") {
+      if (tv_cur_pos === 0) {
+        shift = 0;
+        tv_cur_offset_target[0].style.top = 0;
 
-		if (tv_cur_pos === 0) {
-			positionLeft = 0 + 'px';
-		}
-		else if (
-			tvCurPositionX > 1000 &&
-			tv_cur_pos - previousPosition.get() > 0
-		) {
-			positionLeft = -(((tv_cur_pos + 1) - VISIBLE_ITEMS) * (ITEM_WIDTH + ITEM_MARGIN_RIGHT)) + 'px';
-		}
-		else if (
-			tvCurPositionX < 100 &&
-			tv_cur_pos - previousPosition.get() < 0
-		) {
-			positionLeft = -(tv_cur_pos * (ITEM_WIDTH + ITEM_MARGIN_RIGHT)) + 'px';
-		}
+        move_scroll(shift);
+      } else {
+        tv_cur_offset_target_top = tv_cur_offset_target.position().top;
+        if (
+          tv_cur_offset + tv_cur_height + tv_offset_threshold >
+          tv_max_offset - tv_cur_offset_target_top
+        ) {
+          shift = Math.min(
+            0,
+            Math.max(
+              tv_max_offset - tv_cur_offset_target.outerHeight(true),
+              tv_max_offset -
+                (tv_cur_offset + tv_cur_height) -
+                tv_offset_threshold
+            )
+          );
 
-		positionPrev = tv_cur_offset_target[0].style.left;
+          if (!tv_cur_offset_target.find(".gallery_container").length) {
+            tv_cur_offset_target[0].style.top = shift + "px";
+          }
 
-		if (typeof positionLeft === 'undefined') {
-			positionLeft = positionPrev;
-		}
+          move_scroll(shift);
+        } else if (
+          tv_cur_offset <
+          tv_offset_threshold - tv_cur_offset_target_top
+        ) {
+          shift = Math.min(0, -tv_cur_offset + tv_offset_threshold);
+          tv_cur_offset_target[0].style.top = shift + "px";
 
-		cursorMovingPermitted.set({
-			key: 'scandic_menu',
-			direct: tv_cur_pos > previousPosition.get() ? 'right' : 'left',
-			animation: positionPrev !== positionLeft,
-			time: 200
-		});
+          move_scroll(shift);
+        }
+      }
+    } else if (
+      tv_cur_block === "toppings" ||
+      ((tv_cur_block === "order_details" || tv_cur_block === "orders") &&
+        tv_sel_list.length > 1) ||
+      (!tv_cur_elem.hasClass("button") &&
+        !tv_cur_elem.hasClass("shop_plusminus"))
+    ) {
+      if (tv_cur_pos === 0 && tv_cur_block !== "VODcategory") {
+        shift = 0;
+        tv_cur_offset_target[0].style.top = 0;
 
-		// управление opacity стрелок
-		serveArrowMenuOpacity();
+        move_scroll(shift);
+      } else {
+        tv_cur_offset_target_top = tv_cur_offset_target.position().top;
 
-		if (
-			// если перемещаем меню, не перемещаем tv_cur
-			positionPrev !== positionLeft &&
-			// когда возвращаемся со страницы в меню
-			// tv_cur скрыт
-			// это вызывает сдвиг меню влево
-			tvCurPositionX !== 0
-		) {
+        if (
+          tv_cur_offset + tv_cur_height + tv_offset_threshold >=
+          tv_max_offset - tv_cur_offset_target_top
+        ) {
+          shift = Math.min(
+            0,
+            Math.max(
+              tv_max_offset - tv_cur_offset_target.outerHeight(true),
+              tv_max_offset -
+                (tv_cur_offset + tv_cur_height) -
+                tv_offset_threshold
+            )
+          );
 
-			tv_cur_offset_target[0].style.left = positionLeft;
+          if (!tv_cur_offset_target.find(".gallery_container").length) {
+            tv_cur_offset_target[0].style.top = shift + "px";
+          }
 
-			return false;
-		}
+          move_scroll(shift);
+        } else if (
+          tv_cur_offset <
+          tv_offset_threshold - tv_cur_offset_target_top
+        ) {
+          shift = Math.min(0, -tv_cur_offset + tv_offset_threshold);
 
-	}
-	else if (!btn_move) {
+          tv_cur_offset_target[0].style.top = shift + "px";
 
-		if (tv_cur_block === 'cart' || tv_cur_block === 'feedback') {
-			if (tv_cur_pos === 0) {
-				shift = 0;
-				tv_cur_offset_target[0].style.top = 0;
+          move_scroll(shift);
+        }
+      }
+    }
+  }
 
-				move_scroll(shift);
-			}
-			else {
-				tv_cur_offset_target_top = tv_cur_offset_target.position().top;
-				if ((tv_cur_offset + tv_cur_height + tv_offset_threshold) > tv_max_offset - tv_cur_offset_target_top) {
-
-					shift = Math.min(
-						0,
-						Math.max(
-							(tv_max_offset-tv_cur_offset_target.outerHeight(true)),
-							(tv_max_offset - (tv_cur_offset + tv_cur_height) - tv_offset_threshold)
-						)
-					);
-
-					if (!tv_cur_offset_target.find('.gallery_container').length) {
-						tv_cur_offset_target[0].style.top = shift + 'px';
-					}
-
-					move_scroll(shift);
-				}
-				else if (tv_cur_offset < tv_offset_threshold - tv_cur_offset_target_top){
-
-					shift = Math.min(0,(-tv_cur_offset + tv_offset_threshold));
-					tv_cur_offset_target[0].style.top = shift + 'px';
-
-					move_scroll(shift);
-				}
-			}
-		}
-		else if (
-			tv_cur_block === 'toppings' ||
-			(
-				(
-					tv_cur_block === 'order_details' ||
-					tv_cur_block === 'orders'
-				) &&
-					tv_sel_list.length > 1
-			) ||
-			(
-				!tv_cur_elem.hasClass('button') &&
-				!tv_cur_elem.hasClass('shop_plusminus')
-			)
-		) {
-			if (tv_cur_pos === 0 && tv_cur_block !== 'VODcategory') {
-				shift = 0;
-				tv_cur_offset_target[0].style.top = 0;
-
-				move_scroll(shift);
-			}
-			else {
-				tv_cur_offset_target_top = tv_cur_offset_target.position().top;
-
-				if ((tv_cur_offset + tv_cur_height + tv_offset_threshold) >= tv_max_offset - tv_cur_offset_target_top) {
-
-					shift = Math.min(
-						0,
-						Math.max(
-							(tv_max_offset - tv_cur_offset_target.outerHeight(true)),
-							(tv_max_offset - (tv_cur_offset + tv_cur_height) - tv_offset_threshold)
-						)
-					);
-
-					if (!tv_cur_offset_target.find('.gallery_container').length) {
-						tv_cur_offset_target[0].style.top = shift + 'px';
-					}
-
-					move_scroll(shift);
-				}
-				else if (tv_cur_offset < tv_offset_threshold - tv_cur_offset_target_top) {
-
-					shift = Math.min(
-						0,
-						(-tv_cur_offset + tv_offset_threshold)
-					);
-
-					tv_cur_offset_target[0].style.top = shift + 'px';
-
-					move_scroll(shift);
-				}
-			}
-		}
-
-	}
-
-	setPositionTvCur();
-
+  setPositionTvCur();
 }
 function setPositionTvCur() {
-	$('.tv_cur').removeClass('tv_cur');
-	tv_cur_elem.addClass('tv_cur');
+  $(".tv_cur").removeClass("tv_cur");
+  tv_cur_elem.addClass("tv_cur");
 
-	//Magic border offset 3
-	var magic_border_width = 3,
-		tmp = tv_cur_elem.get(0).getBoundingClientRect(),
-		tmp_top = tmp.top,
-		tmp_left = tmp.left,
-		tmp_width = tmp.width,
-		tmp_height = tmp.height;
+  //Magic border offset 3
+  var magic_border_width = 3,
+    tmp = tv_cur_elem.get(0).getBoundingClientRect(),
+    tmp_top = tmp.top,
+    tmp_left = tmp.left,
+    tmp_width = tmp.width,
+    tmp_height = tmp.height;
 
-	if(tmp_left <= 0){
-		tmp_left = 0;
-		tmp_width -= magic_border_width;
-	}else{
-		tmp_left -= magic_border_width;
-	}
-	if((tmp_left+tmp_width) > ww){
-		tmp_width -= magic_border_width;
-	}
+  if (tmp_left <= 0) {
+    tmp_left = 0;
+    tmp_width -= magic_border_width;
+  } else {
+    tmp_left -= magic_border_width;
+  }
+  if (tmp_left + tmp_width > ww) {
+    tmp_width -= magic_border_width;
+  }
 
-	if(tmp_top <= 0){
-		tmp_top = 0;
-		tmp_height -= magic_border_width;
-	}else{
-		tmp_top -= magic_border_width;
-	}
+  if (tmp_top <= 0) {
+    tmp_top = 0;
+    tmp_height -= magic_border_width;
+  } else {
+    tmp_top -= magic_border_width;
+  }
 
-	if((tmp_top+tmp_height+magic_border_width) >= wh){
-		tmp_height -= magic_border_width;
-	}
+  if (tmp_top + tmp_height + magic_border_width >= wh) {
+    tmp_height -= magic_border_width;
+  }
 
-	if (cursorIsNotVisible(tmp_top)) {
-		return false;
-	}
+  if (cursorIsNotVisible(tmp_top)) {
+    return false;
+  }
 
-	var tv_cur_style = document.getElementById('tv_cur').style;
-	tv_cur_style.width = tmp_width+'px';
-	tv_cur_style.height = tmp_height+'px';
+  var tv_cur_style = document.getElementById("tv_cur").style;
+  tv_cur_style.width = tmp_width + "px";
+  tv_cur_style.height = tmp_height + "px";
 
-	if (typeof previousPosition.get('channel') !== 'undefined') {
-		return false;
-	}
+  if (typeof previousPosition.get("channel") !== "undefined") {
+    return false;
+  }
 
-	if(isset('config.tv.hacks.tv_cursor_no_transform')){
-		tv_cur_style.left = tmp_left+'px';
-		tv_cur_style.top = tmp_top+'px';
-	}else{
-		//tv_cur_style.webkitTransform = 'translate3D( ' + tmp_left+'px, '+ tmp_top + 'px,0)';
-		tv_cur_style.webkitTransform = 'translate( ' + tmp_left+'px, '+ tmp_top + 'px)';
-		tv_cur_style.transform = 'translate( ' + tmp_left+'px, '+ tmp_top + 'px)';
-	}
+  if (isset("config.tv.hacks.tv_cursor_no_transform")) {
+    tv_cur_style.left = tmp_left + "px";
+    tv_cur_style.top = tmp_top + "px";
+  } else {
+    //tv_cur_style.webkitTransform = 'translate3D( ' + tmp_left+'px, '+ tmp_top + 'px,0)';
+    tv_cur_style.webkitTransform =
+      "translate( " + tmp_left + "px, " + tmp_top + "px)";
+    tv_cur_style.transform =
+      "translate( " + tmp_left + "px, " + tmp_top + "px)";
+  }
 
-	tv_cur_elem.trigger(event_action_move);
+  tv_cur_elem.trigger(event_action_move);
 
-	tv_cur_style.display = tv_cur_elem.hasClass('not_tv_cur') ? 'none' : 'block';
+  tv_cur_style.display = tv_cur_elem.hasClass("not_tv_cur") ? "none" : "block";
 
-	function cursorIsNotVisible(elemTop) {
-		if (classic_menu && tv_cur_block === 'menu') {
-			return false;
-		}
+  function cursorIsNotVisible(elemTop) {
+    if (classic_menu && tv_cur_block === "menu") {
+      return false;
+    }
 
-		var visibleArea;
-		try {
-			visibleArea = $id(active_page_id).querySelector('.content_wrapper');
-		}
-		catch(e) {
-			return false;
-		}
+    var visibleArea;
+    try {
+      visibleArea = $id(active_page_id).querySelector(".content_wrapper");
+    } catch (e) {
+      return false;
+    }
 
-		if (!visibleArea) {
-			return false;
-		}
+    if (!visibleArea) {
+      return false;
+    }
 
-		var visibleAreaTop = visibleArea.getBoundingClientRect().top;
-		return visibleAreaTop >= elemTop + 20;
-	}
+    var visibleAreaTop = visibleArea.getBoundingClientRect().top;
+    return visibleAreaTop >= elemTop + 20;
+  }
 }
 
 var previousBlock;
 function tv_sel_block(id) {
-	var tmp;
-	id = getID(id);
+  var tmp;
+  id = getID(id);
 
-	previousBlock = tv_cur_block;
+  previousBlock = tv_cur_block;
 
-	if (tv_sel_list.length) {
-		tv_sel_list.removeClass('tv_sel');
-	}
+  if (tv_sel_list.length) {
+    tv_sel_list.removeClass("tv_sel");
+  }
 
-	if (tv_cur_elem && tv_cur_elem.length) {
-		tv_cur_elem[0].classList.add('tv_sel');
-	}
+  if (tv_cur_elem && tv_cur_elem.length) {
+    tv_cur_elem[0].classList.add("tv_sel");
+  }
 
-	// выбор языка в tv_mosaic при tv_cur_block == channel
-	if (
-		id === 'channel' &&
-		guestData.tv_channels_lang_stream &&
-		guestData.tv_channels_lang_stream[tv_mosaic.current_channel] != null
-	) {
-		tv_cur_pos = guestData.tv_channels_lang_stream[tv_mosaic.current_channel];
-	}
-	else {
-		tv_cur_pos = 0;
-	}
+  // выбор языка в tv_mosaic при tv_cur_block == channel
+  if (
+    id === "channel" &&
+    guestData.tv_channels_lang_stream &&
+    guestData.tv_channels_lang_stream[tv_mosaic.current_channel] != null
+  ) {
+    tv_cur_pos = guestData.tv_channels_lang_stream[tv_mosaic.current_channel];
+  } else {
+    tv_cur_pos = 0;
+  }
 
-	$('#tv_cur').removeClass('square');
-	if (id === 'menu') {
-		tv_cur_block = 'menu';
-		tv_sel_list = $('#menu').find('[href]').filter(function() {
-			return $(this).is(':visible') && this.tagName.toLowerCase() !== 'use';
-		});
-		metro_menu_calc();
-		$('#tv_cur').addClass('square');
-	}
-	else if (id === 'dialog') {
-		tv_cur_block = 'dialog';
-		tv_sel_list = $('#custom_dialog').find('[onvclick]').filter(function() { return $(this).is(':visible'); });
-		metro_menu_calc();
-	}
-	else if (id === 'show_gallery') {
-		tv_cur_block = 'show_gallery';
-		tv_sel_list = $('.gallery_subContainer').find('[onvclick]');
-		tv_cur_elem = tv_sel_list;
-		$('#tv_cur').addClass('square');
-		return true;
-	}
-	else if (id === 'guide') {
-		tv_cur_block = 'guide';
-		tv_sel_list = $('#'+id).find('.guide_icon');
-	}
-	else if (
-		id === 'settings' ||
-		id === 'service_page' ||
-		id === 'select_page' ||
-		id === 'language_select' ||
-		id === 'selectpage' ||
-		id === 'sources_list' ||
-		id === 'sample_page'
-	) {
-		tv_cur_block = 'settings';
-		tv_sel_list = $('#'+id).find('.content').find('[href^="#"], [onvclick]').filter(function() { return $(this).is(':visible'); });
-	}
-	else if (id === 'tv_channellist') {
-		tv_cur_block = 'tv_channellist';
-		tv_sel_list = $('#tv_channellist').find('.content').find('li').filter(function(index, item) {
-			return (
-				tv_channellist_type === 'not_vertical' ||
-				tv_channellist_type === 'vertical' ||
-				tv_channellist_type === ''
-			) ? true : $(item).is(':visible');
-		});
-	}
-	else if (id === 'tv_programmes_list') {
-		tv_cur_block = 'tv_programmes_list';
-		tv_sel_list = $('#tv_programmes_list').find('.programme');
-	}
-	else if (id === 'language' || id === 'category' || id === 'genre') {
-		tv_cur_block = id;
-		tv_sel_list = $('#' + id).find('.content').find('li');
-	}
-	else if (id === 'tv_radiolist') {
-		tv_cur_block = 'tv_radiolist';
-		tv_sel_list = $('#tv_radiolist').find('.content').find('li').filter(function(index, item) {
-			return !$(item).hasClass('displaynone');
-		});
-	}
-	else if (id === 'channel') {
-		tv_cur_block = 'channel';
-		tv_sel_list = $('#bottom_channel_information').find('[data-code]');
-	} else if (id === 'keypad') {
-		tv_cur_block = 'keypad';
-		tv_sel_list = $('#hoteza_keypad TD');
-		metro_menu_calc();
-	} else if ($('#'+id).hasClass('service_page')) {
-		tv_cur_block = 'shopitem';
-		tv_sel_list = $(active_page)
-			.find('.shop_plusminus, DIV.button, #shopitemoptions .settings_button')
-			.filter(function() { return $(this).is(':visible'); });
-	}
-	else if (
-		id === 'shopitem' ||
-		id === 'order_details' ||
-		id === 'orders'
-	) {
+  $("#tv_cur").removeClass("square");
+  if (id === "menu") {
+    tv_cur_block = "menu";
+    tv_sel_list = $("#menu")
+      .find("[href]")
+      .filter(function () {
+        return $(this).is(":visible") && this.tagName.toLowerCase() !== "use";
+      });
+    metro_menu_calc();
+    $("#tv_cur").addClass("square");
+  } else if (id === "dialog") {
+    tv_cur_block = "dialog";
+    tv_sel_list = $("#custom_dialog")
+      .find("[onvclick]")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+    metro_menu_calc();
+  } else if (id === "show_gallery") {
+    tv_cur_block = "show_gallery";
+    tv_sel_list = $(".gallery_subContainer").find("[onvclick]");
+    tv_cur_elem = tv_sel_list;
+    $("#tv_cur").addClass("square");
+    return true;
+  } else if (id === "guide") {
+    tv_cur_block = "guide";
+    tv_sel_list = $("#" + id).find(".guide_icon");
+  } else if (
+    id === "settings" ||
+    id === "service_page" ||
+    id === "select_page" ||
+    id === "language_select" ||
+    id === "selectpage" ||
+    id === "sources_list" ||
+    id === "sample_page"
+  ) {
+    tv_cur_block = "settings";
+    tv_sel_list = $("#" + id)
+      .find(".content")
+      .find('[href^="#"], [onvclick]')
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+  } else if (id === "tv_channellist") {
+    tv_cur_block = "tv_channellist";
+    tv_sel_list = $("#tv_channellist")
+      .find(".content")
+      .find("li")
+      .filter(function (index, item) {
+        return tv_channellist_type === "not_vertical" ||
+          tv_channellist_type === "vertical" ||
+          tv_channellist_type === ""
+          ? true
+          : $(item).is(":visible");
+      });
+  } else if (id === "tv_programmes_list") {
+    tv_cur_block = "tv_programmes_list";
+    tv_sel_list = $("#tv_programmes_list").find(".programme");
+  } else if (id === "language" || id === "category" || id === "genre") {
+    tv_cur_block = id;
+    tv_sel_list = $("#" + id)
+      .find(".content")
+      .find("li");
+  } else if (id === "tv_radiolist") {
+    tv_cur_block = "tv_radiolist";
+    tv_sel_list = $("#tv_radiolist")
+      .find(".content")
+      .find("li")
+      .filter(function (index, item) {
+        return !$(item).hasClass("displaynone");
+      });
+  } else if (id === "channel") {
+    tv_cur_block = "channel";
+    tv_sel_list = $("#bottom_channel_information").find("[data-code]");
+  } else if (id === "keypad") {
+    tv_cur_block = "keypad";
+    tv_sel_list = $("#hoteza_keypad TD");
+    metro_menu_calc();
+  } else if ($("#" + id).hasClass("service_page")) {
+    tv_cur_block = "shopitem";
+    tv_sel_list = $(active_page)
+      .find(".shop_plusminus, DIV.button, #shopitemoptions .settings_button")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+  } else if (id === "shopitem" || id === "order_details" || id === "orders") {
+    tv_cur_block = id;
+    tv_sel_list = $(active_page)
+      .find(".shop_plusminus, .button, #shopitemoptions .settings_button")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+  } else if (id === "cart") {
+    tv_cur_block = "cart";
+    tv_sel_list = $("#cart")
+      .find("[onvclick], .shop_plusminus")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+  } else if (id === "feedback") {
+    tv_cur_block = "feedback";
+    tv_sel_list = $("#feedback")
+      .find("[href], [onvclick]")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+  } else if (id === "tv_welcome") {
+    //TODO: перенести в navigate
+    active_page = "#tv_welcome";
+    active_page_id = "tv_welcome";
+    tv_cur_block = "tv_welcome";
+    tv_sel_list = $("#tv_welcome").find(".button");
+  } else if (id === "weather_select_location") {
+    tv_cur_block = "weather_select_location";
+    tv_sel_list = $("#weather_select_location").find("[onvclick]");
+  } else if (id === "VODplayer") {
+    tv_cur_block = "VODplayer";
+    tv_sel_list = $("#playerPanel [onvclick]").filter(function () {
+      return $(this).is(":visible");
+    });
+  } else if (id === "VODcategory") {
+    tv_cur_block = "VODcategory";
+    tv_sel_list = $("#" + id)
+      .find(".pagelist")
+      .find("[onvclick]")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+    metro_menu_calc();
+  } else if (id === "time_picker") {
+    tv_cur_block = "time_picker";
+    tv_sel_list = $("#time_picker")
+      .find("[onvclick], .time_picker_item, .button")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+    tv_keydown_override = time_picker.server_keydown;
+  } else if ($id(id) && $id(id).classList.contains("list_items_toppings")) {
+    tv_cur_block = "toppings";
+    tv_sel_list = $(active_page)
+      .find(".shop_plusminus, .shop_radio, .shop_select, .button")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+  } else if ($id(id) && $id(id).classList.contains("popup")) {
+    tv_cur_block = "popup";
+    tv_sel_list = $("#" + id)
+      .find("[onvclick], .button")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+  } else if (
+    id === "mod_playlist" ||
+    ($id(id) && $id(id).classList.contains("mod_playlist"))
+  ) {
+    tv_cur_block = "mod_playlist";
+    tv_sel_list =
+      id === "mod_playlist"
+        ? $(active_page).find("li")
+        : $("#" + id).find("li");
+  } else if ($id(id) && $id(id).classList.contains("fullscreen_video")) {
+    tv_cur_block = "fullscreen_video";
+    tv_sel_list = $([]);
+  } else if ($("#" + id).find(".pagelist.shop").length) {
+    tv_cur_block = "pagelist";
+    tv_sel_list = $("#" + id)
+      .find(".pagelist")
+      .find("[onvclick]")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+    metro_menu_calc();
+  } else if ($("#" + id).find(".rcu").length) {
+    tv_cur_block = "pagelist";
+    tv_sel_list = $("#" + id)
+      .find(".rcu")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+    metro_menu_calc();
+  } else if ($id(id) && (tmp = $id(id).querySelector(".pagelist"))) {
+    tv_cur_block = "pagelist";
+    tv_sel_list = $(tmp)
+      .find("[href]")
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+    metro_menu_calc();
+    if (["sources_page"].indexOf(id) == -1) {
+      $("#tv_cur").addClass("square");
+    }
+  } else if ($("#" + id).find(".gallery_container").length) {
+    tv_cur_block = "gallery";
+    tv_sel_list = $("#" + id).find("IMG");
+    $("#tv_cur").hide();
+    $("#tv_cur").addClass("square");
+  } else if (id === "shop_order" || id === "movie_page" || id === "viewbill") {
+    tv_cur_block = "service_page";
+    tv_sel_list = $("#" + id)
+      .find('[href^="#"], [onvclick], .timepicker')
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+  } else if ($("#" + id).hasClass("weather")) {
+    //Статичная страница
+    tv_cur_block = "static";
+    tv_sel_list = $([]);
+  } else {
+    tv_sel_list = $("#" + id)
+      .find('[href^="#"], [onvclick], .timepicker, DIV.button')
+      .filter(function () {
+        return $(this).is(":visible");
+      });
+    if (tv_sel_list.length) {
+      tv_cur_block = "settings";
+    } else {
+      tv_cur_block = "scroll";
+      tv_sel_list = $([]);
+    }
+  }
 
-		tv_cur_block = id;
-		tv_sel_list = $(active_page)
-			.find('.shop_plusminus, .button, #shopitemoptions .settings_button')
-			.filter(function() { return $(this).is(':visible'); });
-	}
-	else if (id === 'cart') {
-		tv_cur_block = 'cart';
-		tv_sel_list = $('#cart').find('[onvclick], .shop_plusminus').filter(function() { return $(this).is(':visible'); });
-	}
-	else if (id === 'feedback') {
-		tv_cur_block = 'feedback';
-		tv_sel_list = $('#feedback').find('[href], [onvclick]').filter(function() { return $(this).is(':visible'); });
-	}
-	else if (id === 'tv_welcome') {
-		//TODO: перенести в navigate
-		active_page = '#tv_welcome';
-		active_page_id = 'tv_welcome';
-		tv_cur_block = 'tv_welcome';
-		tv_sel_list = $('#tv_welcome').find('.button');
-	}
-	else if (id === 'weather_select_location') {
-		tv_cur_block = 'weather_select_location';
-		tv_sel_list = $('#weather_select_location').find('[onvclick]');
-	}
-	else if (id === 'VODplayer') {
-		tv_cur_block = 'VODplayer';
-		tv_sel_list = $('#playerPanel [onvclick]').filter(function() { return $(this).is(':visible'); });
-	}
-	else if (id === 'VODcategory') {
-		tv_cur_block = 'VODcategory';
-		tv_sel_list = $('#'+id).find('.pagelist').find('[onvclick]').filter(function() { return $(this).is(':visible'); });
-		metro_menu_calc();
-	}
-	else if (id === 'time_picker') {
-		tv_cur_block = 'time_picker';
-		tv_sel_list = $('#time_picker').find('[onvclick], .time_picker_item, .button').filter(function() {
-			return $(this).is(':visible');
-		});
-		tv_keydown_override = time_picker.server_keydown;
-	}
-	else if ($id(id) && $id(id).classList.contains('list_items_toppings')) {
-		tv_cur_block = 'toppings';
-		tv_sel_list = $(active_page)
-			.find('.shop_plusminus, .shop_radio, .shop_select, .button')
-			.filter(function() { return $(this).is(':visible'); });
-	}
-	else if ($id(id) && $id(id).classList.contains('popup')) {
-		tv_cur_block = 'popup';
-		tv_sel_list = $('#' + id).find('[onvclick], .button').filter(function() { return $(this).is(':visible'); });
-	}
-	else if (
-		id === 'mod_playlist' ||
-		(
-			$id(id) && $id(id).classList.contains('mod_playlist')
-		)
-	) {
-		tv_cur_block = 'mod_playlist';
-		tv_sel_list = id === 'mod_playlist' ? $(active_page).find('li') : $('#'+id).find('li');
-	}
-	else if ($id(id) && $id(id).classList.contains('fullscreen_video')) {
-		tv_cur_block = 'fullscreen_video';
-		tv_sel_list = $([]);
-	}
-	else if ($('#'+id).find('.pagelist.shop').length) {
-		tv_cur_block = 'pagelist';
-		tv_sel_list = $('#'+id).find('.pagelist').find('[onvclick]').filter(function() { return $(this).is(':visible'); });
-		metro_menu_calc();
-	}
-	else if ($('#'+id).find('.rcu').length) {
-		tv_cur_block = 'pagelist';
-		tv_sel_list = $('#'+id).find('.rcu').filter(function() { return $(this).is(':visible'); });
-		metro_menu_calc();
-	}
-	else if ($id(id) && (tmp = $id(id).querySelector('.pagelist'))) {
-		tv_cur_block = 'pagelist';
-		tv_sel_list = $(tmp).find('[href]').filter(function() { return $(this).is(':visible'); });
-		metro_menu_calc();
-		if(['sources_page'].indexOf(id) == -1){
-			$('#tv_cur').addClass('square');
-		}
-	}
-	else if ($('#'+id).find('.gallery_container').length) {
-		tv_cur_block = 'gallery';
-		tv_sel_list = $('#'+id).find('IMG');
-		$('#tv_cur').hide();
-		$('#tv_cur').addClass('square');
-	}
-	else if (
-		id === 'shop_order' ||
-		id === 'movie_page' ||
-		id === 'viewbill'
-	) {
-		tv_cur_block = 'service_page';
-		tv_sel_list = $('#'+id).find('[href^="#"], [onvclick], .timepicker').filter(function() { return $(this).is(':visible'); });
-	}
-	else if($('#'+id).hasClass('weather')) {
-		//Статичная страница
-		tv_cur_block = 'static';
-		tv_sel_list = $([]);
-	}
-	else {
-		tv_sel_list = $('#'+id).find('[href^="#"], [onvclick], .timepicker, DIV.button').filter(function() { return $(this).is(':visible'); });
-		if (tv_sel_list.length){
-			tv_cur_block = 'settings';
-		}else{
-			tv_cur_block = 'scroll';
-			tv_sel_list = $([]);
-		}
-	}
+  tv_cur_pos = getTvCurPos();
 
-	tv_cur_pos = getTvCurPos();
+  tv_max_pos = tv_sel_list.length;
+  tv_sel_cur();
 
-	tv_max_pos = tv_sel_list.length;
-	tv_sel_cur();
+  if ($("#" + id).find(".back").length) {
+    $("#tv_fullscreen_btn_back").show();
+  } else {
+    $("#tv_fullscreen_btn_back").hide();
+  }
 
-	if($('#' + id).find('.back').length){
-		$('#tv_fullscreen_btn_back').show();
-	}else{
-		$('#tv_fullscreen_btn_back').hide();
-	}
+  // обработка видео на страницах и меню
+  videoControl();
 
-	// обработка видео на страницах и меню
-	videoControl();
+  function getID(page_id) {
+    if (page_id) {
+      return page_id;
+    }
+    if (["VODplayer", "tv_radiolist", "genre"].indexOf(previousBlock) != -1) {
+      return previousBlock;
+    }
+    if (fullscreen) {
+      return tv_channellist_type === "mosaic" && tv_mosaic.current_block
+        ? tv_mosaic.current_block
+        : "tv_channellist";
+    }
 
-	function getID(page_id) {
+    if (Menu.opened) {
+      return "menu";
+    }
 
-		if (page_id) {
-			return page_id;
-		}
-		if (['VODplayer','tv_radiolist','genre'].indexOf(previousBlock) != -1) {
-			return previousBlock;
-		}
-		if (fullscreen) {
-			return tv_channellist_type === 'mosaic' && tv_mosaic.current_block ?
-				tv_mosaic.current_block : 'tv_channellist';
-		}
+    return active_page_id;
+  }
+  function videoControl() {
+    var pageWithVideo = isGetVideoPage();
+    if (pageWithVideo) {
+      var video = videoCollection.get();
 
-		if (Menu.opened) {
-			return 'menu';
-		}
+      if (video && !video.paused && video.page === pageWithVideo) {
+        return false;
+      }
 
-		return active_page_id;
-	}
-	function videoControl() {
-		var pageWithVideo = isGetVideoPage();
-		if (pageWithVideo) {
-			var video = videoCollection.get();
+      if (video) {
+        clip(null, video.page);
+      }
 
-			if (
-				video &&
-				!video.paused &&
-				video.page === pageWithVideo
-			) {
-				return false;
-			}
+      video = new Video(pageWithVideo);
 
-			if (video) {
-				clip(null, video.page);
-			}
+      if (video.getVideo()) {
+        videoCollection.add(pageWithVideo, video);
+      }
 
-			video = new Video(pageWithVideo);
+      setTimeout(videoCollection.start, 100);
+    }
+  }
+  function getTvCurPos() {
+    if (tv_cur_block === "tv_programmes_list") {
+      return Epg.getCurrentItemPosition();
+    }
 
-			if (video.getVideo()) {
-				videoCollection.add(pageWithVideo, video);
-			}
+    if (tv_sel_list.filter(".tv_sel").length) {
+      return tv_sel_list.index(tv_sel_list.filter(".tv_sel"));
+    }
 
-			setTimeout(videoCollection.start, 100);
-		}
-	}
-	function getTvCurPos() {
-		if (tv_cur_block === 'tv_programmes_list') {
-			return Epg.getCurrentItemPosition();
-		}
-
-		if(tv_sel_list.filter('.tv_sel').length){
-			return tv_sel_list.index(tv_sel_list.filter('.tv_sel'));
-		}
-
-		return tv_cur_pos;
-	}
+    return tv_cur_pos;
+  }
 }
 
 function change_sel_list(direct) {
-	switch (tv_cur_block) {
-		case 'tv_welcome':
-			var welcome_block = $('#tv_welcome');
+  switch (tv_cur_block) {
+    case "tv_welcome":
+      var welcome_block = $("#tv_welcome");
 
-			switch (direct) {
-				case 'up':
-					if (!tv_cur_elem.hasClass('btn_lng')) {break;}
+      switch (direct) {
+        case "up":
+          if (!tv_cur_elem.hasClass("btn_lng")) {
+            break;
+          }
 
-					tv_sel_list.removeClass('tv_cur');
-					tv_sel_block('tv_welcome');
+          tv_sel_list.removeClass("tv_cur");
+          tv_sel_block("tv_welcome");
 
-					break;
-				case 'down':
-					if (!tv_cur_elem.hasClass('button')) {break;}
+          break;
+        case "down":
+          if (!tv_cur_elem.hasClass("button")) {
+            break;
+          }
 
-					tv_sel_list = welcome_block.find('.btn_lng');
+          tv_sel_list = welcome_block.find(".btn_lng");
 
-					if (!tv_sel_list.length) {
-						tv_sel_block('tv_welcome');
-						break;
-					}
+          if (!tv_sel_list.length) {
+            tv_sel_block("tv_welcome");
+            break;
+          }
 
-					tv_cur_elem = welcome_block.find('.current_language');
-					tv_max_pos = tv_sel_list.length;
-					tv_cur_pos = tv_cur_elem.index();
+          tv_cur_elem = welcome_block.find(".current_language");
+          tv_max_pos = tv_sel_list.length;
+          tv_cur_pos = tv_cur_elem.index();
 
-					break;
-			}
+          break;
+      }
 
-			break;
-	}
+      break;
+  }
 }
 
-function tv_ok(){
-	if(fullscreen){
-		if(tv_channellist_hidden){
-			tv_channellist_show(true);
-			tv_sel_cur();
-		}
-		else{
-			if(tv_cur_elem){
-				tv_cur_elem.trigger(event_link);
-			}
-		}
-	}
-	else{
-		if(tv_sel_list.length && tv_cur_elem){
-
-			if (tv_cur_block === 'VODplayer') {
-				if (VOD.playerVisible) {
-					tv_cur_elem.trigger(event_link);
-				}
-				else {
-					VOD.show();
-				}
-			}
-			else {
-				tv_cur_elem.trigger(event_link);
-			}
-
-		}
-	}
+function tv_ok() {
+  if (fullscreen) {
+    if (tv_channellist_hidden) {
+      tv_channellist_show(true);
+      tv_sel_cur();
+    } else {
+      if (tv_cur_elem) {
+        tv_cur_elem.trigger(event_link);
+      }
+    }
+  } else {
+    if (tv_sel_list.length && tv_cur_elem) {
+      if (tv_cur_block === "VODplayer") {
+        if (VOD.playerVisible) {
+          tv_cur_elem.trigger(event_link);
+        } else {
+          VOD.show();
+        }
+      } else {
+        tv_cur_elem.trigger(event_link);
+      }
+    }
+  }
 }
 
 function tv_chup() {
-	if(fullscreen){
-
-		tv_right();
-		tv_ok();
-
-	}else{
-		if(tv_cur_block === 'shopitem'){
-			shop_plus();
-		}
-	}
+  if (fullscreen) {
+    tv_right();
+    tv_ok();
+  } else {
+    if (tv_cur_block === "shopitem") {
+      shop_plus();
+    }
+  }
 }
 
 function tv_chdown() {
-	if(fullscreen){
-		tv_left();
-		tv_ok();
-	}else{
-		if(tv_cur_block === 'shopitem'){
-			shop_minus();
-		}
-	}
+  if (fullscreen) {
+    tv_left();
+    tv_ok();
+  } else {
+    if (tv_cur_block === "shopitem") {
+      shop_minus();
+    }
+  }
 }
 
 function tv_menu(fromPage) {
-	fromPage = fromPage && fromPage.length ? fromPage : null;
-	if (fromPage && !classic_menu) {
-		fromPage.hide();
-		fromPage.removeClass('active_page away_page l r');
-	}
+  fromPage = fromPage && fromPage.length ? fromPage : null;
+  if (fromPage && !classic_menu) {
+    fromPage.hide();
+    fromPage.removeClass("active_page away_page l r");
+  }
 
-	if (tv_cur_block === 'dialog') {
-		//Скрытие алерта
-		custom_dialog_close();
-	}
-	else if (tv_cur_block === 'VODplayer') {
-		VOD.destroy();
-//TODO: вынести в override
-		tv_menu();
-	}
-	else if (
-		'VOD' in window &&
-		VOD.active &&
-		tv_cur_block === 'menu'
-	) {
-
-		VOD.close();
-	}
-
+  if (tv_cur_block === "dialog") {
+    //Скрытие алерта
+    custom_dialog_close();
+  } else if (tv_cur_block === "VODplayer") {
+    VOD.destroy();
+    //TODO: вынести в override
+    tv_menu();
+  } else if ("VOD" in window && VOD.active && tv_cur_block === "menu") {
+    VOD.close();
+  }
 }
 
-function tv_back(){
-	if(!fullscreen){
-		if (tv_cur_block === 'dialog') {
-			//Скрытие алерта
-			custom_dialog_close();
-		}
-		else if (tv_cur_block === 'VODplayer') {
-			if (VOD.playerVisible) {
-				if (VOD.playerDOM.paused) {
-					clearTimeout(VOD.hideTimer);
-					VOD.destroy();
-					return;
-				}
+function tv_back() {
+  if (!fullscreen) {
+    if (tv_cur_block === "dialog") {
+      //Скрытие алерта
+      custom_dialog_close();
+    } else if (tv_cur_block === "VODplayer") {
+      if (VOD.playerVisible) {
+        if (VOD.playerDOM.paused) {
+          clearTimeout(VOD.hideTimer);
+          VOD.destroy();
+          return;
+        }
 
-				VOD.hide();
-			}
-			else {
-				VOD.destroy();
+        VOD.hide();
+      } else {
+        VOD.destroy();
 
-				// для HG32EE590
-				_tv_bg_restore();
-			}
-		}
-		else if (('VOD' in window) && VOD.active && tv_cur_block === 'menu') {
-			VOD.close();
-		}
-		else if (tv_cur_block === 'tv_welcome') {
-			tv_welcome_hide();
-		}
-		else if (tv_cur_block !== 'menu') {
-			// manageShadowOnPage({ id: 'shopitem', remove: true });
+        // для HG32EE590
+        _tv_bg_restore();
+      }
+    } else if ("VOD" in window && VOD.active && tv_cur_block === "menu") {
+      VOD.close();
+    } else if (tv_cur_block === "tv_welcome") {
+      tv_welcome_hide();
+    } else if (tv_cur_block !== "menu") {
+      // manageShadowOnPage({ id: 'shopitem', remove: true });
 
-			var tmp = $(active_page).find('.back[href_type=back]');
-			if (tmp.length) {
-				tmp.trigger(event_link);
-			}
-			else {
-				navigate('#menu');
-			}
-		}
-	}
-	else {
-		if (tv_channellist_type === 'vertical_new') {
-			VerticalChannel.back();
-		}
-		else {
-			if (!tv_channellist_hidden) {
-				tv_channellist_hide(true);
-			}
-			else {
-				tv_mode();
-			}
-		}
-	}
+      var tmp = $(active_page).find(".back[href_type=back]");
+      if (tmp.length) {
+        tmp.trigger(event_link);
+      } else {
+        navigate("#menu");
+      }
+    }
+  } else {
+    if (tv_channellist_type === "vertical_new") {
+      VerticalChannel.back();
+    } else {
+      if (!tv_channellist_hidden) {
+        tv_channellist_hide(true);
+      } else {
+        tv_mode();
+      }
+    }
+  }
 }
 
 function tv_mode() {
-	if (!tv_channels.length || (_tv_channels && !_tv_channels.length)) {
-		custom_dialog('alert', getlang('tv_nottelevision'), getlang('not_available_channels'));
-		return false;
-	}
+  if (!tv_channels.length || (_tv_channels && !_tv_channels.length)) {
+    custom_dialog(
+      "alert",
+      getlang("tv_nottelevision"),
+      getlang("not_available_channels")
+    );
+    return false;
+  }
 
-	//TODO: сделать нормально
-	if(tv_cur_block === 'tv_welcome'){
-		return false;
-	}
+  //TODO: сделать нормально
+  if (tv_cur_block === "tv_welcome") {
+    return false;
+  }
 
-	if(!fullscreen) {
-		Media.stop({ directType: 'ip' }).done(toChannel);
-	}
-	else {
+  if (!fullscreen) {
+    Media.stop({ directType: "ip" }).done(toChannel);
+  } else {
+    if (tv_channellist_type === "mosaic") {
+      tv_mosaic.close();
+    }
 
-		if (tv_channellist_type === 'mosaic') {
-			tv_mosaic.close();
-		}
+    tv_channellist_fade(true);
 
-		tv_channellist_fade(true);
+    tv_channellist_hide();
+    $("#tv_fullscreen_overlay").removeClass("fullscreen").show();
 
-		tv_channellist_hide();
-		$('#tv_fullscreen_overlay').removeClass('fullscreen').show();
+    fullscreen = false;
 
-		fullscreen = false;
+    $("#tv_fullscreen_btn_tvmode").html(getlang("tv_television"));
+    $("#tv_fullscreen_btn_tvcategories").hide();
 
-		$('#tv_fullscreen_btn_tvmode').html(getlang('tv_television'));
-		$('#tv_fullscreen_btn_tvcategories').hide();
+    try {
+      _tv_bg_restore();
+    } catch (e) {}
 
-		try{
-			_tv_bg_restore();
-		}catch(e){}
+    $("#container").show();
+    // $(active_page).show();
+    if (classic_menu) {
+      tv_sel_block(active_page_id);
+    }
+    navigate("#menu");
 
-		$('#container').show();
-		// $(active_page).show();
-		if (classic_menu) {tv_sel_block(active_page_id);}
-		navigate('#menu');
+    $("#tv_cur").css("visibility", "visible");
+  }
 
-		$('#tv_cur').css('visibility','visible');
-	}
+  function toChannel() {
+    clip(null);
 
-	function toChannel() {
-		clip(null);
+    if (tv_cur_block === "dialog") {
+      //Скрытие алерта
+      custom_dialog_close();
+    }
 
-		if(tv_cur_block === 'dialog'){
-			//Скрытие алерта
-			custom_dialog_close();
-		}
+    $("#container").hide();
 
-		$('#container').hide();
+    $("#tv_fullscreen_overlay").addClass("fullscreen");
 
-		$('#tv_fullscreen_overlay').addClass('fullscreen');
+    try {
+      _tv_bg_prepare();
+    } catch (e) {
+      tv_log("bg prepare error");
+    }
 
-		try{_tv_bg_prepare();}catch(e){tv_log('bg prepare error');}
+    //		if($('#tv_channellist UL').hasClass('tv_channel_category')){
+    //			l(1);
+    //		}
 
-		//		if($('#tv_channellist UL').hasClass('tv_channel_category')){
-		//			l(1);
-		//		}
+    tv_sel_block("tv_channellist");
 
-		tv_sel_block('tv_channellist');
+    // передаем управление в tv_mosaic
+    if (tv_channellist_type === "mosaic") {
+      //Хак для скандик меню, не убиралось приветствие гостя при переходе на каналы из главного меню (нужно только для моазйки?)
+      if (scandic_menu) {
+        hide_menu();
+      }
+      //----
 
-		// передаем управление в tv_mosaic
-		if (tv_channellist_type === 'mosaic') {
+      tv_mosaic.open();
+      fullscreen = true;
+      return true;
+    }
 
-			//Хак для скандик меню, не убиралось приветствие гостя при переходе на каналы из главного меню (нужно только для моазйки?)
-			if(scandic_menu){
-				hide_menu();
-			}
-			//----
+    if (tv_channellist_type === "vertical_new") {
+      VerticalChannel.open("channel");
+      fullscreen = true;
+      return true;
+    }
 
-			tv_mosaic.open();
-			fullscreen = true;
-			return true;
-		}
+    setTimeout(tv_channellist_show, 0);
 
-		if (tv_channellist_type === 'vertical_new') {
-			VerticalChannel.open('channel');
-			fullscreen = true;
-			return true;
-		}
+    $("#tv_fullscreen_btn_tvmode").html(getlang("tv_nottelevision"));
+    if (tv_channel_categories.length > 0) {
+      $("#tv_fullscreen_btn_tvcategories").show();
+    }
 
-		setTimeout(tv_channellist_show, 0);
+    $("#tv_cur").css("visibility", "hidden");
 
-		$('#tv_fullscreen_btn_tvmode').html(getlang('tv_nottelevision'));
-		if(tv_channel_categories.length > 0){
-			$('#tv_fullscreen_btn_tvcategories').show();
-		}
+    if (typeof tv_cur_channel === "undefined") {
+      tv_cur_pos = 0;
+      tv_cur_channel = 0;
+      tv_sel_cur();
+    }
 
-		$('#tv_cur').css('visibility','hidden');
+    setTimeout(function () {
+      tv_channel_show(tv_cur_channel);
+      fullscreen = true;
+    }, 0);
 
-		if(typeof(tv_cur_channel) === 'undefined'){
-			tv_cur_pos = 0;
-			tv_cur_channel = 0;
-			tv_sel_cur();
-		}
-
-		setTimeout(function(){
-			tv_channel_show(tv_cur_channel);
-			fullscreen = true;
-		}, 0);
-
-
-		if (tv_mag_mark) {
-			_player_resize();
-		}
-	}
+    if (tv_mag_mark) {
+      _player_resize();
+    }
+  }
 }
 function tv_welcome_getData() {
-	var welcome = isset('structv2.welcome'),
-		type = isset('structv2.welcome.mediaType') || isset('config.tv.welcome_screen.mediaType') || 'channel',
-		data;
+  var welcome = isset("structv2.welcome"),
+    type =
+      isset("structv2.welcome.mediaType") ||
+      isset("config.tv.welcome_screen.mediaType") ||
+      "channel",
+    data;
 
-	switch(isset('structv2.welcome.mediaType')){
-		case 'channel':
-		case 'udp':
-		case 'image':
-		case 'video':
-			data = isset('structv2.welcome.data');
-			break;
-		default:
-			data = isset('config.tv.welcome_screen')[type];
-			break;
-	}
+  switch (isset("structv2.welcome.mediaType")) {
+    case "channel":
+    case "udp":
+    case "image":
+    case "video":
+      data = isset("structv2.welcome.data");
+      break;
+    default:
+      data = isset("config.tv.welcome_screen")[type];
+      break;
+  }
 
-	return welcome ? {
-		type: type,
-		data: data,
-		image: welcome.image,
-		title: welcome.title,
-		content: welcome.content,
-		language: welcome.language,
-		lang: {
-			kontinue: getlang('mobileAppContent-welcomePage-button-continue')
-		}
-	} : {};
+  return welcome
+    ? {
+        type: type,
+        data: data,
+        image: welcome.image,
+        title: welcome.title,
+        content: welcome.content,
+        language: welcome.language,
+        lang: {
+          kontinue: getlang("mobileAppContent-welcomePage-button-continue"),
+        },
+      }
+    : {};
 }
 
 function tv_welcome() {
-	log.add('TV welcome show');
+  log.add("TV welcome show");
 
-	welcome_prepare();
+  welcome_prepare();
 
-	// Передаем управление в ScandicWelcome
-	if (
-		typeof ScandicWelcome !== 'undefined' &&
-		isset('config.menu') !== ''
-	) {
-		return ScandicWelcome.open();
-	}
+  // Передаем управление в ScandicWelcome
+  if (typeof ScandicWelcome !== "undefined" && isset("config.menu") !== "") {
+    return ScandicWelcome.open();
+  }
 
-	structv2.welcome.language = get_language_select_welcome();
-	structv2.welcome.lang = {
-		kontinue: getlang('mobileAppContent-welcomePage-button-continue')
-	};
-	$(document.body).append(templates_cache.welcome_screen.render(tv_welcome_getData()));
+  structv2.welcome.language = get_language_select_welcome();
+  structv2.welcome.lang = {
+    kontinue: getlang("mobileAppContent-welcomePage-button-continue"),
+  };
+  $(document.body).append(
+    templates_cache.welcome_screen.render(tv_welcome_getData())
+  );
 
-	tv_set_welcome_guest_greeting_v2();
-	$(HotezaTV).on('auth', function(){
-		tv_set_welcome_guest_greeting_v2();
-	});
+  tv_set_welcome_guest_greeting_v2();
+  $(HotezaTV).on("auth", function () {
+    tv_set_welcome_guest_greeting_v2();
+  });
 
-	if (!tv_desktop_mark) {document.body.style.backgroundColor = 'transparent';}
+  if (!tv_desktop_mark) {
+    document.body.style.backgroundColor = "transparent";
+  }
 
-	$('#tv_fullscreen_btns').hide();
+  $("#tv_fullscreen_btns").hide();
 
-	videoCollection.destroy().done(function() {
-		_player_shutdown().done(function () {
-			//Убрано условине по типу. логика в getChannelForWelcome
-			var tune = getChannelForWelcome();
-			if (tune) {
-				try{_tv_bg_prepare();}catch(e){tv_log('bg prepare error');}
-				_tv_channel_show(tune);
-				setVideoSize();
-			}
+  videoCollection.destroy().done(function () {
+    _player_shutdown().done(function () {
+      //Убрано условине по типу. логика в getChannelForWelcome
+      var tune = getChannelForWelcome();
+      if (tune) {
+        try {
+          _tv_bg_prepare();
+        } catch (e) {
+          tv_log("bg prepare error");
+        }
+        _tv_channel_show(tune);
+        setVideoSize();
+      }
 
-			tv_keydown_override = server_keydown;
+      tv_keydown_override = server_keydown;
 
-			var tmp_vol = (isset('config.tv.welcome_screen.volume')||0);
-			tv_set_volume(tmp_vol);
+      var tmp_vol = isset("config.tv.welcome_screen.volume") || 0;
+      tv_set_volume(tmp_vol);
 
-			if($id('splashscreen')){
-				setTimeout(function(){
-					delete_splash();
-					tv_sel_block('tv_welcome');
-				}, 2000);
-			}else{
-				tv_sel_block('tv_welcome');
-			}
+      if ($id("splashscreen")) {
+        setTimeout(function () {
+          delete_splash();
+          tv_sel_block("tv_welcome");
+        }, 2000);
+      } else {
+        tv_sel_block("tv_welcome");
+      }
+    });
+  });
 
-		});
-	});
+  function get_language_select_welcome() {
+    var languages = isset("structv2.language");
+    if (!languages || languages.length < 2) {
+      return null;
+    }
+    if (!isset("config.tv.welcome_select_language")) {
+      return null;
+    }
 
-	function get_language_select_welcome() {
-		var languages = isset('structv2.language');
-		if (!languages || languages.length < 2) {return null;}
-		if (!isset('config.tv.welcome_select_language')) {return null;}
+    var resultArr = [],
+      current_language = get_language();
 
-		var resultArr = [],
-			current_language = get_language();
+    for (var i = 0; i < languages.length; i++) {
+      var language = Object.assign({}, languages[i]);
 
-		for (var i = 0; i < languages.length; i++) {
-			var language = Object.assign({}, languages[i]);
+      language.title = language.title.replace(/\(.+\)/g, "").replace(/\s$/, "");
+      language.current = language.code == current_language ? true : false;
 
-			language.title = language.title.replace(/\(.+\)/g, '').replace(/\s$/, '');
-			language.current = language.code == current_language ? true : false;
+      resultArr.push(language);
+    }
 
-			resultArr.push(language);
-		}
+    return resultArr;
+  }
+  function welcome_prepare() {
+    if (tv_cur_block === "dialog") {
+      //Скрытие алерта
+      custom_dialog_close();
+    }
 
-		return resultArr;
-	}
-	function welcome_prepare() {
-		if(tv_cur_block === 'dialog'){
-			//Скрытие алерта
-			custom_dialog_close();
-		}
+    $("#container").hide();
+    //$('#tv_fullscreen_overlay').css('visibility', '');
+    //$('#tv_fullscreen_overlay').hide();
+  }
+  function server_keydown(e) {
+    if (!e) {
+      e = event;
+    }
+    var code = e.keyCode ? e.keyCode : e.which;
 
-		$('#container').hide();
-		//$('#tv_fullscreen_overlay').css('visibility', '');
-		//$('#tv_fullscreen_overlay').hide();
-	}
-	function server_keydown(e) {
-		if (!e) {e = event;}
-		var code = (e.keyCode ? e.keyCode : e.which);
+    //Обработка shift для MAG
+    if (e.shiftKey) {
+      code = "S" + code;
+    }
 
-		//Обработка shift для MAG
-		if(e.shiftKey){
-			code = 'S'+code;
-		}
+    switch (code) {
+      case tv_keys.UP:
+        tv_up();
+        break;
+      case tv_keys.DOWN:
+        tv_down();
+        break;
+      case tv_keys.LEFT:
+        tv_left();
+        break;
+      case tv_keys.RIGHT:
+        tv_right();
+        break;
+      case tv_keys.ENTER:
+        tv_ok();
+        if (e.stopPropagation) {
+          e.stopPropagation();
+        }
+        break;
+      case tv_keys.EXIT:
+      case tv_keys.BACK:
+      case tv_keys.PORTAL:
+      case tv_keys.GUIDE:
+      case tv_keys.Q_MENU:
+      case tv_keys.MENU:
+      case tv_keys.HOME:
+        tv_welcome_hide();
+        break;
 
-		switch(code){
-			case tv_keys.UP:
-				tv_up();
-				break;
-			case tv_keys.DOWN:
-				tv_down();
-				break;
-			case tv_keys.LEFT:
-				tv_left();
-				break;
-			case tv_keys.RIGHT:
-				tv_right();
-				break;
-			case tv_keys.ENTER:
-				tv_ok();
-				if(e.stopPropagation){
-					e.stopPropagation();
-				}
-				break;
-			case tv_keys.EXIT:
-			case tv_keys.BACK:
-			case tv_keys.PORTAL:
-			case tv_keys.GUIDE:
-			case tv_keys.Q_MENU:
-			case tv_keys.MENU:
-			case tv_keys.HOME:
-				tv_welcome_hide();
-				break;
-
-			default:
-				break;
-
-		}
-	}
+      default:
+        break;
+    }
+  }
 }
 function getChannelForWelcome() {
-	var tmp_channels;
-	if (isset('config.tv.welcome_screen.useGroupsInWelcome')) {
-		tmp_channels = _tv_channels;
-	}else{
-		tmp_channels = tv_channels;
-	}
-	var channel;
+  var tmp_channels;
+  if (isset("config.tv.welcome_screen.useGroupsInWelcome")) {
+    tmp_channels = _tv_channels;
+  } else {
+    tmp_channels = tv_channels;
+  }
+  var channel;
 
-	switch(isset('structv2.welcome.mediaType')){
-		case 'channel':
-			channel = tmp_channels[isset('structv2.welcome.data') || 0];
-			break;
-		case 'udp':
-			channel = tv_channel_to_old_format({
-				type: 'udp',
-				data: isset('structv2.welcome.data')
-			});
-			break;
-		case 'image':
-		case 'video':
-				break;
-		default:
-			if(!isset('config.tv.welcome_screen.mediaType') || isset('config.tv.welcome_screen.mediaType') == 'channel'){
-				channel = tmp_channels[isset('config.tv.welcome_screen.channel') || 0];
-			}else if(isset('config.tv.welcome_screen.mediaType') == 'udp'){
-				channel = tv_channel_to_old_format({
-					type: 'udp',
-					data: isset('config.tv.welcome_screen.udp')
-				});
-			}
-			break;
-	}
-	return channel;
+  switch (isset("structv2.welcome.mediaType")) {
+    case "channel":
+      channel = tmp_channels[isset("structv2.welcome.data") || 0];
+      break;
+    case "udp":
+      channel = tv_channel_to_old_format({
+        type: "udp",
+        data: isset("structv2.welcome.data"),
+      });
+      break;
+    case "image":
+    case "video":
+      break;
+    default:
+      if (
+        !isset("config.tv.welcome_screen.mediaType") ||
+        isset("config.tv.welcome_screen.mediaType") == "channel"
+      ) {
+        channel = tmp_channels[isset("config.tv.welcome_screen.channel") || 0];
+      } else if (isset("config.tv.welcome_screen.mediaType") == "udp") {
+        channel = tv_channel_to_old_format({
+          type: "udp",
+          data: isset("config.tv.welcome_screen.udp"),
+        });
+      }
+      break;
+  }
+  return channel;
 }
 
-function tv_welcome_resize(){
-	$('#tv_welcome .container').css('top', (wh - $('#tv_welcome .container').outerHeight())/2 + 'px');
-	tv_sel_cur();
+function tv_welcome_resize() {
+  $("#tv_welcome .container").css(
+    "top",
+    (wh - $("#tv_welcome .container").outerHeight()) / 2 + "px"
+  );
+  tv_sel_cur();
 }
 
-function tv_welcome_hide(){
-	var d = $.Deferred();
-	//Выставление флага просмотра приветствия гостя (Welcome)
-	var data = load_data();
-	data.welcome_screen_shown = true;
-	save_data(data);
+function tv_welcome_hide() {
+  var d = $.Deferred();
+  //Выставление флага просмотра приветствия гостя (Welcome)
+  var data = load_data();
+  data.welcome_screen_shown = true;
+  save_data(data);
 
-	if (typeof ScandicWelcome !== 'undefined') {
-		return ScandicWelcome.close().done(function () {
-			goToApp();
-			d.resolve();
-		});
-	}else{
-		var type = tv_welcome_getData().type;
-		if ( type == 'channel' || type == 'udp') {
-			_tv_channel_stop();
-			goToApp();
-			d.resolve();
-		} else {
-			videoCollection.destroy().done(function () {
-				_player_shutdown().done(function () {
-					clip(null);
-					goToApp();
-					d.resolve();
-				});
-			});
-		}
-	}
+  if (typeof ScandicWelcome !== "undefined") {
+    return ScandicWelcome.close().done(function () {
+      goToApp();
+      d.resolve();
+    });
+  } else {
+    var type = tv_welcome_getData().type;
+    if (type == "channel" || type == "udp") {
+      _tv_channel_stop();
+      goToApp();
+      d.resolve();
+    } else {
+      videoCollection.destroy().done(function () {
+        _player_shutdown().done(function () {
+          clip(null);
+          goToApp();
+          d.resolve();
+        });
+      });
+    }
+  }
 
-	function goToApp() {
+  function goToApp() {
+    $("#tv_fullscreen_overlay").show();
+    $("#tv_fullscreen_btns").show();
+    $("#container").show();
 
-		$('#tv_fullscreen_overlay').show();
-		$('#tv_fullscreen_btns').show();
-		$('#container').show();
+    $("#tv_welcome").remove();
 
-		$('#tv_welcome').remove();
+    //TODO: навигация на инструкцию по пульту?
+    // tv_sel_block('menu');
 
-		//TODO: навигация на инструкцию по пульту?
-		// tv_sel_block('menu');
+    _tv_bg_restore();
 
-		_tv_bg_restore();
+    fullscreen = false;
 
-		fullscreen = false;
+    tv_cur_channel = 0;
 
-		tv_cur_channel = 0;
+    tv_keydown_override = null;
 
-		tv_keydown_override = null;
+    //TODO: пперенести в модуль
+    initScandicMenu();
 
-		//TODO: пперенести в модуль
-		initScandicMenu();
+    // Возможно можно проще, по идее при классик меню там уже всё подготовлено
+    if (classic_menu) {
+      navigate("#menu");
+      $(first_page_in_classic_menu.get_page()).trigger(event_link);
+      tv_sel_block("menu");
+    } else {
+      navigate("#menu");
+      set_first_active_cursor_in_menu();
+    }
+  }
 
-		// Возможно можно проще, по идее при классик меню там уже всё подготовлено
-		if(classic_menu) {
-			navigate('#menu');
-			$(first_page_in_classic_menu.get_page()).trigger(event_link);
-			tv_sel_block('menu');
-		} else {
-			navigate('#menu');
-			set_first_active_cursor_in_menu();
-		}
-	}
-
-	return d.promise();
+  return d.promise();
 }
 
 //Преобразование в старый формат
-function tv_channel_to_old_format(obj){
-	var out;
-	switch(obj.type){
-		case 'udp':
-			out = {
-				type: 'ip',
-				broadcastType: 'UDP',
-				protocol: obj.data.split(':')[0],
-				port: (obj.data.split(':')[1]|0)||'1234',
-			};
-			break;
-		default:
-			break;
-	}
-	return out;
+function tv_channel_to_old_format(obj) {
+  var out;
+  switch (obj.type) {
+    case "udp":
+      out = {
+        type: "ip",
+        broadcastType: "UDP",
+        protocol: obj.data.split(":")[0],
+        port: obj.data.split(":")[1] | 0 || "1234",
+      };
+      break;
+    default:
+      break;
+  }
+  return out;
 }
 
-function tv_channellist_build(){
-	var channels = getChannels();
-	var tmp, filtersNames, num, filtered, action;
-	if (typeof channels === 'undefined') {
-		return false;
-	}
+function tv_channellist_build() {
+  var channels = getChannels();
+  var tmp, filtersNames, num, filtered, action;
+  if (typeof channels === "undefined") {
+    return false;
+  }
 
-	if (
-		tv_manufacturer == 'mag' &&
-		typeof(tv_channellist_type) !== 'undefined' &&
-		tv_channellist_type === 'mosaic' &&
-		!isset('config.tv.hacks.MAG')
-	) {
+  if (
+    tv_manufacturer == "mag" &&
+    typeof tv_channellist_type !== "undefined" &&
+    tv_channellist_type === "mosaic" &&
+    !isset("config.tv.hacks.MAG")
+  ) {
+    tv_channellist_type = "";
+  }
 
-		tv_channellist_type = '';
-	}
+  if (tv_channellist_type === "vertical_new") {
+    VerticalChannel.init(true);
+  } else if (tv_channellist_type === "vertical") {
+    var h, w;
+    if (!$("#tv_channellist").length) {
+      $(document.body).append(
+        "" +
+          '<div id="tv_channellist" style="display:none;" class="vertical">' +
+          '<div id="tv_channel_filter"><span>&nbsp;</span></div>' +
+          '<div id="tv_channellist_cont">' +
+          '<div class="content">' +
+          "<ul></ul>" +
+          "</div>" +
+          '<div id="scroll_outer">' +
+          '<div class="scroll_up"></div>' +
+          '<div class="scroll_down"></div>' +
+          '<div id="scroll_inner">' +
+          '<div id="scroll_scroll"></div>' +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          '<div id="tv_header"></div>' +
+          "</div>"
+      );
 
-	if (tv_channellist_type === 'vertical_new') {
-		VerticalChannel.init(true);
-	}
-	else if (tv_channellist_type === 'vertical') {
-		var h, w;
-		if (!$('#tv_channellist').length) {
-			$(document.body).append('' +
-				'<div id="tv_channellist" style="display:none;" class="vertical">' +
-					'<div id="tv_channel_filter"><span>&nbsp;</span></div>' +
-					'<div id="tv_channellist_cont">' +
-						'<div class="content">' +
-							'<ul></ul>' +
-						'</div>' +
-						'<div id="scroll_outer">' +
-							'<div class="scroll_up"></div>' +
-							'<div class="scroll_down"></div>' +
-							'<div id="scroll_inner">' +
-								'<div id="scroll_scroll"></div>' +
-							'</div>' +
-						'</div>' +
-					'</div>' +
-					'<div id="tv_header"></div>' +
-				'</div>'
-			);
+      //CSS OVERRIDE
+      h = wh - 300;
+      w = 400;
+      $("#tv_channellist").css("bottom", 150 + "px");
+      $("#tv_channellist_cont").height(h).width(w);
+    }
 
-			//CSS OVERRIDE
-			h = wh-300;
-			w = 400;
-			$('#tv_channellist').css('bottom', 150+'px');
-			$('#tv_channellist_cont').height(h).width(w);
+    $("#tv_channellist UL").removeClass("tv_channel_category").empty();
 
-		}
+    tmp = "";
+    filtersNames = channelCategories.getNamesFiltersList();
+    if (filtersNames.length) {
+      $("#tv_channel_filter")
+        .html(
+          "<span>" +
+            getlang("tv_category") +
+            ": " +
+            $.each(filtersNames, function (item) {
+              return item;
+            }) +
+            "</span>"
+        )
+        .show();
+    } else {
+      $("#tv_channel_filter").hide();
+    }
 
-		$('#tv_channellist UL').removeClass('tv_channel_category').empty();
+    for (num in channels) {
+      // проверка tv_rights
+      if (!filterRightsContent(channels[num], "video")) {
+        if (typeof tv_cur_channel === "undefined") {
+          tv_cur_channel = num;
+        }
 
-		tmp = '';
-		filtersNames = channelCategories.getNamesFiltersList();
-		if (filtersNames.length) {
-			$('#tv_channel_filter').html(
-				'<span>' + getlang('tv_category') + ': ' + $.each(filtersNames, function(item) {return item;}) + '</span>'
-			).show();
-		}
-		else {
-			$('#tv_channel_filter').hide();
-		}
+        filtered = true;
+        channelCategories(channels[num], tv_channel_categories);
 
-		for (num in channels) {
-			// проверка tv_rights
-			if (!filterRightsContent(channels[num], 'video')) {
-				if (typeof (tv_cur_channel) === 'undefined') {tv_cur_channel = num;}
+        if (
+          filtersNames.length &&
+          filtersNames.indexOf(channels[num].category) === -1
+        ) {
+          filtered = false;
+        }
+        if (
+          typeof tv_channel_filter.language !== "undefined" &&
+          tv_channel_filter.language !== channels[num].lang
+        ) {
+          filtered = false;
+        }
 
-				filtered = true;
-				channelCategories(channels[num], tv_channel_categories);
+        // проверка nopost
+        action = handlerNopost(channels, num, "tv_channel_show(" + num + ");");
+        if (filtered === true) {
+          tmp +=
+            "" +
+            '<li data-num="' +
+            num +
+            '" onvclick="' +
+            action +
+            '">' +
+            '<div class="tv_channel_logo" style="background:url(' +
+            channels[num].image +
+            ') 50% no-repeat;"></div>' +
+            '<div class="prognum">' +
+            ((num | 0) + 1) +
+            "</div>" +
+            channels[num].name +
+            "</li>";
+        }
+      }
+    }
+    $("#tv_channellist_cont UL").append(tmp);
 
-				if (
-					filtersNames.length &&
-					filtersNames.indexOf(channels[num].category) === -1
-				) {
-					filtered = false;
-				}
-				if (
-					typeof(tv_channel_filter.language) !== 'undefined' &&
-					tv_channel_filter.language !== channels[num].lang
-				) {
-					filtered = false;
-				}
+    //Высота контента
+    var max_height = $("#tv_channellist_cont").height(),
+      target_height =
+        $("#tv_channellist LI").length *
+          $("#tv_channellist LI").outerHeight(true) +
+        20;
+    $("#tv_channellist").find(".content")[0].style.height =
+      (target_height < max_height ? max_height : target_height) + "px";
 
-				// проверка nopost
-				action = handlerNopost(channels, num, 'tv_channel_show('+num+');');
-				if (filtered === true) {
-					tmp += '' +
-						'<li data-num="'+num+'" onvclick="'+ action +'">' +
-							'<div class="tv_channel_logo" style="background:url('+channels[num].image+') 50% no-repeat;"></div>' +
-							'<div class="prognum">'+((num|0)+1)+'</div>'+channels[num].name+
-						'</li>';
-				}
-			}
+    if (max_height >= $("#tv_channellist_cont .content").height()) {
+      $("#tv_channellist_cont UL").css("margin-right", "");
+      $("#scroll_outer").hide();
+    } else {
+      $("#tv_channellist_cont UL").css("margin-right", "32px");
+      $("#scroll_outer").height(h - 40);
+      $("#scroll_outer").show();
+    }
 
-		}
-		$('#tv_channellist_cont UL').append(tmp);
+    if (fullscreen && !tv_channellist_hidden) {
+      tv_sel_block("tv_channellist");
+    }
 
-		//Высота контента
-		var max_height = $('#tv_channellist_cont').height(),
-			target_height = ($('#tv_channellist LI').length * $('#tv_channellist LI').outerHeight(true) + 20);
-		$('#tv_channellist').find('.content')[0].style.height = (target_height < max_height ? max_height : target_height) + 'px';
+    sendChannelsToMobile();
+  } else if (tv_channellist_type === "mosaic") {
+    if (typeof tv_mosaic === "undefined") {
+      return;
+    }
 
-		if (max_height >= $('#tv_channellist_cont .content').height()) {
-			$('#tv_channellist_cont UL').css('margin-right','');
-			$('#scroll_outer').hide();
-		}
-		else {
-			$('#tv_channellist_cont UL').css('margin-right','32px');
-			$('#scroll_outer').height(h-40);
-			$('#scroll_outer').show();
-		}
+    tv_channel_filter.category = [];
+    tv_channel_filter.language = [];
 
-		if (fullscreen && !tv_channellist_hidden) {
-			tv_sel_block('tv_channellist');
-		}
+    // создаем список категорий и добавляем количество каналов
+    tv_channels_category_list = tv_mosaic.category_list();
 
-		sendChannelsToMobile();
-	}
-	else if (tv_channellist_type === 'mosaic') {
-		if (typeof tv_mosaic === 'undefined') {
-			return;
-		}
+    // сортируем список языков и добавляем количество каналов
+    tv_channels_sorted_lang = tv_mosaic.sort_languages();
 
-		tv_channel_filter.category = [];
-		tv_channel_filter.language = [];
+    tv_mosaic.filter_channels();
 
-		// создаем список категорий и добавляем количество каналов
-		tv_channels_category_list = tv_mosaic.category_list();
+    tv_mosaic.build_container();
 
-		// сортируем список языков и добавляем количество каналов
-		tv_channels_sorted_lang = tv_mosaic.sort_languages();
+    if (channels.length) {
+      tv_mosaic.build_channel_list();
+      tv_mosaic.build_channel_list(true);
 
-		tv_mosaic.filter_channels();
+      tv_mosaic.build_preview(channels[0].name);
+      tv_mosaic.build_choosing_list("language");
+      tv_mosaic.build_choosing_list("category");
+    }
 
-		tv_mosaic.build_container();
+    var tmp_preload = new PreloadMedia("#tv_channellist");
+  } else {
+    if (!document.getElementById("tv_channellist")) {
+      $(document.body).append(
+        '<div id="tv_channellist" class="horizontal" style="display:none;"><div id="tv_channel_filter"><span></span></div><div class="tv_channel_left"></div><div id="tv_channellist_cont"><div class="content"><ul></ul></div></div><div class="tv_channel_right"></div></div><div id="tv_header"></div>'
+      );
+    }
 
-		if (channels.length) {
-			tv_mosaic.build_channel_list();
-			tv_mosaic.build_channel_list(true);
+    tmp = document.querySelector("#tv_channellist_cont UL");
 
-			tv_mosaic.build_preview(channels[0].name);
-			tv_mosaic.build_choosing_list('language');
-			tv_mosaic.build_choosing_list('category');
-		}
+    if (tmp) {
+      tmp.classList.remove("tv_channel_category");
+    }
 
-		var tmp_preload = new PreloadMedia('#tv_channellist');
+    tmp = document.getElementById("tv_channel_filter");
+    filtersNames = channelCategories.getNamesFiltersList();
+    if (filtersNames.length) {
+      tmp.innerHTML =
+        "<span>" +
+        getlang("tv_category") +
+        ": " +
+        $.each(filtersNames, function (item) {
+          return item;
+        }) +
+        "</span>";
+      tmp.style.display = "block";
+    } else {
+      tmp.style.display = "none";
+    }
 
-	}
-	else {
-		if (!document.getElementById('tv_channellist')) {
-			$(document.body).append('<div id="tv_channellist" class="horizontal" style="display:none;"><div id="tv_channel_filter"><span></span></div><div class="tv_channel_left"></div><div id="tv_channellist_cont"><div class="content"><ul></ul></div></div><div class="tv_channel_right"></div></div><div id="tv_header"></div>');
-		}
+    tmp = "";
 
-		tmp = document.querySelector('#tv_channellist_cont UL');
+    for (num in channels) {
+      // проверка tv_rights
+      if (!filterRightsContent(channels[num], "video")) {
+        if (typeof tv_cur_channel === "undefined") {
+          tv_cur_channel = num | 0;
+        }
 
-		if (tmp) {
-			tmp.classList.remove('tv_channel_category');
-		}
+        filtered = true;
+        channelCategories(channels[num], tv_channel_categories);
 
-		tmp = document.getElementById('tv_channel_filter');
-		filtersNames = channelCategories.getNamesFiltersList();
-		if (filtersNames.length) {
-			tmp.innerHTML = '<span>' + getlang('tv_category') + ': '+ $.each(filtersNames, function(item) {return item;}) + '</span>';
-			tmp.style.display = 'block';
-		}
-		else {
-			tmp.style.display = 'none';
-		}
+        if (
+          filtersNames.length &&
+          filtersNames.indexOf(channels[num].category) === -1
+        ) {
+          filtered = false;
+        }
+        if (
+          typeof tv_channel_filter.language !== "undefined" &&
+          tv_channel_filter.language !== channels[num].lang
+        ) {
+          filtered = false;
+        }
 
-		tmp = '';
+        // проверка nopost
+        action = handlerNopost(channels, num, "tv_channel_show(" + num + ");");
+        if (filtered === true) {
+          tmp +=
+            "" +
+            '<li data-num="' +
+            num +
+            '" onvclick="' +
+            action +
+            '">' +
+            '<div class="tv_channel_name">' +
+            channels[num].name +
+            "</div>" +
+            "<div " +
+            'class="tv_channel_logo" ' +
+            'style="background:url(' +
+            channels[num].image +
+            ') 50% no-repeat;"' +
+            "></div>" +
+            "</li>";
+        }
+      }
+    }
+    document.getElementById("tv_channellist_cont").innerHTML =
+      '<div class="content"><ul>' + tmp + "</ul></div>";
 
-		for (num in channels) {
-			// проверка tv_rights
-			if (!filterRightsContent(channels[num], 'video')) {
-				if (typeof (tv_cur_channel) === 'undefined') {tv_cur_channel = num|0;}
+    //Смещение
+    tmp = $("#tv_channellist").find("LI").outerWidth(true);
 
-				filtered = true;
-				channelCategories(channels[num], tv_channel_categories);
+    document.querySelector("#tv_channellist .content").style.width =
+      channels.length * tmp + "px";
 
-				if (
-					filtersNames.length &&
-					filtersNames.indexOf(channels[num].category) === -1
-				) {
-					filtered = false;
-				}
-				if (
-					typeof(tv_channel_filter.language) !== 'undefined' &&
-					tv_channel_filter.language !== channels[num].lang
-				) {
-					filtered = false;
-				}
+    if (fullscreen && !tv_channellist_hidden) {
+      tv_sel_block("tv_channellist");
+    }
 
-				// проверка nopost
-				action = handlerNopost(channels, num, 'tv_channel_show('+num+');');
-				if (filtered === true) {
-					tmp += '' +
-						'<li data-num="'+num+'" onvclick="'+ action +'">' +
-						'<div class="tv_channel_name">' +
-							channels[num].name +
-						'</div>' +
-						'<div ' +
-						'class="tv_channel_logo" ' +
-						'style="background:url('+channels[num].image+') 50% no-repeat;"' +
-						'></div>' +
-						'</li>';
-				}
-			}
-
-		}
-		document.getElementById('tv_channellist_cont').innerHTML = '<div class="content"><ul>'+tmp+'</ul></div>';
-
-		//Смещение
-		tmp = $('#tv_channellist').find('LI').outerWidth(true);
-
-		document.querySelector('#tv_channellist .content').style.width = channels.length * tmp + 'px';
-
-		if(fullscreen && !tv_channellist_hidden){
-			tv_sel_block('tv_channellist');
-		}
-
-		sendChannelsToMobile();
-	}
+    sendChannelsToMobile();
+  }
 }
 
-function tv_channel_category_build(){
-	var categories = channelCategories.getNamesFiltersList(true);
+function tv_channel_category_build() {
+  var categories = channelCategories.getNamesFiltersList(true);
 
-	if(categories.length === 0){
-		return false;
-	}
+  if (categories.length === 0) {
+    return false;
+  }
 
-	$('#tv_channel_filter').hide();
-	$('#tv_channellist UL').empty();
+  $("#tv_channel_filter").hide();
+  $("#tv_channellist UL").empty();
 
-	var tmp = '<li data-num="null" onvclick="tv_channel_filter.category = [];tv_channellist_build();"><span>'+getlang('tv_allchannels')+'</span></li>';
-	for(var num in categories){
-		var hasFilter = channelCategories.hasFilter(num);
-		tmp += '' +
-			'<li ' +
-				'data-num="'+num+'" ' +
-				'onvclick="'+ (hasFilter ? 'channelCategories.removeFilter('+num+')' : 'channelCategories.addFilter('+num+')') +';tv_channellist_build();"'+
-				(hasFilter ? ' class="tv_sel selected"' : '') +
-			'>' +
-				'<span>'+categories[num]+'</span>' +
-			'</li>';
-	}
+  var tmp =
+    '<li data-num="null" onvclick="tv_channel_filter.category = [];tv_channellist_build();"><span>' +
+    getlang("tv_allchannels") +
+    "</span></li>";
+  for (var num in categories) {
+    var hasFilter = channelCategories.hasFilter(num);
+    tmp +=
+      "" +
+      "<li " +
+      'data-num="' +
+      num +
+      '" ' +
+      'onvclick="' +
+      (hasFilter
+        ? "channelCategories.removeFilter(" + num + ")"
+        : "channelCategories.addFilter(" + num + ")") +
+      ';tv_channellist_build();"' +
+      (hasFilter ? ' class="tv_sel selected"' : "") +
+      ">" +
+      "<span>" +
+      categories[num] +
+      "</span>" +
+      "</li>";
+  }
 
-	$('#tv_channellist UL').addClass('tv_channel_category').append(tmp);
+  $("#tv_channellist UL").addClass("tv_channel_category").append(tmp);
 
-	tv_sel_block('tv_channellist');
-	tv_channellist_fade(true);
-
+  tv_sel_block("tv_channellist");
+  tv_channellist_fade(true);
 }
 
-function tv_channellist_show(full){
-	if(full && tv_channellist_type !== 'vertical_new'){
-		document.getElementById('tv_fullscreen_overlay').style.display = 'block';
-		//document.getElementById('tv_fullscreen_overlay').style.visibility = 'visible';
-	}
+function tv_channellist_show(full) {
+  if (full && tv_channellist_type !== "vertical_new") {
+    document.getElementById("tv_fullscreen_overlay").style.display = "block";
+    //document.getElementById('tv_fullscreen_overlay').style.visibility = 'visible';
+  }
 
-	if (tv_channellist_type === 'mosaic') {
-		return tv_mosaic.server_channel_information.toggle();
-	}
+  if (tv_channellist_type === "mosaic") {
+    return tv_mosaic.server_channel_information.toggle();
+  }
 
-	document.getElementById('tv_channellist').style.display = 'block';
+  document.getElementById("tv_channellist").style.display = "block";
 
-	if (tv_sel_list.length === 0) {
-		tv_sel_block('tv_channellist');
-	}
+  if (tv_sel_list.length === 0) {
+    tv_sel_block("tv_channellist");
+  }
 
-	if(typeof(tv_cur_channel) !== 'undefined'  && tv_channellist_type !== 'vertical_new'){
-		var tmp = $('#tv_channellist_cont [data-num]')
-			.filter(function () {
-				return $(this).data('num') == tv_cur_channel;
-			});
+  if (
+    typeof tv_cur_channel !== "undefined" &&
+    tv_channellist_type !== "vertical_new"
+  ) {
+    var tmp = $("#tv_channellist_cont [data-num]").filter(function () {
+      return $(this).data("num") == tv_cur_channel;
+    });
 
-		if (tmp.length) {
-			tv_cur_pos = tmp.index();
-		}
-		tv_sel_cur();
-	}
-	tv_channellist_hidden = false;
-	tv_channellist_fade(true);
+    if (tmp.length) {
+      tv_cur_pos = tmp.index();
+    }
+    tv_sel_cur();
+  }
+  tv_channellist_hidden = false;
+  tv_channellist_fade(true);
 }
 
-function tv_channellist_hide(full){
-	if(full){
-		document.getElementById('tv_fullscreen_overlay').style.display = 'none';
-//		document.getElementById('tv_fullscreen_overlay').style.visibility = 'hidden';
-	}
+function tv_channellist_hide(full) {
+  if (full) {
+    document.getElementById("tv_fullscreen_overlay").style.display = "none";
+    //		document.getElementById('tv_fullscreen_overlay').style.visibility = 'hidden';
+  }
 
-	$('#tv_channellist').hide();
-	tv_channellist_hidden = true;
+  $("#tv_channellist").hide();
+  tv_channellist_hidden = true;
 
-	if (tv_channellist_type === 'vertical_new') {
-		$('#tv_cur').hide();
-	}
+  if (tv_channellist_type === "vertical_new") {
+    $("#tv_cur").hide();
+  }
 }
 
 var tv_channellist_hidden = false;
 var tv_fade_timer;
-function tv_channellist_fade(reset){
-	if (typeof fullscreen === 'undefined') {
-		return false;
-	}
+function tv_channellist_fade(reset) {
+  if (typeof fullscreen === "undefined") {
+    return false;
+  }
 
-	if(tv_fade_timer){
-		clearTimeout(tv_fade_timer);
-		$('#tv_channellist').stop().animate({opacity:1}, 100);
-	}
-	if(!reset){
-		tv_fade_timer = setTimeout(function(){
-			$('#tv_channellist').animate(
-				{ opacity:0 },
-				500,
-				function(){
-					tv_channellist_hidden = true;
-					this.style.display = 'none';
-				}
-			);
-//			document.getElementById('tv_fullscreen_overlay').style.visibility = 'hidden';
-			document.getElementById('tv_fullscreen_overlay').style.display = 'none';
+  if (tv_fade_timer) {
+    clearTimeout(tv_fade_timer);
+    $("#tv_channellist").stop().animate({ opacity: 1 }, 100);
+  }
+  if (!reset) {
+    tv_fade_timer = setTimeout(function () {
+      $("#tv_channellist").animate({ opacity: 0 }, 500, function () {
+        tv_channellist_hidden = true;
+        this.style.display = "none";
+      });
+      //			document.getElementById('tv_fullscreen_overlay').style.visibility = 'hidden';
+      document.getElementById("tv_fullscreen_overlay").style.display = "none";
 
-			if (tv_channellist_type === 'vertical_new') {
-				$('#tv_cur').hide();
-			}
-		}, 5000);
-	}
+      if (tv_channellist_type === "vertical_new") {
+        $("#tv_cur").hide();
+      }
+    }, 5000);
+  }
 }
-
 
 var tv_channels = [];
 var tv_channel_categories = [];
@@ -4147,219 +4186,213 @@ var tv_cur_channel;
 var tv_prev_cur_channel;
 var tv_cur_channel_audio;
 
+function tv_channel_show(tune, coords) {
+  var channel,
+    id,
+    channels = getChannels();
 
-function tv_channel_show(tune, coords){
-	var channel, id,
-		channels = getChannels();
+  if (typeof tune === "object") {
+    channel = tune;
+    id = -1;
+  } else {
+    id = tune | 0;
+    channel = channels[id];
+  }
 
-	if (typeof tune === 'object'){
-		channel = tune;
-		id = -1;
-	}
-	else {
-		id = tune|0;
-		channel = channels[id];
-	}
+  if (channel) {
+    sendChannelId(channel.id);
+  }
 
-	if(channel){
-		sendChannelId(channel.id);
-	}
+  if (fullscreen && (!channel || tv_cur_channel === id) && id !== -1) {
+    tv_channellist_hide(true);
+    return false;
+  }
 
-	if(
-		fullscreen &&
-		(
-			!channel ||
-			tv_cur_channel === id
-		) &&
-		id !== -1
-	){
-		tv_channellist_hide(true);
-		return false;
-	}
+  tv_cur_channel_audio = null;
+  tv_cur_channel = id;
 
-	tv_cur_channel_audio = null;
-	tv_cur_channel = id;
+  _tv_channel_show(channel, coords);
 
-	_tv_channel_show(channel, coords);
-
-	tv_channellist_fade();
+  tv_channellist_fade();
 }
 
-function tv_log(msg){
-	if(isset('config.tv.suppress_log')){
-		log.add('TV LOG: ' + msg);
-	}else{
-		if(!document.getElementById('tv_log')){
-			$(document.body).append('<div id="tv_log"></div>');
-		}
-		var tmp = 'log_'+Math.random();
-		$('<div id="'+tmp+'">'+msg+'</div>').appendTo(document.getElementById('tv_log')).delay(10000).fadeOut(0, function(){$(this).remove();});
-	}
+function tv_log(msg) {
+  if (isset("config.tv.suppress_log")) {
+    log.add("TV LOG: " + msg);
+  } else {
+    if (!document.getElementById("tv_log")) {
+      $(document.body).append('<div id="tv_log"></div>');
+    }
+    var tmp = "log_" + Math.random();
+    $('<div id="' + tmp + '">' + msg + "</div>")
+      .appendTo(document.getElementById("tv_log"))
+      .delay(10000)
+      .fadeOut(0, function () {
+        $(this).remove();
+      });
+  }
 }
 
-function tv_register(){
-	var d = $.Deferred();
-	//TODO: check with device tv_mac
-	//get MAC
-	$.post(tv_daemon_url + 'getmymac',
-		function(data){
+function tv_register() {
+  var d = $.Deferred();
+  //TODO: check with device tv_mac
+  //get MAC
+  $.post(
+    tv_daemon_url + "getmymac",
+    function (data) {
+      tv_ip = data.ip;
+      tv_mac = data.mac;
+      tv_sign = data.sign;
 
-			tv_ip = data.ip;
-			tv_mac = data.mac;
-			tv_sign = data.sign;
+      if (!tv_mac || !tv_sign || !tv_room) {
+        //МАК и ключ не получен или не установлен номер комнаты
+        d.reject("nomac or noroom");
+      } else {
+        log.add("TV: DAEMON: IP = " + tv_ip + " / MAC = " + tv_mac);
 
-			if(!tv_mac || !tv_sign || !tv_room){
-				//МАК и ключ не получен или не установлен номер комнаты
-				d.reject('nomac or noroom');
-			}else{
-				log.add('TV: DAEMON: IP = ' + tv_ip + ' / MAC = ' + tv_mac);
+        data = {
+          hotelId: get_hotelId(),
+          roomNumber: tv_room,
+          ip: tv_ip,
+          mac: tv_mac,
+          manufacturer: tv_manufacturer,
+          model: tv_get_info().model,
+          firmware: tv_get_info().firmware,
+          sign: tv_sign,
+        };
 
-				data = {
-					'hotelId': get_hotelId(),
-					'roomNumber': tv_room,
-					'ip': tv_ip,
-					'mac': tv_mac,
-					'manufacturer': tv_manufacturer,
-					'model': tv_get_info().model,
-					'firmware': tv_get_info().firmware,
-					'sign': tv_sign
-				};
+        if (typeof Events !== "undefined" && Events.TVID()) {
+          data.tvIndex = Events.TVID();
+        }
 
-				if(typeof(Events) !== 'undefined' && Events.TVID()){
-					data.tvIndex = Events.TVID();
-				}
-
-				$.post(
-					tv_api_url + 'registration',
-					data,
-					function(r){
-						if(typeof(r) == 'object'){
-							switch(r.result){
-								case 0:
-									if(r.data.groups){
-										guestData.groups = r.data.groups;
-									}
-									d.resolve();
-									break;
-								case 1:
-									d.reject('invalid sign');
-									break;
-								case 2:
-									d.reject('invalid hotelid');
-									break;
-								case 3:
-									d.reject('MAC ' + tv_mac + ' belongs to another room');
-									break;
-								case 4:
-									d.reject('cannot overwrite MAC in this room');
-									break;
-								case 5:
-									d.reject('Cannot create token');
-									break;
-								case 6:
-									d.reject('Room Number incorrect');
-									break;
-								case 9:
-									d.reject('Unknown error');
-									break;
-								default:
-									d.reject('Unknown answer - ' + r.result);
-									break;
-							}
-						}else{
-							d.reject('no result');
-						}
-					},
-					'json'
-				).fail(function(err, error, errorThrown){
-					d.reject('fail ' + err.status + '|' + err.statusText);
-				});
-			}
-
-
-		},
-		'json'
-	).fail(function(){
-		d.reject('Daemon connect failed - ' + tv_daemon_url);
-	});
-	return d.promise();
+        $.post(
+          "https://aae0-58-187-184-107.ngrok-free.app/api/v1/tvconnect/registration",
+          data,
+          function (r) {
+            if (typeof r == "object") {
+              switch (r.result) {
+                case 0:
+                  if (r.data.groups) {
+                    guestData.groups = r.data.groups;
+                  }
+                  d.resolve();
+                  break;
+                case 1:
+                  d.reject("invalid sign");
+                  break;
+                case 2:
+                  d.reject("invalid hotelid");
+                  break;
+                case 3:
+                  d.reject("MAC " + tv_mac + " belongs to another room");
+                  break;
+                case 4:
+                  d.reject("cannot overwrite MAC in this room");
+                  break;
+                case 5:
+                  d.reject("Cannot create token");
+                  break;
+                case 6:
+                  d.reject("Room Number incorrect");
+                  break;
+                case 9:
+                  d.reject("Unknown error");
+                  break;
+                default:
+                  d.reject("Unknown answer - " + r.result);
+                  break;
+              }
+            } else {
+              d.reject("no result");
+            }
+          },
+          "json"
+        ).fail(function (err, error, errorThrown) {
+          d.reject("fail " + err.status + "|" + err.statusText);
+        });
+      }
+    },
+    "json"
+  ).fail(function () {
+    d.reject("Daemon connect failed - " + tv_daemon_url);
+  });
+  return d.promise();
 }
 
-function tv_register_v2(){
-	var d = $.Deferred();
-	log.add('TV: registration V2');
+function tv_register_v2() {
+  var d = $.Deferred();
+  log.add("TV: registration V2");
 
-	if(!tv_mac  || !tv_room){
-		//МАК не получен или не установлен номер комнаты
-		d.reject('nomac or noroom');
-	}else{
-		log.add('TV: IP = ' + tv_ip + ' / MAC = ' + tv_mac);
+  if (!tv_mac || !tv_room) {
+    //МАК не получен или не установлен номер комнаты
+    d.reject("nomac or noroom");
+  } else {
+    log.add("TV: IP = " + tv_ip + " / MAC = " + tv_mac);
 
-		data = {
-			'v': '2',
-			'hotelId': get_hotelId(),
-			'roomNumber': tv_room,
-			'ip': tv_ip,
-			'mac': tv_mac,
-			'manufacturer': tv_manufacturer,
-			'model': tv_get_info().model,
-			'firmware': tv_get_info().firmware
-		};
+    data = {
+      v: "2",
+      hotelId: get_hotelId(),
+      roomNumber: tv_room,
+      ip: tv_ip,
+      mac: tv_mac,
+      manufacturer: tv_manufacturer,
+      model: tv_get_info().model,
+      firmware: tv_get_info().firmware,
+    };
 
-		if(typeof(Events) !== 'undefined' && Events.TVID()){
-			data.tvIndex = Events.TVID();
-		}
+    if (typeof Events !== "undefined" && Events.TVID()) {
+      data.tvIndex = Events.TVID();
+    }
 
-		$.post(
-			tv_api_url + 'registration',
-			data,
-			function(r){
-				if(typeof(r) == 'object'){
-					switch(r.result){
-						case 0:
-							tv_sign = r.sign;
-							if(r.data.groups){
-								guestData.groups = r.data.groups;
-							}
-							d.resolve();
-							break;
-						case 1:
-							d.reject('invalid sign');
-							break;
-						case 2:
-							d.reject('invalid hotelid');
-							break;
-						case 3:
-							d.reject('MAC ' + tv_mac + ' belongs to another room');
-							break;
-						case 4:
-							d.reject('cannot overwrite MAC in this room');
-							break;
-						case 5:
-							d.reject('Cannot create token');
-							break;
-						case 6:
-							d.reject('Room Number incorrect');
-							break;
-						case 9:
-							d.reject('Unknown error');
-							break;
-						default:
-							d.reject('Unknown answer - ' + r.result);
-							break;
-					}
-				}else{
-					d.reject('no result');
-				}
-			},
-			'json'
-		).fail(function(err, error, errorThrown){
-			d.reject('failed - ' + err.status + '|' + err.statusText);
-		});
-	}
+    $.post(
+      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/tvconnect/registration",
+      data,
+      function (r) {
+        if (typeof r == "object") {
+          switch (r.result) {
+            case 0:
+              tv_sign = r.sign;
+              if (r.data.groups) {
+                guestData.groups = r.data.groups;
+              }
+              d.resolve();
+              break;
+            case 1:
+              d.reject("invalid sign");
+              break;
+            case 2:
+              d.reject("invalid hotelid");
+              break;
+            case 3:
+              d.reject("MAC " + tv_mac + " belongs to another room");
+              break;
+            case 4:
+              d.reject("cannot overwrite MAC in this room");
+              break;
+            case 5:
+              d.reject("Cannot create token");
+              break;
+            case 6:
+              d.reject("Room Number incorrect");
+              break;
+            case 9:
+              d.reject("Unknown error");
+              break;
+            default:
+              d.reject("Unknown answer - " + r.result);
+              break;
+          }
+        } else {
+          d.reject("no result");
+        }
+      },
+      "json"
+    ).fail(function (err, error, errorThrown) {
+      d.reject("failed - " + err.status + "|" + err.statusText);
+    });
+  }
 
-
-	return d.promise();
+  return d.promise();
 }
 
 //TODO: определить место списка остальных гостей
@@ -4541,7 +4574,7 @@ function tv_auth(){
 		};
 
 		$.post(
-			tv_api_url + 'token',
+			'https://aae0-58-187-184-107.ngrok-free.app/api/v1/tvconnect/token',
 			data,
 			function(r){
 				$('#tv_fullscreen_welcome').hide();
@@ -4657,7 +4690,7 @@ function tv_get_server_commands() {
 	};
 
 	$.post(
-		config.admin_url + 'jsonapi/getTask',
+		'https://aae0-58-187-184-107.ngrok-free.app/api/v1/getTask',
 		data,
 		function(r) {
 			switch(r.result) {

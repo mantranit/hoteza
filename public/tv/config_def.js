@@ -7,7 +7,7 @@ var tv_key_source = "off";
 var tv_key_menu = "off";
 
 var config = {
-  region: "local", //['eu'(default), 'ru', 'cn', 'bn', 'local'] Вместо admin_url и т.д.
+  region: "eu", //['eu'(default), 'ru', 'cn', 'bn', 'local'] Вместо admin_url и т.д.
   use_ssl: true, //[true, false] потом 'auto'
 
   hotelId: 2,

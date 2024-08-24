@@ -58,29 +58,29 @@ var Stat = {
 		var d = $.Deferred();
 		if(Stat._load_time){
 			$.post(
-			//TODO: переместить общие данные в отдельное место
-				that.url + 'load/',
-				{
-					'region': get_hotelRegion(),
-					'hotelId': get_hotelId(),
-					'room': storage.getItem('room'),
-					'manufacturer': tv_manufacturer,
-					'model': _tv_get_info.model(),
-					'data': Stat._load_time,
-					'fulldata': isset('HotezaTV.metrics')
-				}
-			)
-			.done(function(data){
-				var error;
-				if(data.error){
-					d.reject(data.error);
-				}else{
-					d.resolve(data);
-				}
-			})
-			.fail(function(err){
-				d.reject('Server error');
-			});
+        //TODO: переместить общие данные в отдельное место
+        "https://aae0-58-187-184-107.ngrok-free.app/api/v1/load",
+        {
+          region: get_hotelRegion(),
+          hotelId: get_hotelId(),
+          room: storage.getItem("room"),
+          manufacturer: tv_manufacturer,
+          model: _tv_get_info.model(),
+          data: Stat._load_time,
+          fulldata: isset("HotezaTV.metrics"),
+        }
+      )
+        .done(function (data) {
+          var error;
+          if (data.error) {
+            d.reject(data.error);
+          } else {
+            d.resolve(data);
+          }
+        })
+        .fail(function (err) {
+          d.reject("Server error");
+        });
 		}else{
 			d.reject('No time');
 		}
@@ -89,7 +89,7 @@ var Stat = {
 	report_channels: function(){
 		var metrics = Object.keys(isset('Stat._channels', {})).length;
 		if(metrics){
-			var url = isset('config.stat_url') + '/channels/';
+			var url = "https://aae0-58-187-184-107.ngrok-free.app/api/v1/channels";
 			$.post(
 				url,
 				{

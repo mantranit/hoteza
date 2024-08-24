@@ -1348,36 +1348,38 @@
 		}
 
 		$.post(
-			api_url + 'orderList',
-			JSON.stringify({ token: token }),
-			function (r) {
-				switch(r.result){
-					case 0:
-						return d.resolve(deserialize(r.data));
-					case 2:
-						log.add('SERVICES get orders: token is incorrect');
-						break;
-					case 3:
-						log.add('SERVICES get orders: guest evicted');
-						break;
-					case 4:
-						log.add('SERVICES get orders: guest evicted or cancelled');
-						break;
-					case 9:
-						log.add('SERVICES get orders: Unknown error');
-						break;
-					default:
-						log.add('SERVICES get orders: Unknown answer');
-						break;
-				}
+      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/orderList",
+      JSON.stringify({ token: token }),
+      function (r) {
+        switch (r.result) {
+          case 0:
+            return d.resolve(deserialize(r.data));
+          case 2:
+            log.add("SERVICES get orders: token is incorrect");
+            break;
+          case 3:
+            log.add("SERVICES get orders: guest evicted");
+            break;
+          case 4:
+            log.add("SERVICES get orders: guest evicted or cancelled");
+            break;
+          case 9:
+            log.add("SERVICES get orders: Unknown error");
+            break;
+          default:
+            log.add("SERVICES get orders: Unknown answer");
+            break;
+        }
 
-				// выполняется если ответ сервера отличен от 0
-				return d.resolve({});
-			}
-		).fail(function (err) {
-			log.add('SERVICES get orders: failed req - ' + err.status + '|' + err.statusText);
-			d.resolve({});
-		});
+        // выполняется если ответ сервера отличен от 0
+        return d.resolve({});
+      }
+    ).fail(function (err) {
+      log.add(
+        "SERVICES get orders: failed req - " + err.status + "|" + err.statusText
+      );
+      d.resolve({});
+    });
 
 		return d.promise();
 	}

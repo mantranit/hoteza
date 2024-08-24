@@ -99,63 +99,63 @@ function feedback_send(){
 		request.questions = feedback_answers;
 		request.token = storage.getItem('token');
 		$.post(
-			api_url+'feedback',
-			request,
-			function(d){
-				if(typeof(d) == 'object'){
-					if(typeof(d.result) != 'undefined'){
-						switch(d.result){
-							case 0:
-								manageFeedbackSending.hasShowed();
+      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/feedback",
+      request,
+      function (d) {
+        if (typeof d == "object") {
+          if (typeof d.result != "undefined") {
+            switch (d.result) {
+              case 0:
+                manageFeedbackSending.hasShowed();
 
-								//блокировка формы для этого токена
-								custom_dialog('success', '', getlang('feedback_sent'));
-								break;
-							case 1:
-								custom_alert('Incorrect request');
-								break;
-							case 2:
-								console.log('Incorrect token');
-								//custom_alert('Incorrect auth token');
-								break;
-							case 3:
-								//checkout
-								console.log('guest checkout');
-								break;
-							case 4:
-								console.log('guest canceled');
-								break;
-							case 5:
-								custom_alert(getlang('feedback_invalidfeedback'));
-								break;
-							case 6:
-								custom_alert('Incorrect Answers');
-								break;
-							case 7:
-								custom_alert(getlang('feedback_alreadyanswered'));
-								break;
-							case 9:
-								//custom_alert('Server error');
-								break;
+                //блокировка формы для этого токена
+                custom_dialog("success", "", getlang("feedback_sent"));
+                break;
+              case 1:
+                custom_alert("Incorrect request");
+                break;
+              case 2:
+                console.log("Incorrect token");
+                //custom_alert('Incorrect auth token');
+                break;
+              case 3:
+                //checkout
+                console.log("guest checkout");
+                break;
+              case 4:
+                console.log("guest canceled");
+                break;
+              case 5:
+                custom_alert(getlang("feedback_invalidfeedback"));
+                break;
+              case 6:
+                custom_alert("Incorrect Answers");
+                break;
+              case 7:
+                custom_alert(getlang("feedback_alreadyanswered"));
+                break;
+              case 9:
+                //custom_alert('Server error');
+                break;
 
-							default:
-								custom_alert('FB: Server error ' + d.result);
-								break;
-						}
-					}else{
-						//custom_alert('OMG! Request Error 57');
-						//Объект да не тот
-					}
-				}else{
-					//custom_alert('OMG! Error 37');
-					//Полный ахтунг: пришёл не объект а чёрти-что
-				}
-			},
-			'json'
-		).fail(function(e){
-			//custom_alert('OMG! Request failure');
-			//console.log(e);
-		});
+              default:
+                custom_alert("FB: Server error " + d.result);
+                break;
+            }
+          } else {
+            //custom_alert('OMG! Request Error 57');
+            //Объект да не тот
+          }
+        } else {
+          //custom_alert('OMG! Error 37');
+          //Полный ахтунг: пришёл не объект а чёрти-что
+        }
+      },
+      "json"
+    ).fail(function (e) {
+      //custom_alert('OMG! Request failure');
+      //console.log(e);
+    });
 
 	}else{
 		l('Unknown Questionnairy ID');

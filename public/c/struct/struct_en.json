@@ -290,24 +290,14 @@
         "type": "airportSchedule",
         "data": [
           {
-            "code": "LCA",
-            "city": "Larnaca",
-            "name": "Larnaca International Airport"
+            "code": "PQC",
+            "city": "Phu Quoc",
+            "name": "Phu Quoc International Airport"
           },
           {
-            "code": "LED",
-            "city": "Saint-Petersburg",
-            "name": "Pulkovo Airport"
-          },
-          {
-            "code": "LHR",
-            "city": "London",
-            "name": "London Heathrow Airport"
-          },
-          {
-            "code": "DXB",
-            "city": "Dubai",
-            "name": "Dubai International Airport"
+            "code": "SGN",
+            "city": "Ho Chi Minh",
+            "name": "Tan Son Nhat International Airport"
           }
         ]
       }

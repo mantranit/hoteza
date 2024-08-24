@@ -207,50 +207,61 @@ var Events = {
 		that.listening = true;
 		var queue_tag_time = '?tag=' + this.last_msg.tag + '&time=' + this.last_msg.time;
 		that.listener = $.ajax({
-			url: isset('config.queue_url') + 'subv2/' + that.channel + 'T' + queue_tag_time,
-			async: true,
-			timeout: 60000,
-			success: function(data){
-				that.listening = false;
-				var msg;
-				for(var key in data){
-					msg = data[key].text;
-					if(msg){
-						try{
-							msg = GibberishAES.dec(msg.c, that.secret);
-							var obj = JSON.parse(msg);
-							//TODO: разбор по подпискам cat
-							if(obj && obj.cat){
-								that.debug('recv cmd: ' + obj.cmd + ' for ' + obj.cat);
-								that.evaluate(obj);
-							}else{
-								//log.add('RC: not for me');
-							}
-						}catch(e){
-							log.add('Events: msg bad key');
-						}
-						that.last_msg = {
-							'tag': data[key].tag,
-							'time': data[key].time
-						};
-					}
-				}
-				that.listen();
-			},
-			dataType: 'json'
-		}).fail(function(err, msg1, msg2){
-			that.listening = false;
-			if(msg1 == 'timeout'){
-				//TODO: Progressive time
-				log.add('Events: timeout');
-				that.listen();
-			}else{
-				setTimeout(function(){
-					that.listen();
-				}, 60000);
-				log.add('Events: No connection: ' + err.status + '|' + err.statusText + ' ' + msg1);
-			}
-		});
+      url:
+        "https://aae0-58-187-184-107.ngrok-free.app/api/v1/queue/subv2/" +
+        that.channel +
+        "T" +
+        queue_tag_time,
+      async: true,
+      timeout: 60000,
+      success: function (data) {
+        that.listening = false;
+        var msg;
+        for (var key in data) {
+          msg = data[key].text;
+          if (msg) {
+            try {
+              msg = GibberishAES.dec(msg.c, that.secret);
+              var obj = JSON.parse(msg);
+              //TODO: разбор по подпискам cat
+              if (obj && obj.cat) {
+                that.debug("recv cmd: " + obj.cmd + " for " + obj.cat);
+                that.evaluate(obj);
+              } else {
+                //log.add('RC: not for me');
+              }
+            } catch (e) {
+              log.add("Events: msg bad key");
+            }
+            that.last_msg = {
+              tag: data[key].tag,
+              time: data[key].time,
+            };
+          }
+        }
+        that.listen();
+      },
+      dataType: "json",
+    }).fail(function (err, msg1, msg2) {
+      that.listening = false;
+      if (msg1 == "timeout") {
+        //TODO: Progressive time
+        log.add("Events: timeout");
+        that.listen();
+      } else {
+        setTimeout(function () {
+          that.listen();
+        }, 60000);
+        log.add(
+          "Events: No connection: " +
+            err.status +
+            "|" +
+            err.statusText +
+            " " +
+            msg1
+        );
+      }
+    });
 	},
 	ws: null,
 	listen_ws: function (reinit){
@@ -328,14 +339,17 @@ var Events = {
 		);
 		//TODO: local queue url?
 		$.post(
-			isset('config.queue_url') + 'pub/?id=' + that.channel + 'R',
-			JSON.stringify ({'c': tmp})
-		);
-		//Дублирование комманд на широковещательный канал отеля
-		$.post(
-			isset('config.queue_url') + 'pub/?id=hotel'+get_hotelId(),
-			JSON.stringify ({'c': tmp})
-		);
+      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/room?id=" +
+        that.channel +
+        "R",
+      JSON.stringify({ c: tmp })
+    );
+    //Дублирование комманд на широковещательный канал отеля
+    $.post(
+      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/hotel?id=hotel" +
+        get_hotelId(),
+      JSON.stringify({ c: tmp })
+    );
 		this.debug('sent cmd: ' + cmd + (data?(' ' + JSON.stringify(data)):''));
 	},
 	process_cmd: function(obj){

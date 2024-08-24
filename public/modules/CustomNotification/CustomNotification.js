@@ -205,21 +205,21 @@
 
 			if(Guest.token){
 				getServerCommandsAsync({
-					url: config.admin_url + 'jsonapi/marketing',
-					method: 'POST',
-					payload: {
-						cmd: 'get',
-						token: storage.getItem('token')
-					}
-				}).done(function (payload) {
-					if (Array.isArray(payload)) {
-						return $(payload).each(function (i, item) {
-							CustomNotification.processCmd(item);
-						});
-					}
+          url: "https://aae0-58-187-184-107.ngrok-free.app/api/v1/marketing",
+          method: "POST",
+          payload: {
+            cmd: "get",
+            token: storage.getItem("token"),
+          },
+        }).done(function (payload) {
+          if (Array.isArray(payload)) {
+            return $(payload).each(function (i, item) {
+              CustomNotification.processCmd(item);
+            });
+          }
 
-					CustomNotification.processCmd(payload);
-				});
+          CustomNotification.processCmd(payload);
+        });
 			}
 
 			return d.promise();

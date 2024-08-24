@@ -1194,59 +1194,65 @@ function shop_order(when, orderId, confirmed, callback, withUnavailableProducts)
 	var serializedOrder = Services.serialize(order)[0];
 
 	$.post(
-		api_url + 'orderCreate',
-		JSON.stringify(Object.assign( serializedOrder, { token: token, tvId: Events.TVID() } )), //TVID: Фильтрация будильника по зонам
-		function (r) {
-			/**
-				* 0 - успех
-				* 100 - успех, повторый заказ
-				*
-				* 1 - некорректные данные
-				* 2 - некоректный токен
-				* 3 - гость выселен или не сущуствует
-				* 9 - exception
-				* */
-			switch (r.result) {
-				case 0:
-					successCallback({ orderId: r.orderId });
+    "https://aae0-58-187-184-107.ngrok-free.app/api/v1/orderCreate",
+    JSON.stringify(
+      Object.assign(serializedOrder, { token: token, tvId: Events.TVID() })
+    ), //TVID: Фильтрация будильника по зонам
+    function (r) {
+      /**
+       * 0 - успех
+       * 100 - успех, повторый заказ
+       *
+       * 1 - некорректные данные
+       * 2 - некоректный токен
+       * 3 - гость выселен или не сущуствует
+       * 9 - exception
+       * */
+      switch (r.result) {
+        case 0:
+          successCallback({ orderId: r.orderId });
 
-					if (typeof callback !== 'undefined') {
-						try {
-							eval(callback)(when, r.orderId);
-						}
-						catch (e) {
-							log.add('SERVICES: exec callback with error: ' + e);
-						}
-					}
-					return true;
-				case 1:
-					r.message = getErrorMsg(r.message, 'incorrect data');
-					break;
-				case 2:
-					r.message = getErrorMsg(r.message, 'incorrect token');
-					break;
-				case 3:
-					r.message = getErrorMsg(r.message, 'guest was evicted or doesn\'t exist');
-					break;
-				case 9:
-					r.message = getErrorMsg(r.message, 'server error');
-					break;
-				case 100:
-					r.message = getErrorMsg(r.message, 'order was already created');
-					break;
-				default:
-					r.message = getErrorMsg(r.message, 'unknown answer');
-					break;
-			}
+          if (typeof callback !== "undefined") {
+            try {
+              eval(callback)(when, r.orderId);
+            } catch (e) {
+              log.add("SERVICES: exec callback with error: " + e);
+            }
+          }
+          return true;
+        case 1:
+          r.message = getErrorMsg(r.message, "incorrect data");
+          break;
+        case 2:
+          r.message = getErrorMsg(r.message, "incorrect token");
+          break;
+        case 3:
+          r.message = getErrorMsg(
+            r.message,
+            "guest was evicted or doesn't exist"
+          );
+          break;
+        case 9:
+          r.message = getErrorMsg(r.message, "server error");
+          break;
+        case 100:
+          r.message = getErrorMsg(r.message, "order was already created");
+          break;
+        default:
+          r.message = getErrorMsg(r.message, "unknown answer");
+          break;
+      }
 
-			// выполняется если от сервера получен ответ отличный от 0
-			log.add('SERVICES create order: ' + r.message);
-			errorCallback(r.message);
-		}
-	).fail(function (err) {
-		log.add('SERVICES cancel order: failed req - ' + err.status + '|' + err.statusText);
-		errorCallback();
-	});
+      // выполняется если от сервера получен ответ отличный от 0
+      log.add("SERVICES create order: " + r.message);
+      errorCallback(r.message);
+    }
+  ).fail(function (err) {
+    log.add(
+      "SERVICES cancel order: failed req - " + err.status + "|" + err.statusText
+    );
+    errorCallback();
+  });
 
 	function successCallback(data) {
 		order.id = data.orderId;

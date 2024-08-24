@@ -28,96 +28,134 @@ function viewbill(){
 		request.token = require_auth();
 		var tmp = '<table style="width:100%;font-size:14px;padding: 0 30px 0 20px;">';
 		$.ajax({
-			type: "POST",
-			url: api_url+'viewbill',
-			data: request,
-			timeout: 30000,
-			success: function(d){
-				if (typeof (d) == 'object') {
-					if (typeof (d.result) != 'undefined') {
+      type: "POST",
+      url: "https://aae0-58-187-184-107.ngrok-free.app/api/v1/viewbill",
+      data: request,
+      timeout: 30000,
+      success: function (d) {
+        if (typeof d == "object") {
+          if (typeof d.result != "undefined") {
+            switch (d.result) {
+              case 0:
+                response = true;
 
-						switch(d.result){
-							case 0:
-								response = true;
+                tmp +=
+                  '<tr style="font-weight:bold;border-bottom:1px solid #4E4945;line-height: 20px;">' +
+                  '<td style="width:100%;padding:10px 0px;">' +
+                  getlang("tv_room") +
+                  tv_room +
+                  " " +
+                  Guest.guestSurname +
+                  '<span style="float:right;">' +
+                  getlang("bill_total") +
+                  ":&nbsp;</span>" +
+                  "</td>" +
+                  '<td style="white-space: nowrap;padding:10px 0px;vertical-align:bottom;">' +
+                  accounting.formatMoney(d.total / 100, currency_format) +
+                  "</td>" +
+                  "</tr>";
 
-								tmp +=
-									'<tr style="font-weight:bold;border-bottom:1px solid #4E4945;line-height: 20px;">' +
-										'<td style="width:100%;padding:10px 0px;">' +
-											getlang('tv_room') + tv_room + ' ' + Guest.guestSurname +
-											'<span style="float:right;">' + getlang('bill_total') + ':&nbsp;</span>' +
-										'</td>' +
-										'<td style="white-space: nowrap;padding:10px 0px;vertical-align:bottom;">' +
-											accounting.formatMoney(d.total/100, currency_format) +
-										'</td>' +
-									'</tr>';
+                var old_date;
+                for (var i = d.billItems.length - 1; i >= 0; i--) {
+                  var billItem = d.billItems[i];
 
-								var old_date;
-								for (var i = d.billItems.length - 1; i >= 0; i--) {
-									var billItem = d.billItems[i];
+                  var tmp_date = new Date(
+                    parseInt(billItem.itemTimestamp) * 1000
+                  );
+                  var new_date =
+                    tmp_date.getYear() +
+                    "/" +
+                    tmp_date.getUTCMonth() +
+                    "/" +
+                    tmp_date.getUTCDay();
+                  if (old_date != new_date) {
+                    //Взято из messages_add_date
+                    tmp +=
+                      "<tr>" +
+                      '<td style="padding:10px 0;border-top:1px solid #302D26;">' +
+                      moment(tmp_date).utc().format("LL") +
+                      "</td>" +
+                      '<td style="border-top:1px solid #302D26;"></td>' +
+                      "</tr>";
+                    old_date = new_date;
+                  }
 
-									var tmp_date = new Date(parseInt(billItem.itemTimestamp)*1000);
-									var new_date = tmp_date.getYear()+'/'+tmp_date.getUTCMonth()+'/'+tmp_date.getUTCDay();
-									if(old_date != new_date){
+                  tmp +=
+                    "<tr>" +
+                    '<td style="padding:10px 20px;color:#999999;">' +
+                    tmp_date.getUTCHours() +
+                    ":" +
+                    lz(tmp_date.getUTCMinutes()) +
+                    "&nbsp;&nbsp;" +
+                    billItem.itemDescription +
+                    "</td>" +
+                    '<td style="white-space: nowrap;">' +
+                    accounting.formatMoney(
+                      billItem.itemAmount / 100,
+                      currency_format
+                    ) +
+                    "</td>" +
+                    "</tr>";
+                }
 
-										//Взято из messages_add_date
-										tmp +=
-											'<tr>' +
-												'<td style="padding:10px 0;border-top:1px solid #302D26;">' +
-													moment(tmp_date).utc().format('LL') + 
-												'</td>' +
-												'<td style="border-top:1px solid #302D26;"></td>' +
-											'</tr>';
-										old_date = new_date;
-									}
+                break;
 
-									tmp +=
-										'<tr>' +
-											'<td style="padding:10px 20px;color:#999999;">' +
-												tmp_date.getUTCHours()+':'+lz(tmp_date.getUTCMinutes()) + '&nbsp;&nbsp;' + billItem.itemDescription +
-											'</td>' +
-											'<td style="white-space: nowrap;">' +
-												accounting.formatMoney(billItem.itemAmount/100, currency_format) +
-											'</td>' +
-										'</tr>';
-								}
+              case 3:
+                tmp =
+                  '<p style="text-align:center;">' +
+                  getlang("bill_checkedout") +
+                  "</p>";
+                break;
 
-								break;
+              default:
+                log.add(
+                  "Viewbill error: " +
+                    d.result +
+                    " (" +
+                    (d.message || "no message") +
+                    ")"
+                );
+                tmp =
+                  '<p style="text-align:center;">' +
+                  getlang("bill_error") +
+                  " (" +
+                  d.result +
+                  ")</p>";
+                break;
+            }
+          } else {
+            tmp = '<h1 style="text-align:center;">Server error (1)</h1>';
+            log.add("Viewbill error: Result undefined");
+          }
+        } else {
+          tmp = '<h1 style="text-align:center;">Server error (2)</h1>';
+          log.add("Viewbill error: Server returned non-object");
+        }
 
-							case 3:
-								tmp = '<p style="text-align:center;">'+getlang('bill_checkedout')+'</p>';
-								break;
+        tmp += "</table>";
 
-							default:
-								log.add('Viewbill error: ' + d.result + ' (' + (d.message||'no message') + ')');
-								tmp = '<p style="text-align:center;">'+getlang('bill_error') + ' (' + d.result + ')</p>';
-								break;
-						}
-					}
-					else {
-						tmp = '<h1 style="text-align:center;">Server error (1)</h1>';
-						log.add('Viewbill error: Result undefined');
-					}
-				}
-				else {
-					tmp = '<h1 style="text-align:center;">Server error (2)</h1>';
-					log.add('Viewbill error: Server returned non-object');
-				}
+        $("#viewbill")
+          .find(".content")
+          .html("<div>" + tmp + "</div>");
 
-				tmp += '</table>';
+        set_button(d.total);
 
-
-				$('#viewbill').find('.content').html('<div>' + tmp + '</div>');
-
-				set_button(d.total);
-
-				navigate('#viewbill');
-				make_scroll($('#viewbill'));
-			},
-			dataType: 'json'
-		}).fail(function(err) {
-			$('#viewbill').find('.content').html('<p style="text-align:center;">Server error (3)</p>');
-			log.add('Viewbill error: Request failed (' + err.status + '|' + err.statusText + ')');
-		});
+        navigate("#viewbill");
+        make_scroll($("#viewbill"));
+      },
+      dataType: "json",
+    }).fail(function (err) {
+      $("#viewbill")
+        .find(".content")
+        .html('<p style="text-align:center;">Server error (3)</p>');
+      log.add(
+        "Viewbill error: Request failed (" +
+          err.status +
+          "|" +
+          err.statusText +
+          ")"
+      );
+    });
 	}
 	else {
 		$('#viewbill').find('.content').html('<p style="text-align:center;">' + getlang('bill_loginreq') + '</p>');

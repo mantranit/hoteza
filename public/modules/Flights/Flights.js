@@ -480,30 +480,32 @@
 		var d = $.Deferred();
 
 		$.post(
-			api_url + 'getScheduleAirport',
-			JSON.stringify({
-				code: [code],
-				type: direction
-			}),
-			function (r) {
-				switch (r.result) {
-					case 0:
-						var result = updateData(r.data, direction);
-						result === false && Flights.set('airport', null);
+      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/getScheduleAirport",
+      JSON.stringify({
+        code: [code],
+        type: direction,
+      }),
+      function (r) {
+        switch (r.result) {
+          case 0:
+            var result = updateData(r.data, direction);
+            result === false && Flights.set("airport", null);
 
-						d.resolve(result);
-						break;
+            d.resolve(result);
+            break;
 
-					default:
-						log.add('Flights: ERROR: Get Schedule Airport, message from server - ' + r.message);
-						d.resolve(false);
-						break;
-				}
-			}
-		)
-			.fail(function (e) {
-				d.resolve(false);
-			});
+          default:
+            log.add(
+              "Flights: ERROR: Get Schedule Airport, message from server - " +
+                r.message
+            );
+            d.resolve(false);
+            break;
+        }
+      }
+    ).fail(function (e) {
+      d.resolve(false);
+    });
 
 		return d.promise();
 

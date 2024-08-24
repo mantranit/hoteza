@@ -838,7 +838,9 @@
 
 		load: function () {
 			var d = $.Deferred(),
-				path = res_url + get_hotelId() + '/' + 'epg.json?_='+Math.random();
+        path =
+          "https://aae0-58-187-184-107.ngrok-free.app/api/v1/epg?_=" +
+          Math.random();
 
 			$.get(
 				path,
