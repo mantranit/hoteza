@@ -936,7 +936,7 @@ var time = {
   },
   sync: function () {
     $.get(
-      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/datetime?tz=" +
+      "https://18eb-58-187-184-107.ngrok-free.app/api/v1/datetime?tz=" +
         isset("config.timezone"),
       function (response) {
         time.dof = (response.time | 0) * 1000 - Date.now();
@@ -1211,7 +1211,7 @@ function tv_weather() {
     hotelId: get_hotelId(),
   };
   $.post(
-    "https://aae0-58-187-184-107.ngrok-free.app/api/v1/weather",
+    "https://18eb-58-187-184-107.ngrok-free.app/api/v1/weather",
     data,
     function (response) {
       switch (response.result) {
@@ -4266,7 +4266,7 @@ function tv_register() {
         }
 
         $.post(
-          "https://aae0-58-187-184-107.ngrok-free.app/api/v1/tvconnect/registration",
+          "https://18eb-58-187-184-107.ngrok-free.app/api/v1/tvconnect/registration",
           data,
           function (r) {
             if (typeof r == "object") {
@@ -4345,7 +4345,7 @@ function tv_register_v2() {
     }
 
     $.post(
-      "https://aae0-58-187-184-107.ngrok-free.app/api/v1/tvconnect/registration",
+      "https://18eb-58-187-184-107.ngrok-free.app/api/v1/tvconnect/registration",
       data,
       function (r) {
         if (typeof r == "object") {
@@ -4574,50 +4574,47 @@ function tv_auth(){
 		};
 
 		$.post(
-			'https://aae0-58-187-184-107.ngrok-free.app/api/v1/tvconnect/token',
-			data,
-			function(r){
-				$('#tv_fullscreen_welcome').hide();
-				switch(r.result){
-					case 0:
-						Guest.set_guest(r);
-						HotezaTV.auth = 'OK';
-						break;
-					case 1:
-						HotezaTV.auth = 'invalid sign';
-						break;
-					case 2:
-						HotezaTV.auth = 'invalid hotelId';
-						break;
-					case 3:
-						HotezaTV.auth = 'MAC not registered';
-						break;
-					case 4:
-						guestData_clear();
-						HotezaTV.auth = 'OK';
-						break;
-					case 5:
-						HotezaTV.auth = 'Ой ваще всё плоха';
-						break;
-					case 9:
-						HotezaTV.auth = 'unknown error (9)';
-						break;
-					default:
-						HotezaTV.auth = 'unknown answer (' + r.result + ')';
-						break;
-				}
-				log.add('TV: ' + HotezaTV.auth);
-
-			},
-			'json'
-		).fail(
-			function(err){
-				guestData.groups = [];
-				filter_content_by_group();
-				HotezaTV.auth = 'error ' + err.status + '|' + err.statusText;
-				log.add('TV: ' + HotezaTV.auth);
-			}
-		);
+      "https://18eb-58-187-184-107.ngrok-free.app/api/v1/tvconnect/token",
+      data,
+      function (r) {
+        $("#tv_fullscreen_welcome").hide();
+        switch (r.result) {
+          case 0:
+            Guest.set_guest(r);
+            HotezaTV.auth = "OK";
+            break;
+          case 1:
+            HotezaTV.auth = "invalid sign";
+            break;
+          case 2:
+            HotezaTV.auth = "invalid hotelId";
+            break;
+          case 3:
+            HotezaTV.auth = "MAC not registered";
+            break;
+          case 4:
+            guestData_clear();
+            HotezaTV.auth = "OK";
+            break;
+          case 5:
+            HotezaTV.auth = "Ой ваще всё плоха";
+            break;
+          case 9:
+            HotezaTV.auth = "unknown error (9)";
+            break;
+          default:
+            HotezaTV.auth = "unknown answer (" + r.result + ")";
+            break;
+        }
+        log.add("TV: " + HotezaTV.auth);
+      },
+      "json"
+    ).fail(function (err) {
+      guestData.groups = [];
+      filter_content_by_group();
+      HotezaTV.auth = "error " + err.status + "|" + err.statusText;
+      log.add("TV: " + HotezaTV.auth);
+    });
 	}
 }
 
@@ -4690,70 +4687,67 @@ function tv_get_server_commands() {
 	};
 
 	$.post(
-		'https://aae0-58-187-184-107.ngrok-free.app/api/v1/getTask',
-		data,
-		function(r) {
-			switch(r.result) {
-				case 0:
-					if(r.payload.length === 0) {
-						log.add('TV: cmd: no commands');
-					}
+    "https://18eb-58-187-184-107.ngrok-free.app/api/v1/getTask",
+    data,
+    function (r) {
+      switch (r.result) {
+        case 0:
+          if (r.payload.length === 0) {
+            log.add("TV: cmd: no commands");
+          }
 
-					for(var i in r.payload) {
-						var cmd = r.payload[i];
-						switch(cmd.cmd) {
-							case 'alarm':
-								//Фильтрация будильника по зонам
-								if(cmd.data[3] && cmd.data[3] != Events.TVID()) {
-									log.add('WAKEUP: got wakeup for another TVID');
-									return false;
-								}
+          for (var i in r.payload) {
+            var cmd = r.payload[i];
+            switch (cmd.cmd) {
+              case "alarm":
+                //Фильтрация будильника по зонам
+                if (cmd.data[3] && cmd.data[3] != Events.TVID()) {
+                  log.add("WAKEUP: got wakeup for another TVID");
+                  return false;
+                }
 
-								wakeup_status(false);
+                wakeup_status(false);
 
-								var alarm_dif = Math.round(time.now(true) / 1000) - cmd.data[1];
-								if(alarm_dif < 10 * 60) {
-									switch(cmd.data[2]) {
-										case 'tv_channel':
-											if(system_started) {
-												setTimeout(tv_wakeup, 1000);
-											} else {
-												$(HotezaTV).one('final', function() {
-													setTimeout(tv_wakeup, 1000);
-												});
-											}
-											break;
-										default:
-											log.add('WAKEUP: unknown type ' + cmd.data[2]);
-											break;
-									}
-								} else {
-									log.add('WAKEUP: overdue ' + toHHMMSS(alarm_dif));
-								}
-								break;
+                var alarm_dif = Math.round(time.now(true) / 1000) - cmd.data[1];
+                if (alarm_dif < 10 * 60) {
+                  switch (cmd.data[2]) {
+                    case "tv_channel":
+                      if (system_started) {
+                        setTimeout(tv_wakeup, 1000);
+                      } else {
+                        $(HotezaTV).one("final", function () {
+                          setTimeout(tv_wakeup, 1000);
+                        });
+                      }
+                      break;
+                    default:
+                      log.add("WAKEUP: unknown type " + cmd.data[2]);
+                      break;
+                  }
+                } else {
+                  log.add("WAKEUP: overdue " + toHHMMSS(alarm_dif));
+                }
+                break;
 
-							case 'welcome':
-								// Вся логика перенесена в tv_open_app.open()
-								break;
+              case "welcome":
+                // Вся логика перенесена в tv_open_app.open()
+                break;
 
-							default:
-								log.add('TV: cmd: not yet implemented "' + cmd[0] + '"');
-								break;
-						}
-					}
-					break;
+              default:
+                log.add('TV: cmd: not yet implemented "' + cmd[0] + '"');
+                break;
+            }
+          }
+          break;
 
-				default:
-					log.add('TV: cmd: Error or Unknown answer - ' + r.result);
-					break;
-			}
-		}
-	)
-		.fail(
-			function(xhr, error) {
-				log.add('TV: cmd: error');
-			}
-		);
+        default:
+          log.add("TV: cmd: Error or Unknown answer - " + r.result);
+          break;
+      }
+    }
+  ).fail(function (xhr, error) {
+    log.add("TV: cmd: error");
+  });
 }
 
 function tv_wakeup() {

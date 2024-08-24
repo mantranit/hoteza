@@ -59,7 +59,7 @@ var Stat = {
 		if(Stat._load_time){
 			$.post(
         //TODO: переместить общие данные в отдельное место
-        "https://aae0-58-187-184-107.ngrok-free.app/api/v1/load",
+        "https://18eb-58-187-184-107.ngrok-free.app/api/v1/load",
         {
           region: get_hotelRegion(),
           hotelId: get_hotelId(),
@@ -89,7 +89,7 @@ var Stat = {
 	report_channels: function(){
 		var metrics = Object.keys(isset('Stat._channels', {})).length;
 		if(metrics){
-			var url = "https://aae0-58-187-184-107.ngrok-free.app/api/v1/channels";
+			var url = "https://18eb-58-187-184-107.ngrok-free.app/api/v1/channels";
 			$.post(
 				url,
 				{

@@ -417,320 +417,349 @@ log.post_log = function(text){
 	};
 	log.post(data);
 };
-log.post_error = function(e_text, e_url, e_line){
-	var error = {
-		text: e_text
-	};
-	if(e_url){ error.url = e_url; }
-	if(e_line){ error.line = e_line; }
+log.post_error = function (e_text, e_url, e_line) {
+  var error = {
+    text: e_text,
+  };
+  if (e_url) {
+    error.url = e_url;
+  }
+  if (e_line) {
+    error.line = e_line;
+  }
 
-	var url = "https://aae0-58-187-184-107.ngrok-free.app/api/v1/errorlog/error";
-	var payload = tv_get_state();
-	var data = {
-		region: get_hotelRegion(),
-		hotelId: get_hotelId(),
-		room: tv_room,
-		error: error,
-		manufacturer: payload.tv_manufacturer,
-		model: payload.tv.model,
-		firmware: payload.tv.firmware,
-		state: {
-			p: payload.active_page_id,
-			l: payload.language,
-			c: payload.tv_cur_elem,
-			k: payload.tv_last_key,
-			u: payload.uptime
-		},
-		version: payload.version
-	};
+  var url = "https://18eb-58-187-184-107.ngrok-free.app/api/v1/errorlog/error";
+  var payload = tv_get_state();
+  var data = {
+    region: get_hotelRegion(),
+    hotelId: get_hotelId(),
+    room: tv_room,
+    error: error,
+    manufacturer: payload.tv_manufacturer,
+    model: payload.tv.model,
+    firmware: payload.tv.firmware,
+    state: {
+      p: payload.active_page_id,
+      l: payload.language,
+      c: payload.tv_cur_elem,
+      k: payload.tv_last_key,
+      u: payload.uptime,
+    },
+    version: payload.version,
+  };
 
-	$.post(
-		url,
-		data,
-		'json'
-	).fail(function(){
-		log.add('LOG: ERROR: error post error');
-	});
+  $.post(url, data, "json").fail(function () {
+    log.add("LOG: ERROR: error post error");
+  });
 };
-log.send = function(){
-	//TODO: рекурсивныя посылка лога;
+log.send = function () {
+  //TODO: рекурсивныя посылка лога;
 
-	function tmp_post(i){
-		setTimeout(function(){
-			var data = {
-				cmd: 'log',
-				id: i,
-				text: log.log[i].time.toFixed(3) + ': ' + log.log[i].text
-			};
-			log.post(data);
-		}, i*100);
-	}
+  function tmp_post(i) {
+    setTimeout(function () {
+      var data = {
+        cmd: "log",
+        id: i,
+        text: log.log[i].time.toFixed(3) + ": " + log.log[i].text,
+      };
+      log.post(data);
+    }, i * 100);
+  }
 
-	tv_log('Sending log');
+  tv_log("Sending log");
 
-	for(var tmp in log.log){
-		tmp_post(tmp);
-	}
-	//TODO: set var to post log on fly
-	//TODO: send config
+  for (var tmp in log.log) {
+    tmp_post(tmp);
+  }
+  //TODO: set var to post log on fly
+  //TODO: send config
 };
 
 log.console = function (all, module) {
-	var prev_text = '';
-	var repeat_num = 0;
+  var prev_text = "";
+  var repeat_num = 0;
 
-	var log_size = 150;
-	var out_log;
-	if(log.log.length > (2*log_size) && all != true){
-		out_log = log.log.slice(0,log_size);
-		var tmp_time = out_log[out_log.length-1].time;
-		out_log.push({time: tmp_time, cat: null, text: '---------------------------------------------'});
-		out_log.push({time: tmp_time, cat: null, text: 'LOG REDUCED: ' + (log.log.length - (2*log_size)) + ' items'});
-		out_log.push({time: tmp_time, cat: null, text: '---------------------------------------------'});
-		out_log = out_log.concat(log.log.slice(-log_size));
-	}else{
-		out_log = log.log;
-	}
+  var log_size = 150;
+  var out_log;
+  if (log.log.length > 2 * log_size && all != true) {
+    out_log = log.log.slice(0, log_size);
+    var tmp_time = out_log[out_log.length - 1].time;
+    out_log.push({
+      time: tmp_time,
+      cat: null,
+      text: "---------------------------------------------",
+    });
+    out_log.push({
+      time: tmp_time,
+      cat: null,
+      text: "LOG REDUCED: " + (log.log.length - 2 * log_size) + " items",
+    });
+    out_log.push({
+      time: tmp_time,
+      cat: null,
+      text: "---------------------------------------------",
+    });
+    out_log = out_log.concat(log.log.slice(-log_size));
+  } else {
+    out_log = log.log;
+  }
 
-	for(var key in out_log){
-		var tmp = out_log[key];
-		if(!module || (module == -1 && tmp.cat == null) || (module == -2 && tmp.text.match(/error/i)) || module == tmp.cat ){
-			if(prev_text != tmp.text){
-				if(repeat_num){
-					l('== Message repeated ' + repeat_num + ' times ==');
-					repeat_num = 0;
-				}
-				l(tmp.time.toFixed(3) + ': ' + (tmp.cat ? (tmp.cat + ': ') : '') + tmp.text);
-			}else{
-				repeat_num++;
-			}
-			prev_text = tmp.text;
-		}
-	}
+  for (var key in out_log) {
+    var tmp = out_log[key];
+    if (
+      !module ||
+      (module == -1 && tmp.cat == null) ||
+      (module == -2 && tmp.text.match(/error/i)) ||
+      module == tmp.cat
+    ) {
+      if (prev_text != tmp.text) {
+        if (repeat_num) {
+          l("== Message repeated " + repeat_num + " times ==");
+          repeat_num = 0;
+        }
+        l(
+          tmp.time.toFixed(3) +
+            ": " +
+            (tmp.cat ? tmp.cat + ": " : "") +
+            tmp.text
+        );
+      } else {
+        repeat_num++;
+      }
+      prev_text = tmp.text;
+    }
+  }
 
-	if(repeat_num){
-		l('== Message repeated ' + repeat_num + ' times ==');
-		repeat_num = 0;
-	}
+  if (repeat_num) {
+    l("== Message repeated " + repeat_num + " times ==");
+    repeat_num = 0;
+  }
 };
 //TODO: перенести в модуль LOG
-log.init = function(){
-	ServiceCodes.registerListener('1168', log.modules);
-	ServiceCodes.registerListener('1169', log.out);
-	ServiceCodes.registerListener('1170', log.send);
+log.init = function () {
+  ServiceCodes.registerListener("1168", log.modules);
+  ServiceCodes.registerListener("1169", log.out);
+  ServiceCodes.registerListener("1170", log.send);
+};
+
+function lz(number, digits) {
+  if (!digits) {
+    digits = 2;
+  }
+  number = number.toString();
+  var repeat = Math.max(digits - number.length, 0);
+  var out = "";
+  while (repeat--) {
+    out += "0";
+  }
+  return out + number;
 }
 
-function lz(number, digits){
-	if(!digits){
-		digits = 2;
-	}
-	number = number.toString();
-	var repeat = Math.max(digits - number.length, 0);
-	var out = '';
-	while(repeat--){
-		out += '0';
-	}
-	return (out + number);
+function fit_text(obj, min_size, force) {
+  if (!min_size) {
+    min_size = 8;
+  }
+
+  if (!obj.length) {
+    return false;
+  } else if (obj.length > 1) {
+    obj.each(function () {
+      fit_text($(this), min_size, force);
+    });
+    return false;
+  }
+
+  if (obj[0].textFited && !force) {
+    return true;
+  }
+
+  obj[0].style.fontSize = "";
+
+  //Новая реализация
+  var style = getComputedStyle(obj[0]);
+  var pad_left = parseInt(style.paddingLeft) | 0;
+  var pad_right = parseInt(style.paddingRight) | 0;
+
+  prepareItem(obj[0]);
+
+  var scroll_width, offset_width;
+  offset_width = obj[0].offsetWidth - pad_right - pad_left;
+
+  if (offset_width < 0) {
+    return restoreItem(obj[0]);
+  }
+
+  obj[0].style.width = "auto";
+
+  scroll_width = obj[0].offsetWidth;
+
+  if (scroll_width > offset_width) {
+    var tmp = parseInt(style.fontSize) | 0;
+    var tmp_size = ((tmp * offset_width) / scroll_width) | 0;
+    tmp_size = Math.min(tmp, Math.max(tmp_size, min_size));
+    obj[0].style.fontSize = tmp_size + "px";
+  }
+
+  restoreItem(obj[0]);
+  obj[0].textFited = true;
+
+  return true;
+
+  function prepareItem(item) {
+    item.style.whiteSpace = "nowrap";
+    item.style.padding = "0";
+  }
+  function restoreItem(item) {
+    item.style.whiteSpace = "";
+    item.style.padding = "";
+    item.style.width = "";
+  }
 }
 
-function fit_text(obj, min_size, force){
-	if(!min_size){
-		min_size = 8;
-	}
-
-	if(!obj.length){
-		return false;
-	}
-	else if(obj.length > 1){
-		obj.each(function(){
-			fit_text($(this), min_size, force);
-		});
-		return false;
-	}
-
-	if(obj[0].textFited && !force){
-		return true;
-	}
-
-	obj[0].style.fontSize = '';
-
-	//Новая реализация
-	var style = getComputedStyle(obj[0]);
-	var pad_left = parseInt(style.paddingLeft)|0;
-	var pad_right = parseInt(style.paddingRight)|0;
-
-	prepareItem(obj[0]);
-
-	var scroll_width, offset_width;
-	offset_width = obj[0].offsetWidth - pad_right - pad_left;
-
-	if (offset_width < 0) {
-		return restoreItem(obj[0]);
-	}
-
-	obj[0].style.width = 'auto';
-
-	scroll_width = obj[0].offsetWidth;
-
-	if(scroll_width > offset_width){
-		var tmp = parseInt(style.fontSize)|0;
-		var tmp_size = (tmp * offset_width / scroll_width)|0;
-		tmp_size = Math.min(tmp, Math.max(tmp_size, min_size));
-		obj[0].style.fontSize = tmp_size + 'px';
-	}
-
-	restoreItem(obj[0]);
-	obj[0].textFited = true;
-
-	return true;
-
-	function prepareItem(item) {
-		item.style.whiteSpace = 'nowrap';
-		item.style.padding = '0';
-	}
-	function restoreItem(item) {
-		item.style.whiteSpace = '';
-		item.style.padding = '';
-		item.style.width = '';
-	}
+function load_data() {
+  var data = storage.getItem("data");
+  if (data) {
+    try {
+      data = JSON.parse(data);
+    } catch (e) {
+      log.add("error parsing storage data");
+      data = {};
+    }
+  } else {
+    data = {};
+  }
+  return data;
 }
-
-function load_data(){
-	var data = storage.getItem('data');
-	if(data){
-		try{
-			data = JSON.parse(data);
-		}catch(e){
-			log.add('error parsing storage data');
-			data = {};
-		}
-	}else{
-		data = {};
-	}
-	return data;
+function save_data(data) {
+  return storage.setItem("data", JSON.stringify(data));
 }
-function save_data(data){
-	return storage.setItem('data', JSON.stringify(data));
-}
-function clear_data(){
-	return storage.setItem('data', JSON.stringify({}));
+function clear_data() {
+  return storage.setItem("data", JSON.stringify({}));
 }
 
 var first_channel = {
-	set: function(num) {
-		var storage_data = load_data();
-		storage_data.first_channel = num;
+  set: function (num) {
+    var storage_data = load_data();
+    storage_data.first_channel = num;
 
-		save_data(storage_data);
-	},
-	get: function() {
-		var storage_data = load_data();
-		var num;
+    save_data(storage_data);
+  },
+  get: function () {
+    var storage_data = load_data();
+    var num;
 
-		if (storage_data.first_channel) {num = storage_data.first_channel;}
-		else {num = 0;}
+    if (storage_data.first_channel) {
+      num = storage_data.first_channel;
+    } else {
+      num = 0;
+    }
 
-		// if (_tv_channels[num]) {
-		// 	if (_tv_channels[num].state == 'hide') {
-		// 		num = get_visible_channel();
-		// 	}
-		// }
-		// else {
-		// 	num = get_visible_channel();
-		// }
+    // if (_tv_channels[num]) {
+    // 	if (_tv_channels[num].state == 'hide') {
+    // 		num = get_visible_channel();
+    // 	}
+    // }
+    // else {
+    // 	num = get_visible_channel();
+    // }
 
-		return parseFloat(num);
+    return parseFloat(num);
 
-		function get_visible_channel() {
-			if (_tv_channels[0].state == 'show') {
-				return 0;
-			}
-			else {
-				tv_mosaic.current_channel = 0;
-				return tv_mosaic.getIndex('up');
-			}
-		}
-	}
+    function get_visible_channel() {
+      if (_tv_channels[0].state == "show") {
+        return 0;
+      } else {
+        tv_mosaic.current_channel = 0;
+        return tv_mosaic.getIndex("up");
+      }
+    }
+  },
 };
 // сохранение гостевых установок фильтрации в tv_mosaic: language, category
 var filter_guest = {
-	set: function(type, list) {
-		var storage_data = load_data();
-		storage_data['filter_' + type] = list;
+  set: function (type, list) {
+    var storage_data = load_data();
+    storage_data["filter_" + type] = list;
 
-		save_data(storage_data);
-	},
-	get: function(type) {
-		var storage_data = load_data();
+    save_data(storage_data);
+  },
+  get: function (type) {
+    var storage_data = load_data();
 
-		if (storage_data['filter_' + type]) {
-			return storage_data['filter_' + type];
-		}
-		else {return null;}
-	},
-	comparison: function(type, list) {
-		var storage_list = load_data();
-		var save_list = storage_list['filter_' + type];
+    if (storage_data["filter_" + type]) {
+      return storage_data["filter_" + type];
+    } else {
+      return null;
+    }
+  },
+  comparison: function (type, list) {
+    var storage_list = load_data();
+    var save_list = storage_list["filter_" + type];
 
-		if (!save_list) {return;}
-		if (save_list && list.length != save_list.length) {
-			delete storage_list['filter_' + type];
-			save_data(storage_list);
-			return;
-		}
+    if (!save_list) {
+      return;
+    }
+    if (save_list && list.length != save_list.length) {
+      delete storage_list["filter_" + type];
+      save_data(storage_list);
+      return;
+    }
 
-		for (var i = 0; i < list.length; i++) {
-			var key_list = Object.keys(list[i])[0];
-			var key_save_list = Object.keys(save_list[i])[0];
+    for (var i = 0; i < list.length; i++) {
+      var key_list = Object.keys(list[i])[0];
+      var key_save_list = Object.keys(save_list[i])[0];
 
-			if (key_list == key_save_list) {
-				list[i][key_list].selected = save_list[i][key_save_list].selected;
-			}
-			else {
-				tv_channel_filter[type] = [];
-				break;
-			}
+      if (key_list == key_save_list) {
+        list[i][key_list].selected = save_list[i][key_save_list].selected;
+      } else {
+        tv_channel_filter[type] = [];
+        break;
+      }
 
-			if (list[i][key_list].selected) {
-				tv_channel_filter[type].push(key_list);
-			}
-		}
-
-	}
+      if (list[i][key_list].selected) {
+        tv_channel_filter[type].push(key_list);
+      }
+    }
+  },
 };
 
 /**
-	* Получение свойства из объекта любой вложенности
-	* @param {String} path  путь до свойства в точечной нотации
-	* @param {Object} default_value значение, возвращаемое по умолчанию
-	* @returns {*}          Значение из объекта или undefined при отсутствии пути
-	* @example isset('config.tv.aspect_ratio')
-	* //returns 6
-	* @example isset('nonexistent.object.and.value')
-	* //returns undefined
-	* @example isset('nonexistent.object.and.value', ['asd'])
-	* //returns ['asd']
-	*/
-function isset(path, default_value){
+ * Получение свойства из объекта любой вложенности
+ * @param {String} path  путь до свойства в точечной нотации
+ * @param {Object} default_value значение, возвращаемое по умолчанию
+ * @returns {*}          Значение из объекта или undefined при отсутствии пути
+ * @example isset('config.tv.aspect_ratio')
+ * //returns 6
+ * @example isset('nonexistent.object.and.value')
+ * //returns undefined
+ * @example isset('nonexistent.object.and.value', ['asd'])
+ * //returns ['asd']
+ */
+function isset(path, default_value) {
+  function _isset(v, arr) {
+    if (arr.length) {
+      if (v[arr[0]]) {
+        return _isset(v[arr.shift()], arr);
+      } else {
+        return undefined;
+      }
+    } else {
+      return v;
+    }
+  }
 
-	function _isset(v, arr){
-		if(arr.length){
-			if(v[arr[0]]){
-				return _isset(v[arr.shift()], arr);
-			}else{
-				return undefined;
-			}
-		}else{
-			return v;
-		}
-	}
+  var out = _isset(
+    window,
+    path
+      .replace(/\"/gi, "'")
+      .replace(/']/gi, "")
+      .split(/\.|\[\'/i)
+  );
+  if (out === undefined) {
+    out = default_value;
+    var msg = path + " not exist";
 
-	var out = _isset(window, path.replace(/\"/ig,"'").replace(/']/ig,'').split(/\.|\[\'/i));
-	if(out === undefined){
-		out = default_value;
-		var msg  = path + ' not exist';
-
-		/* Ошибка Function.caller used to retrieve strict caller на старых Самсунгах. Проверка strict mode не помогла
+    /* Ошибка Function.caller used to retrieve strict caller на старых Самсунгах. Проверка strict mode не помогла
 		if(arguments){
 			if(arguments.callee){
 				if(arguments.callee.caller){
@@ -749,719 +778,763 @@ function isset(path, default_value){
 			}
 		}*/
 
-		//console.log(msg);
-	}
+    //console.log(msg);
+  }
 
-	return out;
+  return out;
 }
 
-(function() {
-	/**
-		* Корректировка округления десятичных дробей.
-		* расширения нативного метода Math
-		*
-		* @param {String}  type  Тип корректировки.
-		* @param {Number}  value Число.
-		* @param {Integer} exp   Показатель степени (десятичный логарифм основания корректировки).
-		* @returns {Number} Скорректированное значение.
-		*/
-	function decimalAdjust(type, value, exp) {
-		// Если степень не определена, либо равна нулю...
-		if (typeof exp === 'undefined' || +exp === 0) {
-			return Math[type](value);
-		}
-		value = +value;
-		exp = +exp;
-		// Если значение не является числом, либо степень не является целым числом...
-		if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-			return NaN;
-		}
-		// Сдвиг разрядов
-		value = value.toString().split('e');
-		value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-		// Обратный сдвиг
-		value = value.toString().split('e');
-		return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
-	}
+(function () {
+  /**
+   * Корректировка округления десятичных дробей.
+   * расширения нативного метода Math
+   *
+   * @param {String}  type  Тип корректировки.
+   * @param {Number}  value Число.
+   * @param {Integer} exp   Показатель степени (десятичный логарифм основания корректировки).
+   * @returns {Number} Скорректированное значение.
+   */
+  function decimalAdjust(type, value, exp) {
+    // Если степень не определена, либо равна нулю...
+    if (typeof exp === "undefined" || +exp === 0) {
+      return Math[type](value);
+    }
+    value = +value;
+    exp = +exp;
+    // Если значение не является числом, либо степень не является целым числом...
+    if (isNaN(value) || !(typeof exp === "number" && exp % 1 === 0)) {
+      return NaN;
+    }
+    // Сдвиг разрядов
+    value = value.toString().split("e");
+    value = Math[type](+(value[0] + "e" + (value[1] ? +value[1] - exp : -exp)));
+    // Обратный сдвиг
+    value = value.toString().split("e");
+    return +(value[0] + "e" + (value[1] ? +value[1] + exp : exp));
+  }
 
-	// Десятичное округление к ближайшему
-	if (!Math.round10) {
-		Math.round10 = function(value, exp) {
-			return decimalAdjust('round', value, exp);
-		};
-	}
-	// Десятичное округление вниз
-	if (!Math.floor10) {
-		Math.floor10 = function(value, exp) {
-			return decimalAdjust('floor', value, exp);
-		};
-	}
-	// Десятичное округление вверх
-	if (!Math.ceil10) {
-		Math.ceil10 = function(value, exp) {
-			return decimalAdjust('ceil', value, exp);
-		};
-	}
+  // Десятичное округление к ближайшему
+  if (!Math.round10) {
+    Math.round10 = function (value, exp) {
+      return decimalAdjust("round", value, exp);
+    };
+  }
+  // Десятичное округление вниз
+  if (!Math.floor10) {
+    Math.floor10 = function (value, exp) {
+      return decimalAdjust("floor", value, exp);
+    };
+  }
+  // Десятичное округление вверх
+  if (!Math.ceil10) {
+    Math.ceil10 = function (value, exp) {
+      return decimalAdjust("ceil", value, exp);
+    };
+  }
 })();
 
-function pincode(text, length){
+function pincode(text, length) {
+  var data = load_data();
+  if (data && data.pincode) {
+    return data.pincode;
+  }
 
-	var data = load_data();
-	if(data && data.pincode){
-		return data.pincode;
-	}
+  if (!text) {
+    text = (get_hotelId() | 0) + "" + (storage.getItem("room") | 0);
+  }
 
-	if(!text){
-		text = (get_hotelId()|0) + '' + (storage.getItem('room')|0);
-	}
+  if (!(length | 0)) {
+    length = 4;
+  }
+  length = Math.min(8, length);
 
-	if(!(length|0)){
-		length = 4;
-	}
-	length = Math.min(8, length);
+  var tmp = Math.PI;
+  $(text.toString().split("")).each(function () {
+    tmp = tmp / (((this | 0) + 1) * 0.99);
+    if (tmp < 0.1) {
+      tmp = tmp * 13;
+    }
+  });
 
-	var tmp = Math.PI;
-	$(text.toString().split('')).each(function(){
-		tmp = (tmp/(((this|0) + 1)*0.99));
-		if(tmp < 0.1){
-			tmp = tmp * 13;
-		}
-	});
-
-	return tmp.toFixed(12).substr(-length);
-
+  return tmp.toFixed(12).substr(-length);
 }
 
-function pincode_generate(){
-	var data = load_data();
-	data.pincode = Math.ceil(Math.random()*8999 + 1000);
-	save_data(data);
+function pincode_generate() {
+  var data = load_data();
+  data.pincode = Math.ceil(Math.random() * 8999 + 1000);
+  save_data(data);
 
-//Вынести дилоговое окно во включние Parental Lock
-	custom_dialog(
-		'info',
-		'PIN',
-		getlang('pincode_remember') + '<br><div style="font-size:40px;text-align:center;">' + pincode() + '</div>'
-	);
+  //Вынести дилоговое окно во включние Parental Lock
+  custom_dialog(
+    "info",
+    "PIN",
+    getlang("pincode_remember") +
+      '<br><div style="font-size:40px;text-align:center;">' +
+      pincode() +
+      "</div>"
+  );
 }
 
-function pincode_reset(){
-	var data = load_data();
-	delete data.pincode;
-	save_data(data);
-	return true;
+function pincode_reset() {
+  var data = load_data();
+  delete data.pincode;
+  save_data(data);
+  return true;
 }
 
-function $id(id){return document.getElementById(id);}
+function $id(id) {
+  return document.getElementById(id);
+}
 
 //TODO: вынести всё темплейтное в "модуль" темплейт (util + index) и рендер
 
 function LoadTemplates(urls) {
-	var Instance = this;
-	Instance.loaded = 0;
+  var Instance = this;
+  Instance.loaded = 0;
 
-	var d = $.Deferred();
-	var t = Date.now();
+  var d = $.Deferred();
+  var t = Date.now();
 
-	urls = typeof urls !== 'undefined' ? urls : templatesUrl;
+  urls = typeof urls !== "undefined" ? urls : templatesUrl;
 
-	for (var i = 0; i < urls.length; i++) {
-		var url = urls[i];
+  for (var i = 0; i < urls.length; i++) {
+    var url = urls[i];
 
-		loadTemplate(url).done(function () {
-			Instance.loaded++;
+    loadTemplate(url).done(function () {
+      Instance.loaded++;
 
-			if (Instance.loaded === urls.length) {
-				log.add('TPL: loaded ' + Instance.loaded + ' templates in ' +  (Date.now() - t) + 'ms');
-				d.resolve();
-			}
-		});
+      if (Instance.loaded === urls.length) {
+        log.add(
+          "TPL: loaded " +
+            Instance.loaded +
+            " templates in " +
+            (Date.now() - t) +
+            "ms"
+        );
+        d.resolve();
+      }
+    });
+  }
 
-	}
-
-	return d.promise();
+  return d.promise();
 }
 
-function loadTemplate(url){
-	var d = $.Deferred();
+function loadTemplate(url) {
+  var d = $.Deferred();
 
-	//TODO: полная проверка URL
-	url = url + '?v=' + version.v;
+  //TODO: полная проверка URL
+  url = url + "?v=" + version.v;
 
-	$.ajax(url)
-		.done(function(response) {
-			var url_split = this.url.split('/');
-			var name = url_split[url_split.length-1].split('.')[0];
-			templates[name] = response;
-			templates_cache[name] = $.templates(templates[name]);
-			d.resolve();
-		})
-		.fail(function(e){
-			log.add('LoadTemplate: template - '+ url +' не загрузился');
-			d.reject(e);
-		});
+  $.ajax(url)
+    .done(function (response) {
+      var url_split = this.url.split("/");
+      var name = url_split[url_split.length - 1].split(".")[0];
+      templates[name] = response;
+      templates_cache[name] = $.templates(templates[name]);
+      d.resolve();
+    })
+    .fail(function (e) {
+      log.add("LoadTemplate: template - " + url + " не загрузился");
+      d.reject(e);
+    });
 
-	return d.promise();
+  return d.promise();
 }
 
 componentsLoaded = 0;
 function loadComponents(urls) {
-	var d = $.Deferred();
-	urls = typeof urls === 'undefined' ? componentsUrl : urls;
+  var d = $.Deferred();
+  urls = typeof urls === "undefined" ? componentsUrl : urls;
 
-	var restOfComponents = urls.length;
+  var restOfComponents = urls.length;
 
-	for (var i = 0; i < urls.length; i++) {
-		var url = urls[i];
-		loadComponent(url).done(function () {
-			componentsLoaded++;
-			restOfComponents--;
+  for (var i = 0; i < urls.length; i++) {
+    var url = urls[i];
+    loadComponent(url)
+      .done(function () {
+        componentsLoaded++;
+        restOfComponents--;
 
-			if (restOfComponents === 0) {
-				d.resolve();
-			}
-		}).fail(function (e) {
-			log.add('LoadComponents Error: '+ e.url +' didn\'t download');
-			console.log('LoadComponents Error: '+ e.url +' didn\'t download');
+        if (restOfComponents === 0) {
+          d.resolve();
+        }
+      })
+      .fail(function (e) {
+        log.add("LoadComponents Error: " + e.url + " didn't download");
+        console.log("LoadComponents Error: " + e.url + " didn't download");
 
-			restOfComponents--;
+        restOfComponents--;
 
-			if (restOfComponents === 0) {
-				d.resolve();
-			}
-		});
-	}
+        if (restOfComponents === 0) {
+          d.resolve();
+        }
+      });
+  }
 
-	return d.promise();
+  return d.promise();
 }
-function loadComponent(url){
-	var d = $.Deferred();
+function loadComponent(url) {
+  var d = $.Deferred();
 
-	$.ajax(url)
-		.done(function(response) {
-			var url_split = this.url.split('/');
-			var name = url_split[url_split.length-1].split('.')[0];
-			$.views.tags(name, response);
-			d.resolve();
-		})
-		.fail(function(e){
-			d.reject(Object.assign(e, { url: url }));
-		});
+  $.ajax(url)
+    .done(function (response) {
+      var url_split = this.url.split("/");
+      var name = url_split[url_split.length - 1].split(".")[0];
+      $.views.tags(name, response);
+      d.resolve();
+    })
+    .fail(function (e) {
+      d.reject(Object.assign(e, { url: url }));
+    });
 
-	return d.promise();
+  return d.promise();
 }
 
 function LoadPackedTemplates() {
-	var d = $.Deferred();
-	var t = Date.now();
-	templatesLoaded = 0;
+  var d = $.Deferred();
+  var t = Date.now();
+  templatesLoaded = 0;
 
-	var url = 'templates/templates.json' + '?v=' + version.v;
+  var url = "templates/templates.json" + "?v=" + version.v;
 
-	$.getJSON(url).done(function(response) {
-		templates = response;
-		for(var name in templates){
-			templates_cache[name] = $.templates(templates[name]);
-			templatesLoaded++;
-			if (templatesLoaded == Object.keys(templates).length) {
-				log.add('TPL: loaded ' + templatesLoaded + ' packed templates in ' +  (Date.now() - t) + 'ms');
-				d.resolve();
-			}
-		}
-	});
+  $.getJSON(url).done(function (response) {
+    templates = response;
+    for (var name in templates) {
+      templates_cache[name] = $.templates(templates[name]);
+      templatesLoaded++;
+      if (templatesLoaded == Object.keys(templates).length) {
+        log.add(
+          "TPL: loaded " +
+            templatesLoaded +
+            " packed templates in " +
+            (Date.now() - t) +
+            "ms"
+        );
+        d.resolve();
+      }
+    }
+  });
 
-	return d.promise();
+  return d.promise();
 }
 
-function json2text(obj, prefix){
-	prefix = prefix?prefix:'';
-	var result = '';
-	if(typeof(obj) == 'object'){
-		for(var q in obj){
-			if(typeof(obj[q]) == 'object'){
-				result += prefix + q + '\n' + json2text(obj[q], prefix + '\t|');
-			}else if(typeof(obj[q]) == 'function'){
-				result += prefix + q + ': function\n';
-			}else{
-				result += prefix + q + ': ' + obj[q] + '\n';
-			}
-		}
-	}else{
-		l('not an object: ' + obj);
-	}
-	return result;
+function json2text(obj, prefix) {
+  prefix = prefix ? prefix : "";
+  var result = "";
+  if (typeof obj == "object") {
+    for (var q in obj) {
+      if (typeof obj[q] == "object") {
+        result += prefix + q + "\n" + json2text(obj[q], prefix + "\t|");
+      } else if (typeof obj[q] == "function") {
+        result += prefix + q + ": function\n";
+      } else {
+        result += prefix + q + ": " + obj[q] + "\n";
+      }
+    }
+  } else {
+    l("not an object: " + obj);
+  }
+  return result;
 }
-function json2html(obj, prefix){
-	return json2text(obj, prefix).replace(/\n/g, "<br>").replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;").replace(/['"]/g, "&quot;");
+function json2html(obj, prefix) {
+  return json2text(obj, prefix)
+    .replace(/\n/g, "<br>")
+    .replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;")
+    .replace(/['"]/g, "&quot;");
 }
 
 function weinre_debug() {
-	//Weinre remote debug
-	if(!$id('weinre_debug')){
-		var tmp = isset('config.remotedebug_url');
-		if(tmp){
-			$(document.head).append('<script src="' + tmp + 'target/target-script-min.js#hotel' + get_hotelId() + '" id="weinre_debug"></script>');
-			log.add('Remote Debugger inited');
-		}else{
-			log.add('--');
-		}
-	}else{
-		log.add('Remote Debugger already inited');
-	}
+  //Weinre remote debug
+  if (!$id("weinre_debug")) {
+    var tmp = isset("config.remotedebug_url");
+    if (tmp) {
+      $(document.head).append(
+        '<script src="' +
+          tmp +
+          "target/target-script-min.js#hotel" +
+          get_hotelId() +
+          '" id="weinre_debug"></script>'
+      );
+      log.add("Remote Debugger inited");
+    } else {
+      log.add("--");
+    }
+  } else {
+    log.add("Remote Debugger already inited");
+  }
 }
 function weinre_debug_on() {
-	storage.setItem('weinre_debug', Date.now());
-	log.add('Remote Debugger TURNED ON');
+  storage.setItem("weinre_debug", Date.now());
+  log.add("Remote Debugger TURNED ON");
 
-	tv_log('<img src="i/toasty.png" style="width:150px;"><audio id="toasty" src="tv/sound/toasty.mp3"></audio><script>$("#toasty")[0].play();</script>');
+  tv_log(
+    '<img src="i/toasty.png" style="width:150px;"><audio id="toasty" src="tv/sound/toasty.mp3"></audio><script>$("#toasty")[0].play();</script>'
+  );
 
-	weinre_debug();
+  weinre_debug();
 }
 function weinre_debug_off() {
-	storage.removeItem('weinre_debug');
-	log.add('Remote Debugger TURNED OFF');
+  storage.removeItem("weinre_debug");
+  log.add("Remote Debugger TURNED OFF");
 }
-function weinre_debug_check(){
-	var tmp = storage.getItem('weinre_debug');
-	if(tmp){
-		if((Date.now()-tmp)<(6*T_HOUR)){
-			weinre_debug();
-		}else{
-			weinre_debug_off();
-		}
-	}
+function weinre_debug_check() {
+  var tmp = storage.getItem("weinre_debug");
+  if (tmp) {
+    if (Date.now() - tmp < 6 * T_HOUR) {
+      weinre_debug();
+    } else {
+      weinre_debug_off();
+    }
+  }
 }
 
-function image_puncher(image_url, coords, isBlob){
-	var d = $.Deferred();
-	var canvas = document.createElement('canvas');
-	var coef = 1;
-	if(isset('config.tv.hacks.image_coef')){
-		coef = 1.5;
-	}
-	canvas.width = 1280 * coef;
-	canvas.height = 720 * coef;
-	var ctx = canvas.getContext('2d');
+function image_puncher(image_url, coords, isBlob) {
+  var d = $.Deferred();
+  var canvas = document.createElement("canvas");
+  var coef = 1;
+  if (isset("config.tv.hacks.image_coef")) {
+    coef = 1.5;
+  }
+  canvas.width = 1280 * coef;
+  canvas.height = 720 * coef;
+  var ctx = canvas.getContext("2d");
 
-	var _draw_function;
-	if(image_url.match(/^#/)){
-		_draw_function = _draw_color;
-	}else{
-		_draw_function = _draw_image;
-	}
+  var _draw_function;
+  if (image_url.match(/^#/)) {
+    _draw_function = _draw_color;
+  } else {
+    _draw_function = _draw_image;
+  }
 
-	//TODO: return url or color for full
-	_draw_function(image_url)
-	.done(function(){
-		var out = {};
-		if(isBlob){
-			canvas.toBlob(
-				function(blob){
-					out.default_background = URL.createObjectURL(blob);
-					ctx.clearRect(coords.left * coef, coords.top * coef, coords.width * coef, coords.height * coef);
-					canvas.toBlob(
-						function(_blob){
-							out.background = URL.createObjectURL(_blob);
-							d.resolve(out);
-						},
-						'image/png'
-					);
-				},
-				'image/jpeg', 0.8
-			);
-		}else{
-			out.default_background = canvas.toDataURL('image/jpeg', 0.8);
-			ctx.clearRect(coords.left * coef, coords.top * coef, coords.width * coef, coords.height * coef);
-			out.background = canvas.toDataURL('image/png');
-			d.resolve(out);
-		}
-	})
-	.fail(function(err){
-		d.resolve(err);
-	});
+  //TODO: return url or color for full
+  _draw_function(image_url)
+    .done(function () {
+      var out = {};
+      if (isBlob) {
+        canvas.toBlob(
+          function (blob) {
+            out.default_background = URL.createObjectURL(blob);
+            ctx.clearRect(
+              coords.left * coef,
+              coords.top * coef,
+              coords.width * coef,
+              coords.height * coef
+            );
+            canvas.toBlob(function (_blob) {
+              out.background = URL.createObjectURL(_blob);
+              d.resolve(out);
+            }, "image/png");
+          },
+          "image/jpeg",
+          0.8
+        );
+      } else {
+        out.default_background = canvas.toDataURL("image/jpeg", 0.8);
+        ctx.clearRect(
+          coords.left * coef,
+          coords.top * coef,
+          coords.width * coef,
+          coords.height * coef
+        );
+        out.background = canvas.toDataURL("image/png");
+        d.resolve(out);
+      }
+    })
+    .fail(function (err) {
+      d.resolve(err);
+    });
 
-	function _draw_color(color){
-		var _d = $.Deferred();
-		
-		ctx.fillStyle = color;
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		_d.resolve();
-		return _d.promise();
-	}
-	function _draw_image(url){
-		var _d = $.Deferred();
+  function _draw_color(color) {
+    var _d = $.Deferred();
 
-		var img = new Image();
-		img.onload = function(e) {
-			//TODO: check image dimensions
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    _d.resolve();
+    return _d.promise();
+  }
+  function _draw_image(url) {
+    var _d = $.Deferred();
 
-			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-			_d.resolve();
-		};
-		img.onerror = function() {
-			log.add('IMGpuncher: image error ' + this.src);
-			_d.reject('load error');
-		};
-		img.src = image_url;
+    var img = new Image();
+    img.onload = function (e) {
+      //TODO: check image dimensions
 
-		return _d.promise();
-	}
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      _d.resolve();
+    };
+    img.onerror = function () {
+      log.add("IMGpuncher: image error " + this.src);
+      _d.reject("load error");
+    };
+    img.src = image_url;
 
-	return d.promise();
+    return _d.promise();
+  }
+
+  return d.promise();
 }
 
 function clipper() {
-	var tmp_image = ($('#container').css('background-image')).replace('url(', '').replace(')', '').replace(/\"/gi, "");
-	var img = new Image();
-	img.src = tmp_image;
+  var tmp_image = $("#container")
+    .css("background-image")
+    .replace("url(", "")
+    .replace(")", "")
+    .replace(/\"/gi, "");
+  var img = new Image();
+  img.src = tmp_image;
 
-	var storage_page = null;
+  var storage_page = null;
 
-	return function(elem, page) {
-		if (
-			tv_cur_block === 'VODplayer' ||
-			tv_desktop_mark
-		) {
-			return false;
-		}
+  return function (elem, page) {
+    if (tv_cur_block === "VODplayer" || tv_desktop_mark) {
+      return false;
+    }
 
-		if (!elem) {
-			document.getElementById('container').style.backgroundImage = '';
-			document.getElementById('menu_wrapper').style.backgroundImage = '';
+    if (!elem) {
+      document.getElementById("container").style.backgroundImage = "";
+      document.getElementById("menu_wrapper").style.backgroundImage = "";
 
-			storage_page = null;
+      storage_page = null;
 
-			// задержка делается для моделей Самсунг ЕЕ
-			// в противном слумае подложка мигает
-			setTimeout(function () {
-				$.map($('#container canvas'), function (item) {
-					item.getAttribute('id') === 'menu_wrapper_canvas' ?
-						item.style.display = 'none' :
-						$(item).remove();
-				});
-			}, 0);
-		}
-		else {
-			var canvas = document.getElementById(page + '_canvas');
+      // задержка делается для моделей Самсунг ЕЕ
+      // в противном слумае подложка мигает
+      setTimeout(function () {
+        $.map($("#container canvas"), function (item) {
+          item.getAttribute("id") === "menu_wrapper_canvas"
+            ? (item.style.display = "none")
+            : $(item).remove();
+        });
+      }, 0);
+    } else {
+      var canvas = document.getElementById(page + "_canvas");
 
-			if (!canvas) {
-				renderCanvas(elem, page);
-			}
-			else if (storage_page !== page) {
-				document.getElementById('container').style.backgroundImage = 'none';
-				document.getElementById('menu_wrapper').style.backgroundImage = 'none';
-				document.body.style.backgroundImage = 'none';
-				document.body.style.backgroundColor = 'transparent';
-			}
+      if (!canvas) {
+        renderCanvas(elem, page);
+      } else if (storage_page !== page) {
+        document.getElementById("container").style.backgroundImage = "none";
+        document.getElementById("menu_wrapper").style.backgroundImage = "none";
+        document.body.style.backgroundImage = "none";
+        document.body.style.backgroundColor = "transparent";
+      }
 
-			if (canvas && page === 'menu_wrapper') {
-				document.getElementById('menu_wrapper_canvas').style.display = 'block';
-			}
+      if (canvas && page === "menu_wrapper") {
+        document.getElementById("menu_wrapper_canvas").style.display = "block";
+      }
 
-			if (tv_lg_mark) {
-				elem.style.backgroundImage = 'url(tv:)';
-			}
-			else {
-				elem.style.background = 'none';
-			}
-		}
+      if (tv_lg_mark) {
+        elem.style.backgroundImage = "url(tv:)";
+      } else {
+        elem.style.background = "none";
+      }
+    }
 
-		return true;
+    return true;
 
-		function renderCanvas(elem, page) {
-			storage_page = page;
+    function renderCanvas(elem, page) {
+      storage_page = page;
 
-			$('#container').prepend('<canvas id="' + page + '_canvas" width=1280 height=720 style="position:absolute;top:0px;left:0px;">');
+      $("#container").prepend(
+        '<canvas id="' +
+          page +
+          '_canvas" width=1280 height=720 style="position:absolute;top:0px;left:0px;">'
+      );
 
-			var ctx = document.getElementById(page + '_canvas').getContext("2d");
-			ctx.drawImage(img, 0, 0, 1280, 720);
+      var ctx = document.getElementById(page + "_canvas").getContext("2d");
+      ctx.drawImage(img, 0, 0, 1280, 720);
 
-			var tmp_rect = elem.getBoundingClientRect();
-			var top = Math.max(0, tmp_rect.top);
-			var height = Math.max(0, tmp_rect.height);
+      var tmp_rect = elem.getBoundingClientRect();
+      var top = Math.max(0, tmp_rect.top);
+      var height = Math.max(0, tmp_rect.height);
 
-			ctx.clearRect(tmp_rect.left, top, tmp_rect.width, height);
+      ctx.clearRect(tmp_rect.left, top, tmp_rect.width, height);
 
-			setTimeout(function() {
-				document.getElementById('container').style.backgroundImage = 'none';
-				document.getElementById('menu_wrapper').style.backgroundImage = 'none';
-				document.body.style.backgroundImage = 'none';
-				document.body.style.backgroundColor = 'transparent';
-			},200);
-		}
-	};
-
+      setTimeout(function () {
+        document.getElementById("container").style.backgroundImage = "none";
+        document.getElementById("menu_wrapper").style.backgroundImage = "none";
+        document.body.style.backgroundImage = "none";
+        document.body.style.backgroundColor = "transparent";
+      }, 200);
+    }
+  };
 }
 
 function render_canvas(data) {
-	var cont = $('#' + data.container);
-	cont.prepend('<canvas id="' + data.id + '_canvas" width=1280 height=720 style="position:absolute;top:0px;left:0px;">');
+  var cont = $("#" + data.container);
+  cont.prepend(
+    '<canvas id="' +
+      data.id +
+      '_canvas" width=1280 height=720 style="position:absolute;top:0px;left:0px;">'
+  );
 
-	var tmp_image = (cont.css('background-image')).replace('url(', '').replace(')', '').replace(/\"/gi, "");
-	var img = new Image();
+  var tmp_image = cont
+    .css("background-image")
+    .replace("url(", "")
+    .replace(")", "")
+    .replace(/\"/gi, "");
+  var img = new Image();
 
-	var ctx = document.getElementById(data.id + '_canvas').getContext("2d");
+  var ctx = document.getElementById(data.id + "_canvas").getContext("2d");
 
-	img.onload = function(e) {
-		ctx.drawImage(img, 0, 0, 1280, 720);
+  img.onload = function (e) {
+    ctx.drawImage(img, 0, 0, 1280, 720);
 
-		var tmp_rect = data.elem.getBoundingClientRect();
+    var tmp_rect = data.elem.getBoundingClientRect();
 
-		var top, left, width, height;
-		if (data.rect) {
-			top = data.rect.top;
-			left = data.rect.left;
-			width = data.rect.width;
-			height = data.rect.height;
-		}
-		else {
-			top = Math.max(0, tmp_rect.top);
-			left = Math.max(0, tmp_rect.left);
-			width = Math.max(0, tmp_rect.width);
-			height = Math.max(0, tmp_rect.height);
-		}
+    var top, left, width, height;
+    if (data.rect) {
+      top = data.rect.top;
+      left = data.rect.left;
+      width = data.rect.width;
+      height = data.rect.height;
+    } else {
+      top = Math.max(0, tmp_rect.top);
+      left = Math.max(0, tmp_rect.left);
+      width = Math.max(0, tmp_rect.width);
+      height = Math.max(0, tmp_rect.height);
+    }
 
-		ctx.clearRect(left, top, width, height);
-		cont.css('background-image', 'none');
-	};
+    ctx.clearRect(left, top, width, height);
+    cont.css("background-image", "none");
+  };
 
-	img.onerror = function(e) {
-		log.add('Error: image ' + this.src + ' from container' + data.container + 'was not loaded');
-	};
+  img.onerror = function (e) {
+    log.add(
+      "Error: image " +
+        this.src +
+        " from container" +
+        data.container +
+        "was not loaded"
+    );
+  };
 
-	img.src = tmp_image;
-
+  img.src = tmp_image;
 }
 
 function isGetVideoPage() {
-	var page;
+  var page;
 
-	if (
-		tv_mag_mark &&
-		!isset('config.tv.hacks.MAG')
-	) {
-		page = null;
-	}
+  if (tv_mag_mark && !isset("config.tv.hacks.MAG")) {
+    page = null;
+  }
 
-	if (
-		tv_cur_block === 'menu' &&
-		(
-			isset('config.menu') === 'metro' ||
-			isset('config.menu') === 'scandic'
-		)
-	) {
-		page = 'menu_wrapper';
-	}
-	else {
-		if (
-			tv_cur_block === 'tv_channellist' ||
-			tv_cur_block === 'category' ||
-			tv_cur_block === 'language' ||
-			tv_cur_block === 'channel' ||
-			tv_cur_block === 'choosing_list' ||
-			tv_cur_block === 'VODplayer' ||
-			tv_cur_block === 'tv_radiolist' ||
-			tv_cur_block === 'genre' ||
-			tv_cur_block === 'mod_playlist' ||
-			tv_cur_block === 'dialog' ||
-			tv_cur_block === 'toppings' ||
-			active_page_id === 'minibar' ||
-			active_page_id === 'welcome' ||
-			active_page_id === 'MOD' ||
-			active_page_id === 'notification_container'
-		) {
-			page = null;
-		}
-		else {
-			page = active_page_id;
-		}
-	}
+  if (
+    tv_cur_block === "menu" &&
+    (isset("config.menu") === "metro" || isset("config.menu") === "scandic")
+  ) {
+    page = "menu_wrapper";
+  } else {
+    if (
+      tv_cur_block === "tv_channellist" ||
+      tv_cur_block === "category" ||
+      tv_cur_block === "language" ||
+      tv_cur_block === "channel" ||
+      tv_cur_block === "choosing_list" ||
+      tv_cur_block === "VODplayer" ||
+      tv_cur_block === "tv_radiolist" ||
+      tv_cur_block === "genre" ||
+      tv_cur_block === "mod_playlist" ||
+      tv_cur_block === "dialog" ||
+      tv_cur_block === "toppings" ||
+      active_page_id === "minibar" ||
+      active_page_id === "welcome" ||
+      active_page_id === "MOD" ||
+      active_page_id === "notification_container"
+    ) {
+      page = null;
+    } else {
+      page = active_page_id;
+    }
+  }
 
-	return page;
+  return page;
 }
 
 function reload_app(hardreset) {
-	//TODO: переделать на промис сохранения
-	if (is_saving_storage_process) {
-		return setTimeout(function () {
-			reload_app(hardreset);
-		}, 100);
-	}
+  //TODO: переделать на промис сохранения
+  if (is_saving_storage_process) {
+    return setTimeout(function () {
+      reload_app(hardreset);
+    }, 100);
+  }
 
-	//Принудительный рестарт через 5 секунд
-	setTimeout(function(){
-		document.location.reload(true);
-	}, 5000);
+  //Принудительный рестарт через 5 секунд
+  setTimeout(function () {
+    document.location.reload(true);
+  }, 5000);
 
-	if(!hardreset){
-		_tv_channel_stop();
-		Media.stop({ directType: null }).done(function() {
-			$(document.body).empty();
-			setTimeout(function(){
-				document.location.reload(true);
-			}, 100);
-		});
-	}else{
-		setTimeout(function(){
-			document.location.reload(true);
-		}, 100);
-	}
+  if (!hardreset) {
+    _tv_channel_stop();
+    Media.stop({ directType: null }).done(function () {
+      $(document.body).empty();
+      setTimeout(function () {
+        document.location.reload(true);
+      }, 100);
+    });
+  } else {
+    setTimeout(function () {
+      document.location.reload(true);
+    }, 100);
+  }
 }
 
 var importScript = (function (oHead) {
+  function loadError(oError) {
+    throw new URIError(
+      "The script " + oError.target.src + " is not accessible."
+    );
+  }
 
-function loadError (oError) {
-	throw new URIError("The script " + oError.target.src + " is not accessible.");
-}
-
-return function (sSrc, fOnload, fOnerror) {
-	var oScript = document.createElement("script");
-	oScript.type = "text\/javascript";
-	oScript.onerror = loadError;
-	if (fOnload) { oScript.onload = fOnload; }
-	if (fOnerror) { oScript.onerror = fOnerror; }
-	oHead.appendChild(oScript);
-	oScript.src = sSrc;
-};
-
+  return function (sSrc, fOnload, fOnerror) {
+    var oScript = document.createElement("script");
+    oScript.type = "text/javascript";
+    oScript.onerror = loadError;
+    if (fOnload) {
+      oScript.onload = fOnload;
+    }
+    if (fOnerror) {
+      oScript.onerror = fOnerror;
+    }
+    oHead.appendChild(oScript);
+    oScript.src = sSrc;
+  };
 })(document.head || document.getElementsByTagName("head")[0]);
 
-
 /**
-	* Принимает фильм, категорию фильмов или канал
-	* Если контент не надо показывать, возвращаем true
-	* @param item - фильм, категория фильмов, каналов
-	* @param direct - "video"
-	* @returns {boolean}
-	*/
+ * Принимает фильм, категорию фильмов или канал
+ * Если контент не надо показывать, возвращаем true
+ * @param item - фильм, категория фильмов, каналов
+ * @param direct - "video"
+ * @returns {boolean}
+ */
 function filterRightsContent(item, direct) {
-	var types = item.contentTypes;
-	if (!types || types.length === 0) {return false;}
+  var types = item.contentTypes;
+  if (!types || types.length === 0) {
+    return false;
+  }
 
-	var rights;
-	try {
-		rights = Guest.rightsContent[direct];
-	}
-	catch (e) {
-		return types.indexOf('pay') !== -1 || types.indexOf('xxx') !== -1;
-	}
+  var rights;
+  try {
+    rights = Guest.rightsContent[direct];
+  } catch (e) {
+    return types.indexOf("pay") !== -1 || types.indexOf("xxx") !== -1;
+  }
 
-	switch (rights) {
-		case 0:
-			return false;
-		case 1:
-			return types.indexOf('pay') !== -1;
-		case 2:
-			return types.indexOf('xxx') !== -1;
-		case 3:
-			return true;
-		default:
-			return types.indexOf('pay') !== -1 || types.indexOf('xxx') !== -1;
-	}
+  switch (rights) {
+    case 0:
+      return false;
+    case 1:
+      return types.indexOf("pay") !== -1;
+    case 2:
+      return types.indexOf("xxx") !== -1;
+    case 3:
+      return true;
+    default:
+      return types.indexOf("pay") !== -1 || types.indexOf("xxx") !== -1;
+  }
 }
 function handlerNopost(list, index, action) {
-	var types = list[index].contentTypes,
-		nopost = false;
+  var types = list[index].contentTypes,
+    nopost = false;
 
-	if (!types || types.length === 0) {
-		return action;
-	}
+  if (!types || types.length === 0) {
+    return action;
+  }
 
-	try {
-		nopost = parseFloat(Guest.rightsContent.nopost);
-	}
-	catch(e) {
-		return action;
-	}
+  try {
+    nopost = parseFloat(Guest.rightsContent.nopost);
+  } catch (e) {
+    return action;
+  }
 
-	if (nopost) {
-		// если tv_cur_channel платный при nopost
-		// сдвигаем канал вправо
-		if (
-			(
-				list[index].type === 'ip' ||
-				list[index].type === 'rf'
-			) &&
-			tv_cur_channel == index
-		) {
-			tv_cur_channel++;
-		}
+  if (nopost) {
+    // если tv_cur_channel платный при nopost
+    // сдвигаем канал вправо
+    if (
+      (list[index].type === "ip" || list[index].type === "rf") &&
+      tv_cur_channel == index
+    ) {
+      tv_cur_channel++;
+    }
 
-		action = "custom_dialog(" +
-			"'alert'," +
-			" '"+ getlang('tv_nottelevision') +"'," +
-			" '"+ getlang('not_available_content') +"'" +
-		")";
-	}
+    action =
+      "custom_dialog(" +
+      "'alert'," +
+      " '" +
+      getlang("tv_nottelevision") +
+      "'," +
+      " '" +
+      getlang("not_available_content") +
+      "'" +
+      ")";
+  }
 
-	return action;
+  return action;
 }
 
 /**
-	* Управление тенями на content_wrapper
-	*
-	* @param {object} data.to – если to есть, то к этому блоку добавляется нижняя тень,
-	* передается из make_scroll
-	* @param {number} data.shift, data.val – вычисляются в move_scroll
-	* @param {object} data.scroll – передается из move_scroll
-	*
-	* @param {string} data.id – с какой страницы удалить
-	* @param {boolean} data.remove – удалить тени
-	*
-* */
+ * Управление тенями на content_wrapper
+ *
+ * @param {object} data.to – если to есть, то к этому блоку добавляется нижняя тень,
+ * передается из make_scroll
+ * @param {number} data.shift, data.val – вычисляются в move_scroll
+ * @param {object} data.scroll – передается из move_scroll
+ *
+ * @param {string} data.id – с какой страницы удалить
+ * @param {boolean} data.remove – удалить тени
+ *
+ * */
 function manageShadowOnPage(data) {
-	if (tv_manufacturer === 'tvip') {
-		// добавление тени на TVip сильно все ломает
-		return false;
-	}
+  if (tv_manufacturer === "tvip") {
+    // добавление тени на TVip сильно все ломает
+    return false;
+  }
 
-	if (
-		tv_cur_block !== 'service_page' &&
-		tv_cur_block !== 'scroll' &&
-		tv_cur_block !== 'shopitem'
-	) {return;}
+  if (
+    tv_cur_block !== "service_page" &&
+    tv_cur_block !== "scroll" &&
+    tv_cur_block !== "shopitem"
+  ) {
+    return;
+  }
 
-	if (typeof data.to !== 'undefined') {
-		return data.to.find('.content_wrapper').addClass('bottom_shadow_mask');
-	}
-	else if (
-		data.remove &&
-		tv_cur_block === 'shopitem'
-	) {
-		return $('#'+ data.id +' .content_wrapper')
-			.removeClass('shadow_mask top_shadow_mask bottom_shadow_mask');
-	}
+  if (typeof data.to !== "undefined") {
+    return data.to.find(".content_wrapper").addClass("bottom_shadow_mask");
+  } else if (data.remove && tv_cur_block === "shopitem") {
+    return $("#" + data.id + " .content_wrapper").removeClass(
+      "shadow_mask top_shadow_mask bottom_shadow_mask"
+    );
+  }
 
-	if (
-		typeof data.shift === 'undefined' ||
-		typeof data.value === 'undefined' ||
-		typeof data.scroll === 'undefined'
-	) {
-		return false;
-	}
+  if (
+    typeof data.shift === "undefined" ||
+    typeof data.value === "undefined" ||
+    typeof data.scroll === "undefined"
+  ) {
+    return false;
+  }
 
-	var content_wrapper = $(active_page).find('.content_wrapper');
-	if (data.shift === 0) {
-		content_wrapper.removeClass('shadow_mask top_shadow_mask');
-		content_wrapper.addClass('bottom_shadow_mask');
-	}
-	else if ((data.value + 1) === data.scroll.max) {
-		content_wrapper.removeClass('shadow_mask bottom_shadow_mask');
-		content_wrapper.addClass('top_shadow_mask');
-	}
-	else if (!content_wrapper.hasClass('shadow_mask')) {
-		content_wrapper.removeClass('top_shadow_mask bottom_shadow_mask');
-		content_wrapper.addClass('shadow_mask');
-	}
+  var content_wrapper = $(active_page).find(".content_wrapper");
+  if (data.shift === 0) {
+    content_wrapper.removeClass("shadow_mask top_shadow_mask");
+    content_wrapper.addClass("bottom_shadow_mask");
+  } else if (data.value + 1 === data.scroll.max) {
+    content_wrapper.removeClass("shadow_mask bottom_shadow_mask");
+    content_wrapper.addClass("top_shadow_mask");
+  } else if (!content_wrapper.hasClass("shadow_mask")) {
+    content_wrapper.removeClass("top_shadow_mask bottom_shadow_mask");
+    content_wrapper.addClass("shadow_mask");
+  }
 }
 
-function get_language(){
-	//TODO: учитывать structv2.config.defaults?
-	if(typeof(storage) != 'undefined' && typeof(storage.getItem) != 'undefined'){
-		return (storage.getItem('language') || isset('config.defaults.language') || 'en');
-	}else{
-		return 'notset';
-	}
+function get_language() {
+  //TODO: учитывать structv2.config.defaults?
+  if (typeof storage != "undefined" && typeof storage.getItem != "undefined") {
+    return (
+      storage.getItem("language") || isset("config.defaults.language") || "en"
+    );
+  } else {
+    return "notset";
+  }
 }
 
 // CASE: SCANDIC_MENU
@@ -1469,712 +1542,810 @@ function get_language(){
 // пока не закончилась анимация.
 // Это действие приводило к тому, что не правильно расчитывалось положение курсора
 var cursorMovingPermitted = {
-	State: {},
+  State: {},
 
-	/**
-		* @param {String} data.key - tv_cur_block
-		* @param {String} data.direct - направление движения [top|right|bottom|left]
-		* @param {Number} data.time - время анимации
-		* @param {Boolean} data.animation - [true - анимация была | false - не было]
-	* */
-	set: function(data) {
-		var state = this.State[data.key];
-		if (typeof state !== 'undefined') {
-			clearTimeout(state.timer);
-		}
+  /**
+   * @param {String} data.key - tv_cur_block
+   * @param {String} data.direct - направление движения [top|right|bottom|left]
+   * @param {Number} data.time - время анимации
+   * @param {Boolean} data.animation - [true - анимация была | false - не было]
+   * */
+  set: function (data) {
+    var state = this.State[data.key];
+    if (typeof state !== "undefined") {
+      clearTimeout(state.timer);
+    }
 
-		this.State[data.key] = data;
+    this.State[data.key] = data;
 
-		if (data.animation) {
-			this.State[data.key].timer = setTimeout(function (data) {
-				this.State[data.key].animation = false;
-			}.bind(this, data), data.time);
-		}
-	},
+    if (data.animation) {
+      this.State[data.key].timer = setTimeout(
+        function (data) {
+          this.State[data.key].animation = false;
+        }.bind(this, data),
+        data.time
+      );
+    }
+  },
 
-	/**
-		* @param {String} data.key - tv_cur_block
-		* @param {String} data.direct - направление движения [top|right|bottom|left]
-		* */
-	get: function (data) {
-		var state = this.State[data.key];
+  /**
+   * @param {String} data.key - tv_cur_block
+   * @param {String} data.direct - направление движения [top|right|bottom|left]
+   * */
+  get: function (data) {
+    var state = this.State[data.key];
 
-		if (
-			typeof state === 'undefined' ||
-			!state.animation
-		) {
-			return true;
-		}
+    if (typeof state === "undefined" || !state.animation) {
+      return true;
+    }
 
-		return state.direct === data.direct;
-	}
+    return state.direct === data.direct;
+  },
 };
 
 var previousPosition = {
-	state: {},
+  state: {},
 
-	/**
-		* Запоминаем позицию
-		* */
-	set: function (index, block) {
-		block = previousPosition.getBlock(block);
+  /**
+   * Запоминаем позицию
+   * */
+  set: function (index, block) {
+    block = previousPosition.getBlock(block);
 
-		if (
-			block !== 'menu' &&
-			block !== 'channel'
-		) {
-			return false;
-		}
+    if (block !== "menu" && block !== "channel") {
+      return false;
+    }
 
-		previousPosition.state[block] = index;
+    previousPosition.state[block] = index;
 
-		return true;
-	},
+    return true;
+  },
 
-	/**
-		* Отдаем сохраненную позицию
-		* @param {string} block - tv_cur_block.
-		* В случае, если block передан, но пользователь находится в другом tv_cur_block возвращает undefined
-		* */
-	get: function (block) {
-		block = previousPosition.getBlock(block);
-		return previousPosition.state[block];
-	},
+  /**
+   * Отдаем сохраненную позицию
+   * @param {string} block - tv_cur_block.
+   * В случае, если block передан, но пользователь находится в другом tv_cur_block возвращает undefined
+   * */
+  get: function (block) {
+    block = previousPosition.getBlock(block);
+    return previousPosition.state[block];
+  },
 
-	/**
-		* Особенность работы см. в описании previousPosition.get()
-		* */
-	getBlock: function (block) {
-		return (
-			typeof block !== 'undefined' &&
-			block !== tv_cur_block
-		) ?
-			undefined : tv_cur_block;
-	}
+  /**
+   * Особенность работы см. в описании previousPosition.get()
+   * */
+  getBlock: function (block) {
+    return typeof block !== "undefined" && block !== tv_cur_block
+      ? undefined
+      : tv_cur_block;
+  },
 };
 
 function Running_string(target, speed, width) {
-	var MARGIN = 20;
+  var MARGIN = 20;
 
-	this.timer = null;
-	this.target = document.querySelector(target);
-	this.width = this.target.clientWidth;
-	this.speed = speed;
-	this.content = this.target.innerHTML;
+  this.timer = null;
+  this.target = document.querySelector(target);
+  this.width = this.target.clientWidth;
+  this.speed = speed;
+  this.content = this.target.innerHTML;
 
-	this.start = function() {
-		_render.call(this, true);
-		setTimeout(function() {
-			_start.call(this, true);
-		}.bind(this), 500);
+  this.start = function () {
+    _render.call(this, true);
+    setTimeout(
+      function () {
+        _start.call(this, true);
+      }.bind(this),
+      500
+    );
 
-		function _render(refresh) {
-			if (refresh) {
-				this.wrapper = document.createElement('span');
-				this.wrapper.classList.add('wrapper_running_string');
+    function _render(refresh) {
+      if (refresh) {
+        this.wrapper = document.createElement("span");
+        this.wrapper.classList.add("wrapper_running_string");
 
-				var inner_1 = document.createElement('span');
-				inner_1.classList.add('inner_running_string');
-				inner_1.innerHTML = this.content;
-				var inner_2 = document.createElement('span');
-				inner_2.classList.add('inner_running_string');
-				inner_2.innerHTML = this.content;
+        var inner_1 = document.createElement("span");
+        inner_1.classList.add("inner_running_string");
+        inner_1.innerHTML = this.content;
+        var inner_2 = document.createElement("span");
+        inner_2.classList.add("inner_running_string");
+        inner_2.innerHTML = this.content;
 
-				inner_1.style.transitionDuration = this.speed/1000 + 's';
-				inner_1.style.webkitTransitionDuration = + this.speed/1000 + 's';
-				inner_2.style.transitionDuration = + this.speed/1000 + 's';
-				inner_2.style.webkitTransitionDuration = + this.speed/1000 + 's';
+        inner_1.style.transitionDuration = this.speed / 1000 + "s";
+        inner_1.style.webkitTransitionDuration = +this.speed / 1000 + "s";
+        inner_2.style.transitionDuration = +this.speed / 1000 + "s";
+        inner_2.style.webkitTransitionDuration = +this.speed / 1000 + "s";
 
-				inner_1.style.marginLeft = '0px';
-				inner_2.style.marginLeft = '0px';
-				inner_1.style.marginRight = MARGIN + 'px';
-				inner_2.style.marginRight = MARGIN + 'px';
+        inner_1.style.marginLeft = "0px";
+        inner_2.style.marginLeft = "0px";
+        inner_1.style.marginRight = MARGIN + "px";
+        inner_2.style.marginRight = MARGIN + "px";
 
-				this.wrapper.appendChild(inner_1);
-				this.wrapper.appendChild(inner_2);
+        this.wrapper.appendChild(inner_1);
+        this.wrapper.appendChild(inner_2);
 
-				this.target.innerHTML = '';
-				this.target.appendChild(this.wrapper);
-			}
-			else {
-				this.wrapper.firstElementChild.style.marginLeft = '0px';
-				this.wrapper.appendChild(this.wrapper.firstElementChild);
+        this.target.innerHTML = "";
+        this.target.appendChild(this.wrapper);
+      } else {
+        this.wrapper.firstElementChild.style.marginLeft = "0px";
+        this.wrapper.appendChild(this.wrapper.firstElementChild);
 
-				_start.call(this, false);
-			}
-		}
-		function _start(init) {
-			this.wrapper.firstElementChild.style.marginLeft = '-' + (this.width + MARGIN) + 'px';
+        _start.call(this, false);
+      }
+    }
+    function _start(init) {
+      this.wrapper.firstElementChild.style.marginLeft =
+        "-" + (this.width + MARGIN) + "px";
 
-			if (init) {
-				this.timer = setInterval(_render.bind(this, false), this.speed);
-			}
-		}
-	};
-	this.stop = function() {
-		clearInterval(this.timer);
-		this.target.innerHTML = this.content;
-	};
+      if (init) {
+        this.timer = setInterval(_render.bind(this, false), this.speed);
+      }
+    }
+  };
+  this.stop = function () {
+    clearInterval(this.timer);
+    this.target.innerHTML = this.content;
+  };
 }
 
 //printf
 String.prototype.format = function (args) {
-	var newStr = this;
-	for (var key in args) {
-		newStr = newStr.replace('{' + key + '}', args[key]);
-	}
-	return newStr;
+  var newStr = this;
+  for (var key in args) {
+    newStr = newStr.replace("{" + key + "}", args[key]);
+  }
+  return newStr;
 };
 //------
 
 /**
-	* Предзагрузчик изображений
-	*
-	* @param {string} target - контейнер в котором ищем изображения и загружаем,
-	* принимает "#id" и ".class"
-	*
-	* @param {function} [cb] – коллбек отображение прогресс бара загрузки изображений
-	*
-	*/
+ * Предзагрузчик изображений
+ *
+ * @param {string} target - контейнер в котором ищем изображения и загружаем,
+ * принимает "#id" и ".class"
+ *
+ * @param {function} [cb] – коллбек отображение прогресс бара загрузки изображений
+ *
+ */
 function PreloadMedia(target) {
-	var Instance = this,
-		d = $.Deferred();
+  var Instance = this,
+    d = $.Deferred();
 
-	Instance.container = document.querySelector(__checkID(target));
-	Instance.elements = Instance.container ? Instance.container.querySelectorAll('[image_url]') : [];
+  Instance.container = document.querySelector(__checkID(target));
+  Instance.elements = Instance.container
+    ? Instance.container.querySelectorAll("[image_url]")
+    : [];
 
-	if (!Instance.elements.length) {
-		return d.resolve();
-	}
+  if (!Instance.elements.length) {
+    return d.resolve();
+  }
 
-	var i = Instance.elements.length;
-	Instance.sources = [];
-	while(i--) {
-		Instance.sources.push(Instance.elements[i].getAttribute('image_url'));
-	}
+  var i = Instance.elements.length;
+  Instance.sources = [];
+  while (i--) {
+    Instance.sources.push(Instance.elements[i].getAttribute("image_url"));
+  }
 
-	new _PreloadMedia(Instance.sources)
-	.progress(function(a, b){
-		d.notify(a, b);
-	})
-	.done(function(){
-		__loadEnd();
-	});
+  new _PreloadMedia(Instance.sources)
+    .progress(function (a, b) {
+      d.notify(a, b);
+    })
+    .done(function () {
+      __loadEnd();
+    });
 
-	return d.promise();
+  return d.promise();
 
-	function __loadEnd() {
-		for (var j = 0; j < Instance.elements.length; j++) {
-			var element = Instance.elements[j];
-			if (element.getAttribute('image_url') === '') {
-				continue;
-			}
+  function __loadEnd() {
+    for (var j = 0; j < Instance.elements.length; j++) {
+      var element = Instance.elements[j];
+      if (element.getAttribute("image_url") === "") {
+        continue;
+      }
 
-			if (element.tagName.toLowerCase() !== 'img') {
-				element.style.cssText =
-					element.style.cssText
-						.replace(
-							'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=',
-							element.getAttribute('image_url')
-						);
-			}
-			else {
-				element.setAttribute('src', element.getAttribute('image_url'));
-			}
+      if (element.tagName.toLowerCase() !== "img") {
+        element.style.cssText = element.style.cssText.replace(
+          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
+          element.getAttribute("image_url")
+        );
+      } else {
+        element.setAttribute("src", element.getAttribute("image_url"));
+      }
 
-			$(element).removeAttr('image_url');
-		}
-		d.resolve(Instance.sources.length);
-	}
+      $(element).removeAttr("image_url");
+    }
+    d.resolve(Instance.sources.length);
+  }
 
-	// устранение ошибки поиска #Number
-	// https://stackoverflow.com/questions/20306204/using-queryselector-with-ids-that-are-numbers
-	function __checkID(target) {
-		if (target.indexOf('#') === -1) {return target;}
+  // устранение ошибки поиска #Number
+  // https://stackoverflow.com/questions/20306204/using-queryselector-with-ids-that-are-numbers
+  function __checkID(target) {
+    if (target.indexOf("#") === -1) {
+      return target;
+    }
 
-		var targetValue = target.slice(1);
-		if (isNaN(targetValue)) {return target;}
+    var targetValue = target.slice(1);
+    if (isNaN(targetValue)) {
+      return target;
+    }
 
-		return "[id=\""+ targetValue +"\"]";
-	}
+    return '[id="' + targetValue + '"]';
+  }
 }
 
 function _PreloadMedia(images) {
-	var Instance = this,
-		d = $.Deferred();
+  var Instance = this,
+    d = $.Deferred();
 
-	Instance.loaded = 0;
+  Instance.loaded = 0;
 
-	if (!images || !images.length) {
-		return d.resolve();
-	}
+  if (!images || !images.length) {
+    return d.resolve();
+  }
 
-	Instance.sources = images;
+  Instance.sources = images;
 
-	var length = Instance.sources.length,
-		index = 0;
+  var length = Instance.sources.length,
+    index = 0;
 
-	var threads = isset('config.preload_images') === 1 ?
-		Instance.sources.length :
-		isset('config.preload_threads') ?
-			isset('config.preload_threads') : 1;
+  var threads =
+    isset("config.preload_images") === 1
+      ? Instance.sources.length
+      : isset("config.preload_threads")
+      ? isset("config.preload_threads")
+      : 1;
 
-	while(threads--) {
-		__load();
-	}
+  while (threads--) {
+    __load();
+  }
 
-	return d.promise();
+  return d.promise();
 
-	function __load() {
-		var src = Instance.sources[index];
-		index++;
-		if (Instance.loaded < length) {
-			if (index <= length) {
-				var img = new Image();
+  function __load() {
+    var src = Instance.sources[index];
+    index++;
+    if (Instance.loaded < length) {
+      if (index <= length) {
+        var img = new Image();
 
-				img.onload = function (src) {
-					Instance.loaded++;
-					d.notify(Instance.loaded, length);
-					__load();
-				}.bind(null, src);
+        img.onload = function (src) {
+          Instance.loaded++;
+          d.notify(Instance.loaded, length);
+          __load();
+        }.bind(null, src);
 
-				img.onerror = function (src) {
-					Instance.loaded++;
-					d.notify(Instance.loaded, length);
-					__load();
-					log.add('Preload: ERROR: Image load error ' + src);
-				}.bind(null, src);
+        img.onerror = function (src) {
+          Instance.loaded++;
+          d.notify(Instance.loaded, length);
+          __load();
+          log.add("Preload: ERROR: Image load error " + src);
+        }.bind(null, src);
 
-				if(src){
-					img.src = src;
-				}else{
-					Instance.loaded++;
-					d.notify(Instance.loaded, length);
-					__load();
-				}
-			}
-		}else{
-			d.resolve();
-		}
-	}
+        if (src) {
+          img.src = src;
+        } else {
+          Instance.loaded++;
+          d.notify(Instance.loaded, length);
+          __load();
+        }
+      }
+    } else {
+      d.resolve();
+    }
+  }
 }
 
 var equals;
 (function setEquals() {
-	var isArray = Array.isArray;
-	var keyList = Object.keys;
-	var hasProp = Object.prototype.hasOwnProperty;
+  var isArray = Array.isArray;
+  var keyList = Object.keys;
+  var hasProp = Object.prototype.hasOwnProperty;
 
-	equals = function (a, b) {
-		if (a === b) {return true;}
+  equals = function (a, b) {
+    if (a === b) {
+      return true;
+    }
 
-		if (a && b && typeof a == 'object' && typeof b == 'object') {
-			var arrA = isArray(a),
-				arrB = isArray(b),
-				i,
-				length,
-				key;
+    if (a && b && typeof a == "object" && typeof b == "object") {
+      var arrA = isArray(a),
+        arrB = isArray(b),
+        i,
+        length,
+        key;
 
-			if (arrA && arrB) {
-				length = a.length;
-				if (length != b.length) {return false;}
-				for (i = length; i-- !== 0;)
-					{if (!equals(a[i], b[i])) {return false;}}
-				return true;
-			}
+      if (arrA && arrB) {
+        length = a.length;
+        if (length != b.length) {
+          return false;
+        }
+        for (i = length; i-- !== 0; ) {
+          if (!equals(a[i], b[i])) {
+            return false;
+          }
+        }
+        return true;
+      }
 
-			if (arrA != arrB) {return false;}
+      if (arrA != arrB) {
+        return false;
+      }
 
-			var dateA = a instanceof Date,
-				dateB = b instanceof Date;
-			if (dateA != dateB) {return false;}
-			if (dateA && dateB) {return a.getTime() == b.getTime();}
+      var dateA = a instanceof Date,
+        dateB = b instanceof Date;
+      if (dateA != dateB) {
+        return false;
+      }
+      if (dateA && dateB) {
+        return a.getTime() == b.getTime();
+      }
 
-			var regexpA = a instanceof RegExp,
-				regexpB = b instanceof RegExp;
-			if (regexpA != regexpB) {return false;}
-			if (regexpA && regexpB) {return a.toString() == b.toString();}
+      var regexpA = a instanceof RegExp,
+        regexpB = b instanceof RegExp;
+      if (regexpA != regexpB) {
+        return false;
+      }
+      if (regexpA && regexpB) {
+        return a.toString() == b.toString();
+      }
 
-			var keys = keyList(a);
-			length = keys.length;
+      var keys = keyList(a);
+      length = keys.length;
 
-			if (length !== keyList(b).length)
-				{return false;}
+      if (length !== keyList(b).length) {
+        return false;
+      }
 
-			for (i = length; i-- !== 0;)
-				{if (!hasProp.call(b, keys[i])) {return false;}}
+      for (i = length; i-- !== 0; ) {
+        if (!hasProp.call(b, keys[i])) {
+          return false;
+        }
+      }
 
-			for (i = length; i-- !== 0;) {
-				key = keys[i];
-				if (!equals(a[key], b[key])) {return false;}
-			}
+      for (i = length; i-- !== 0; ) {
+        key = keys[i];
+        if (!equals(a[key], b[key])) {
+          return false;
+        }
+      }
 
-			return true;
-		}
+      return true;
+    }
 
-		return a!==a && b!==b;
-	};
+    return a !== a && b !== b;
+  };
 })();
 
 // полифилл для bind
-Function.prototype.bind=Function.prototype.bind||function(b){if(typeof this!=="function"){throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");}var a=Array.prototype.slice,f=a.call(arguments,1),e=this,c=function(){},d=function(){return e.apply(this instanceof c?this:b||window,f.concat(a.call(arguments)));};c.prototype=this.prototype;d.prototype=new c();return d;};
+Function.prototype.bind =
+  Function.prototype.bind ||
+  function (b) {
+    if (typeof this !== "function") {
+      throw new TypeError(
+        "Function.prototype.bind - what is trying to be bound is not callable"
+      );
+    }
+    var a = Array.prototype.slice,
+      f = a.call(arguments, 1),
+      e = this,
+      c = function () {},
+      d = function () {
+        return e.apply(
+          this instanceof c ? this : b || window,
+          f.concat(a.call(arguments))
+        );
+      };
+    c.prototype = this.prototype;
+    d.prototype = new c();
+    return d;
+  };
 
 // полифилл Object.assign
-Object.assign||Object.defineProperty(Object,"assign",{enumerable:!1,configurable:!0,writable:!0,value:function(e,r){"use strict";if(void 0===e||null===e){throw new TypeError("Cannot convert first argument to object");}for(var t=Object(e),n=1;n<arguments.length;n++){var o=arguments[n];if(void 0!==o&&null!==o){for(var i=Object.keys(Object(o)),a=0,c=i.length;a<c;a++){var b=i[a],l=Object.getOwnPropertyDescriptor(o,b);void 0!==l&&l.enumerable&&(t[b]=o[b]);}}}return t;}});
+Object.assign ||
+  Object.defineProperty(Object, "assign", {
+    enumerable: !1,
+    configurable: !0,
+    writable: !0,
+    value: function (e, r) {
+      "use strict";
+      if (void 0 === e || null === e) {
+        throw new TypeError("Cannot convert first argument to object");
+      }
+      for (var t = Object(e), n = 1; n < arguments.length; n++) {
+        var o = arguments[n];
+        if (void 0 !== o && null !== o) {
+          for (
+            var i = Object.keys(Object(o)), a = 0, c = i.length;
+            a < c;
+            a++
+          ) {
+            var b = i[a],
+              l = Object.getOwnPropertyDescriptor(o, b);
+            void 0 !== l && l.enumerable && (t[b] = o[b]);
+          }
+        }
+      }
+      return t;
+    },
+  });
 
 // полифилл для dataset для MAG254
-if (!document.documentElement.dataset &&
-	// FF is empty while IE gives empty object
-	(!Object.getOwnPropertyDescriptor(Element.prototype, 'dataset') ||
-	!Object.getOwnPropertyDescriptor(Element.prototype, 'dataset').get)
+if (
+  !document.documentElement.dataset &&
+  // FF is empty while IE gives empty object
+  (!Object.getOwnPropertyDescriptor(Element.prototype, "dataset") ||
+    !Object.getOwnPropertyDescriptor(Element.prototype, "dataset").get)
 ) {
-	var propDescriptor = {
-		enumerable: true,
-		get: function () {
-			'use strict';
-			var i,
-				that = this,
-				HTML5_DOMStringMap,
-				attrVal, attrName, propName,
-				attribute,
-				attributes = this.attributes,
-				attsLength = attributes.length,
-				toUpperCase = function (n0) {
-					return n0.charAt(1).toUpperCase();
-				},
-				getter = function () {
-					return this;
-				},
-				setter = function (attrName, value) {
-					return (typeof value !== 'undefined') ?
-						this.setAttribute(attrName, value) :
-						this.removeAttribute(attrName);
-				};
-			try { // Simulate DOMStringMap w/accessor support
-				// Test setting accessor on normal object
-				({}).__defineGetter__('test', function () {
-				});
-				HTML5_DOMStringMap = {};
-			}
-			catch (e1) { // Use a DOM object for IE8
-				HTML5_DOMStringMap = document.createElement('div');
-			}
-			for (i = 0; i < attsLength; i++) {
-				attribute = attributes[i];
-				// Fix: This test really should allow any XML Name without
-				//         colons (and non-uppercase for XHTML)
-				if (attribute && attribute.name &&
-					(/^data-\w[\w\-]*$/).test(attribute.name)) {
-					attrVal = attribute.value;
-					attrName = attribute.name;
-					// Change to CamelCase
-					propName = attrName.substr(5).replace(/-./g, toUpperCase);
-					try {
-						Object.defineProperty(HTML5_DOMStringMap, propName, {
-							enumerable: this.enumerable,
-							get: getter.bind(attrVal || ''),
-							set: setter.bind(that, attrName)
-						});
-					}
-					catch (e2) { // if accessors are not working
-						HTML5_DOMStringMap[propName] = attrVal;
-					}
-				}
-			}
-			return HTML5_DOMStringMap;
-		}
-	};
-	try {
-		// FF enumerates over element's dataset, but not
-		//   Element.prototype.dataset; IE9 iterates over both
-		Object.defineProperty(Element.prototype, 'dataset', propDescriptor);
-	} catch (e) {
-		propDescriptor.enumerable = false; // IE8 does not allow setting to true
-		Object.defineProperty(Element.prototype, 'dataset', propDescriptor);
-	}
+  var propDescriptor = {
+    enumerable: true,
+    get: function () {
+      "use strict";
+      var i,
+        that = this,
+        HTML5_DOMStringMap,
+        attrVal,
+        attrName,
+        propName,
+        attribute,
+        attributes = this.attributes,
+        attsLength = attributes.length,
+        toUpperCase = function (n0) {
+          return n0.charAt(1).toUpperCase();
+        },
+        getter = function () {
+          return this;
+        },
+        setter = function (attrName, value) {
+          return typeof value !== "undefined"
+            ? this.setAttribute(attrName, value)
+            : this.removeAttribute(attrName);
+        };
+      try {
+        // Simulate DOMStringMap w/accessor support
+        // Test setting accessor on normal object
+        ({}).__defineGetter__("test", function () {});
+        HTML5_DOMStringMap = {};
+      } catch (e1) {
+        // Use a DOM object for IE8
+        HTML5_DOMStringMap = document.createElement("div");
+      }
+      for (i = 0; i < attsLength; i++) {
+        attribute = attributes[i];
+        // Fix: This test really should allow any XML Name without
+        //         colons (and non-uppercase for XHTML)
+        if (
+          attribute &&
+          attribute.name &&
+          /^data-\w[\w\-]*$/.test(attribute.name)
+        ) {
+          attrVal = attribute.value;
+          attrName = attribute.name;
+          // Change to CamelCase
+          propName = attrName.substr(5).replace(/-./g, toUpperCase);
+          try {
+            Object.defineProperty(HTML5_DOMStringMap, propName, {
+              enumerable: this.enumerable,
+              get: getter.bind(attrVal || ""),
+              set: setter.bind(that, attrName),
+            });
+          } catch (e2) {
+            // if accessors are not working
+            HTML5_DOMStringMap[propName] = attrVal;
+          }
+        }
+      }
+      return HTML5_DOMStringMap;
+    },
+  };
+  try {
+    // FF enumerates over element's dataset, but not
+    //   Element.prototype.dataset; IE9 iterates over both
+    Object.defineProperty(Element.prototype, "dataset", propDescriptor);
+  } catch (e) {
+    propDescriptor.enumerable = false; // IE8 does not allow setting to true
+    Object.defineProperty(Element.prototype, "dataset", propDescriptor);
+  }
 }
 
 // полифилл для closest
-(function() {
-	// matches
-	// проверяем поддержку
-	if (!Element.prototype.matches) {
-		// определяем свойство
-		Element.prototype.matches = Element.prototype.matchesSelector ||
-			Element.prototype.webkitMatchesSelector ||
-			Element.prototype.mozMatchesSelector ||
-			Element.prototype.msMatchesSelector;
-	}
+(function () {
+  // matches
+  // проверяем поддержку
+  if (!Element.prototype.matches) {
+    // определяем свойство
+    Element.prototype.matches =
+      Element.prototype.matchesSelector ||
+      Element.prototype.webkitMatchesSelector ||
+      Element.prototype.mozMatchesSelector ||
+      Element.prototype.msMatchesSelector;
+  }
 
-	// closest
-	// проверяем поддержку
-	if (!Element.prototype.closest) {
-		// реализуем
-		Element.prototype.closest = function(css) {
-			var node = this;
-			while (node) {
-				if (node.matches(css)) {return node;}
-				else {node = node.parentElement;}
-			}
-			return null;
-		};
-	}
+  // closest
+  // проверяем поддержку
+  if (!Element.prototype.closest) {
+    // реализуем
+    Element.prototype.closest = function (css) {
+      var node = this;
+      while (node) {
+        if (node.matches(css)) {
+          return node;
+        } else {
+          node = node.parentElement;
+        }
+      }
+      return null;
+    };
+  }
 })();
 
 function getPageFromStruct(id, initialItem) {
-	id = typeof id === 'undefined' ? '' : id;
-	id = id.replace('#', '');
-	id = id.toString().indexOf('id_') !== -1 ? id : 'id_' + id;
+  id = typeof id === "undefined" ? "" : id;
+  id = id.replace("#", "");
+  id = id.toString().indexOf("id_") !== -1 ? id : "id_" + id;
 
-	var product = structv2.pages[id];
-	return typeof product !== 'undefined' ? product :
-		typeof initialItem !== 'undefined' ? initialItem : {};
+  var product = structv2.pages[id];
+  return typeof product !== "undefined"
+    ? product
+    : typeof initialItem !== "undefined"
+    ? initialItem
+    : {};
 }
 function getRcuPageFromStruct(id, initialItem) {
-	id = typeof id === 'undefined' ? '' : id;
-	id = id.replace('#', '');
-	id = id.toString().indexOf('id_') !== -1 ? id : 'id_' + id;
+  id = typeof id === "undefined" ? "" : id;
+  id = id.replace("#", "");
+  id = id.toString().indexOf("id_") !== -1 ? id : "id_" + id;
 
-	var product = structv2.rcu[id];
-	return typeof product !== 'undefined' ? product :
-		typeof initialItem !== 'undefined' ? initialItem : {};
+  var product = structv2.rcu[id];
+  return typeof product !== "undefined"
+    ? product
+    : typeof initialItem !== "undefined"
+    ? initialItem
+    : {};
 }
 
-function settings_fill(){
-	if($id('parental_lock_toggle')){
-		parental_lock_fill();
-	}
+function settings_fill() {
+  if ($id("parental_lock_toggle")) {
+    parental_lock_fill();
+  }
 }
 
-function guestData_clear(){
-	log.add('TV: cleared Guest data');
+function guestData_clear() {
+  log.add("TV: cleared Guest data");
 
-	Guest.token = false;
-	Guest.guestSurname = '';
-	Guest.guestName = '';
-	Guest.guestTitle = '';
+  Guest.token = false;
+  Guest.guestSurname = "";
+  Guest.guestName = "";
+  Guest.guestTitle = "";
 
-// Compatibility (not used)
-	storage.removeItem('guestName');
-	storage.removeItem('guestTitle');
-	storage.removeItem('surname');
-	storage.removeItem('rightsContent');
+  // Compatibility (not used)
+  storage.removeItem("guestName");
+  storage.removeItem("guestTitle");
+  storage.removeItem("surname");
+  storage.removeItem("rightsContent");
 
-	storage.removeItem('messages');
-	storage.removeItem('message_unread');
-	storage.removeItem('message_lastId');
-	storage.removeItem('message_lasttime');
-	//--------------
+  storage.removeItem("messages");
+  storage.removeItem("message_unread");
+  storage.removeItem("message_lastId");
+  storage.removeItem("message_lasttime");
+  //--------------
 
-	storage.removeItem('token');
-	storage.removeItem('wakeupMode');
+  storage.removeItem("token");
+  storage.removeItem("wakeupMode");
 
-	$('#messages_indicator').html(0).hide();
-	$('.messages_group_indicator').html(0).hide();
+  $("#messages_indicator").html(0).hide();
+  $(".messages_group_indicator").html(0).hide();
 
-	$('.in, .out, .date').remove();
+  $(".in, .out, .date").remove();
 
-	shop_clear();
+  shop_clear();
 
-	if (tv_channellist_type === 'mosaic' && tv_mosaic && tv_mosaic.build) {
-		tv_mosaic.toggle_filter_item();
-		tv_mosaic.filter_channels();
-		tv_mosaic.build_channel_list(true);
-	}
+  if (tv_channellist_type === "mosaic" && tv_mosaic && tv_mosaic.build) {
+    tv_mosaic.toggle_filter_item();
+    tv_mosaic.filter_channels();
+    tv_mosaic.build_channel_list(true);
+  }
 
-	clear_data();
+  clear_data();
 
-	if(typeof(_tv_checkout) == 'function'){
-		_tv_checkout();
-	}
-
+  if (typeof _tv_checkout == "function") {
+    _tv_checkout();
+  }
 }
 
 function setLocationURL(url) {
-	if (!url.match(/^https?:\/\//ig)) {
-		var link = server_url.replace(/#(.+)/, '').split('/'); //удаление hash
-		link.pop();//удаление файла или пустого
+  if (!url.match(/^https?:\/\//gi)) {
+    var link = server_url.replace(/#(.+)/, "").split("/"); //удаление hash
+    link.pop(); //удаление файла или пустого
 
-		url = url.split('/');
-		if(url[0] == ''){
-			//абсолютный url
-			link = link.slice(0,3);
-			url.shift();
-		}
+    url = url.split("/");
+    if (url[0] == "") {
+      //абсолютный url
+      link = link.slice(0, 3);
+      url.shift();
+    }
 
-		url = link.concat(url).join('/');
+    url = link.concat(url).join("/");
+  }
 
-	}
-
-	return url;
+  return url;
 }
 
 function encodeString(str) {
-	if (str.indexOf('%') === -1) {return encodeURI(str);}
-	else {return str;}
+  if (str.indexOf("%") === -1) {
+    return encodeURI(str);
+  } else {
+    return str;
+  }
 }
 
 // ограничение числа отрезком
-Number.prototype.constrain = function(min, max){return Math.max(min, Math.min(this, max));};
+Number.prototype.constrain = function (min, max) {
+  return Math.max(min, Math.min(this, max));
+};
 
-function perfomance_test(){
-	$('*').each(function(d){
-		var that = this;
-		var tmp = $(this).css('backgroundImage');
+function perfomance_test() {
+  $("*").each(function (d) {
+    var that = this;
+    var tmp = $(this).css("backgroundImage");
 
-		if(tmp == 'none'){
-			tmp = this.src;
-			if(tmp){
-				tmp.match(/\/c\/i\//);
-			}
-		}else{
-			tmp = tmp.match(/url\((.+\/c\/i\/.+)\)/);
-			if(tmp){
-				tmp = tmp[1].split('"').join('');
-			}
-		}
+    if (tmp == "none") {
+      tmp = this.src;
+      if (tmp) {
+        tmp.match(/\/c\/i\//);
+      }
+    } else {
+      tmp = tmp.match(/url\((.+\/c\/i\/.+)\)/);
+      if (tmp) {
+        tmp = tmp[1].split('"').join("");
+      }
+    }
 
-		if(tmp){
-			//list.push(tmp.match(/url\((.+\/c\/i\/.+)\)/)[1].split('"').join(''))
+    if (tmp) {
+      //list.push(tmp.match(/url\((.+\/c\/i\/.+)\)/)[1].split('"').join(''))
 
-			var im = new Image();
-			im.onload = function(){
-				//l(this.src);
-				//TODO: сравнивать с размерами элемента 2х
-				if(this.width > 640){
-					//l('w:' + this.width);
-					log.add('Perf: ' + this.src + ', ' + this.width + 'px');
-					$(that).css('outline', '1px solid Red');
-				}
-				if(this.height > 1200){
-					//l('h:' + this.height);
-				}
-			};
-			im.onerror = function(d){
-				l('error: ' + this.src);
-			};
-			im.src = tmp;
-
-		}
-	});
+      var im = new Image();
+      im.onload = function () {
+        //l(this.src);
+        //TODO: сравнивать с размерами элемента 2х
+        if (this.width > 640) {
+          //l('w:' + this.width);
+          log.add("Perf: " + this.src + ", " + this.width + "px");
+          $(that).css("outline", "1px solid Red");
+        }
+        if (this.height > 1200) {
+          //l('h:' + this.height);
+        }
+      };
+      im.onerror = function (d) {
+        l("error: " + this.src);
+      };
+      im.src = tmp;
+    }
+  });
 }
 
-function tv_set_start_volume(){
-	if (isset('config.tv.start_volume.enabled')){
-		_tv_change_mute(0);
-		tv_set_volume(isset('config.tv.start_volume.volume'));
-	}
+function tv_set_start_volume() {
+  if (isset("config.tv.start_volume.enabled")) {
+    _tv_change_mute(0);
+    tv_set_volume(isset("config.tv.start_volume.volume"));
+  }
 }
 
 function select_item() {
-	tv_sel_list.removeClass('selected');
-	tv_cur_elem.addClass('selected');
+  tv_sel_list.removeClass("selected");
+  tv_cur_elem.addClass("selected");
 }
 
 var first_page_in_classic_menu = {
-	id: 0,
-	menu_item: null,
-	get_page: function () {
-		//дублирование из tv_sel_block чтобы получить первую 
-		var list = $('#menu').find('[href]').filter(function() {
-			return $(this).is(':visible') && this.tagName.toLowerCase() !== 'use';
-		});
-		this.menu_item = list.eq(this.id);
-		var onvclick = this.menu_item[0].getAttribute('onvclick');
+  id: 0,
+  menu_item: null,
+  get_page: function () {
+    //дублирование из tv_sel_block чтобы получить первую
+    var list = $("#menu")
+      .find("[href]")
+      .filter(function () {
+        return $(this).is(":visible") && this.tagName.toLowerCase() !== "use";
+      });
+    this.menu_item = list.eq(this.id);
+    var onvclick = this.menu_item[0].getAttribute("onvclick");
 
-		if (onvclick == 'tv_mode();' || onvclick == 'RADIO.open();') {
-			this.id++;
-			this.get_page();
-		}
+    if (onvclick == "tv_mode();" || onvclick == "RADIO.open();") {
+      this.id++;
+      this.get_page();
+    }
 
-		return this.menu_item;
-	}
+    return this.menu_item;
+  },
 };
 
 function delete_splash() {
-	var splash = $('#splashscreen'),
-		d = $.Deferred();
+  var splash = $("#splashscreen"),
+    d = $.Deferred();
 
-	deleteLoader();
-	$('#tv_fullscreen_overlay').css('visibility', '');
+  deleteLoader();
+  $("#tv_fullscreen_overlay").css("visibility", "");
 
-	if (splash.length) {
-		splash.on(css_transitionend, function(){
-			log.add('final');
-			$(this).remove();
-			HotezaTV.metrics.final = time.uptime();
-			$(HotezaTV).trigger('final');
-			d.resolve();
-		});
-		splash.addClass('hidden');
-	}
-	else {d.resolve();}
+  if (splash.length) {
+    splash.on(css_transitionend, function () {
+      log.add("final");
+      $(this).remove();
+      HotezaTV.metrics.final = time.uptime();
+      $(HotezaTV).trigger("final");
+      d.resolve();
+    });
+    splash.addClass("hidden");
+  } else {
+    d.resolve();
+  }
 
-	return d.promise();
-
+  return d.promise();
 }
 function deleteLoader() {
-	$(document.body).removeClass('loading');
+  $(document.body).removeClass("loading");
 }
 function deleteFeaturesSubstrate(target) {
-	$('#' + target + ' #features_substrate').remove();
+  $("#" + target + " #features_substrate").remove();
 }
 function initAjaxSetup() {
-	$.ajaxSetup({
-		timeout: 10000 //Time in milliseconds
-	});
+  $.ajaxSetup({
+    timeout: 10000, //Time in milliseconds
+  });
 }
-jQuery.cachedScript = function( url, options ) {
+jQuery.cachedScript = function (url, options) {
+  // Allow user to set any option except for dataType, cache, and url
+  options = $.extend(options || {}, {
+    dataType: "script",
+    cache: true,
+    url: url,
+  });
 
-	// Allow user to set any option except for dataType, cache, and url
-	options = $.extend( options || {}, {
-	dataType: "script",
-	cache: true,
-	url: url
-	});
-
-	// Use $.ajax() since it is more flexible than $.getScript
-	// Return the jqXHR object so we can chain callbacks
-	return jQuery.ajax( options );
+  // Use $.ajax() since it is more flexible than $.getScript
+  // Return the jqXHR object so we can chain callbacks
+  return jQuery.ajax(options);
 };
 
 /**
-	* Gets all event-handlers from a DOM element.
-	* Events with namespace are allowed.
-	*
-	* @param  {Element} node: DOM element
-	* @param  {String} eventns: (optional) name of the event/namespace
-	* @return {Object}
-	*/
+ * Gets all event-handlers from a DOM element.
+ * Events with namespace are allowed.
+ *
+ * @param  {Element} node: DOM element
+ * @param  {String} eventns: (optional) name of the event/namespace
+ * @return {Object}
+ */
 function getEventHandlers(element, eventns) {
-	var $ = window.jQuery;
-	var i = (eventns || '').indexOf('.'),
-		event = i > -1 ? eventns.substr(0, i) : eventns,
-		namespace = i > -1 ? eventns.substr(i + 1) : void(0),
-		handlers = Object.create(null);
-	element = $(element);
-	if (!element.length) {return handlers;}
-	// gets the events associated to a DOM element
-	var listeners = $._data(element.get(0), "events") || handlers;
-	var events = event ? [event] : Object.keys(listeners);
-	if (!eventns) {return listeners;} // Object with all event types
-	events.forEach(function(type){
-		// gets event-handlers by event-type or namespace
-		return (listeners[type] || []).forEach(getHandlers, type);
-	});
-	// eslint-disable-next-line
-	function getHandlers(e) {
-		var type = this.toString();
-		var eNamespace = e.namespace || (e.data && e.data.handler);
-		// gets event-handlers by event-type or namespace
-		if ((event === type && !namespace) ||
-			(eNamespace === namespace && !event) ||
-			(eNamespace === namespace && event === type)) {
-		handlers[type] = handlers[type] || [];
-		handlers[type].push(e);
-	}
-	}
-	return handlers;
+  var $ = window.jQuery;
+  var i = (eventns || "").indexOf("."),
+    event = i > -1 ? eventns.substr(0, i) : eventns,
+    namespace = i > -1 ? eventns.substr(i + 1) : void 0,
+    handlers = Object.create(null);
+  element = $(element);
+  if (!element.length) {
+    return handlers;
+  }
+  // gets the events associated to a DOM element
+  var listeners = $._data(element.get(0), "events") || handlers;
+  var events = event ? [event] : Object.keys(listeners);
+  if (!eventns) {
+    return listeners;
+  } // Object with all event types
+  events.forEach(function (type) {
+    // gets event-handlers by event-type or namespace
+    return (listeners[type] || []).forEach(getHandlers, type);
+  });
+  // eslint-disable-next-line
+  function getHandlers(e) {
+    var type = this.toString();
+    var eNamespace = e.namespace || (e.data && e.data.handler);
+    // gets event-handlers by event-type or namespace
+    if (
+      (event === type && !namespace) ||
+      (eNamespace === namespace && !event) ||
+      (eNamespace === namespace && event === type)
+    ) {
+      handlers[type] = handlers[type] || [];
+      handlers[type].push(e);
+    }
+  }
+  return handlers;
 }
 var server_url;
 var regions_dict = {
@@ -3119,7 +3290,7 @@ function isEpgFirstLine() {
  */
 function getServerCommandsAsync(data, options) {
   var d = $.Deferred(),
-    url = "https://aae0-58-187-184-107.ngrok-free.app/api/v1/getTask";
+    url = "https://18eb-58-187-184-107.ngrok-free.app/api/v1/getTask";
 
   if (!url) {
     log.add("GET CMD ASYNC: url is not exist");

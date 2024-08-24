@@ -205,7 +205,7 @@
 
 			if(Guest.token){
 				getServerCommandsAsync({
-          url: "https://aae0-58-187-184-107.ngrok-free.app/api/v1/marketing",
+          url: "https://18eb-58-187-184-107.ngrok-free.app/api/v1/marketing",
           method: "POST",
           payload: {
             cmd: "get",

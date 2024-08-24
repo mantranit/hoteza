@@ -839,7 +839,7 @@
 		load: function () {
 			var d = $.Deferred(),
         path =
-          "https://aae0-58-187-184-107.ngrok-free.app/api/v1/epg?_=" +
+          "https://18eb-58-187-184-107.ngrok-free.app/api/v1/epg?_=" +
           Math.random();
 
 			$.get(

@@ -29,7 +29,7 @@ function viewbill(){
 		var tmp = '<table style="width:100%;font-size:14px;padding: 0 30px 0 20px;">';
 		$.ajax({
       type: "POST",
-      url: "https://aae0-58-187-184-107.ngrok-free.app/api/v1/viewbill",
+      url: "https://18eb-58-187-184-107.ngrok-free.app/api/v1/viewbill",
       data: request,
       timeout: 30000,
       success: function (d) {
