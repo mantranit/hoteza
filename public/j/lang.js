@@ -111,7 +111,7 @@ lang_strings["en"] = {
   tv_television: "Television",
   tv_nottelevision: "Information",
   tv_room: "Room #",
-  tv_welcome: "Welcome, ",
+  tv_welcome: "Dear, ",
   tv_allchannels: "All channels",
   tv_categories: "Categories",
   tv_category: "Category",

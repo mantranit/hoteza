@@ -28,10 +28,10 @@
   font-weight: 600;
 }
 #tv_welcome.welcome_scandic .content p {
-  width: 650px;
+  width: 717px;
   margin-bottom: 95px;
   line-height: 36px;
-  font-size: 22px;
+  font-size: 25px;
 }
 
 .welcome_scandic + #tv_fullscreen_overlay #tv_fullscreen_btns {
