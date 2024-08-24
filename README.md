@@ -1,1 +1,1 @@
-"# Salinda Resort Phu Quoc Island"
+"# Hotel &amp; Resort"

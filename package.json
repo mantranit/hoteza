@@ -1,7 +1,7 @@
 {
-  "name": "salinda_resort",
+  "name": "hotel_resort",
   "version": "1.0.0",
-  "description": "Salinda Resort Phu Quoc Island",
+  "description": "Hotel or Resort",
   "main": "server.js",
   "dependencies": {
     "accepts": "^1.3.8",

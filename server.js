@@ -119,8 +119,8 @@ app.post("/api/v1/tvconnect/token", function (req, res) {
   res.json({
     result: 0,
     token: "4cbe89fa62c38e61a29c02f2c45e38fe",
-    guestName: "Nakamoto",
-    guestFirstName: "Satoshi",
+    guestName: "Loc Nguyen",
+    guestFirstName: "Loc",
     guestTitle: "Mr",
     lang: "en",
     groups: [],
@@ -132,8 +132,8 @@ app.post("/api/v1/tvconnect/token", function (req, res) {
     additional: [],
     guestList: [
       {
-        guestName: "Nakamoto",
-        guestFirstName: "Satoshi",
+        guestName: "Loc Nguyen",
+        guestFirstName: "Loc",
         guestTitle: "Mr",
         lang: "en",
         token: "4cbe89fa62c38e61a29c02f2c45e38fe",
