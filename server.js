@@ -253,6 +253,10 @@ app.post("/api/v1/viewbill", function (req, res) {
   res.json({ result: 0, total: 0, billItems: [] });
 });
 
+app.post("/api/v1/remoteCheckout", function (req, res) {
+  res.json({ result: 0, message: "OK" });
+});
+
 app.post("/api/v1/getScheduleAirport", function (req, res) {
   res.json({
     result: 0,

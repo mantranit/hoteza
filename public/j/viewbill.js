@@ -187,72 +187,67 @@ function express_checkout(total){
 		};
 
 		$.ajax({
-			type: "POST",
-			url: api_url+'remoteCheckout',
-			data: request,
-			timeout: 30000,
-			success: function(data){
-				Loader.stop();
+      type: "POST",
+      url: "http://103.153.72.195:8080/api/v1/remoteCheckout",
+      data: request,
+      timeout: 30000,
+      success: function (data) {
+        Loader.stop();
 
-				if (typeof(data) == 'object') {
-					if (typeof(data.result) != 'undefined') {
+        if (typeof data == "object") {
+          if (typeof data.result != "undefined") {
+            switch (data.result) {
+              case 0:
+                check_status(data.status);
+                l(data);
 
-						switch(data.result){
-							case 0:
-								check_status(data.status);
-								l(data);
+                break;
 
-								break;
+              case 1:
+                custom_alert(getlang("express_checkout_failed"));
+                log.add("CHECKOUT: bad request, status 1");
+                break;
 
-							case 1:
-								custom_alert(getlang('express_checkout_failed'));
-								log.add('CHECKOUT: bad request, status 1');
-								break;
+              case 2:
+                custom_alert(getlang("express_checkout_failed"));
+                log.add("CHECKOUT: token error, status 2");
+                break;
 
-							case 2:
-								custom_alert(getlang('express_checkout_failed'));
-								log.add('CHECKOUT: token error, status 2');
-								break;
+              case 3:
+                custom_alert(getlang("express_checkout_failed"));
+                log.add("CHECKOUT: guest checkout, status 3");
+                break;
 
-							case 3:
-								custom_alert(getlang('express_checkout_failed'));
-								log.add('CHECKOUT: guest checkout, status 3');
-								break;
+              case 4:
+                custom_alert(getlang("express_checkout_failed"));
+                log.add("CHECKOUT: guest canceled, status 4");
+                break;
 
-							case 4:
-								custom_alert(getlang('express_checkout_failed'));
-								log.add('CHECKOUT: guest canceled, status 4');
-								break;
+              case 5:
+                custom_alert(getlang("express_checkout_failed"));
+                log.add("CHECKOUT: connection problem, status 5");
+                break;
 
-							case 5:
-								custom_alert(getlang('express_checkout_failed'));
-								log.add('CHECKOUT: connection problem, status 5');
-								break;
-
-							default:
-								custom_alert(getlang('express_checkout_failed'));
-								log.add('CHECKOUT: unknown response status ' + data.result);
-								break;
-						}
-					}
-					else {
-						custom_alert('Checkout request failed');
-						log.add('CHECKOUT: request failed, bad response in object');
-					}
-				}
-				else {
-					custom_alert('Checkout request failed');
-					log.add('CHECKOUT: request failed, bad response');
-
-				}
-
-			},
-			dataType: 'json'
-		}).fail(function(err, msg1, msg2){
-			Loader.stop();
-			custom_alert('Checkout request failed');
-			log.add('CHECKOUT: request failed ' + err.status + '|' + err.statusText);
-		});
+              default:
+                custom_alert(getlang("express_checkout_failed"));
+                log.add("CHECKOUT: unknown response status " + data.result);
+                break;
+            }
+          } else {
+            custom_alert("Checkout request failed");
+            log.add("CHECKOUT: request failed, bad response in object");
+          }
+        } else {
+          custom_alert("Checkout request failed");
+          log.add("CHECKOUT: request failed, bad response");
+        }
+      },
+      dataType: "json",
+    }).fail(function (err, msg1, msg2) {
+      Loader.stop();
+      custom_alert("Checkout request failed");
+      log.add("CHECKOUT: request failed " + err.status + "|" + err.statusText);
+    });
 	}
 	else {
 		custom_alert('Authorization required for this action');
