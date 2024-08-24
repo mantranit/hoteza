@@ -1,32 +1,32 @@
-HTML,
-BODY {
+html, /* HTML */
+body { /* BODY */
   width: 100%;
   height: 100%;
   margin: 0px;
   padding: 0px;
   overflow: hidden;
 }
-HTML.hd720 {
+html.hd720 { /* HTML */
   width: 1280px;
   height: 720px;
 }
-HTML.hd720upscaled {
+html.hd720upscaled { /* HTML */
   width: 1280px;
   height: 720px;
   zoom: 1.5;
 }
-HTML.hd1080 {
+html.hd1080 { /* HTML */
   width: 1920px;
   height: 1080px;
 }
-BODY {
+body { /* BODY */
   background-color: Black;
   color: White;
   font-family: GothamPro, Currency, sans-serif;
   font-size: 16px;
   position: relative;
 }
-BODY.loading {
+body.loading { /* BODY */
   /* background-image: url("../i/loading.gif"); */
   background-size: 5%;
   background-position: center;
@@ -4099,8 +4099,8 @@ i.align {
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
-BODY.no_animation .transition_all,
-BODY.no_animation .transition-all-3 {
+body.no_animation .transition_all, /* BODY */
+body.no_animation .transition-all-3 { /* BODY */
   -webkit-transition-duration: 0s;
   transition-duration: 0s;
 }
