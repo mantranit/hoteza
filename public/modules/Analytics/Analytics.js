@@ -1,7 +1,7 @@
 (function () {
   window.Analytics = {
     deps: [],
-    url: "http://localhost:8080/api/v1/analytics/",
+    url: "http://103.153.72.195:8080/api/v1/analytics/",
     observer: null,
     timer: {
       channels: null,

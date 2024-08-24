@@ -59,7 +59,7 @@ var Stat = {
 		if(Stat._load_time){
 			$.post(
         //TODO: переместить общие данные в отдельное место
-        "http://localhost:8080/api/v1/load",
+        "http://103.153.72.195:8080/api/v1/load",
         {
           region: get_hotelRegion(),
           hotelId: get_hotelId(),
@@ -89,7 +89,7 @@ var Stat = {
 	report_channels: function(){
 		var metrics = Object.keys(isset('Stat._channels', {})).length;
 		if(metrics){
-			var url = "http://localhost:8080/api/v1/channels";
+			var url = "http://103.153.72.195:8080/api/v1/channels";
 			$.post(
 				url,
 				{

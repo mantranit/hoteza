@@ -1348,7 +1348,7 @@
 		}
 
 		$.post(
-      "http://localhost:8080/api/v1/orderList",
+      "http://103.153.72.195:8080/api/v1/orderList",
       JSON.stringify({ token: token }),
       function (r) {
         switch (r.result) {

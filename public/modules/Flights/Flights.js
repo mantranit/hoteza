@@ -480,7 +480,7 @@
 		var d = $.Deferred();
 
 		$.post(
-      "http://localhost:8080/api/v1/getScheduleAirport",
+      "http://103.153.72.195:8080/api/v1/getScheduleAirport",
       JSON.stringify({
         code: [code],
         type: direction,

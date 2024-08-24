@@ -189,7 +189,7 @@ var Messages = {
 			}
 
 			$.post(
-        "http://localhost:8080/api/v1/im",
+        "http://103.153.72.195:8080/api/v1/im",
         {
           cmd: "read",
           lastId: lastId,
@@ -437,7 +437,7 @@ var Messages = {
 				Messages.type = 'poll';
 				Messages.listener = $.ajax({
           url:
-            "http://localhost:8080/api/v1/queue/subpoll/" +
+            "http://103.153.72.195:8080/api/v1/queue/subpoll/" +
             Guest.token +
             "?tag=" +
             Messages.last.tag +

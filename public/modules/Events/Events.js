@@ -208,7 +208,7 @@ var Events = {
 		var queue_tag_time = '?tag=' + this.last_msg.tag + '&time=' + this.last_msg.time;
 		that.listener = $.ajax({
       url:
-        "http://localhost:8080/api/v1/queue/subv2/" +
+        "http://103.153.72.195:8080/api/v1/queue/subv2/" +
         that.channel +
         "T" +
         queue_tag_time,
@@ -339,12 +339,12 @@ var Events = {
 		);
 		//TODO: local queue url?
 		$.post(
-      "http://localhost:8080/api/v1/room?id=" + that.channel + "R",
+      "http://103.153.72.195:8080/api/v1/room?id=" + that.channel + "R",
       JSON.stringify({ c: tmp })
     );
     //Дублирование комманд на широковещательный канал отеля
     $.post(
-      "http://localhost:8080/api/v1/hotel?id=hotel" + get_hotelId(),
+      "http://103.153.72.195:8080/api/v1/hotel?id=hotel" + get_hotelId(),
       JSON.stringify({ c: tmp })
     );
 		this.debug('sent cmd: ' + cmd + (data?(' ' + JSON.stringify(data)):''));

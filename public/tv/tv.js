@@ -936,7 +936,8 @@ var time = {
   },
   sync: function () {
     $.get(
-      "http://localhost:8080/api/v1/datetime?tz=" + isset("config.timezone"),
+      "http://103.153.72.195:8080/api/v1/datetime?tz=" +
+        isset("config.timezone"),
       function (response) {
         time.dof = (response.time | 0) * 1000 - Date.now();
         time.tz = (response.offset | 0) * 1000;
@@ -1210,7 +1211,7 @@ function tv_weather() {
     hotelId: get_hotelId(),
   };
   $.post(
-    "http://localhost:8080/api/v1/weather",
+    "http://103.153.72.195:8080/api/v1/weather",
     data,
     function (response) {
       switch (response.result) {
@@ -4264,7 +4265,7 @@ function tv_register() {
         }
 
         $.post(
-          "http://localhost:8080/api/v1/tvconnect/registration",
+          "http://103.153.72.195:8080/api/v1/tvconnect/registration",
           data,
           function (r) {
             if (typeof r == "object") {
@@ -4343,7 +4344,7 @@ function tv_register_v2() {
     }
 
     $.post(
-      "http://localhost:8080/api/v1/tvconnect/registration",
+      "http://103.153.72.195:8080/api/v1/tvconnect/registration",
       data,
       function (r) {
         if (typeof r == "object") {
@@ -4558,7 +4559,7 @@ function tv_auth() {
     };
 
     $.post(
-      "http://localhost:8080/api/v1/tvconnect/token",
+      "http://103.153.72.195:8080/api/v1/tvconnect/token",
       data,
       function (r) {
         $("#tv_fullscreen_welcome").hide();
@@ -4673,7 +4674,7 @@ function tv_get_server_commands() {
     tvIndex: Events.TVID(),
   };
 
-  $.post("http://localhost:8080/api/v1/getTask", data, function (r) {
+  $.post("http://103.153.72.195:8080/api/v1/getTask", data, function (r) {
     switch (r.result) {
       case 0:
         if (r.payload.length === 0) {

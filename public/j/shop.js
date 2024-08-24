@@ -1194,7 +1194,7 @@ function shop_order(when, orderId, confirmed, callback, withUnavailableProducts)
 	var serializedOrder = Services.serialize(order)[0];
 
 	$.post(
-    "http://localhost:8080/api/v1/orderCreate",
+    "http://103.153.72.195:8080/api/v1/orderCreate",
     JSON.stringify(
       Object.assign(serializedOrder, { token: token, tvId: Events.TVID() })
     ), //TVID: Фильтрация будильника по зонам

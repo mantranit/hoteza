@@ -838,7 +838,7 @@
 
 		load: function () {
 			var d = $.Deferred(),
-        path = "http://localhost:8080/api/v1/epg?_=" + Math.random();
+        path = "http://103.153.72.195:8080/api/v1/epg?_=" + Math.random();
 
 			$.get(
 				path,

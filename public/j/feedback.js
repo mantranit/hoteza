@@ -99,7 +99,7 @@ function feedback_send(){
 		request.questions = feedback_answers;
 		request.token = storage.getItem('token');
 		$.post(
-      "http://localhost:8080/api/v1/feedback",
+      "http://103.153.72.195:8080/api/v1/feedback",
       request,
       function (d) {
         if (typeof d == "object") {

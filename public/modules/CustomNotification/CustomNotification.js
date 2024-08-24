@@ -205,7 +205,7 @@
 
 			if(Guest.token){
 				getServerCommandsAsync({
-          url: "http://localhost:8080/api/v1/marketing",
+          url: "http://103.153.72.195:8080/api/v1/marketing",
           method: "POST",
           payload: {
             cmd: "get",

@@ -428,7 +428,7 @@ log.post_error = function (e_text, e_url, e_line) {
     error.line = e_line;
   }
 
-  var url = "http://localhost:8080/api/v1/errorlog/error";
+  var url = "http://103.153.72.195:8080/api/v1/errorlog/error";
   var payload = tv_get_state();
   var data = {
     region: get_hotelRegion(),
@@ -3290,7 +3290,7 @@ function isEpgFirstLine() {
  */
 function getServerCommandsAsync(data, options) {
   var d = $.Deferred(),
-    url = "http://localhost:8080/api/v1/getTask";
+    url = "http://103.153.72.195:8080/api/v1/getTask";
 
   if (!url) {
     log.add("GET CMD ASYNC: url is not exist");
