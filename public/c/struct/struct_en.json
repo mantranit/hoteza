@@ -45,7 +45,7 @@
   "welcome": {
     "type": "welcome",
     "title": "Welcome {username}!",
-    "content": "",
+    "content": "We are delighted that you have chosen our hotel. <br/>On behalf of the entire team of the SEASHELLS, I extend a very warm welcome to you and trust that your stay with us will be pleasant and comfortable.",
     "image": "c/i/a3bab9a1ad52584d385f3e6a44733638.png",
     "mediaType": "",
     "data": null
