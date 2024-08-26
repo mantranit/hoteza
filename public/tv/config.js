@@ -79,7 +79,14 @@ config["preload_images"] = 2; // false - без предзагрузки, 1 - п
 config["preload_threads"] = 3; // количество потоков предзагрузки. только для preload_images == 2;
 config["error_reporting"] = true; // Отправка глобальных ошибок на сервер для отладки
 config["tv"] = {
-  external_devices: ["SOURCES", "MIRACAST", "USB", "AIRSTREAM", "BLUETOOTH"],
+  external_devices: [
+    "SOURCES",
+    "MIRACAST",
+    "USB",
+    "AIRSTREAM",
+    "CHROMESTREAM",
+    "BLUETOOTH",
+  ],
   wakeup: {
     channel: 1,
     start_volume: 1,
