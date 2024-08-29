@@ -1,0 +1,14 @@
+.landscape_layout.tv.classic_menu #container {
+	background-image: url(container_bg_1080blur.jpg);
+}
+
+#tv_fullscreen_overlay.fullscreen {
+	background: url(../i/tv_bg_fullscreen_full.png);
+	background-size: 1280px 720px;
+}
+.mod_playlist .player-icon-shuffle svg {
+	top: -5px !important;
+}
+.mod_playlist .player-icon-play svg {
+	top: -3px !important;
+}

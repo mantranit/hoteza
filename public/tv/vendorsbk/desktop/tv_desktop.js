@@ -9,17 +9,17 @@ function _tv_vendor_init() {
 
 		tv_keys = {
 			MENU: 27, // Escape
-			EXIT: 461, // backspace
+			EXIT: 8, // backspace
 			DOWN: 40,
 			UP: 38,
 			LEFT: 37,
 			RIGHT: 39,
 			ENTER: 13,
-			BACK: 461, // backspace
-			RED: 403, // button q
-			GREEN: 404, // button w
-			YELLOW: 405, // button e
-			BLUE: 406, // button r
+			BACK: 8, // backspace
+			RED: 81, // button q
+			GREEN: 87, // button w
+			YELLOW: 69, // button e
+			BLUE: 82, // button r
 			CH_UP: 'S38', // shift + up
 			CH_DOWN: 'S40', // shift + down
 			NUM_0: 48,
