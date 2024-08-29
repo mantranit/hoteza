@@ -8,43 +8,43 @@ function _tv_vendor_init() {
 	$(HotezaTV).one('splashshow', function () {
 
 		tv_keys = {
-			MENU: 27, // Escape
-			EXIT: 461, // backspace
-			DOWN: 40,
-			UP: 38,
-			LEFT: 37,
-			RIGHT: 39,
-			ENTER: 13,
-			BACK: 461, // backspace
-			RED: 403, // button q
-			GREEN: 404, // button w
-			YELLOW: 405, // button e
-			BLUE: 406, // button r
-			CH_UP: 'S38', // shift + up
-			CH_DOWN: 'S40', // shift + down
-			NUM_0: 48,
-			NUM_1: 49,
-			NUM_2: 50,
-			NUM_3: 51,
-			NUM_4: 52,
-			NUM_5: 53,
-			NUM_6: 54,
-			NUM_7: 55,
-			NUM_8: 56,
-			NUM_9: 57,
-			INPUT: 'S90', // shift + z
-			STOP: 'S86', // shift + v
-			PLAY: 'S67', // shift + c
-			PAUSE: 'S88', // shift + x
-			FAST_FORWARD: 'S39', // shift + ->
-			REWIND: 'S37', // shift + <-
+      MENU: 27, // Escape
+      EXIT: 8, // backspace
+      DOWN: 40,
+      UP: 38,
+      LEFT: 37,
+      RIGHT: 39,
+      ENTER: 13,
+      BACK: 8, // backspace
+      RED: 81, // button q
+      GREEN: 87, // button w
+      YELLOW: 69, // button e
+      BLUE: 82, // button r
+      CH_UP: "S38", // shift + up
+      CH_DOWN: "S40", // shift + down
+      NUM_0: 48,
+      NUM_1: 49,
+      NUM_2: 50,
+      NUM_3: 51,
+      NUM_4: 52,
+      NUM_5: 53,
+      NUM_6: 54,
+      NUM_7: 55,
+      NUM_8: 56,
+      NUM_9: 57,
+      INPUT: "S90", // shift + z
+      STOP: "S86", // shift + v
+      PLAY: "S67", // shift + c
+      PAUSE: "S88", // shift + x
+      FAST_FORWARD: "S39", // shift + ->
+      REWIND: "S37", // shift + <-
 
-			VOL_UP: 187, //=
-			VOL_DOWN: 189, //-
-			MUTE: 'S187', //+
+      VOL_UP: 187, //=
+      VOL_DOWN: 189, //-
+      MUTE: "S187", //+
 
-			NUMBERS: 144
-		};
+      NUMBERS: 144,
+    };
 	});
 
 	$(HotezaTV).one('final', function () {
